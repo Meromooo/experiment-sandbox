@@ -2,100 +2,569 @@
 	"$schema": "https://schemas.wp.org/trunk/theme.json",
 	"version": 3,
 	"settings": {
+		"appearanceTools": true,
+		"useRootPaddingAwareAlignments": true,
 		"layout": {
-			"contentSize": "800px",
-			"wideSize": "1200px"
+			"contentSize": "1120px",
+			"wideSize": "1360px"
 		},
 		"color": {
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"defaultDuotone": false,
+			"custom": false,
+			"customGradient": false,
 			"palette": [
 				{
-					"slug": "primary",
-					"name": "Primary Blue",
-					"color": "#2B6CB0"
+					"slug": "paper",
+					"name": "Paper",
+					"color": "#FAF9F6"
 				},
 				{
-					"slug": "text-dark",
-					"name": "Dark Text",
-					"color": "#1A202C"
+					"slug": "sand",
+					"name": "Sand",
+					"color": "#E8DFCE"
 				},
 				{
-					"slug": "text-muted",
-					"name": "Muted Text",
-					"color": "#718096"
+					"slug": "field",
+					"name": "Field",
+					"color": "#7FA045"
 				},
 				{
-					"slug": "background",
-					"name": "Background",
+					"slug": "canopy",
+					"name": "Canopy",
+					"color": "#1E4D3A"
+				},
+				{
+					"slug": "ink",
+					"name": "Ink",
+					"color": "#0E1C16"
+				},
+				{
+					"slug": "water",
+					"name": "Water",
+					"color": "#2E7D8C"
+				},
+				{
+					"slug": "white",
+					"name": "White",
 					"color": "#FFFFFF"
-				},
-				{
-					"slug": "background-light",
-					"name": "Light Background",
-					"color": "#F8F9FA"
-				},
-				{
-					"slug": "border",
-					"name": "Border",
-					"color": "#E2E8F0"
 				}
 			]
 		},
 		"typography": {
+			"fluid": true,
+			"defaultFontSizes": false,
+			"customFontSize": false,
 			"fontFamilies": [
 				{
-					"slug": "heading",
-					"name": "Manrope",
-					"fontFamily": "Manrope, sans-serif"
+					"slug": "display",
+					"name": "Archivo (display)",
+					"fontFamily": "\"Archivo\", \"IBM Plex Sans Arabic\", system-ui, sans-serif",
+					"fontFace": [
+						{
+							"fontFamily": "Archivo",
+							"fontStyle": "normal",
+							"fontWeight": "100 900",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/archivo/archivo-latin-ext-100-900.woff2"
+							],
+							"unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF",
+							"fontStretch": "62% 125%"
+						},
+						{
+							"fontFamily": "Archivo",
+							"fontStyle": "normal",
+							"fontWeight": "100 900",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/archivo/archivo-latin-100-900.woff2"
+							],
+							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+							"fontStretch": "62% 125%"
+						}
+					]
 				},
 				{
 					"slug": "body",
-					"name": "Inter",
-					"fontFamily": "Inter, sans-serif"
+					"name": "IBM Plex Sans (body)",
+					"fontFamily": "\"IBM Plex Sans\", \"IBM Plex Sans Arabic\", system-ui, sans-serif",
+					"fontFace": [
+						{
+							"fontFamily": "IBM Plex Sans",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-ext-400.woff2"
+							],
+							"unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+						},
+						{
+							"fontFamily": "IBM Plex Sans",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-400.woff2"
+							],
+							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+						},
+						{
+							"fontFamily": "IBM Plex Sans",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-ext-500.woff2"
+							],
+							"unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+						},
+						{
+							"fontFamily": "IBM Plex Sans",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-500.woff2"
+							],
+							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+						},
+						{
+							"fontFamily": "IBM Plex Sans",
+							"fontStyle": "normal",
+							"fontWeight": "600",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-ext-600.woff2"
+							],
+							"unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+						},
+						{
+							"fontFamily": "IBM Plex Sans",
+							"fontStyle": "normal",
+							"fontWeight": "600",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-600.woff2"
+							],
+							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+						},
+						{
+							"fontFamily": "IBM Plex Sans Arabic",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans-arabic/ibm-plex-sans-arabic-arabic-400.woff2"
+							],
+							"unicodeRange": "U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1"
+						},
+						{
+							"fontFamily": "IBM Plex Sans Arabic",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans-arabic/ibm-plex-sans-arabic-arabic-500.woff2"
+							],
+							"unicodeRange": "U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1"
+						},
+						{
+							"fontFamily": "IBM Plex Sans Arabic",
+							"fontStyle": "normal",
+							"fontWeight": "600",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-sans-arabic/ibm-plex-sans-arabic-arabic-600.woff2"
+							],
+							"unicodeRange": "U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1"
+						}
+					]
+				},
+				{
+					"slug": "mono",
+					"name": "IBM Plex Mono (data)",
+					"fontFamily": "\"IBM Plex Mono\", ui-monospace, \"Cascadia Mono\", Consolas, monospace",
+					"fontFace": [
+						{
+							"fontFamily": "IBM Plex Mono",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-mono/ibm-plex-mono-latin-ext-400.woff2"
+							],
+							"unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+						},
+						{
+							"fontFamily": "IBM Plex Mono",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-mono/ibm-plex-mono-latin-400.woff2"
+							],
+							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+						},
+						{
+							"fontFamily": "IBM Plex Mono",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-mono/ibm-plex-mono-latin-ext-500.woff2"
+							],
+							"unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+						},
+						{
+							"fontFamily": "IBM Plex Mono",
+							"fontStyle": "normal",
+							"fontWeight": "500",
+							"fontDisplay": "swap",
+							"src": [
+								"file:./assets/fonts/ibm-plex-mono/ibm-plex-mono-latin-500.woff2"
+							],
+							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+						}
+					]
 				}
 			],
 			"fontSizes": [
 				{
-					"slug": "small",
-					"name": "Small",
-					"size": "0.875rem"
+					"slug": "xs",
+					"name": "XS",
+					"size": "0.75rem",
+					"fluid": false
 				},
 				{
-					"slug": "medium",
-					"name": "Medium",
+					"slug": "sm",
+					"name": "S",
+					"size": "0.875rem",
+					"fluid": false
+				},
+				{
+					"slug": "md",
+					"name": "M",
+					"size": "1rem",
+					"fluid": {
+						"min": "1rem",
+						"max": "1.0625rem"
+					}
+				},
+				{
+					"slug": "lg",
+					"name": "L",
+					"size": "1.25rem",
+					"fluid": {
+						"min": "1.125rem",
+						"max": "1.25rem"
+					}
+				},
+				{
+					"slug": "xl",
+					"name": "XL",
+					"size": "1.75rem",
+					"fluid": {
+						"min": "1.5rem",
+						"max": "2rem"
+					}
+				},
+				{
+					"slug": "2xl",
+					"name": "2XL",
+					"size": "2.5rem",
+					"fluid": {
+						"min": "2rem",
+						"max": "3rem"
+					}
+				},
+				{
+					"slug": "3xl",
+					"name": "3XL",
+					"size": "3.5rem",
+					"fluid": {
+						"min": "2.5rem",
+						"max": "4.5rem"
+					}
+				},
+				{
+					"slug": "4xl",
+					"name": "4XL",
+					"size": "5rem",
+					"fluid": {
+						"min": "3rem",
+						"max": "6.5rem"
+					}
+				}
+			]
+		},
+		"spacing": {
+			"units": [
+				"px",
+				"rem",
+				"em",
+				"vh",
+				"vw",
+				"%"
+			],
+			"defaultSpacingSizes": false,
+			"spacingSizes": [
+				{
+					"slug": "10",
+					"name": "3XS",
+					"size": "0.25rem"
+				},
+				{
+					"slug": "20",
+					"name": "2XS",
+					"size": "0.5rem"
+				},
+				{
+					"slug": "30",
+					"name": "XS",
+					"size": "0.75rem"
+				},
+				{
+					"slug": "40",
+					"name": "S",
 					"size": "1rem"
 				},
 				{
-					"slug": "large",
-					"name": "Large",
+					"slug": "50",
+					"name": "M",
 					"size": "1.5rem"
 				},
 				{
-					"slug": "x-large",
-					"name": "X-Large",
-					"size": "2.25rem"
+					"slug": "60",
+					"name": "L",
+					"size": "2.5rem"
+				},
+				{
+					"slug": "70",
+					"name": "XL",
+					"size": "clamp(3rem, 6vw, 4.5rem)"
+				},
+				{
+					"slug": "80",
+					"name": "2XL",
+					"size": "clamp(4rem, 9vw, 7rem)"
 				}
 			]
+		},
+		"shadow": {
+			"defaultPresets": false,
+			"presets": [
+				{
+					"slug": "card",
+					"name": "Card",
+					"shadow": "0 1px 2px rgba(14, 28, 22, 0.06), 0 12px 32px -16px rgba(14, 28, 22, 0.18)"
+				},
+				{
+					"slug": "raised",
+					"name": "Raised",
+					"shadow": "0 2px 4px rgba(14, 28, 22, 0.08), 0 24px 48px -20px rgba(14, 28, 22, 0.28)"
+				}
+			]
+		},
+		"custom": {
+			"radius": {
+				"sm": "4px",
+				"md": "10px",
+				"lg": "18px",
+				"pill": "999px"
+			},
+			"notch": "18px",
+			"rule": "1px solid color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent)",
+			"motion": {
+				"fast": "250ms",
+				"base": "400ms",
+				"slow": "550ms",
+				"ease": "cubic-bezier(0.2, 0.7, 0.2, 1)",
+				"stagger": "70ms"
+			},
+			"display": {
+				"stretch": "125%",
+				"tracking": "-0.02em",
+				"leading": "0.98"
+			}
 		}
 	},
 	"styles": {
 		"color": {
-			"background": "var(--wp--preset--color--background)",
-			"text": "var(--wp--preset--color--text-dark)"
+			"background": "var(--wp--preset--color--paper)",
+			"text": "var(--wp--preset--color--ink)"
 		},
 		"typography": {
-			"fontFamily": "var(--wp--preset--font-family--body)"
+			"fontFamily": "var(--wp--preset--font-family--body)",
+			"fontSize": "var(--wp--preset--font-size--md)",
+			"lineHeight": "1.55"
+		},
+		"spacing": {
+			"blockGap": "var(--wp--preset--spacing--50)",
+			"padding": {
+				"left": "var(--wp--preset--spacing--40)",
+				"right": "var(--wp--preset--spacing--40)"
+			}
 		},
 		"elements": {
 			"heading": {
 				"typography": {
-					"fontFamily": "var(--wp--preset--font-family--heading)"
+					"fontFamily": "var(--wp--preset--font-family--display)",
+					"fontWeight": "600",
+					"lineHeight": "1.05",
+					"letterSpacing": "-0.02em"
+				}
+			},
+			"h1": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--4xl)",
+					"lineHeight": "0.98"
+				}
+			},
+			"h2": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--3xl)"
+				}
+			},
+			"h3": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--2xl)"
+				}
+			},
+			"h4": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--xl)"
+				}
+			},
+			"h5": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--lg)"
+				}
+			},
+			"h6": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--body)",
+					"fontSize": "var(--wp--preset--font-size--xs)",
+					"fontWeight": "500",
+					"letterSpacing": "0.08em",
+					"textTransform": "uppercase"
 				}
 			},
 			"link": {
 				"color": {
-					"text": "var(--wp--preset--color--primary)"
+					"text": "var(--wp--preset--color--canopy)"
+				},
+				"typography": {
+					"textDecoration": "underline"
+				},
+				":hover": {
+					"color": {
+						"text": "var(--wp--preset--color--field)"
+					}
+				}
+			},
+			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--canopy)",
+					"text": "var(--wp--preset--color--paper)"
+				},
+				"border": {
+					"radius": "var(--wp--custom--radius--pill)",
+					"width": "0"
+				},
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--body)",
+					"fontSize": "var(--wp--preset--font-size--sm)",
+					"fontWeight": "500"
+				},
+				"spacing": {
+					"padding": {
+						"top": "0.8rem",
+						"bottom": "0.8rem",
+						"left": "1.4rem",
+						"right": "1.4rem"
+					}
+				},
+				":hover": {
+					"color": {
+						"background": "var(--wp--preset--color--ink)",
+						"text": "var(--wp--preset--color--paper)"
+					}
+				},
+				":focus": {
+					"color": {
+						"background": "var(--wp--preset--color--ink)",
+						"text": "var(--wp--preset--color--paper)"
+					}
+				}
+			},
+			"caption": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--sm)"
+				},
+				"color": {
+					"text": "color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent)"
+				}
+			}
+		},
+		"blocks": {
+			"core/site-title": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--display)",
+					"fontSize": "var(--wp--preset--font-size--lg)",
+					"fontWeight": "600",
+					"letterSpacing": "-0.01em"
+				},
+				"elements": {
+					"link": {
+						"typography": {
+							"textDecoration": "none"
+						},
+						":hover": {
+							"color": {
+								"text": "var(--wp--preset--color--canopy)"
+							}
+						}
+					}
+				}
+			},
+			"core/navigation": {
+				"typography": {
+					"fontSize": "var(--wp--preset--font-size--sm)",
+					"fontWeight": "500"
+				},
+				"elements": {
+					"link": {
+						"typography": {
+							"textDecoration": "none"
+						}
+					}
+				}
+			},
+			"core/paragraph": {
+				"typography": {
+					"lineHeight": "1.6"
+				}
+			},
+			"core/separator": {
+				"color": {
+					"text": "color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent)"
 				}
 			}
 		}
-	}
+	},
+	"templateParts": [
+		{
+			"name": "header",
+			"title": "Header",
+			"area": "header"
+		},
+		{
+			"name": "footer",
+			"title": "Footer",
+			"area": "footer"
+		}
+	]
 }
