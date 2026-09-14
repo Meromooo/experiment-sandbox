@@ -30,15 +30,21 @@ are the files WordPress reads.
   - `catalog-filters.php` — product catalog filtering behavior (category/attribute sidebar) —
     intended to eventually replace the live site's custom `wp:html` sidebar filter script
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
-- `patterns/` — registered block patterns (PHP files with pattern header comments), for reusable
-  content blocks editors can insert — this is where reusable marketing/content blocks belong, not
-  hardcoded into templates.
-- `parts/` — template parts referenced by `templates/*.html` (header, footer). Keep these thin;
-  push real content into patterns or template-parts, not directly into `parts/header.html`.
+- `patterns/` — **not yet created** (as of 2026-07-28 audit — build in Phase 6). Once it exists:
+  registered block patterns (PHP files with pattern header comments), for reusable content blocks
+  editors can insert — this is where reusable marketing/content blocks belong, not hardcoded into
+  templates.
+- `parts/` — template parts referenced by `templates/*.html` (header, footer). Exists today, but
+  is currently thin/unconnected (mega-menu block not yet placed in `parts/header.html`). Keep
+  these thin once wired up; push real content into patterns or template-parts, not directly into
+  `parts/header.html`.
 - `templates/` — top-level block templates (`index.html` is the only one WordPress strictly
   requires to activate; `single-product.html` and `archive-product.html` are WooCommerce-specific).
-- `template-parts/` — smaller reusable template fragments organized by concern (`header/`,
-  `product/`, `navigation/`), for pieces that are shared across templates but aren't full parts.
+  `front-page.html` does not exist yet — the live site currently falls back to the default blog
+  index (Phase 6).
+- `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
+  reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for
+  pieces that are shared across templates but aren't full parts.
 - `woocommerce/` — classic WooCommerce template overrides, used only as a last resort (see
   Forbidden Patterns below).
 
@@ -59,9 +65,31 @@ are the files WordPress reads.
   APIs. `functions.php` in particular must stay a thin loader — no risky logic lives there directly.
 - **No assumptions about plugins beyond WooCommerce.** Don't reference or depend on Kadence,
   page-builder plugins, or anything not explicitly installed on this sandbox.
+  **Documented exception:** `hostinger-reach` (a Hostinger subscription/marketing block plugin) is
+  active on the sandbox and is intentional, confirmed 2026-07-28 — not a stray default install.
+  Don't build anything that depends on it working, but no need to flag or remove it.
 - **No copying live-site content, credentials, or database rows into this repo or the sandbox
   site.** Dummy/placeholder content only — see the product-seeding step in the scaffold brief for
   the naming convention used for fake catalog data.
+
+## Design & content reference docs
+
+These live in the repo root, are not code, and should be treated as **standing reference
+material for every session** — not one-time `/spec` input to read once and discard. Consult
+them for any front-end, visual, or content work on this theme:
+
+- `demas-homepage-brief.md` — locked homepage content/copy/section brief (source: Fable 5,
+  confirmed facts locked in).
+- `demas-mega-menu-content-spec.md` — locked mega-menu category/subcategory content, sourced
+  directly from the live demas-group.com site. Category/subcategory names, structure, and depth
+  (two levels) here are authoritative — don't invent or alter them.
+- `demas-design-direction.md` — site-wide visual/motion design system (scroll reveals, stat
+  counters, sticky header, trust-strip interaction, photo-overlay captions, and which decorative
+  patterns are in/out of scope). Applies to the homepage first, then should carry over to
+  product/archive templates for visual consistency.
+- `demas-motion-reference.md` — motion mechanics (primitives, durations, easing) analysed from the
+  reference recording in `references/`, with an adopt/adapt/skip list. Supplies the "how" behind the
+  reveal/counter/sticky-header patterns `demas-design-direction.md` locks in; not a design to copy.
 
 ## Working agreement
 
@@ -70,3 +98,13 @@ are the files WordPress reads.
 - Every new top-level concern gets its own file in `inc/`, not bolted onto an existing one.
 - This file should stay current — when the architecture changes, update this file in the same
   commit, not as an afterthought.
+- **Build step (ADR-001):** any custom block using TypeScript/React (`@wordpress/scripts`)
+  must be compiled with `npm run build` before committing. The compiled `build/` output is
+  committed to git alongside source — Hostinger's git auto-deploy has no build step of its
+  own, so a stale or missing `build/` folder means the change isn't actually live. Always
+  run `npm run build` and confirm `build/` is staged before every commit that touches a block.
+- **`three`, `@react-three/fiber`, `@react-three/drei` in `package.json`** are intentionally
+  pre-installed, unused as of 2026-07-28. They're reserved for a planned phase-2 scroll-driven
+  pipe/particle-flow scene (see the system design doc's "Future ideas" section) — not scope creep,
+  don't remove them, but also don't treat their presence as a green light to start that work before
+  it's actually scheduled.
