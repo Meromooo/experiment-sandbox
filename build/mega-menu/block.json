@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/mega-menu",
+  "title": "Mega Menu",
+  "category": "widgets",
+  "icon": "menu",
+  "description": "A hover/tap-activated mega menu of WooCommerce product categories, server-rendered and driven by the Interactivity API.",
+  "textdomain": "demas-theme",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScriptModule": "file:./view.js",
+  "supports": {
+    "interactivity": true,
+    "html": false
+  },
+  "attributes": {}
+}

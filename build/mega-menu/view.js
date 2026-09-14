@@ -1,0 +1,1 @@
+import{getContext as e,store as s}from"@wordpress/interactivity";s("demas-theme/mega-menu",{actions:{toggle:()=>{const s=e();s.isOpen=!s.isOpen},open:()=>{e().isOpen=!0},close:()=>{e().isOpen=!1}}});
