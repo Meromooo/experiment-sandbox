@@ -1,0 +1,35 @@
+# Dependencies (regenerable from package.json — do not commit)
+node_modules/
+
+# Compiled block output (build/) is intentionally NOT ignored here.
+# Per ADR-001, Hostinger's git auto-deploy has no build step of its own,
+# so compiled build/ output must be committed alongside source.
+
+# npm/yarn logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Claude Code local settings (machine-specific, not shared project config)
+.claude/settings.local.json
+
+# Reference/research assets — large binaries don't belong in git history.
+# The analysis derived from these lives in demas-motion-reference.md, which
+# IS committed; the raw source material stays local-only.
+references/
+
+# Reference media (large third-party video studied for motion direction).
+# Findings are captured in demas-motion-reference.md; the source file itself
+# is not committed — it would ship ~10MB into wp-content/themes on deploy.
+references/
+
+# Completed one-off task briefs handed to Claude Code. Superseded once done.
+md_filesForCC/
