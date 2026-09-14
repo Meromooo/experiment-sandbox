@@ -1,1 +1,638 @@
-/* Demas Theme (Sandbox) — front-end styles beyond theme.json. Empty on first pass. */
+/*
+ * Demas Theme (Sandbox) — front-end styles beyond theme.json.
+ *
+ * Every colour, radius, duration and easing comes from theme.json
+ * (--wp--preset--* and --wp--custom--*); nothing is hardcoded here.
+ * Logical properties throughout, so the same rules mirror under dir="rtl".
+ *
+ * 1. Foundations   box model, overflow, focus, selection
+ * 2. Type          display axis, eyebrow, data, highlight
+ * 3. Surfaces      cards, rules
+ * 4. Pills         buttons and tags
+ * 5. Notch         the concave-corner card junction
+ * 6. Marquee
+ * 7. Motion        grow-from-seed reveals, container-then-content
+ * 8. Blocks        core and WooCommerce adjustments, small-screen fixes
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. Foundations                                                      */
+/* ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+/*
+ * A page must never scroll sideways. Root causes are fixed in section 8
+ * (site-title wrapping, the legacy product grid); this is the safety net
+ * for third-party markup we don't control.
+ */
+html,
+body {
+	overflow-x: clip;
+}
+
+img,
+video,
+svg {
+	max-width: 100%;
+	height: auto;
+}
+
+:focus-visible {
+	outline: 3px solid var(--wp--preset--color--water);
+	outline-offset: 3px;
+	border-radius: var(--wp--custom--radius--sm);
+}
+
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+::selection {
+	background: var(--wp--preset--color--field);
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-skip-link {
+	position: absolute;
+	inset-inline-start: var(--wp--preset--spacing--40);
+	inset-block-start: -100%;
+	z-index: 100;
+	padding: 0.75rem 1.25rem;
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+	border-radius: var(--wp--custom--radius--pill);
+	text-decoration: none;
+}
+
+.dh-skip-link:focus {
+	inset-block-start: var(--wp--preset--spacing--40);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Type                                                             */
+/* ------------------------------------------------------------------ */
+
+/*
+ * theme.json cannot express font-stretch. The expanded axis is what turns
+ * Archivo from a neutral grotesque into the display voice, so it lives here.
+ */
+:where(h1, h2, h3, h4, h5, .dh-display) {
+	font-stretch: var(--wp--custom--display--stretch);
+	text-wrap: balance;
+}
+
+/* Arabic headings: Plex Sans Arabic has no width axis and needs more leading. */
+:where(h1, h2, h3, h4, h5, .dh-display):lang(ar),
+:lang(ar) :where(h1, h2, h3, h4, h5, .dh-display) {
+	font-stretch: normal;
+	letter-spacing: 0;
+	line-height: 1.25;
+}
+
+.dh-display {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 600;
+	letter-spacing: var(--wp--custom--display--tracking);
+	line-height: var(--wp--custom--display--leading);
+}
+
+/* Small caps label with a field-green dot, e.g. "SINCE 1979 · RIYADH". */
+.dh-eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6em;
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	line-height: 1;
+}
+
+.dh-eyebrow::before {
+	content: "";
+	inline-size: 0.5em;
+	block-size: 0.5em;
+	border-radius: 50%;
+	background: var(--wp--preset--color--field);
+}
+
+/* SKUs, pressure ratings, flow rates, branch codes. */
+.dh-mono {
+	font-family: var(--wp--preset--font-family--mono);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+}
+
+/* One word carrying a soft field-green pill behind it. */
+.dh-highlight {
+	--_r: var(--wp--custom--radius--md);
+	background-image: linear-gradient(
+		color-mix(in srgb, var(--wp--preset--color--field) 38%, var(--wp--preset--color--paper)),
+		color-mix(in srgb, var(--wp--preset--color--field) 38%, var(--wp--preset--color--paper))
+	);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: 0 0;
+	border-radius: var(--_r);
+	padding-inline: 0.18em;
+	margin-inline: -0.18em;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Surfaces                                                         */
+/* ------------------------------------------------------------------ */
+
+.dh-card {
+	--_r: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--white);
+	border-radius: var(--_r);
+	box-shadow: var(--wp--preset--shadow--card);
+}
+
+.dh-card--sand {
+	background: var(--wp--preset--color--sand);
+	box-shadow: none;
+}
+
+.dh-card--canopy {
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+	box-shadow: none;
+}
+
+.dh-card--flush {
+	box-shadow: none;
+}
+
+.dh-rule {
+	border: 0;
+	border-block-start: var(--wp--custom--rule);
+	margin: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Pills                                                            */
+/* ------------------------------------------------------------------ */
+
+.dh-pill {
+	--_r: var(--wp--custom--radius--pill);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	padding: 0.6em 1.15em;
+	border: 1px solid transparent;
+	border-radius: var(--_r);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1;
+	text-decoration: none;
+	color: var(--wp--preset--color--ink);
+	cursor: pointer;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-pill > svg {
+	inline-size: 1em;
+	block-size: 1em;
+	flex: none;
+}
+
+.dh-pill--solid {
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-pill--solid:hover,
+.dh-pill--solid:focus-visible {
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-pill--outline {
+	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
+}
+
+.dh-pill--outline:hover,
+.dh-pill--outline:focus-visible {
+	border-color: var(--wp--preset--color--ink);
+}
+
+/* Translucent tag sitting over photography. */
+.dh-pill--glass {
+	background: color-mix(in srgb, var(--wp--preset--color--white) 55%, transparent);
+	border-color: color-mix(in srgb, var(--wp--preset--color--white) 60%, transparent);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+.dh-pill--field {
+	background: color-mix(in srgb, var(--wp--preset--color--field) 35%, var(--wp--preset--color--paper));
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Notch                                                            */
+/* ------------------------------------------------------------------ */
+
+/*
+ * A label block "socketed" into the corner of a media card, with the card's
+ * edge curving around it. Markup:
+ *
+ *   <div class="dh-notch">
+ *     <img class="dh-notch__media" …>
+ *     <div class="dh-notch__tab" data-notch="top-start">…</div>
+ *   </div>
+ *
+ * The tab is painted in the surface colour behind the card (paper by default;
+ * set --dh-notch-bg on a sand section). Its two pseudo-elements draw the
+ * concave fillets where the tab's edges meet the card's outer edges. The
+ * circle origin (--_cx/--_cy) flips for RTL and for bottom-anchored tabs.
+ */
+.dh-notch {
+	position: relative;
+}
+
+.dh-notch__media {
+	display: block;
+	inline-size: 100%;
+	border-radius: var(--wp--custom--radius--lg);
+	object-fit: cover;
+}
+
+.dh-notch__tab {
+	--_r: var(--wp--custom--notch);
+	--_bg: var(--dh-notch-bg, var(--wp--preset--color--paper));
+	--_cx: 100%;
+	--_cy: 100%;
+	position: absolute;
+	z-index: 1;
+	inset-inline-start: 0;
+	inset-block-start: 0;
+	max-inline-size: min(60%, 28rem);
+	padding-block: 0 var(--wp--preset--spacing--40);
+	padding-inline: 0 var(--wp--preset--spacing--40);
+	background: var(--_bg);
+	border-end-end-radius: var(--_r);
+}
+
+.dh-notch__tab::before,
+.dh-notch__tab::after {
+	content: "";
+	position: absolute;
+	inline-size: var(--_r);
+	block-size: var(--_r);
+	background: radial-gradient(
+		circle at var(--_cx) var(--_cy),
+		transparent calc(var(--_r) - 0.5px),
+		var(--_bg) var(--_r)
+	);
+	pointer-events: none;
+}
+
+.dh-notch__tab::before {
+	inset-block-start: 0;
+	inset-inline-start: 100%;
+}
+
+.dh-notch__tab::after {
+	inset-block-start: 100%;
+	inset-inline-start: 0;
+}
+
+.dh-notch__tab[data-notch="bottom-start"] {
+	--_cy: 0%;
+	inset-block-start: auto;
+	inset-block-end: 0;
+	padding-block: var(--wp--preset--spacing--40) 0;
+	border-end-end-radius: 0;
+	border-start-end-radius: var(--_r);
+}
+
+.dh-notch__tab[data-notch="bottom-start"]::before {
+	inset-block-start: auto;
+	inset-block-end: 0;
+}
+
+.dh-notch__tab[data-notch="bottom-start"]::after {
+	inset-block-start: auto;
+	inset-block-end: 100%;
+}
+
+[dir="rtl"] .dh-notch__tab {
+	--_cx: 0%;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. Marquee                                                          */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Markup:
+ *   <div class="dh-marquee" data-direction="reverse">
+ *     <ul class="dh-marquee__track">
+ *       <li class="dh-marquee__item">Riyadh</li>
+ *       <li class="dh-marquee__item"><img class="dh-marquee__chip" …></li>
+ *     </ul>
+ *   </div>
+ *
+ * main.js clones the track's children once so the loop is seamless; each
+ * item carries its own trailing margin (not a track gap) so both halves
+ * measure identically and translate(-50%) lands exactly on the seam.
+ */
+.dh-marquee {
+	--dh-marquee-duration: 40s;
+	overflow: hidden;
+	padding-block: var(--wp--preset--spacing--30);
+	border-block: var(--wp--custom--rule);
+	mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+	-webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.dh-marquee__track {
+	display: flex;
+	inline-size: max-content;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	animation: dh-marquee var(--dh-marquee-duration) linear infinite;
+}
+
+.dh-marquee[data-direction="reverse"] .dh-marquee__track {
+	animation-direction: reverse;
+}
+
+.dh-marquee:hover .dh-marquee__track,
+.dh-marquee:focus-within .dh-marquee__track {
+	animation-play-state: paused;
+}
+
+.dh-marquee__item {
+	display: inline-flex;
+	align-items: center;
+	margin-inline-end: 2.5rem;
+	white-space: nowrap;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--xl);
+	font-weight: 500;
+	font-stretch: var(--wp--custom--display--stretch);
+	line-height: 1;
+}
+
+.dh-marquee__chip {
+	inline-size: 3.2em;
+	block-size: 1.5em;
+	border-radius: var(--wp--custom--radius--md);
+	object-fit: cover;
+}
+
+@keyframes dh-marquee {
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+[dir="rtl"] .dh-marquee__track {
+	animation-name: dh-marquee-rtl;
+}
+
+@keyframes dh-marquee-rtl {
+	to {
+		transform: translateX(50%);
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* 7. Motion                                                           */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Elements grow their own container from a seed, then fill it with content.
+ * Nothing slides in from off-screen, so layout never shifts.
+ *
+ *   data-reveal="dot"     circle → pill (buttons)
+ *   data-reveal="sliver"  thin bar → full width, from inline-start (thumbnails)
+ *   data-reveal="bar"     thin bar → full height, from the middle (stat cards)
+ *   data-reveal="seed"    small square → full size, anchored bottom-start (hero media)
+ *   data-reveal="rise"    12px lift + fade (generic)
+ *   data-reveal="wipe"    highlight sweeps in behind a word (.dh-highlight)
+ *
+ * main.js adds .js to <html> and .is-in when an element scrolls into view,
+ * and sets --i on children of [data-reveal-group] for stagger. Without JS the
+ * .js gate never matches, so everything renders in its final state.
+ */
+.js [data-reveal] {
+	--_r: var(--wp--custom--radius--lg);
+	--_d: var(--wp--custom--motion--base);
+	--_e: var(--wp--custom--motion--ease);
+	--_delay: calc(var(--i, 0) * var(--wp--custom--motion--stagger));
+	transition:
+		transform var(--_d) var(--_e) var(--_delay),
+		opacity var(--_d) var(--_e) var(--_delay),
+		clip-path var(--_d) var(--_e) var(--_delay),
+		background-size var(--_d) var(--_e) var(--_delay);
+}
+
+.js [data-reveal="rise"] {
+	transform: translateY(12px);
+	opacity: 0;
+}
+
+.js [data-reveal="seed"] {
+	transform: scale(0.12);
+	transform-origin: 0% 100%;
+	opacity: 0;
+}
+
+.js [dir="rtl"] [data-reveal="seed"],
+[dir="rtl"].js [data-reveal="seed"] {
+	transform-origin: 100% 100%;
+}
+
+.js [data-reveal="dot"] {
+	--_r: var(--wp--custom--radius--pill);
+	clip-path: inset(0 calc(100% - 2.4em) 0 0 round var(--_r));
+}
+
+.js [data-reveal="sliver"] {
+	clip-path: inset(0 100% 0 0 round var(--_r));
+}
+
+[dir="rtl"].js [data-reveal="dot"] {
+	clip-path: inset(0 0 0 calc(100% - 2.4em) round var(--_r));
+}
+
+[dir="rtl"].js [data-reveal="sliver"] {
+	clip-path: inset(0 0 0 100% round var(--_r));
+}
+
+.js [data-reveal="bar"] {
+	clip-path: inset(50% 0 50% 0 round var(--_r));
+}
+
+.js [data-reveal="wipe"] {
+	background-size: 0% 100%;
+}
+
+[dir="rtl"].js [data-reveal="wipe"] {
+	background-position: 100% 0;
+}
+
+.js [data-reveal].is-in {
+	transform: none;
+	opacity: 1;
+	clip-path: inset(0 0 0 0 round var(--_r));
+	background-size: 100% 100%;
+}
+
+/* Content inside a revealing container fades in after the container lands. */
+.js [data-reveal] [data-reveal-content] {
+	opacity: 0;
+	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease)
+		calc(var(--_delay) + var(--_d));
+}
+
+.js [data-reveal].is-in [data-reveal-content] {
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js [data-reveal],
+	.js [data-reveal] [data-reveal-content] {
+		transition: none;
+		transform: none;
+		opacity: 1;
+		clip-path: none;
+		background-size: 100% 100%;
+	}
+
+	.dh-marquee {
+		overflow-x: auto;
+		mask-image: none;
+		-webkit-mask-image: none;
+	}
+
+	.dh-marquee__track {
+		animation: none;
+	}
+
+	.dh-pill {
+		transition: none;
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* 8. Blocks                                                           */
+/* ------------------------------------------------------------------ */
+
+/* The site title is the only string on the page allowed to be unbreakable. */
+.wp-block-site-title {
+	overflow-wrap: anywhere;
+}
+
+.wp-block-button__link {
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+/*
+ * WooCommerce legacy catalogue grid: its percentage widths plus 3.8% margins
+ * overflow the viewport at two columns on small screens. Replace the float
+ * layout with a grid that can never exceed 100%. Selector matches
+ * WooCommerce's own so it wins on order, not specificity tricks.
+ */
+.woocommerce ul.products[class*="columns-"],
+.woocommerce-page ul.products[class*="columns-"] {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+	gap: var(--wp--preset--spacing--50) var(--wp--preset--spacing--40);
+	margin: 0 0 var(--wp--preset--spacing--60);
+}
+
+.woocommerce ul.products[class*="columns-"] li.product,
+.woocommerce-page ul.products[class*="columns-"] li.product {
+	float: none;
+	width: auto;
+	margin: 0;
+}
+
+.woocommerce ul.products[class*="columns-"]::before,
+.woocommerce ul.products[class*="columns-"]::after,
+.woocommerce-page ul.products[class*="columns-"]::before,
+.woocommerce-page ul.products[class*="columns-"]::after {
+	display: none;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 500;
+	line-height: 1.35;
+}
+
+.woocommerce ul.products li.product .price,
+.woocommerce div.product p.price {
+	font-family: var(--wp--preset--font-family--mono);
+	font-variant-numeric: tabular-nums;
+	color: var(--wp--preset--color--ink);
+}
+
+.woocommerce ul.products li.product a img {
+	border-radius: var(--wp--custom--radius--md);
+	margin-block-end: var(--wp--preset--spacing--30);
+}
+
+/* WooCommerce buttons adopt the pill so the catalogue matches the rest of the site. */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt {
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+	border-radius: var(--wp--custom--radius--pill);
+	font-family: var(--wp--preset--font-family--body);
+	font-weight: 500;
+	padding: 0.8em 1.4em;
+}
+
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
+.woocommerce input.button.alt:hover {
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+}
+
+/* Sorting row: stack on narrow screens instead of floating past the edge. */
+@media (max-width: 40em) {
+	.woocommerce .woocommerce-result-count,
+	.woocommerce .woocommerce-ordering {
+		float: none;
+		margin-block-end: var(--wp--preset--spacing--30);
+	}
+
+	.woocommerce .woocommerce-ordering select {
+		max-inline-size: 100%;
+	}
+}
