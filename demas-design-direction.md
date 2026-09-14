@@ -1,5 +1,12 @@
 # Demas Sandbox — Site-Wide Design Direction
 
+> **Superseded — 2026-09-14.** The visual system below (navy/gold, serif headlines, Daylight /
+> Titan Intake as references) is no longer the direction. The target is the reference recording
+> analysed in `demas-motion-reference.md`, re-skinned in Demas's own register; tokens now live in
+> `theme.json`. The *pattern* decisions here — sticky condensing header, animated stat counters,
+> trust-strip hover detail, no testimonials without real ones, the "smaller scale than the
+> references" principle — still stand and carry into the new direction. Full rewrite pending.
+
 **Scope:** visual/motion design system for the whole site, applied first to the homepage. No code — this is direction for Claude Code to implement, same role as the homepage content brief.
 
 **Reference sites evaluated:** godaylight.com, titanintake.com, farmminerals.com (farmminerals.com ruled out as a reference — too thin/minimal for a company needing to convey ~700 SKUs and decades of engineering depth).

@@ -1,5 +1,13 @@
 # Demas Group — Homepage Content & Layout Brief
 
+> **Partially superseded — 2026-09-14.** The *content* here is still the plan: section order,
+> the buyer-question sequence, the five categories with counts, the four-step process, the
+> certification list, and the CTA copy. The *visual* notes are not: navy/gold, serif headlines,
+> the 4-frame crossfade hero, and "premium infrastructure, not garden lifestyle" are replaced by
+> the direction in `demas-motion-reference.md` and the tokens in `theme.json`. Two facts changed:
+> the experience figure is **46 years** (not 45), and the hero's centrepiece is the fifteen-branch
+> index with a branch-routed contact form rather than a photo sequence.
+
 **Prepared for:** Custom WordPress/WooCommerce theme (hand-built, native blocks)
 **Scope:** Homepage only. No code — content, copy, and composition direction.
 **Audience:** Commercial and institutional buyers in Saudi Arabia (municipalities, contractors, developers, facilities operators). Not residential.

@@ -7,8 +7,9 @@ or files are ever touched from work on this theme. See the repo `README.md` for 
 summary and a pointer to the research doc behind this direction.
 
 Deploys via Git auto-deploy: pushing to `main` on this repo lands directly in
-`wp-content/themes/demas-theme` on the sandbox site. There is no build step — files in this repo
-are the files WordPress reads.
+`wp-content/themes/demas-theme` on the sandbox site. There is no server-side build step — the
+files in this repo are the files WordPress reads, which is why compiled block output is
+committed (see ADR-001 under Working agreement).
 
 ## Version targets
 
@@ -19,9 +20,19 @@ are the files WordPress reads.
 
 ## Folder purposes
 
-- `assets/css/`, `assets/js/`, `assets/images/` — hand-written front-end assets, enqueued via
-  `inc/enqueue.php`. No build tooling (webpack/vite/etc.) — if one becomes necessary, that's a
-  deliberate architectural decision to make explicitly, not to slip in.
+- `assets/css/`, `assets/js/` — hand-written front-end assets, enqueued via `inc/enqueue.php`.
+  No build tooling for these — they are plain files. `style.css` holds the shape grammar
+  (cards, pills, the concave notch), marquee, and reveal motion; `main.js` is the small
+  dependency-free script that drives reveals and the marquee loop.
+- `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
+  Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
+  third-party font CDN. Fetched from the Google Fonts API on 2026-09-14; the fetch script
+  is not kept, the files are.
+- `assets/images/` — **not yet created.** Reserved for hand-placed theme imagery (logo,
+  icons); photography for content goes through the Media Library, not this folder.
+- `tools/` — one-off operational scripts run by a human on the host, never by the theme at
+  runtime (currently: `create-product-categories.sh`, the WP-CLI script that builds the
+  locked category tree). Nothing here is loaded by `functions.php`.
 - `inc/` — PHP includes, one concern per file, all required from `functions.php`:
   - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.)
   - `enqueue.php` — front-end script/style registration only
@@ -68,25 +79,39 @@ are the files WordPress reads.
   **Documented exception:** `hostinger-reach` (a Hostinger subscription/marketing block plugin) is
   active on the sandbox and is intentional, confirmed 2026-07-28 — not a stray default install.
   Don't build anything that depends on it working, but no need to flag or remove it.
-- **No copying live-site content, credentials, or database rows into this repo or the sandbox
-  site.** Dummy/placeholder content only — see the product-seeding step in the scaffold brief for
-  the naming convention used for fake catalog data.
+- **No copying live-site credentials, database rows, or *design* (Kadence markup, theme options,
+  CSS, its palette or typefaces) into this repo or the sandbox.** The live site's visual design is
+  being replaced wholesale and nothing from it carries over.
+  **Content is different — reuse is authorized (2026-09-14):** company copy, the category tree,
+  service descriptions, and branch cities with staff names may be used as-is. Staff **email
+  addresses never appear in the repo, in markup, or in JavaScript** — the branch→address map
+  lives server-side outside version control, and the contact form posts a branch ID, not an
+  address. The 14 "Sandbox …" products remain dummy data until real catalogue data lands.
 
 ## Design & content reference docs
 
 These live in the repo root, are not code, and should be treated as **standing reference
 material for every session** — not one-time `/spec` input to read once and discard. Consult
-them for any front-end, visual, or content work on this theme:
+them for any front-end, visual, or content work on this theme.
 
-- `demas-homepage-brief.md` — locked homepage content/copy/section brief (source: Fable 5,
-  confirmed facts locked in).
+**Direction change, 2026-09-14.** The visual direction is now the reference recording analysed
+in `demas-motion-reference.md` (card composition, concave notch, grow-from-seed motion,
+marquee) re-skinned in Demas's own register — *not* the navy/gold/serif system the older docs
+describe. Until `demas-design-direction.md` is rewritten, **`theme.json` is the single source
+of truth for tokens** (palette: paper / sand / field / canopy / ink / water; type: Archivo
+display, IBM Plex Sans + Plex Sans Arabic body, Plex Mono data; radii, notch, motion under
+`settings.custom`). Locked facts: 46 years of operation; 15 branches with named staff; a
+branch-routed contact form replaces published email addresses.
+
+- `demas-homepage-brief.md` — homepage content/copy/section brief. **Content and section
+  order remain valid; its visual notes (navy/gold, serif, hero treatment) are superseded** —
+  see the banner at the top of the file.
 - `demas-mega-menu-content-spec.md` — locked mega-menu category/subcategory content, sourced
   directly from the live demas-group.com site. Category/subcategory names, structure, and depth
   (two levels) here are authoritative — don't invent or alter them.
-- `demas-design-direction.md` — site-wide visual/motion design system (scroll reveals, stat
-  counters, sticky header, trust-strip interaction, photo-overlay captions, and which decorative
-  patterns are in/out of scope). Applies to the homepage first, then should carry over to
-  product/archive templates for visual consistency.
+- `demas-design-direction.md` — **superseded 2026-09-14** (banner at top). Its pattern
+  decisions (sticky condensing header, stat counters, trust-strip hover, no testimonials
+  without real ones) still hold; its visual system does not. Rewrite pending.
 - `demas-motion-reference.md` — motion mechanics (primitives, durations, easing) analysed from the
   reference recording in `references/`, with an adopt/adapt/skip list. Supplies the "how" behind the
   reveal/counter/sticky-header patterns `demas-design-direction.md` locks in; not a design to copy.
