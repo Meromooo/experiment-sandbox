@@ -737,7 +737,7 @@ svg {
 
 .dh-section__title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
-	font-size: var(--wp--preset--font-size--xxxl);
+	font-size: var(--wp--preset--font-size--xxl);
 }
 
 .dh-section__lead {
@@ -758,12 +758,14 @@ svg {
 }
 
 .dh-hero__head {
-	max-inline-size: 48rem;
+	max-inline-size: 60rem;
 	margin-block-end: var(--wp--preset--spacing--60);
 }
 
+/* One size below the display max: "Water, engineered" must hold on one line. */
 .dh-hero__title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	font-size: var(--wp--preset--font-size--xxxl);
 }
 
 .dh-hero__lead {
@@ -1035,7 +1037,7 @@ svg {
 .dh-band__title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
 	color: var(--wp--preset--color--paper);
-	font-size: var(--wp--preset--font-size--xxxl);
+	font-size: var(--wp--preset--font-size--xxl);
 }
 
 .dh-band__lead {
