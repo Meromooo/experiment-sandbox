@@ -45,10 +45,9 @@ committed (see ADR-001 under Working agreement).
   registered block patterns (PHP files with pattern header comments), for reusable content blocks
   editors can insert — this is where reusable marketing/content blocks belong, not hardcoded into
   templates.
-- `parts/` — template parts referenced by `templates/*.html` (header, footer). Exists today, but
-  is currently thin/unconnected (mega-menu block not yet placed in `parts/header.html`). Keep
-  these thin once wired up; push real content into patterns or template-parts, not directly into
-  `parts/header.html`.
+- `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
+  title, the mega-menu block and the navigation block; `footer.html` is still a stub. Keep these
+  thin — push real content into patterns, not directly into the part.
 - `templates/` — top-level block templates (`index.html` is the only one WordPress strictly
   requires to activate; `single-product.html` and `archive-product.html` are WooCommerce-specific).
   `front-page.html` does not exist yet — the live site currently falls back to the default blog
@@ -108,7 +107,11 @@ branch-routed contact form replaces published email addresses.
   see the banner at the top of the file.
 - `demas-mega-menu-content-spec.md` — locked mega-menu category/subcategory content, sourced
   directly from the live demas-group.com site. Category/subcategory names, structure, and depth
-  (two levels) here are authoritative — don't invent or alter them.
+  (two levels) here are authoritative — don't invent or alter them. **Implemented 2026-09-15**:
+  column and item order live in `src/mega-menu/render.php` (filterable via
+  `demas_theme_mega_menu_structure`), the Non-Woven outbound link via
+  `demas_theme_mega_menu_external_links`, and one schematic icon per subcategory slug in
+  `demas_theme_get_category_icon()`.
 - `demas-design-direction.md` — **superseded 2026-09-14** (banner at top). Its pattern
   decisions (sticky condensing header, stat counters, trust-strip hover, no testimonials
   without real ones) still hold; its visual system does not. Rewrite pending.
