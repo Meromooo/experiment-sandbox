@@ -33,6 +33,11 @@ committed (see ADR-001 under Working agreement).
 - `tools/` — one-off operational scripts run by a human on the host, never by the theme at
   runtime (currently: `create-product-categories.sh`, the WP-CLI script that builds the
   locked category tree). Nothing here is loaded by `functions.php`.
+- `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
+  rejected, what it costs. See `docs/adr/README.md` for the index. **ADR-002** records the
+  platform/theme decision (WordPress + custom block theme over a page builder or headless) and
+  lists five corrections the current build still needs — read it before proposing a change of
+  stack, hosting, or editing model.
 - `inc/` — PHP includes, one concern per file, all required from `functions.php`:
   - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.)
   - `enqueue.php` — front-end script/style registration only
