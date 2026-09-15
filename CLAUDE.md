@@ -36,22 +36,24 @@ committed (see ADR-001 under Working agreement).
 - `inc/` — PHP includes, one concern per file, all required from `functions.php`:
   - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.)
   - `enqueue.php` — front-end script/style registration only
-  - `navigation.php` — nav menu registration
+  - `navigation.php` — nav menu registration and the mega-menu icon set
+  - `patterns.php` — block pattern category registration only
   - `woocommerce.php` — WooCommerce compatibility declarations and any theme-side WC integration
   - `catalog-filters.php` — product catalog filtering behavior (category/attribute sidebar) —
     intended to eventually replace the live site's custom `wp:html` sidebar filter script
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
-- `patterns/` — **not yet created** (as of 2026-07-28 audit — build in Phase 6). Once it exists:
-  registered block patterns (PHP files with pattern header comments), for reusable content blocks
-  editors can insert — this is where reusable marketing/content blocks belong, not hardcoded into
-  templates.
+- `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
+  the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
+  live — never hardcoded into templates. Current set (homepage, 2026-09-15): `hero`,
+  `credentials`, `numbers`, `categories`, `process`, `closing-cta`. Section bodies are `wp:html`
+  blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block and the navigation block; `footer.html` is still a stub. Keep these
   thin — push real content into patterns, not directly into the part.
 - `templates/` — top-level block templates (`index.html` is the only one WordPress strictly
   requires to activate; `single-product.html` and `archive-product.html` are WooCommerce-specific).
-  `front-page.html` does not exist yet — the live site currently falls back to the default blog
-  index (Phase 6).
+  `front-page.html` composes the homepage from the six `demas-theme/*` patterns and is used for
+  the front page regardless of the Reading setting.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for
   pieces that are shared across templates but aren't full parts.

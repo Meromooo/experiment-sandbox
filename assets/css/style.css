@@ -702,3 +702,670 @@ svg {
 		max-inline-size: 100%;
 	}
 }
+
+/* ------------------------------------------------------------------ */
+/* 9. Homepage patterns                                                */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Section rhythm. Each pattern is a .dh-section; the constrained group gives
+ * it the content column, this gives it vertical breathing room. --tight is
+ * for the credentials strip, which sits close under the hero.
+ */
+.dh-section {
+	padding-block: var(--wp--preset--spacing--70);
+}
+
+.dh-section--tight {
+	padding-block: var(--wp--preset--spacing--50);
+}
+
+.dh-section__head {
+	max-inline-size: 42rem;
+	margin-block-end: var(--wp--preset--spacing--60);
+}
+
+.dh-section__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
+	font-size: var(--wp--preset--font-size--3xl);
+}
+
+.dh-section__lead {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+}
+
+.dh-eyebrow--on-dark {
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 80%, transparent);
+}
+
+/* Hero ---------------------------------------------------------------- */
+
+.dh-hero {
+	padding-block-start: var(--wp--preset--spacing--60);
+}
+
+.dh-hero__head {
+	max-inline-size: 48rem;
+	margin-block-end: var(--wp--preset--spacing--60);
+}
+
+.dh-hero__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+}
+
+.dh-hero__lead {
+	margin: 0 0 var(--wp--preset--spacing--50);
+	max-inline-size: 38rem;
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+}
+
+.dh-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--20);
+}
+
+.dh-hero__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+	gap: var(--wp--preset--spacing--50);
+	align-items: stretch;
+}
+
+/* Branch Desk */
+
+.dh-desk {
+	padding: var(--wp--preset--spacing--50);
+}
+
+.dh-desk__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	font-size: var(--wp--preset--font-size--xl);
+}
+
+.dh-desk__list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+	gap: 0.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-desk__city {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
+	inline-size: 100%;
+	margin: 0;
+	padding: 0.5rem 0.65rem;
+	border: 1px solid transparent;
+	border-radius: var(--wp--custom--radius--md);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1.2;
+	text-align: start;
+	cursor: pointer;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-desk__city:hover {
+	background: color-mix(in srgb, var(--wp--preset--color--white) 55%, transparent);
+}
+
+.dh-desk__city[aria-pressed="true"] {
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-desk__code {
+	font-size: var(--wp--preset--font-size--xs);
+	opacity: 0.6;
+}
+
+.dh-desk__detail {
+	margin-block-start: var(--wp--preset--spacing--40);
+	padding-block-start: var(--wp--preset--spacing--40);
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-desk__where {
+	margin: 0 0 var(--wp--preset--spacing--10);
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-desk__name {
+	margin: 0 0 var(--wp--preset--spacing--40);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--2xl);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: -0.02em;
+	line-height: 1.05;
+}
+
+/* Irrigation schematic card */
+
+.dh-schem {
+	position: relative;
+	min-block-size: 24rem;
+	padding: var(--wp--preset--spacing--40);
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 82%, transparent);
+	overflow: visible;
+}
+
+.dh-schem__svg {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	max-block-size: 30rem;
+}
+
+.dh-schem__wire {
+	opacity: 0.45;
+}
+
+.dh-schem__emit {
+	color: var(--wp--preset--color--field);
+}
+
+/* The drawing draws itself: each line runs its dash from 1 to 0 once the card
+   has landed, in the order --i lists them (controller, pump, filter, main…). */
+.js .dh-schem .dh-schem__line {
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	transition: stroke-dashoffset var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
+		calc(var(--wp--custom--motion--base) + var(--i, 0) * 120ms);
+}
+
+.js .dh-schem.is-in .dh-schem__line {
+	stroke-dashoffset: 0;
+}
+
+.js .dh-schem .dh-schem__emit {
+	opacity: 0;
+	transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+		calc(var(--wp--custom--motion--base) + 7 * 120ms);
+}
+
+.js .dh-schem.is-in .dh-schem__emit {
+	opacity: 1;
+}
+
+.dh-schem .dh-notch__tab {
+	max-inline-size: min(70%, 20rem);
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-schem__tab-title {
+	margin: 0 0 0.15rem;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: -0.01em;
+	line-height: 1.1;
+}
+
+.dh-schem__tab-copy {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+/* City marquee under the hero: a field-green dot after each item. */
+.dh-marquee__item::after {
+	content: "";
+	inline-size: 0.35em;
+	block-size: 0.35em;
+	margin-inline-start: 2.5rem;
+	border-radius: 50%;
+	background: var(--wp--preset--color--field);
+}
+
+.dh-marquee + .dh-marquee {
+	border-block-start: 0;
+}
+
+/* Credentials -------------------------------------------------------- */
+
+.dh-creds {
+	text-align: center;
+}
+
+.dh-creds__eyebrow {
+	margin: 0 0 var(--wp--preset--spacing--40);
+}
+
+.dh-creds__list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--wp--preset--spacing--20);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-creds__item {
+	--_r: var(--wp--custom--radius--pill);
+	position: relative;
+}
+
+.dh-creds__mark {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.6em 1.1em;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-creds__item:hover .dh-creds__mark,
+.dh-creds__mark:focus-visible {
+	border-color: var(--wp--preset--color--ink);
+}
+
+/* One line of context on hover or focus — a tooltip, so the row never reflows. */
+.dh-creds__detail {
+	position: absolute;
+	inset-block-start: calc(100% + 0.4rem);
+	inset-inline-start: 50%;
+	z-index: 5;
+	padding: 0.45em 0.8em;
+	border-radius: var(--wp--custom--radius--sm);
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+	font-size: var(--wp--preset--font-size--xs);
+	line-height: 1.3;
+	white-space: nowrap;
+	transform: translate(-50%, -4px);
+	opacity: 0;
+	pointer-events: none;
+	transition:
+		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-creds__item:hover .dh-creds__detail,
+.dh-creds__item:focus-within .dh-creds__detail {
+	opacity: 1;
+	transform: translate(-50%, 0);
+}
+
+/* Bands (numbers, closing CTA) -------------------------------------- */
+
+.dh-band {
+	--_r: var(--wp--custom--radius--lg);
+	padding: var(--wp--preset--spacing--70);
+}
+
+.dh-band__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+	gap: var(--wp--preset--spacing--70);
+	align-items: start;
+}
+
+.dh-band__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
+	color: var(--wp--preset--color--paper);
+	font-size: var(--wp--preset--font-size--3xl);
+}
+
+.dh-band__lead {
+	margin: 0;
+	max-inline-size: 36rem;
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 82%, transparent);
+}
+
+.dh-stats {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+	margin: 0;
+}
+
+.dh-stat {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--20);
+	padding-block-start: var(--wp--preset--spacing--30);
+	border-block-start: 1px solid color-mix(in srgb, var(--wp--preset--color--paper) 22%, transparent);
+}
+
+.dh-stat__value {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--3xl);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.02em;
+	line-height: 1;
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-stat__prefix {
+	color: var(--wp--preset--color--field);
+}
+
+.dh-stat__label {
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.4;
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 70%, transparent);
+}
+
+/* Category gateway --------------------------------------------------- */
+
+.dh-cats__grid {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: var(--wp--preset--spacing--40);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-cat {
+	--_r: var(--wp--custom--radius--lg);
+	position: relative;
+	grid-column: span 2;
+	min-block-size: 15rem;
+	transition:
+		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-cat--wide {
+	grid-column: span 3;
+}
+
+.dh-cat:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--wp--preset--shadow--card);
+}
+
+.dh-cat__link {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	gap: var(--wp--preset--spacing--30);
+	block-size: 100%;
+	padding: var(--wp--preset--spacing--50);
+	padding-block-start: var(--wp--preset--spacing--70);
+	color: var(--wp--preset--color--ink);
+	text-decoration: none;
+	border-radius: inherit;
+}
+
+.dh-cat__link:focus-visible {
+	outline-offset: -3px;
+}
+
+.dh-cat__icon {
+	display: block;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-cat__icon svg {
+	inline-size: 3rem;
+	block-size: 3rem;
+}
+
+.dh-cat__body {
+	display: block;
+}
+
+.dh-cat__name {
+	display: block;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--xl);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: -0.01em;
+	line-height: 1.1;
+}
+
+.dh-cat__desc {
+	display: block;
+	margin-block-start: var(--wp--preset--spacing--20);
+	max-inline-size: 24rem;
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.45;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 68%, transparent);
+}
+
+.dh-cat__arrow {
+	position: absolute;
+	inset-block-end: var(--wp--preset--spacing--50);
+	inset-inline-end: var(--wp--preset--spacing--50);
+	color: var(--wp--preset--color--canopy);
+	transition: transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-cat:hover .dh-cat__arrow {
+	transform: translateX(3px);
+}
+
+[dir="rtl"] .dh-cat__arrow svg {
+	transform: scaleX(-1);
+}
+
+[dir="rtl"] .dh-cat:hover .dh-cat__arrow {
+	transform: translateX(-3px);
+}
+
+/* The count sits in the card's corner, socketed with the notch. */
+.dh-cat__count {
+	pointer-events: none;
+	padding-block-end: var(--wp--preset--spacing--30);
+	padding-inline-end: var(--wp--preset--spacing--30);
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+	line-height: 1;
+}
+
+.dh-cat__count .dh-mono {
+	font-size: var(--wp--preset--font-size--lg);
+	font-weight: 500;
+	color: var(--wp--preset--color--ink);
+}
+
+/* Process ----------------------------------------------------------- */
+
+.dh-process__steps {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--wp--preset--spacing--50);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: none;
+}
+
+/* The pipeline: one field-green line running through all four numerals. */
+.dh-process__steps::before {
+	content: "";
+	position: absolute;
+	inset-inline: 1.25rem;
+	inset-block-start: 1.25rem;
+	border-block-start: 2px solid var(--wp--preset--color--field);
+	pointer-events: none;
+}
+
+.dh-process__step {
+	position: relative;
+	margin: 0;
+}
+
+.dh-process__num {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: 2.5rem;
+	block-size: 2.5rem;
+	border: 2px solid var(--wp--preset--color--field);
+	border-radius: 50%;
+	background: var(--wp--preset--color--paper);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-process__title {
+	margin-block: var(--wp--preset--spacing--40) var(--wp--preset--spacing--20);
+	font-size: var(--wp--preset--font-size--xl);
+}
+
+.dh-process__copy {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+}
+
+.dh-process__close {
+	margin: var(--wp--preset--spacing--60) 0 0;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-weight: 500;
+	font-stretch: var(--wp--custom--display--stretch);
+}
+
+/* Closing CTA -------------------------------------------------------- */
+
+.dh-cta__inner {
+	max-inline-size: 44rem;
+}
+
+.dh-cta__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--20);
+	margin-block: var(--wp--preset--spacing--50) var(--wp--preset--spacing--50);
+}
+
+.dh-cta__contact {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 70%, transparent);
+}
+
+.dh-pill--paper {
+	background: var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-pill--paper:hover,
+.dh-pill--paper:focus-visible {
+	background: var(--wp--preset--color--white);
+}
+
+.dh-pill--outline-paper {
+	border-color: color-mix(in srgb, var(--wp--preset--color--paper) 40%, transparent);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-pill--outline-paper:hover,
+.dh-pill--outline-paper:focus-visible {
+	border-color: var(--wp--preset--color--paper);
+}
+
+/* Small screens ------------------------------------------------------ */
+
+@media (max-width: 56rem) {
+	.dh-section {
+		padding-block: var(--wp--preset--spacing--60);
+	}
+
+	.dh-hero__grid,
+	.dh-band__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.dh-band {
+		padding: var(--wp--preset--spacing--50);
+	}
+
+	.dh-schem {
+		min-block-size: 0;
+		aspect-ratio: 4 / 3;
+	}
+
+	.dh-cats__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.dh-cat,
+	.dh-cat--wide {
+		grid-column: auto;
+		min-block-size: 12rem;
+	}
+
+	.dh-process__steps {
+		grid-template-columns: 1fr;
+		padding-inline-start: var(--wp--preset--spacing--50);
+	}
+
+	/* Pipeline runs vertically down the left on small screens. */
+	.dh-process__steps::before {
+		inset-inline: auto;
+		inset-inline-start: 1.25rem;
+		inset-block: 1.25rem;
+		border-block-start: 0;
+		border-inline-start: 2px solid var(--wp--preset--color--field);
+	}
+
+	.dh-process__num {
+		position: absolute;
+		inset-inline-start: calc(-1 * var(--wp--preset--spacing--50));
+		inset-block-start: 0;
+	}
+
+	.dh-process__title {
+		margin-block-start: 0;
+	}
+}
+
+@media (max-width: 40em) {
+	.dh-stats {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js .dh-schem .dh-schem__line,
+	.js .dh-schem .dh-schem__emit {
+		transition: none;
+		stroke-dashoffset: 0;
+		opacity: 1;
+	}
+
+	.dh-cat,
+	.dh-cat__arrow,
+	.dh-creds__detail,
+	.dh-desk__city {
+		transition: none;
+	}
+}
