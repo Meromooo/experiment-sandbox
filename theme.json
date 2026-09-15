@@ -272,7 +272,7 @@
 					}
 				},
 				{
-					"slug": "2xl",
+					"slug": "xxl",
 					"name": "2XL",
 					"size": "2.5rem",
 					"fluid": {
@@ -281,7 +281,7 @@
 					}
 				},
 				{
-					"slug": "3xl",
+					"slug": "xxxl",
 					"name": "3XL",
 					"size": "3.5rem",
 					"fluid": {
@@ -290,7 +290,7 @@
 					}
 				},
 				{
-					"slug": "4xl",
+					"slug": "display",
 					"name": "4XL",
 					"size": "5rem",
 					"fluid": {
@@ -419,18 +419,18 @@
 			},
 			"h1": {
 				"typography": {
-					"fontSize": "var(--wp--preset--font-size--4xl)",
+					"fontSize": "var(--wp--preset--font-size--display)",
 					"lineHeight": "0.98"
 				}
 			},
 			"h2": {
 				"typography": {
-					"fontSize": "var(--wp--preset--font-size--3xl)"
+					"fontSize": "var(--wp--preset--font-size--xxxl)"
 				}
 			},
 			"h3": {
 				"typography": {
-					"fontSize": "var(--wp--preset--font-size--2xl)"
+					"fontSize": "var(--wp--preset--font-size--xxl)"
 				}
 			},
 			"h4": {

@@ -452,15 +452,20 @@ svg {
 	opacity: 0;
 }
 
+/*
+ * Origin is the top-start corner, not the bottom: the observer measures the
+ * transformed box, and a 12% seed anchored at the bottom of a tall card sits
+ * below the fold and never intersects. Anchored at the top it is on screen
+ * as soon as the card's top edge is.
+ */
 .js [data-reveal="seed"] {
 	transform: scale(0.12);
-	transform-origin: 0% 100%;
+	transform-origin: 0% 0%;
 	opacity: 0;
 }
 
-.js [dir="rtl"] [data-reveal="seed"],
 [dir="rtl"].js [data-reveal="seed"] {
-	transform-origin: 100% 100%;
+	transform-origin: 100% 0%;
 }
 
 .js [data-reveal="dot"] {
@@ -727,7 +732,7 @@ svg {
 
 .dh-section__title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
-	font-size: var(--wp--preset--font-size--3xl);
+	font-size: var(--wp--preset--font-size--xxxl);
 }
 
 .dh-section__lead {
@@ -848,7 +853,7 @@ svg {
 .dh-desk__name {
 	margin: 0 0 var(--wp--preset--spacing--40);
 	font-family: var(--wp--preset--font-family--display);
-	font-size: var(--wp--preset--font-size--2xl);
+	font-size: var(--wp--preset--font-size--xxl);
 	font-weight: 600;
 	font-stretch: var(--wp--custom--display--stretch);
 	letter-spacing: -0.02em;
@@ -904,7 +909,7 @@ svg {
 }
 
 .dh-schem .dh-notch__tab {
-	max-inline-size: min(70%, 20rem);
+	max-inline-size: min(60%, 18rem);
 	color: var(--wp--preset--color--ink);
 }
 
@@ -1025,7 +1030,7 @@ svg {
 .dh-band__title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
 	color: var(--wp--preset--color--paper);
-	font-size: var(--wp--preset--font-size--3xl);
+	font-size: var(--wp--preset--font-size--xxxl);
 }
 
 .dh-band__lead {
@@ -1054,7 +1059,7 @@ svg {
 .dh-stat__value {
 	margin: 0;
 	font-family: var(--wp--preset--font-family--display);
-	font-size: var(--wp--preset--font-size--3xl);
+	font-size: var(--wp--preset--font-size--xxxl);
 	font-weight: 600;
 	font-stretch: var(--wp--custom--display--stretch);
 	font-variant-numeric: tabular-nums;
