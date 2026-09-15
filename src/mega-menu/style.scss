@@ -111,9 +111,16 @@
 	transition-delay: calc(var(--wp--custom--motion--fast) + var(--i, 0) * var(--wp--custom--motion--stagger));
 }
 
-/* Column heading, with the live menu's underline divider. */
+/*
+ * Column heading, with the live menu's underline divider.
+ *
+ * Reserves two lines even when the label needs one, so the dividers form a
+ * single horizontal line across all five columns instead of stepping up and
+ * down with "Irrigation Products" and "Industrial Tool Services".
+ */
 .dh-mega-menu__heading {
 	display: block;
+	min-block-size: 2.4em; /* 2 lines at the 1.2 line-height below. */
 	padding-block-end: var(--wp--preset--spacing--30);
 	border-block-end: var(--wp--custom--rule);
 	color: var(--wp--preset--color--ink);

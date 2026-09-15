@@ -576,8 +576,31 @@ svg {
 }
 
 /*
- * Below the mega menu's breakpoint the header stacks, so the menu's full-width
- * in-flow panel has room instead of overhanging the viewport.
+ * Above the mega menu's breakpoint the panel spans the header bar rather than
+ * centring on its trigger, so its edges line up with the page's content column
+ * instead of sitting at an arbitrary offset. Making the bar the containing
+ * block is enough; the block keeps its own relative positioning for use
+ * outside the header.
+ */
+@media (min-width: 56.0625rem) {
+	.dh-header__bar {
+		position: relative;
+	}
+
+	.dh-header .dh-mega-menu {
+		position: static;
+	}
+
+	.dh-header .dh-mega-menu__panel {
+		inset-inline: 0;
+		inline-size: auto;
+		transform: none;
+	}
+}
+
+/*
+ * Below that breakpoint the header stacks, so the menu's full-width in-flow
+ * panel has room instead of overhanging the viewport.
  */
 @media (max-width: 56rem) {
 	.dh-header__bar,
