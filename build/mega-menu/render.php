@@ -93,12 +93,13 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 <nav
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
 	data-wp-interactive="demas-theme/mega-menu"
-	<?php echo wp_interactivity_data_wp_context( array( 'isOpen' => false ) ); ?>
+	<?php echo wp_interactivity_data_wp_context( array( 'isOpen' => false, 'isPinned' => false ) ); ?>
 	data-wp-class--is-open="context.isOpen"
 	data-wp-on--keydown="actions.onKeydown"
 	data-wp-on--focusout="actions.onFocusOut"
 	data-wp-on--mouseenter="actions.openOnHover"
 	data-wp-on--mouseleave="actions.closeOnHover"
+	data-wp-on-document--click="actions.onDocumentClick"
 	aria-label="<?php esc_attr_e( 'Product categories', 'demas-theme' ); ?>"
 >
 	<button
