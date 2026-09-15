@@ -1,6 +1,6 @@
 <?php
 /**
- * Nav menu registration.
+ * Nav menu registration and the mega-menu's category icon set.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,20 +23,119 @@ add_action( 'init', function () {
 } );
 
 /**
- * Maps a product_cat slug to an inline Phosphor icon (regular weight, MIT-licensed,
- * https://github.com/phosphor-icons/core) so the mega menu doesn't need an icon plugin.
- * Unmapped slugs fall back to the generic "package" icon.
+ * Inline icon for a product_cat slug, drawn as an engineering schematic rather
+ * than a generic pictogram: valves use the apex-to-apex gate-valve symbol,
+ * dosing pumps the circle-and-triangle pump symbol, cutting tools a rhombic
+ * turning insert. Uniform 1.5px stroke, squared joins — the same orthogonal
+ * grammar as the Demas monogram.
+ *
+ * Drawn in-house from primitives (no icon library, no plugin) so the set can
+ * stay consistent as categories change. Keys are the live-site subcategory
+ * slugs; see demas-mega-menu-content-spec.md.
+ *
+ * @param string $slug product_cat slug.
+ * @return string Inline SVG markup. Safe to echo: static author-controlled markup.
  */
 function demas_theme_get_category_icon( $slug ) {
-	static $icons = array(
-		'irrigation'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z"/></svg>',
-		'drippers'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M207.06,72.67A111.24,111.24,0,0,0,128,40h-.4C66.07,40.21,16,91,16,153.13V176a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V152A111.25,111.25,0,0,0,207.06,72.67ZM224,176H119.71l54.76-75.3a8,8,0,0,0-12.94-9.42L99.92,176H32V153.13c0-3.08.15-6.12.43-9.13H56a8,8,0,0,0,0-16H35.27c10.32-38.86,44-68.24,84.73-71.66V80a8,8,0,0,0,16,0V56.33A96.14,96.14,0,0,1,221,128H200a8,8,0,0,0,0,16h23.67c.21,2.65.33,5.31.33,8Z"/></svg>',
-		'filtration'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23ZM110.86,103.25A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167c-12,2.37-29.07,1.37-51.75-10.11-15.91-8.05-31.05-12.32-45.22-12.81ZM48,208l28.54-47.58c14.25-1.74,30.31,1.85,47.82,10.72,19,9.61,35,12.88,48,12.88a69.89,69.89,0,0,0,19.55-2.7L208,208Z"/></svg>',
-		'landscape'   => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M198.1,62.59a76,76,0,0,0-140.2,0A71.71,71.71,0,0,0,16,127.8C15.9,166,48,199,86.14,200A72.09,72.09,0,0,0,120,192.47V232a8,8,0,0,0,16,0V192.47A72.17,72.17,0,0,0,168,200l1.82,0C208,199,240.11,166,240,127.8A71.71,71.71,0,0,0,198.1,62.59ZM169.45,184a56.08,56.08,0,0,1-33.45-10v-41l43.58-21.78a8,8,0,1,0-7.16-14.32L136,115.06V88a8,8,0,0,0-16,0v51.06L83.58,120.84a8,8,0,1,0-7.16,14.32L120,156.94v17a56,56,0,0,1-33.45,10C56.9,183.23,31.92,157.52,32,127.84A55.77,55.77,0,0,1,67.11,76a8,8,0,0,0,4.53-4.67,60,60,0,0,1,112.72,0A8,8,0,0,0,188.89,76,55.79,55.79,0,0,1,224,127.84C224.08,157.52,199.1,183.23,169.45,184Z"/></svg>',
-		'fittings'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M226.76,69a8,8,0,0,0-12.84-2.88l-40.3,37.19-17.23-3.7-3.7-17.23,37.19-40.3A8,8,0,0,0,187,29.24,72,72,0,0,0,88,96,72.34,72.34,0,0,0,94,124.94L33.79,177c-.15.12-.29.26-.43.39a32,32,0,0,0,45.26,45.26c.13-.13.27-.28.39-.42L131.06,162A72,72,0,0,0,232,96,71.56,71.56,0,0,0,226.76,69ZM160,152a56.14,56.14,0,0,1-27.07-7,8,8,0,0,0-9.92,1.77L67.11,211.51a16,16,0,0,1-22.62-22.62L109.18,133a8,8,0,0,0,1.77-9.93,56,56,0,0,1,58.36-82.31l-31.2,33.81a8,8,0,0,0-1.94,7.1L141.83,108a8,8,0,0,0,6.14,6.14l26.35,5.66a8,8,0,0,0,7.1-1.94l33.81-31.2A56.06,56.06,0,0,1,160,152Z"/></svg>',
-		'tools'       => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"/></svg>',
-		'default'     => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32l80.34,44-29.77,16.3-80.35-44ZM128,120,47.66,76l33.9-18.56,80.34,44ZM40,90l80,43.78v85.79L40,175.82Zm176,85.78h0l-80,43.79V133.82l32-17.51V152a8,8,0,0,0,16,0V107.55L216,90v85.77Z"/></svg>',
+	static $paths = array(
+
+		/* Irrigation Products ------------------------------------------- */
+
+		// Pipe run with a union collar.
+		'pipes'
+			=> '<path d="M2 9h20M2 15h20"/><path d="M14 7.5v9M17 7.5v9"/>',
+
+		// Elbow, drawn as two pipe walls turning through 90 degrees.
+		'fittings'
+			=> '<path d="M3.5 21.5V8.5a5 5 0 0 1 5-5h13"/><path d="M9.5 21.5v-6a2 2 0 0 1 2-2h10"/>',
+
+		// Funnel with a screen line across the throat.
+		'filtration'
+			=> '<path d="M3 4h18l-7 8v7l-4 2v-9L3 4Z"/><path d="M7.5 8h9"/>',
+
+		// Hex nut with a bore — loose hardware.
+		'cp-accessories'
+			=> '<path d="M12 2.5 20 7v10l-8 4.5L4 17V7l8-4.5Z"/><circle cx="12" cy="12" r="3.5"/>',
+
+		// Electrofusion coupler: body, two terminal pins, heating coil.
+		'electro-fusion-fittings'
+			=> '<rect x="2.5" y="8.5" width="19" height="7" rx="2"/><path d="M8 8.5V5M16 8.5V5"/>'
+			   . '<path d="M6 12h2l1.4-2 1.4 4 1.4-4 1.4 4 1.4-2H18"/>',
+
+		/* Landscape ------------------------------------------------------ */
+
+		// Rotor head on a riser, throwing two arcs.
+		'rotors'
+			=> '<path d="M12 21.5v-4"/><circle cx="12" cy="15.5" r="1.8"/>'
+			   . '<path d="M5 13a9 9 0 0 1 14 0"/><path d="M8.5 9.2a5 5 0 0 1 7 0"/>',
+
+		// Controller enclosure: dial left, programme lines right.
+		'controllers'
+			=> '<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="12" r="3"/>'
+			   . '<path d="M9 12v-2"/><path d="M15 9h3M15 12h3M15 15h3"/>',
+
+		// Gate valve, ISO symbol: two triangles apex to apex, stem, handwheel.
+		'landscape-valves'
+			=> '<path d="M4 7v10l8-5-8-5Z"/><path d="M20 7v10l-8-5 8-5Z"/><path d="M12 12V6"/><path d="M8 5.5h8"/>',
+
+		// Valve box in plan: body, lid seam, pull slot.
+		'valve-boxes-fittings'
+			=> '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/><path d="M10 8h4"/>',
+
+		/* Fog Systems ---------------------------------------------------- */
+
+		// Pump, ISO symbol: circle with flow triangle.
+		'controllers-dosingpumps-electromagneticvalves'
+			=> '<circle cx="12" cy="12" r="8"/><path d="M9.5 8l7 4-7 4V8Z"/>',
+
+		// Tee junction — run with a branch rising from it.
+		'tecnocooling-fittings'
+			=> '<path d="M2 16.5h20"/><path d="M2 10.5h6M16 10.5h6"/><path d="M8 10.5V4.5M16 10.5V4.5"/>',
+
+		// Nozzle body over a mist cone.
+		'nozzles-and-extensions'
+			=> '<path d="M10 3.5h4v4l-2 3-2-3v-4Z"/>'
+			   . '<path d="M12 12.5v1.5M8.8 15v1.4M15.2 15v1.4M6.4 18.4v1.6M12 17.6v1.6M17.6 18.4v1.6"/>',
+
+		// Treated water: droplet with a process band.
+		'water-treatment'
+			=> '<path d="M12 3s6 6.4 6 10.4a6 6 0 0 1-12 0C6 9.4 12 3 12 3Z"/><path d="M7 14h10"/>',
+
+		/* Industrial Tool Services --------------------------------------- */
+
+		// Bandsaw blade: band with a toothed edge.
+		'band-saw-accessories'
+			=> '<path d="M2.5 6.5h19v6h-19z"/><path d="M2.5 12.5l2.4 3 2.4-3 2.4 3 2.4-3 2.4 3 2.4-3 2.4 3 2.4-3"/>',
+
+		// Rhombic turning insert with its clamping bore.
+		'cutting-tools'
+			=> '<path d="M12 2.5 21.5 12 12 21.5 2.5 12 12 2.5Z"/><circle cx="12" cy="12" r="2.2"/>',
+
+		// Electrode striking an arc.
+		'welding-machines'
+			=> '<path d="M3.5 3.5 12 12"/><path d="M13 11.5l-3.2 4.6h3.6L10.6 21.5"/>'
+			   . '<path d="M17.5 8.5 20.5 5.5M18 12.5h3.5M16.5 16l2.6 2.6"/>',
+
+		// Horseshoe magnet with pole faces.
+		'magnetic-drills'
+			=> '<path d="M4 21v-9a8 8 0 0 1 16 0v9"/><path d="M9 21v-9a3 3 0 0 1 6 0v9"/><path d="M4 17h5M15 17h5"/>',
+
+		/* Fallbacks ------------------------------------------------------ */
+
+		// Outbound link.
+		'__external'
+			=> '<path d="M7 17 17 7"/><path d="M8.5 7H17v8.5"/>',
+
+		// Unmapped category: a plain plan-view node.
+		'__default'
+			=> '<rect x="4.5" y="4.5" width="15" height="15" rx="2"/><path d="M4.5 12h15M12 4.5v15"/>',
 	);
 
-	return $icons[ $slug ] ?? $icons['default'];
+	$key = isset( $paths[ $slug ] ) ? $slug : '__default';
+
+	return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"'
+		. ' fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"'
+		. ' stroke-linejoin="round" aria-hidden="true" focusable="false">'
+		. $paths[ $key ]
+		. '</svg>';
 }

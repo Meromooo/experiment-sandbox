@@ -544,6 +544,49 @@ svg {
 	overflow-wrap: anywhere;
 }
 
+/*
+ * Header: logo left, product menu and links right. The bar keeps its own
+ * stacking context so the mega-menu panel sits above page content.
+ */
+.dh-header {
+	position: relative;
+	z-index: 30;
+	padding-block: var(--wp--preset--spacing--40);
+	border-block-end: var(--wp--custom--rule);
+	background: var(--wp--preset--color--paper);
+}
+
+.dh-header__bar {
+	gap: var(--wp--preset--spacing--40);
+}
+
+.dh-header__nav {
+	gap: var(--wp--preset--spacing--20);
+}
+
+.dh-header__links a {
+	border-radius: var(--wp--custom--radius--pill);
+	padding: 0.6em 1.05em;
+	text-decoration: none;
+	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-header__links a:hover {
+	background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
+}
+
+/*
+ * Below the mega menu's breakpoint the header stacks, so the menu's full-width
+ * in-flow panel has room instead of overhanging the viewport.
+ */
+@media (max-width: 56rem) {
+	.dh-header__bar,
+	.dh-header__nav {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
+
 .wp-block-button__link {
 	transition:
 		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
