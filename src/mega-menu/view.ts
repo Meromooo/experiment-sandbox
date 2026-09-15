@@ -81,7 +81,16 @@ store( 'demas-theme/mega-menu', {
 			ref?.querySelector< HTMLButtonElement >( '.dh-mega-menu__trigger' )?.focus();
 		},
 
-		/** Tabbing past the last link closes the panel behind you. */
+		/**
+		 * Closes when focus leaves the menu — tabbing past the last link, and
+		 * also clicking anywhere outside, since the trigger holds focus after a
+		 * click and blurs when you click away.
+		 *
+		 * A document-level click handler would be the obvious way to dismiss a
+		 * pinned panel, but `getElement()` yields no ref inside one, so the
+		 * "was this click inside me?" test fails open and the handler closes
+		 * the panel on the very click that opened it.
+		 */
 		onFocusOut: ( event: FocusEvent ) => {
 			const { ref } = getElement();
 			const next = event.relatedTarget as Node | null;
@@ -93,22 +102,5 @@ store( 'demas-theme/mega-menu', {
 			close( getContext< MegaMenuContext >() );
 		},
 
-		/** A pinned panel stays open when the pointer leaves; this dismisses it. */
-		onDocumentClick: ( event: MouseEvent ) => {
-			const context = getContext< MegaMenuContext >();
-
-			if ( ! context.isOpen ) {
-				return;
-			}
-
-			const { ref } = getElement();
-			const target = event.target as Node | null;
-
-			if ( target && ref?.contains( target ) ) {
-				return;
-			}
-
-			close( context );
-		},
 	},
 } );

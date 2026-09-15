@@ -99,7 +99,6 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 	data-wp-on--focusout="actions.onFocusOut"
 	data-wp-on--mouseenter="actions.openOnHover"
 	data-wp-on--mouseleave="actions.closeOnHover"
-	data-wp-on-document--click="actions.onDocumentClick"
 	aria-label="<?php esc_attr_e( 'Product categories', 'demas-theme' ); ?>"
 >
 	<button
