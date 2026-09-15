@@ -14,12 +14,45 @@
 # (cutting-tools, filtration, welding-machines) are moved under their real
 # parents and keep their products.
 #
-# Run from the WordPress root on the sandbox host:
+# Run from the SANDBOX WordPress root:
+#   cd ~/domains/cornflowerblue-fish-235112.hostingersite.com/public_html
 #   bash wp-content/themes/demas-theme/tools/create-product-categories.sh
+#
+# NOT from ~/domains/demas-group.com/public_html. The live site already uses
+# every slug below, so running there would rename and re-parent real category
+# terms and flatten two of them from three levels to two — breaking live
+# product URLs. The guard immediately below refuses to run anywhere but the
+# sandbox; do not remove it.
 #
 set -euo pipefail
 
+SANDBOX_HOST="cornflowerblue-fish-235112.hostingersite.com"
 TAX="product_cat"
+
+command -v wp >/dev/null 2>&1 || {
+	echo "ERROR: wp-cli not found on PATH." >&2
+	exit 1
+}
+
+SITE_URL="$(wp option get siteurl --skip-plugins --skip-themes 2>/dev/null || true)"
+
+if [[ -z "$SITE_URL" ]]; then
+	echo "ERROR: no WordPress install in $(pwd)." >&2
+	echo "       cd to the sandbox web root first:" >&2
+	echo "       cd ~/domains/$SANDBOX_HOST/public_html" >&2
+	exit 1
+fi
+
+if [[ "$SITE_URL" != *"$SANDBOX_HOST"* ]]; then
+	echo "REFUSING TO RUN — wrong site." >&2
+	echo "  current site : $SITE_URL" >&2
+	echo "  expected     : https://$SANDBOX_HOST" >&2
+	echo >&2
+	echo "This script rewrites product_cat terms and must never touch the live site." >&2
+	exit 1
+fi
+
+echo "Site: $SITE_URL" >&2
 
 term_id_by_slug() {
 	wp term list "$TAX" --slug="$1" --field=term_id --format=csv 2>/dev/null | head -n 1
