@@ -61,7 +61,9 @@
 					}
 				});
 			},
-			{ rootMargin: '0px 0px -10% 0px', threshold: 0.15 }
+			// Threshold stays low: the observer measures the *clipped* box, and
+			// collapsed reveal states in the CSS keep only ~16% of it.
+			{ rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
 		);
 		targets.forEach(function (el) {
 			revealObserver.observe(el);

@@ -473,8 +473,13 @@ svg {
 	clip-path: inset(0 calc(100% - 2.4em) 0 0 round var(--_r));
 }
 
+/*
+ * Collapsed states keep ~16% of the box. IntersectionObserver measures the
+ * clipped rect, so a clip-path that collapses to zero area — a hairline bar,
+ * a zero-width edge — never intersects and the element never reveals.
+ */
 .js [data-reveal="sliver"] {
-	clip-path: inset(0 100% 0 0 round var(--_r));
+	clip-path: inset(0 84% 0 0 round var(--_r));
 }
 
 [dir="rtl"].js [data-reveal="dot"] {
@@ -482,11 +487,11 @@ svg {
 }
 
 [dir="rtl"].js [data-reveal="sliver"] {
-	clip-path: inset(0 0 0 100% round var(--_r));
+	clip-path: inset(0 0 0 84% round var(--_r));
 }
 
 .js [data-reveal="bar"] {
-	clip-path: inset(50% 0 50% 0 round var(--_r));
+	clip-path: inset(42% 0 42% 0 round var(--_r));
 }
 
 .js [data-reveal="wipe"] {
