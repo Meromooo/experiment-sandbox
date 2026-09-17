@@ -1,0 +1,232 @@
+/*
+ * Catalogue toolbar — the count set large in the data face, a horizontal rail
+ * of child-category chips, and a segmented sort control. Sticks below the
+ * viewport top on long archives (Fog Systems runs to 267 products).
+ *
+ * Every value resolves from theme.json. Logical properties so it mirrors
+ * under dir="rtl".
+ */
+
+.dh-toolbar {
+	/* Below the mega-menu panel (40), above the product grid. */
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 20;
+	margin-block-end: var(--wp--preset--spacing--50);
+	background: var(--wp--preset--color--paper);
+	border-block-end: var(--wp--custom--rule);
+}
+
+/* Rail ---------------------------------------------------------------- */
+
+.dh-toolbar__rail {
+	padding-block: var(--wp--preset--spacing--30);
+	border-block-end: var(--wp--custom--rule);
+}
+
+/*
+ * One row that scrolls sideways rather than wrapping. Thirteen children under
+ * Fog Systems would otherwise become a wall; a rail keeps the count and sort
+ * within reach and matches how the same control behaves on a phone.
+ */
+.dh-toolbar__chips {
+	display: flex;
+	gap: 0.35rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
+	mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent);
+	-webkit-mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent);
+}
+
+.dh-toolbar__chips::-webkit-scrollbar {
+	display: none;
+}
+
+[dir="rtl"] .dh-toolbar__chips {
+	mask-image: linear-gradient(to left, #000 calc(100% - 3rem), transparent);
+	-webkit-mask-image: linear-gradient(to left, #000 calc(100% - 3rem), transparent);
+}
+
+.dh-toolbar__chips li {
+	flex: none;
+}
+
+.dh-toolbar__chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.9rem 0.5rem 0.7rem;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	color: var(--wp--preset--color--ink);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	text-decoration: none;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-toolbar__chip:hover,
+.dh-toolbar__chip:focus-visible {
+	border-color: var(--wp--preset--color--ink);
+}
+
+.dh-toolbar__chip[aria-current="page"] {
+	background: var(--wp--preset--color--ink);
+	border-color: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-toolbar__chip--back {
+	border-style: dashed;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+.dh-toolbar__chip-icon {
+	display: inline-flex;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 55%, transparent);
+}
+
+.dh-toolbar__chip[aria-current="page"] .dh-toolbar__chip-icon {
+	color: var(--wp--preset--color--field);
+}
+
+.dh-toolbar__chip-count {
+	font-size: var(--wp--preset--font-size--xs);
+	opacity: 0.6;
+}
+
+/* Count + sort bar ----------------------------------------------------- */
+
+.dh-toolbar__bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+	padding-block: var(--wp--preset--spacing--30);
+}
+
+/*
+ * The count is zero-padded and set in the mono face at display size — the
+ * same device as the branch codes and the SKUs, so it reads as catalogue
+ * data rather than as marketing copy.
+ */
+.dh-toolbar__count {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
+	margin: 0;
+}
+
+.dh-toolbar__count-value {
+	font-size: var(--wp--preset--font-size--xxl);
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: 0.01em;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-toolbar__count-label {
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
+}
+
+/* Segmented sort */
+
+.dh-toolbar__sort {
+	display: flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--30);
+}
+
+.dh-toolbar__sort-label {
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
+}
+
+.dh-toolbar__segments {
+	display: inline-flex;
+	margin: 0;
+	padding: 0.2rem;
+	list-style: none;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--white);
+}
+
+.dh-toolbar__segment {
+	display: inline-block;
+	padding: 0.4rem 0.85rem;
+	border-radius: var(--wp--custom--radius--pill);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+	text-decoration: none;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-toolbar__segment:hover,
+.dh-toolbar__segment:focus-visible {
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-toolbar__segment[aria-current="true"] {
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+}
+
+/* Editor placeholder --------------------------------------------------- */
+
+.dh-toolbar-editor {
+	padding: var(--wp--preset--spacing--40);
+	border: var(--wp--custom--rule);
+	border-radius: var(--wp--custom--radius--md);
+	background: var(--wp--preset--color--paper);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+/* Small screens -------------------------------------------------------- */
+
+@media (max-width: 40em) {
+	.dh-toolbar__bar {
+		align-items: center;
+	}
+
+	.dh-toolbar__count-value {
+		font-size: var(--wp--preset--font-size--xl);
+	}
+
+	.dh-toolbar__sort-label {
+		display: none;
+	}
+
+	.dh-toolbar__segment {
+		padding-inline: 0.65rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-toolbar__chip,
+	.dh-toolbar__segment {
+		transition: none;
+	}
+}

@@ -44,8 +44,10 @@ committed (see ADR-001 under Working agreement).
   - `navigation.php` — nav menu registration and the mega-menu icon set
   - `patterns.php` — block pattern category registration only
   - `woocommerce.php` — WooCommerce compatibility declarations and any theme-side WC integration
-  - `catalog-filters.php` — product catalog filtering behavior (category/attribute sidebar) —
-    intended to eventually replace the live site's custom `wp:html` sidebar filter script
+  - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count, child-category
+    rail, sort links; server-rendered, no JS) and adds SKU ordering via `pre_get_posts`. There are
+    no product attributes in the catalogue — specs live in description HTML — so there is nothing
+    to facet by; category, brand-as-category, SKU and name are the only real axes.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
@@ -118,7 +120,9 @@ branch-routed contact form replaces published email addresses.
   column and item order live in `src/mega-menu/render.php` (filterable via
   `demas_theme_mega_menu_structure`), the Non-Woven outbound link via
   `demas_theme_mega_menu_external_links`, and one schematic icon per subcategory slug in
-  `demas_theme_get_category_icon()`.
+  `demas_theme_get_category_icon()`. **Amended 2026-09-17:** Swimming Pool (59 products, no
+  subcategories) is a sixth column by Ammar's decision; the Non-Woven slug is `non-wooven`
+  (misspelled on live, matched deliberately). See the amendment note at the top of the spec.
 - `demas-design-direction.md` — **superseded 2026-09-14** (banner at top). Its pattern
   decisions (sticky condensing header, stat counters, trust-strip hover, no testimonials
   without real ones) still hold; its visual system does not. Rewrite pending.

@@ -120,6 +120,13 @@ function demas_theme_get_category_icon( $slug ) {
 		'magnetic-drills'
 			=> '<path d="M4 21v-9a8 8 0 0 1 16 0v9"/><path d="M9 21v-9a3 3 0 0 1 6 0v9"/><path d="M4 17h5M15 17h5"/>',
 
+		/* Swimming Pool -------------------------------------------------- */
+
+		// Two wave lines under a pool ladder.
+		'swimming-pool'
+			=> '<path d="M3 17.5c2-1.6 4-1.6 6 0s4 1.6 6 0 4-1.6 6 0"/><path d="M3 12.5c2-1.6 4-1.6 6 0s4 1.6 6 0 4-1.6 6 0"/>'
+			   . '<path d="M8.5 12V4M14.5 12V4M8.5 6.5h6"/>',
+
 		/* Fallbacks ------------------------------------------------------ */
 
 		// Outbound link.

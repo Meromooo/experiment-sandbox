@@ -4,6 +4,14 @@
 
 **Scope decision:** the sandbox mega-menu must match this exactly — same five top-level groups, same subcategories, same order. No more, no less. Depth is two levels (top-level category + immediate subcategories) — nothing deeper is shown in the live menu, so nothing deeper belongs in the sandbox one either.
 
+## Amendment — 2026-09-17
+
+**Swimming Pool added as a sixth column**, between Industrial Tool Services and Non-Woven.
+The live menu omits it, but the live catalogue holds 59 products under `swimming-pool` with
+no other route to them from navigation. Ammar's decision. The column has no subcategories and
+renders a single "Browse all N products" row. The live slug for Non-Woven is `non-wooven`
+(misspelled upstream) and is matched deliberately so product URLs survive migration.
+
 ## Structure
 
 1. **Irrigation Products**

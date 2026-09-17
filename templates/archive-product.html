@@ -14,15 +14,12 @@
 	<!-- wp:woocommerce/store-notices /-->
 
 	<!--
-		No result count or sorting control here yet. woocommerce/product-results-count
-		and woocommerce/catalog-sorting are classic-template blocks: they need the
-		loop context the legacy template sets up, and inside a product-collection
-		archive they render an empty wrapper. A server-rendered catalogue toolbar
-		(count, sort, child-category chips) belongs in inc/catalog-filters.php.
+		Server-rendered (inc/catalog-filters.php): result count from the main
+		query, child-category rail, sort links. WooCommerce's own results-count
+		and catalog-sorting blocks are classic-template blocks and render empty
+		inside a product-collection archive — don't re-add them.
 	-->
-	<!-- wp:separator {"className":"dh-shop__rule is-style-wide"} -->
-	<hr class="wp-block-separator dh-shop__rule is-style-wide"/>
-	<!-- /wp:separator -->
+	<!-- wp:demas-theme/catalog-toolbar /-->
 
 	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":24,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/product-catalog","queryContextIncludes":["collection"],"className":"dh-grid"} -->
 	<div class="wp-block-woocommerce-product-collection dh-grid">

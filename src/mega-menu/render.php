@@ -35,6 +35,7 @@ $demas_structure = apply_filters(
 		'industrial-tools-services' => array( 'band-saw-accessories', 'cutting-tools', 'welding-machines', 'magnetic-drills' ),
 		// Slug is misspelled on the live site ("non-wooven"); matching it is
 		// deliberate, because product URLs must survive the migration.
+		'swimming-pool'             => array(),
 		'non-wooven'                => array(),
 	)
 );
@@ -136,7 +137,27 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 						<?php echo esc_html( $demas_parent->name ); ?>
 					</a>
 
-					<?php if ( $demas_child_slugs || $demas_links ) : ?>
+					<?php if ( ! $demas_child_slugs && ! $demas_links ) : ?>
+						<?php // A group with no subcategories (Swimming Pool) still gets one row, so the column reads like its neighbours. ?>
+						<ul class="dh-mega-menu__list">
+							<li>
+								<a class="dh-mega-menu__link" href="<?php echo esc_url( get_term_link( $demas_parent ) ); ?>">
+									<?php
+									printf(
+										$demas_icon_alert, // phpcs:ignore WordPress.Security.EscapeOutput -- static format string.
+										demas_theme_get_category_icon( $demas_parent->slug ) // phpcs:ignore WordPress.Security.EscapeOutput -- static author-controlled SVG.
+									);
+									?>
+									<span class="dh-mega-menu__label">
+										<?php
+										/* translators: %d: number of products in the group. */
+										printf( esc_html__( 'Browse all %d products', 'demas-theme' ), (int) $demas_parent->count );
+										?>
+									</span>
+								</a>
+							</li>
+						</ul>
+					<?php else : ?>
 						<ul class="dh-mega-menu__list">
 							<?php
 							foreach ( $demas_child_slugs as $demas_child_slug ) :
