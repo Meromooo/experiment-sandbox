@@ -87,6 +87,15 @@ foreach ( $demas_systems as $demas_key => $demas_system ) {
 	}
 }
 
+if ( isset( $_GET['dh_debug'] ) ) { // phpcs:ignore
+	echo '<!-- dh_debug systems=' . implode( ',', array_keys( $demas_systems ) ) . ' resolved=' . implode( ',', array_keys( $demas_resolved ) );
+	foreach ( array( 'cutting-tools', 'magnetic-drills' ) as $dbg ) {
+		$t = get_term_by( 'slug', $dbg, 'product_cat' );
+		echo ' ' . $dbg . '=' . ( $t instanceof WP_Term ? $t->term_id . ':' . $t->count : var_export( $t, true ) );
+	}
+	echo ' -->';
+}
+
 if ( ! $demas_resolved ) {
 	return;
 }
