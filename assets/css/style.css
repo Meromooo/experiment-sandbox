@@ -1423,21 +1423,13 @@ svg {
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 76%, transparent);
 }
 
-/* Result count and sorting share one hairline-separated bar. */
-.dh-shop__toolbar {
-	gap: var(--wp--preset--spacing--40);
-	margin-block-end: var(--wp--preset--spacing--50);
-	padding-block: var(--wp--preset--spacing--30);
-	border-block: var(--wp--custom--rule);
-	font-size: var(--wp--preset--font-size--sm);
+/* Divider between the archive header and the grid. */
+.dh-shop__rule {
+	margin-block: 0 var(--wp--preset--spacing--50);
+	border: 0;
+	border-block-start: var(--wp--custom--rule);
 }
 
-.dh-shop__toolbar .woocommerce-result-count {
-	margin: 0;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 62%, transparent);
-}
-
-.dh-shop__toolbar select,
 .woocommerce .woocommerce-ordering select {
 	padding: 0.5em 0.9em;
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 18%, transparent);

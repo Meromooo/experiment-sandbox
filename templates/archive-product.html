@@ -6,19 +6,23 @@
 	<!-- wp:group {"className":"dh-shop__head","layout":{"type":"constrained"}} -->
 	<div class="wp-block-group dh-shop__head">
 		<!-- wp:woocommerce/breadcrumbs {"className":"dh-shop__crumbs"} /-->
-		<!-- wp:query-title {"type":"archive","level":1,"className":"dh-shop__title"} /-->
+		<!-- wp:query-title {"type":"archive","level":1,"showPrefix":false,"className":"dh-shop__title"} /-->
 		<!-- wp:term-description {"className":"dh-shop__desc"} /-->
 	</div>
 	<!-- /wp:group -->
 
 	<!-- wp:woocommerce/store-notices /-->
 
-	<!-- wp:group {"className":"dh-shop__toolbar","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
-	<div class="wp-block-group dh-shop__toolbar">
-		<!-- wp:woocommerce/product-results-count /-->
-		<!-- wp:woocommerce/catalog-sorting /-->
-	</div>
-	<!-- /wp:group -->
+	<!--
+		No result count or sorting control here yet. woocommerce/product-results-count
+		and woocommerce/catalog-sorting are classic-template blocks: they need the
+		loop context the legacy template sets up, and inside a product-collection
+		archive they render an empty wrapper. A server-rendered catalogue toolbar
+		(count, sort, child-category chips) belongs in inc/catalog-filters.php.
+	-->
+	<!-- wp:separator {"className":"dh-shop__rule is-style-wide"} -->
+	<hr class="wp-block-separator dh-shop__rule is-style-wide"/>
+	<!-- /wp:separator -->
 
 	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":24,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/product-catalog","queryContextIncludes":["collection"],"className":"dh-grid"} -->
 	<div class="wp-block-woocommerce-product-collection dh-grid">
