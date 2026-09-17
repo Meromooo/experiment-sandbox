@@ -50,8 +50,13 @@ add_filter(
 			return $clauses;
 		}
 
-		$post_type = $query->get( 'post_type' );
-		$is_products = 'product' === $post_type || ( is_array( $post_type ) && in_array( 'product', $post_type, true ) );
+		// On a term archive WordPress infers the post type from the taxonomy and
+		// leaves the post_type var empty, so the main query must pass on its own;
+		// the product-collection block's rebuilt query names the type explicitly.
+		$post_type   = $query->get( 'post_type' );
+		$is_products = $query->is_main_query()
+			|| 'product' === $post_type
+			|| ( is_array( $post_type ) && in_array( 'product', $post_type, true ) );
 
 		if ( ! $is_products ) {
 			return $clauses;
