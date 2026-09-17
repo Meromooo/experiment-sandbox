@@ -25,30 +25,46 @@ add_action( 'init', function () {
  * Order the archive by SKU when the toolbar asks for it.
  *
  * WooCommerce's own ordering (menu_order, title, date, price, popularity)
- * runs on pre_get_posts at priority 10 and does not know "sku"; this runs
- * afterwards and orders on the _sku meta value. Every product in the
- * catalogue carries one, so nothing drops out of the sort.
+ * does not know "sku". Setting meta_key/orderby on the main query is not
+ * enough: the product-collection block rebuilds an inherited query and the
+ * meta_key does not survive the trip, leaving an "ORDER BY meta_value" with
+ * no join — invalid SQL, zero products. So this does what WooCommerce does
+ * for price: join the product lookup table in posts_clauses, which applies
+ * to whichever query actually renders the grid. Every product carries an
+ * SKU, so nothing drops out of the sort.
  */
-add_action(
-	'pre_get_posts',
-	function ( $query ) {
-		if ( is_admin() || ! $query->is_main_query() ) {
-			return;
+add_filter(
+	'posts_clauses',
+	function ( $clauses, $query ) {
+		if ( is_admin() ) {
+			return $clauses;
 		}
 
-		if ( ! ( $query->is_post_type_archive( 'product' ) || $query->is_tax( get_object_taxonomies( 'product' ) ) ) ) {
-			return;
+		if ( ! ( is_post_type_archive( 'product' ) || is_tax( get_object_taxonomies( 'product' ) ) ) ) {
+			return $clauses;
 		}
 
 		$orderby = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort parameter.
 
 		if ( 'sku' !== $orderby ) {
-			return;
+			return $clauses;
 		}
 
-		$query->set( 'meta_key', '_sku' );
-		$query->set( 'orderby', 'meta_value' );
-		$query->set( 'order', 'ASC' );
+		$post_type = $query->get( 'post_type' );
+		$is_products = 'product' === $post_type || ( is_array( $post_type ) && in_array( 'product', $post_type, true ) );
+
+		if ( ! $is_products ) {
+			return $clauses;
+		}
+
+		global $wpdb;
+
+		// Own alias, so it cannot collide with a join WooCommerce may already have added.
+		$clauses['join']   .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} dh_sku ON {$wpdb->posts}.ID = dh_sku.product_id ";
+		$clauses['orderby'] = "dh_sku.sku ASC, {$wpdb->posts}.ID ASC";
+
+		return $clauses;
 	},
-	20
+	20,
+	2
 );
