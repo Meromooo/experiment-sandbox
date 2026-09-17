@@ -163,6 +163,21 @@ function demas_theme_get_systems_for_term( ?WP_Term $term ): array {
 }
 
 /**
+ * How many products a category holds, children included.
+ *
+ * The raw term count only covers products filed directly on the term, so a
+ * parent whose products all sit in grandchildren (Cutting Tools: 25, all
+ * under DHF and Sumitomo) reads 0. WooCommerce keeps the inclusive figure
+ * in term meta and swaps it in on some code paths but not all; read the meta
+ * directly so every count on the page agrees.
+ */
+function demas_theme_term_product_count( WP_Term $term ): int {
+	$meta = get_term_meta( $term->term_id, 'product_count_' . $term->taxonomy, true );
+
+	return '' !== $meta && null !== $meta ? (int) $meta : (int) $term->count;
+}
+
+/**
  * Category slugs that name a manufacturer rather than a kind of part.
  *
  * @return string[]
@@ -221,11 +236,17 @@ function demas_theme_describe_children( WP_Term $term ): string {
 		array(
 			'taxonomy'   => 'product_cat',
 			'parent'     => $term->term_id,
-			'hide_empty' => true,
+			'hide_empty' => false, // Filtered below on the inclusive count instead.
 		)
 	);
 
-	if ( is_wp_error( $children ) || ! $children ) {
+	if ( is_wp_error( $children ) ) {
+		return '';
+	}
+
+	$children = array_values( array_filter( $children, fn( $c ) => demas_theme_term_product_count( $c ) > 0 ) );
+
+	if ( ! $children ) {
 		return '';
 	}
 

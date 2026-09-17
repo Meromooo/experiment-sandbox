@@ -58,7 +58,7 @@ foreach ( $demas_systems as $demas_key => $demas_system ) {
 		foreach ( $demas_slugs as $demas_slug ) {
 			$demas_t = get_term_by( 'slug', $demas_slug, 'product_cat' );
 
-			if ( $demas_t instanceof WP_Term && $demas_t->count > 0 ) {
+			if ( $demas_t instanceof WP_Term && demas_theme_term_product_count( $demas_t ) > 0 ) {
 				$demas_terms[] = $demas_t;
 			}
 		}
@@ -85,15 +85,6 @@ foreach ( $demas_systems as $demas_key => $demas_system ) {
 			'stages' => $demas_stages,
 		);
 	}
-}
-
-if ( isset( $_GET['dh_debug'] ) ) { // phpcs:ignore
-	echo '<!-- dh_debug systems=' . implode( ',', array_keys( $demas_systems ) ) . ' resolved=' . implode( ',', array_keys( $demas_resolved ) );
-	foreach ( array( 'cutting-tools', 'magnetic-drills' ) as $dbg ) {
-		$t = get_term_by( 'slug', $dbg, 'product_cat' );
-		echo ' ' . $dbg . '=' . ( $t instanceof WP_Term ? $t->term_id . ':' . $t->count : var_export( $t, true ) );
-	}
-	echo ' -->';
 }
 
 if ( ! $demas_resolved ) {
@@ -155,7 +146,7 @@ $demas_wrapper = get_block_wrapper_attributes(
 										<?php echo ( $demas_term && $demas_t->term_id === $demas_term->term_id ) ? 'aria-current="page"' : ( $demas_is_here ? 'aria-current="true"' : '' ); ?>
 									>
 										<span class="dh-line__name"><?php echo esc_html( $demas_t->name ); ?></span>
-										<span class="dh-line__count dh-mono"><?php echo esc_html( str_pad( (string) $demas_t->count, 3, '0', STR_PAD_LEFT ) ); ?></span>
+										<span class="dh-line__count dh-mono"><?php echo esc_html( str_pad( (string) demas_theme_term_product_count( $demas_t ), 3, '0', STR_PAD_LEFT ) ); ?></span>
 									</a>
 									<?php if ( $demas_children ) : ?>
 										<span class="dh-line__kids"><?php echo esc_html( $demas_children ); ?></span>

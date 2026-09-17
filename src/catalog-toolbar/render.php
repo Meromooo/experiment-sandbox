@@ -125,7 +125,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 						>
 							<span class="dh-toolbar__chip-icon" aria-hidden="true"><?php echo demas_theme_get_category_icon( $demas_chip->slug ); // phpcs:ignore WordPress.Security.EscapeOutput -- static author-controlled SVG. ?></span>
 							<span><?php echo esc_html( $demas_chip->name ); ?></span>
-							<span class="dh-toolbar__chip-count dh-mono"><?php echo esc_html( (string) $demas_chip->count ); ?></span>
+							<span class="dh-toolbar__chip-count dh-mono"><?php echo esc_html( (string) demas_theme_term_product_count( $demas_chip ) ); ?></span>
 						</a>
 					</li>
 				<?php endforeach; ?>
