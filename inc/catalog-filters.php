@@ -65,8 +65,13 @@ add_filter(
 		global $wpdb;
 
 		// Own alias, so it cannot collide with a join WooCommerce may already have added.
-		$clauses['join']   .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} dh_sku ON {$wpdb->posts}.ID = dh_sku.product_id ";
-		$clauses['orderby'] = "dh_sku.sku ASC, {$wpdb->posts}.ID ASC";
+		$clauses['join'] .= " LEFT JOIN {$wpdb->wc_product_meta_lookup} dh_sku ON {$wpdb->posts}.ID = dh_sku.product_id ";
+
+		// 181 of the 652 live products carry no SKU (all of Swimming Pool, most
+		// irrigation fittings). An empty string sorts first, which would put the
+		// blanks at the top of exactly the sort a buyer uses to find a part
+		// number — so they go last.
+		$clauses['orderby'] = "( dh_sku.sku IS NULL OR dh_sku.sku = '' ) ASC, dh_sku.sku ASC, {$wpdb->posts}.ID ASC";
 
 		return $clauses;
 	},
