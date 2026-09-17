@@ -244,29 +244,47 @@
 	font-size: var(--wp--preset--font-size--sm);
 }
 
-/* Narrow screens: stages become a rail that scrolls sideways ----------- */
+/* Narrow screens: the line turns vertical and the stages stack ---------- */
 
+/*
+ * A sideways rail would give every stage the height of the tallest one —
+ * Join lists nine fittings types, Source lists one — and leave a screen of
+ * empty paper under the short columns. Stacked, the same line simply runs
+ * down the inline-start edge, node to node, and nothing is hidden off-screen.
+ */
 @media (max-width: 56rem) {
 	.dh-line__stages {
-		grid-template-columns: none;
-		grid-auto-flow: column;
-		grid-auto-columns: minmax(12.5rem, 72vw);
-		overflow-x: auto;
-		overscroll-behavior-x: contain;
-		scroll-snap-type: x mandatory;
-		scrollbar-width: none;
-		padding-block-end: var(--wp--preset--spacing--20);
-		/* Bleed to the viewport edge so the rail reads as scrollable. */
-		margin-inline: calc(-1 * var(--wp--style--root--padding-left, 1rem));
-		padding-inline: var(--wp--style--root--padding-left, 1rem);
-	}
-
-	.dh-line__stages::-webkit-scrollbar {
-		display: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--wp--preset--spacing--40);
 	}
 
 	.dh-line__stage {
-		scroll-snap-align: start;
+		padding-block-start: 0;
+		padding-inline-start: calc(var(--_node) + var(--wp--preset--spacing--30));
+	}
+
+	/* The track now runs from this node's centre down to the next stage's node. */
+	.dh-line__stage::before {
+		inset-block-start: calc(var(--_node) / 2 + 0.2rem);
+		inset-block-end: calc(-1 * var(--wp--preset--spacing--40) - 0.2rem);
+		inset-inline-start: calc(var(--_node) / 2 - 0.5px);
+		inset-inline-end: auto;
+		inline-size: 1px;
+		block-size: auto;
+		transform-origin: 50% 0;
+	}
+
+	.dh-line__node {
+		inset-block-start: 0.2rem;
+	}
+
+	.js .dh-line .dh-line__stage::before {
+		transform: scaleY(0);
+	}
+
+	.js .dh-line.is-in .dh-line__stage::before {
+		transform: scaleY(1);
 	}
 }
 
