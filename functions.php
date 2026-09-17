@@ -19,6 +19,7 @@ $demas_theme_includes = array(
 	'inc/navigation.php',
 	'inc/patterns.php',
 	'inc/woocommerce.php',
+	'inc/system-map.php',
 	'inc/catalog-filters.php',
 	'inc/structured-data.php',
 );

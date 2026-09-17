@@ -14,10 +14,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 add_action( 'init', function () {
-	$build_path = DEMAS_THEME_DIR . '/build/catalog-toolbar';
+	// The toolbar (count, rail, sort) and the system index (stages of the
+	// irrigation / fog / workshop line). Both server-rendered from build/.
+	foreach ( array( 'catalog-toolbar', 'system-index' ) as $block ) {
+		$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
-	if ( file_exists( $build_path . '/block.json' ) ) {
-		register_block_type( $build_path );
+		if ( file_exists( $build_path . '/block.json' ) ) {
+			register_block_type( $build_path );
+		}
 	}
 } );
 
@@ -30,8 +34,8 @@ add_action( 'init', function () {
  * meta_key does not survive the trip, leaving an "ORDER BY meta_value" with
  * no join — invalid SQL, zero products. So this does what WooCommerce does
  * for price: join the product lookup table in posts_clauses, which applies
- * to whichever query actually renders the grid. Every product carries an
- * SKU, so nothing drops out of the sort.
+ * to whichever query actually renders the grid. Products without a SKU
+ * (none, once tools/assign-house-skus.php has run) sort last, not first.
  */
 add_filter(
 	'posts_clauses',

@@ -31,8 +31,13 @@ committed (see ADR-001 under Working agreement).
 - `assets/images/` — **not yet created.** Reserved for hand-placed theme imagery (logo,
   icons); photography for content goes through the Media Library, not this folder.
 - `tools/` — one-off operational scripts run by a human on the host, never by the theme at
-  runtime (currently: `create-product-categories.sh`, the WP-CLI script that builds the
-  locked category tree). Nothing here is loaded by `functions.php`.
+  runtime. `create-product-categories.sh` (WP-CLI, builds the locked category tree; superseded
+  by the 2026-09-17 live clone). `assign-house-skus.php` + `house-skus.csv` (run with
+  `wp eval-file`, dry-run by default): issues `DMS-<SEG>-<NNN>` house references to the 172
+  products that had no manufacturer SKU and files the 23 uncategorised ones — see the file
+  header for the grammar and why `DMS-` sits in the brand slot. Nine rows are flagged
+  `DUPLICATE` and get a category but no number; they are for Demas to delete. Nothing here is
+  loaded by `functions.php`.
 - `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
   rejected, what it costs. See `docs/adr/README.md` for the index. **ADR-002** records the
   platform/theme decision (WordPress + custom block theme over a page builder or headless) and
@@ -44,10 +49,17 @@ committed (see ADR-001 under Working agreement).
   - `navigation.php` — nav menu registration and the mega-menu icon set
   - `patterns.php` — block pattern category registration only
   - `woocommerce.php` — WooCommerce compatibility declarations and any theme-side WC integration
+  - `system-map.php` — the catalogue read as physical systems: `demas_theme_get_system_map()`
+    lists the stages of the irrigation, fog and workshop lines and which existing `product_cat`
+    slugs sit at each; `demas_theme_get_term_kind()` says whether a term is a part type, a
+    brand or a model series. Pure data + helpers, filterable, **re-parents nothing** — the tree is
+    locked; this only decides where a term is shown. Swimming Pool has no children and no entry.
   - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count, child-category
-    rail, sort links; server-rendered, no JS) and adds SKU ordering via `pre_get_posts`. There are
-    no product attributes in the catalogue — specs live in description HTML — so there is nothing
-    to facet by; category, brand-as-category, SKU and name are the only real axes.
+    rail with a "By brand / By type / By series" label, sort links; server-rendered, no JS) and
+    the `demas-theme/system-index` block (the stage line rendered from `system-map.php`), and
+    adds SKU ordering via a `posts_clauses` join. There are no product attributes in the
+    catalogue — specs live in description HTML — so there is nothing to facet by; category,
+    brand-as-category, SKU and name are the only real axes.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections

@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/system-index",
+	"title": "Browse by System",
+	"category": "woocommerce",
+	"icon": "networking",
+	"description": "The current catalogue section read as the stages of a physical system, each stage linking to the existing categories. Server-rendered; works without JavaScript.",
+	"textdomain": "demas-theme",
+	"editorScript": "file:./index.tsx",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"attributes": {}
+}

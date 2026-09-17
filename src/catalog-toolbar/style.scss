@@ -20,8 +20,17 @@
 /* Rail ---------------------------------------------------------------- */
 
 .dh-toolbar__rail {
+	display: flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--30);
 	padding-block: var(--wp--preset--spacing--30);
 	border-block-end: var(--wp--custom--rule);
+}
+
+/* "By brand" / "By type" / "By series" — what the chips are choosing between. */
+.dh-toolbar__rail-label {
+	flex: none;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
 }
 
 /*
@@ -30,6 +39,8 @@
  * within reach and matches how the same control behaves on a phone.
  */
 .dh-toolbar__chips {
+	flex: 1 1 auto;
+	min-inline-size: 0;
 	display: flex;
 	gap: 0.35rem;
 	margin: 0;

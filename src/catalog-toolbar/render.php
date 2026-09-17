@@ -93,6 +93,14 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 
 	<?php if ( $demas_rail ) : ?>
 		<nav class="dh-toolbar__rail" aria-label="<?php esc_attr_e( 'Narrow this category', 'demas-theme' ); ?>">
+			<?php
+			// One word for what the chips choose between — a kind of part, a
+			// manufacturer, or a model family — since the tree mixes all three.
+			$demas_rail_label = function_exists( 'demas_theme_get_rail_label' ) ? demas_theme_get_rail_label( $demas_rail ) : '';
+			?>
+			<?php if ( $demas_rail_label ) : ?>
+				<span class="dh-toolbar__rail-label dh-eyebrow"><?php echo esc_html( $demas_rail_label ); ?></span>
+			<?php endif; ?>
 			<ul class="dh-toolbar__chips">
 				<?php if ( $demas_back instanceof WP_Term ) : ?>
 					<li>
