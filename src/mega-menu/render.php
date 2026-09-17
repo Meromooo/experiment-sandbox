@@ -33,7 +33,9 @@ $demas_structure = apply_filters(
 		'landscape'                 => array( 'rotors', 'controllers', 'landscape-valves', 'valve-boxes-fittings' ),
 		'fog-systems'               => array( 'controllers-dosingpumps-electromagneticvalves', 'tecnocooling-fittings', 'nozzles-and-extensions', 'water-treatment' ),
 		'industrial-tools-services' => array( 'band-saw-accessories', 'cutting-tools', 'welding-machines', 'magnetic-drills' ),
-		'non-woven'                 => array(),
+		// Slug is misspelled on the live site ("non-wooven"); matching it is
+		// deliberate, because product URLs must survive the migration.
+		'non-wooven'                => array(),
 	)
 );
 
@@ -46,7 +48,7 @@ $demas_structure = apply_filters(
 $demas_external = apply_filters(
 	'demas_theme_mega_menu_external_links',
 	array(
-		'non-woven' => array(
+		'non-wooven' => array(
 			array(
 				'label' => __( 'Visit DM Non-Wovens', 'demas-theme' ),
 				'url'   => 'https://demasnonwoven.com/',

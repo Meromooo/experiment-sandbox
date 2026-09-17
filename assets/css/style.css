@@ -1381,3 +1381,209 @@ svg {
 		transition: none;
 	}
 }
+
+/* ------------------------------------------------------------------ */
+/* 10. Catalogue — archive and product cards                           */
+/* ------------------------------------------------------------------ */
+
+.dh-shop {
+	padding-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--70);
+}
+
+.dh-shop__head {
+	margin-block-end: var(--wp--preset--spacing--50);
+}
+
+.dh-shop__crumbs {
+	margin-block-end: var(--wp--preset--spacing--40);
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 62%, transparent);
+}
+
+.dh-shop__crumbs a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.dh-shop__crumbs a:hover {
+	color: var(--wp--preset--color--canopy);
+	text-decoration: underline;
+}
+
+.dh-shop__title {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--xxl);
+}
+
+.dh-shop__desc {
+	margin-block-start: var(--wp--preset--spacing--30);
+	max-inline-size: 46rem;
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 76%, transparent);
+}
+
+/* Result count and sorting share one hairline-separated bar. */
+.dh-shop__toolbar {
+	gap: var(--wp--preset--spacing--40);
+	margin-block-end: var(--wp--preset--spacing--50);
+	padding-block: var(--wp--preset--spacing--30);
+	border-block: var(--wp--custom--rule);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.dh-shop__toolbar .woocommerce-result-count {
+	margin: 0;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 62%, transparent);
+}
+
+.dh-shop__toolbar select,
+.woocommerce .woocommerce-ordering select {
+	padding: 0.5em 0.9em;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 18%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+/* Product grid --------------------------------------------------------- */
+
+.dh-grid .wp-block-post-template,
+.dh-grid .wc-block-product-template {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+	gap: var(--wp--preset--spacing--50) var(--wp--preset--spacing--40);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-pcard {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--30);
+	block-size: 100%;
+}
+
+/*
+ * Product photography is studio-shot on white, so the tile sits on sand to
+ * give the cut-out something to read against. object-fit: contain keeps the
+ * whole component visible — crops lose exactly the detail a buyer is checking.
+ */
+.dh-pcard__media {
+	margin: 0;
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--sand);
+	overflow: hidden;
+}
+
+.dh-pcard__media img {
+	display: block;
+	inline-size: 100%;
+	aspect-ratio: 1;
+	object-fit: contain;
+	padding: var(--wp--preset--spacing--40);
+	transition: transform var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
+}
+
+.dh-pcard:hover .dh-pcard__media img {
+	transform: scale(1.04);
+}
+
+.dh-pcard__body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--20);
+}
+
+.dh-pcard__title {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 500;
+	font-stretch: normal;
+	letter-spacing: 0;
+	line-height: 1.35;
+	text-wrap: pretty;
+}
+
+.dh-pcard__title a {
+	color: var(--wp--preset--color--ink);
+	text-decoration: none;
+}
+
+.dh-pcard__title a:hover {
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-pcard__price {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+/* Unpriced catalogue: the substitute for "SAR 0.00", set in inc/woocommerce.php. */
+.dh-price-request {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45em;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-price-request::before {
+	content: "";
+	inline-size: 0.4em;
+	block-size: 0.4em;
+	border-radius: 50%;
+	background: var(--wp--preset--color--field);
+}
+
+.dh-shop__empty {
+	margin: var(--wp--preset--spacing--60) 0;
+	font-size: var(--wp--preset--font-size--lg);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+/* Pagination ----------------------------------------------------------- */
+
+.dh-pagination {
+	gap: var(--wp--preset--spacing--20);
+	margin-block-start: var(--wp--preset--spacing--70);
+	padding-block-start: var(--wp--preset--spacing--50);
+	border-block-start: var(--wp--custom--rule);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.dh-pagination a,
+.dh-pagination span {
+	padding: 0.5em 0.9em;
+	border-radius: var(--wp--custom--radius--pill);
+	text-decoration: none;
+	color: var(--wp--preset--color--ink);
+	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-pagination a:hover {
+	background: color-mix(in srgb, var(--wp--preset--color--field) 24%, transparent);
+}
+
+.dh-pagination .page-numbers.current {
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-pcard__media img,
+	.dh-pagination a {
+		transition: none;
+	}
+
+	.dh-pcard:hover .dh-pcard__media img {
+		transform: none;
+	}
+}
