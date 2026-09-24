@@ -48,6 +48,14 @@ $demas_sku   = trim( (string) $demas_product->get_sku() );
 
 $demas_spec = demas_theme_clean_description( (string) apply_filters( 'the_content', $demas_product->get_description() ) );
 
+if ( isset( $_GET['dh_debug'] ) ) { // phpcs:ignore -- TEMP probe.
+	$dbg_raw  = (string) $demas_product->get_description();
+	$dbg_raw2 = (string) get_post_field( 'post_content', $demas_id );
+	$dbg_tc   = (string) apply_filters( 'the_content', $dbg_raw );
+	$dbg_ap   = wpautop( $dbg_raw );
+	echo '<!-- dh_debug raw=' . strlen( $dbg_raw ) . ' post_content=' . strlen( $dbg_raw2 ) . ' the_content=' . strlen( $dbg_tc ) . ' wpautop=' . strlen( $dbg_ap ) . ' clean(wpautop)=' . strlen( demas_theme_clean_description( $dbg_ap ) ) . ' pregerr=' . preg_last_error() . ' -->';
+}
+
 // The lede is prose: plain text, trimmed, and dropped when it only repeats
 // the opening of the description or is itself a pasted stylesheet.
 $demas_lede       = demas_theme_plain_text( (string) $demas_product->get_short_description() );
