@@ -350,10 +350,6 @@
 	overflow-wrap: anywhere;
 }
 
-.dh-spec__body div {
-	margin: 0;
-}
-
 .dh-spec__body :is(p, ul, ol) {
 	margin: 0 0 var(--wp--preset--spacing--40);
 }
@@ -380,7 +376,8 @@
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
 }
 
-.dh-spec__body :is(h1, h2, h3, h4, h5, h6):first-child {
+/* Only the sheet's very first heading sits flush; every later one gets air. */
+.dh-spec__body > :first-child {
 	margin-block-start: 0;
 }
 

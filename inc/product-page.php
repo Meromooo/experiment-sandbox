@@ -137,7 +137,7 @@ function demas_theme_get_product_stage( array $chain ): ?array {
 function demas_theme_plain_text( string $html ): string {
 	$text = html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
-	return trim( preg_replace( '/\s+/u', ' ', $text ) );
+	return trim( preg_replace( '/\s+/u', ' ', $text ) ?? $text );
 }
 
 /**
@@ -165,6 +165,8 @@ function demas_theme_looks_like_css( string $text ): bool {
  *  - paragraphs that are really stylesheets are dropped;
  *  - presentational attributes are removed, so the theme's type and rules
  *    apply instead of the old site's navy and grey;
+ *  - wrapper <div>s are unwrapped and typed "•" bullets inside list items
+ *    are dropped;
  *  - tables get a scrolling wrapper, so a wide spec table scrolls inside the
  *    column on a phone instead of pushing the page sideways;
  *  - empty paragraphs left behind are removed.
@@ -174,15 +176,18 @@ function demas_theme_clean_description( string $html ): string {
 		return '';
 	}
 
+	// Each pass keeps the previous result if its pattern fails (a null from
+	// preg_* on malformed input), so a bad description degrades to less
+	// cleaning rather than to an empty specification.
 	$html = preg_replace_callback(
 		'#<p\b[^>]*>(.*?)</p>#is',
 		function ( $m ) {
 			return demas_theme_looks_like_css( demas_theme_plain_text( $m[1] ) ) ? '' : $m[0];
 		},
 		$html
-	);
+	) ?? $html;
 
-	$html = preg_replace( '#<(style|script)\b[^>]*>.*?</\1>#is', '', $html );
+	$html = preg_replace( '#<(style|script)\b[^>]*>.*?</\1>#is', '', $html ) ?? $html;
 
 	$presentational = array( 'style', 'align', 'valign', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'color', 'face' );
 	$processor      = new WP_HTML_Tag_Processor( $html );
@@ -201,10 +206,21 @@ function demas_theme_clean_description( string $html ): string {
 
 	$html = $processor->get_updated_html();
 
-	$html = preg_replace( '#<table\b#i', '<div class="dh-spec__table"><table', $html );
-	$html = preg_replace( '#</table>#i', '</table></div>', $html );
+	// Every <div> in these descriptions is a styled box from the old site or a
+	// page-builder wrapper. With the styles gone they only nest each section
+	// one level deep, which makes every heading a first child and collapses
+	// the space above it. Unwrapping leaves headings, paragraphs, lists and
+	// tables as siblings — the shape the spec styles are written for.
+	$html = preg_replace( '#</?div\b[^>]*>#i', "\n", $html ) ?? $html;
 
-	$html = preg_replace( '#<p>(?:\s|&nbsp;|<br\s*/?>)*</p>#i', '', $html );
+	// 311 list items (all 53 tool products) start with a typed "•" as well as
+	// being in a list, which would print two bullets.
+	$html = preg_replace( '#(<li\b[^>]*>)\s*(?:&\#8226;|&bull;|•|·)\s*#u', '$1', $html ) ?? $html;
+
+	$html = preg_replace( '#<table\b#i', '<div class="dh-spec__table"><table', $html ) ?? $html;
+	$html = preg_replace( '#</table>#i', '</table></div>', $html ) ?? $html;
+
+	$html = preg_replace( '#<p>(?:\s|&nbsp;|<br\s*/?>)*</p>#i', '', $html ) ?? $html;
 
 	return trim( $html );
 }
