@@ -86,7 +86,7 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 			<header class="dh-quote-dialog__head">
 				<div class="dh-quote-dialog__heading">
 					<h2 id="dh-quote-title" class="dh-quote-dialog__title" tabindex="-1"><?php esc_html_e( 'Your quote', 'demas-theme' ); ?></h2>
-					<p class="dh-quote-dialog__count dh-mono" data-wp-text="state.partsLabel"></p>
+					<p class="dh-quote-dialog__count dh-mono" hidden data-wp-bind--hidden="!state.hasItems" data-wp-text="state.partsLabel"></p>
 				</div>
 				<button type="button" class="dh-quote-dialog__close" data-wp-on--click="actions.close" aria-label="<?php esc_attr_e( 'Close your quote', 'demas-theme' ); ?>">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>

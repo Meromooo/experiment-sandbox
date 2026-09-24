@@ -211,14 +211,19 @@ const { state } = store( 'demas-theme/quote', {
 			}
 		},
 
+		/*
+		 * Steps read the stored quantity, not the drawn row's: the row redraws a
+		 * frame later, so two presses before that (a held-down key) would both
+		 * start from the old number and add one instead of two.
+		 */
 		increment(): void {
 			const { line } = getContext< LineContext >();
-			setQty( line.id, line.qty + 1 );
+			setQty( line.id, currentQty( line.id ) + 1 );
 		},
 
 		decrement(): void {
 			const { line } = getContext< LineContext >();
-			setQty( line.id, line.qty - 1 );
+			setQty( line.id, currentQty( line.id ) - 1 );
 		},
 
 		/** Typed quantities: clamped to 1–9999; anything unreadable reverts. */
@@ -295,6 +300,10 @@ const { state } = store( 'demas-theme/quote', {
 function save( items: Item[] ): void {
 	state.items = items;
 	write( items );
+}
+
+function currentQty( id: number ): number {
+	return state.items.find( ( item ) => item.id === id )?.qty ?? 1;
 }
 
 function setQty( id: number, qty: number ): void {
