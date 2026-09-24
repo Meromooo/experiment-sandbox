@@ -116,40 +116,25 @@ add_filter(
 
 /*
  * The cloned menu also carries a Page List block, which lists every published
- * page — Cart and Checkout included — without any navigation-link of its own
- * to intercept. Those two pages are left out of get_pages() for the length of
- * that block's render only; nowhere else sees the filter.
+ * page — Cart and Checkout included — with no navigation-link of its own to
+ * stop. It sits inside the navigation block, where neither pre_render_block
+ * nor render_block_data reaches, so the two items are taken out of the page
+ * list's finished markup instead. They are single links with no sub-pages.
  */
-function demas_theme_without_cart_pages( $pages ) {
-	if ( ! function_exists( 'wc_get_page_id' ) || ! is_array( $pages ) ) {
-		return $pages;
-	}
-
-	$hidden = array( (int) wc_get_page_id( 'cart' ), (int) wc_get_page_id( 'checkout' ) );
-
-	return array_values(
-		array_filter(
-			$pages,
-			fn( $page ) => ! in_array( (int) $page->ID, $hidden, true )
-		)
-	);
-}
-
-add_filter(
-	'render_block_data',
-	function ( $parsed_block ) {
-		if ( 'core/page-list' === ( $parsed_block['blockName'] ?? '' ) ) {
-			add_filter( 'get_pages', 'demas_theme_without_cart_pages' );
-		}
-
-		return $parsed_block;
-	}
-);
-
 add_filter(
 	'render_block_core/page-list',
 	function ( $block_content ) {
-		remove_filter( 'get_pages', 'demas_theme_without_cart_pages' );
+		if ( ! function_exists( 'wc_get_cart_url' ) ) {
+			return $block_content;
+		}
+
+		foreach ( array( wc_get_cart_url(), wc_get_checkout_url() ) as $url ) {
+			$block_content = preg_replace(
+				'#<li\b[^>]*>\s*<a\b[^>]*\bhref="' . preg_quote( esc_url( $url ), '#' ) . '"[^>]*>.*?</a>\s*</li>#s',
+				'',
+				$block_content
+			) ?? $block_content;
+		}
 
 		return $block_content;
 	}
