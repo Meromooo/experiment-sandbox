@@ -48,17 +48,6 @@ $demas_sku   = trim( (string) $demas_product->get_sku() );
 
 $demas_spec = demas_theme_clean_description( (string) apply_filters( 'the_content', $demas_product->get_description() ) );
 
-if ( isset( $_GET['dh_debug'] ) ) { // phpcs:ignore -- TEMP probe.
-	$dbg_raw  = (string) $demas_product->get_description();
-	$dbg_raw2 = (string) get_post_field( 'post_content', $demas_id );
-	$dbg_tc   = (string) apply_filters( 'the_content', $dbg_raw );
-	$dbg_ap   = wpautop( $dbg_raw );
-	$dbg_c1 = preg_replace_callback( '#<p\b[^>]*>(.*?)</p>#is', function ( $m ) { return demas_theme_looks_like_css( demas_theme_plain_text( $m[1] ) ) ? '' : $m[0]; }, $dbg_tc );
-	$dbg_e1 = preg_last_error();
-	$dbg_c2 = null === $dbg_c1 ? null : preg_replace( '#<(style|script)\b[^>]*>.*?</\1>#is', '', $dbg_c1 );
-	echo '<!-- dh_debug raw=' . strlen( $dbg_raw ) . ' post_content=' . strlen( $dbg_raw2 ) . ' the_content=' . strlen( $dbg_tc ) . ' wpautop=' . strlen( $dbg_ap ) . ' clean(wpautop)=' . strlen( demas_theme_clean_description( $dbg_ap ) ) . ' clean(the_content)=' . strlen( demas_theme_clean_description( $dbg_tc ) ) . ' spec=' . strlen( $demas_spec ) . ' step1=' . ( null === $dbg_c1 ? 'NULL' : strlen( $dbg_c1 ) ) . ' err1=' . $dbg_e1 . ' step2=' . ( null === $dbg_c2 ? 'NULL' : strlen( $dbg_c2 ) ) . ' tc_head=' . esc_html( substr( $dbg_tc, 0, 160 ) ) . ' -->';
-}
-
 // The lede is prose: plain text, trimmed, and dropped when it only repeats
 // the opening of the description or is itself a pasted stylesheet.
 $demas_lede       = demas_theme_plain_text( (string) $demas_product->get_short_description() );
