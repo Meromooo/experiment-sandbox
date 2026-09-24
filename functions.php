@@ -21,6 +21,7 @@ $demas_theme_includes = array(
 	'inc/woocommerce.php',
 	'inc/system-map.php',
 	'inc/catalog-filters.php',
+	'inc/product-page.php',
 	'inc/structured-data.php',
 );
 

@@ -202,22 +202,44 @@ function demas_theme_get_brand_term_slugs(): array {
 }
 
 /**
+ * Brands whose sub-categories are model families rather than kinds of part.
+ *
+ * Under Hunter, Rain Bird and Irritrol the children are product lines — X2,
+ * NODE, ESP-TM2, 2400 Series. Under the tool brands they are not: Sumitomo's
+ * children are CBN Inserts, Milling, Turning Inserts, and Hugong's are MIG
+ * Welders and MMA Welders. Those are types, and calling them series would put
+ * "Series: End Mills" on a nameplate.
+ *
+ * @return string[]
+ */
+function demas_theme_get_series_brand_slugs(): array {
+	return apply_filters(
+		'demas_theme_series_brand_slugs',
+		array(
+			'hunter-irrigation',
+			'hunter-irrigation-landscape-valves',
+			'rain-bird',
+			'rain-bird-landscape-valves',
+			'irritrol',
+		)
+	);
+}
+
+/**
  * What kind of choice a term represents: a kind of part, a manufacturer, or
  * one of a manufacturer's model families.
  *
  * @return string 'type' | 'brand' | 'series'
  */
 function demas_theme_get_term_kind( WP_Term $term ): string {
-	$brands = demas_theme_get_brand_term_slugs();
-
-	if ( in_array( $term->slug, $brands, true ) ) {
+	if ( in_array( $term->slug, demas_theme_get_brand_term_slugs(), true ) ) {
 		return 'brand';
 	}
 
 	if ( $term->parent ) {
 		$parent = get_term( $term->parent, 'product_cat' );
 
-		if ( $parent instanceof WP_Term && in_array( $parent->slug, $brands, true ) ) {
+		if ( $parent instanceof WP_Term && in_array( $parent->slug, demas_theme_get_series_brand_slugs(), true ) ) {
 			return 'series';
 		}
 	}

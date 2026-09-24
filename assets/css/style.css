@@ -1579,3 +1579,80 @@ svg {
 		transform: none;
 	}
 }
+
+/* ------------------------------------------------------------------ */
+/* 11. Product page — layout around the Product Datasheet block        */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The block (build/product-summary) styles its own contents: nameplate,
+ * quote action, specification. This section places it — photo on one side,
+ * datasheet on the other — and sets the related-parts row beneath.
+ */
+.dh-product {
+	padding-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--80);
+}
+
+.dh-product__grid {
+	display: grid;
+	gap: var(--wp--preset--spacing--60);
+	margin-block-start: var(--wp--preset--spacing--50);
+}
+
+/*
+ * Studio shots on white, framed on sand like the archive cards so a part
+ * looks the same in the grid and on its own page. `contain`, never `cover`:
+ * a crop loses exactly the fitting end or thread a buyer is checking.
+ */
+.dh-product .dh-product__media {
+	margin: 0;
+	padding: var(--wp--preset--spacing--60);
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--sand);
+}
+
+.dh-product .dh-product__media img {
+	display: block;
+	inline-size: 100%;
+	block-size: auto;
+	aspect-ratio: 1;
+	object-fit: contain;
+	border-radius: var(--wp--custom--radius--md);
+}
+
+/*
+ * Two columns from 56rem. The photo pins while the specification scrolls
+ * past it — on a long sheet (the Sumitomo and Honsberg descriptions run to
+ * several screens) the part stays in view while its numbers are read.
+ */
+@media (min-width: 56.0625rem) {
+	.dh-product__grid {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+		align-items: start;
+		gap: var(--wp--preset--spacing--70);
+	}
+
+	.dh-product .dh-product__media {
+		position: sticky;
+		inset-block-start: var(--wp--preset--spacing--50);
+	}
+}
+
+/* Related parts -------------------------------------------------------- */
+
+.dh-related {
+	margin-block-start: var(--wp--preset--spacing--80);
+	padding-block-start: var(--wp--preset--spacing--60);
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-related .dh-related__title {
+	margin: 0 0 var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--xl);
+}
+
+@media (max-width: 40em) {
+	.dh-product .dh-product__media {
+		padding: var(--wp--preset--spacing--50);
+	}
+}

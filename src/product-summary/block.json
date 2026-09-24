@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/product-summary",
+	"title": "Product Datasheet",
+	"category": "woocommerce",
+	"icon": "id-alt",
+	"description": "The single product page's summary: category, name, the part's nameplate (SKU, brand, series, and where it sits on its system line), the quote action, and the cleaned specification. Server-rendered.",
+	"textdomain": "demas-theme",
+	"usesContext": [ "postId", "postType" ],
+	"editorScript": "file:./index.tsx",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"attributes": {}
+}

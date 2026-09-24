@@ -1,18 +1,53 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
-<main class="wp-block-group">
-	<!-- wp:woocommerce/single-product -->
-	<div class="wp-block-woocommerce-single-product">
-		<!-- wp:post-title {"level":1} /-->
-		<!-- wp:woocommerce/product-image-gallery /-->
-		<!-- wp:woocommerce/product-price /-->
-		<!-- wp:woocommerce/product-details -->
-		<div class="wp-block-woocommerce-product-details"></div>
-		<!-- /wp:woocommerce/product-details -->
-		<!-- wp:woocommerce/add-to-cart-form /-->
+<!-- wp:group {"tagName":"main","className":"dh-product","layout":{"type":"constrained"}} -->
+<main class="wp-block-group dh-product">
+
+	<!-- wp:woocommerce/breadcrumbs {"className":"dh-shop__crumbs"} /-->
+
+	<!-- wp:woocommerce/store-notices /-->
+
+	<!--
+		A datasheet, not a shop page: the photo pinned on one side, the part's
+		name, nameplate, quote action and specification on the other. No price
+		(every product is quoted), no cart, no tabs — the spec is on the page,
+		not behind a click.
+
+		The photo is core/post-featured-image rather than WooCommerce's gallery:
+		641 of 643 products have exactly one image, and the gallery block brings
+		jQuery, flexslider and photoswipe to show it.
+	-->
+	<!-- wp:group {"className":"dh-product__grid","layout":{"type":"default"}} -->
+	<div class="wp-block-group dh-product__grid">
+		<!-- wp:post-featured-image {"sizeSlug":"large","className":"dh-product__media"} /-->
+
+		<!-- wp:demas-theme/product-summary /-->
 	</div>
-	<!-- /wp:woocommerce/single-product -->
+	<!-- /wp:group -->
+
+	<!-- wp:woocommerce/product-collection {"queryId":1,"query":{"perPage":4,"pages":1,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":false,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[],"filterable":false,"relatedBy":{"categories":true,"tags":false}},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/related","hideControls":["inherit"],"queryContextIncludes":["collection"],"className":"dh-grid dh-related"} -->
+	<div class="wp-block-woocommerce-product-collection dh-grid dh-related">
+		<!-- wp:heading {"className":"dh-related__title"} -->
+		<h2 class="wp-block-heading dh-related__title">Related parts</h2>
+		<!-- /wp:heading -->
+
+		<!-- wp:woocommerce/product-template -->
+			<!-- wp:group {"className":"dh-pcard","layout":{"type":"default"}} -->
+			<div class="wp-block-group dh-pcard">
+				<!-- wp:woocommerce/product-image {"imageSizing":"single","isDescendentOfQueryLoop":true,"className":"dh-pcard__media"} /-->
+
+				<!-- wp:group {"className":"dh-pcard__body","layout":{"type":"default"}} -->
+				<div class="wp-block-group dh-pcard__body">
+					<!-- wp:post-title {"level":3,"isLink":true,"className":"dh-pcard__title"} /-->
+					<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"className":"dh-pcard__price"} /-->
+				</div>
+				<!-- /wp:group -->
+			</div>
+			<!-- /wp:group -->
+		<!-- /wp:woocommerce/product-template -->
+	</div>
+	<!-- /wp:woocommerce/product-collection -->
+
 </main>
 <!-- /wp:group -->
 

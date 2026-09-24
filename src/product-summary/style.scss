@@ -1,0 +1,496 @@
+/*
+ * Product Datasheet — everything beside the photo on a product page.
+ *
+ * One dark object on a light page: the nameplate, set in canopy like the
+ * rating plate riveted to a pump or a valve body. It carries the SKU in the
+ * data face, the brand and series when the category tree knows them, and the
+ * stage the part sits at on its system line — the same line the archive's
+ * "Browse by stage" index draws, here with this part's stage lit.
+ *
+ * `water` appears for the first time on the site here, as the quote action.
+ * It is reserved for that one job everywhere else.
+ *
+ * Every value resolves from theme.json. Logical properties so it mirrors
+ * under dir="rtl".
+ */
+
+.dh-summary {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--50);
+	min-inline-size: 0;
+}
+
+/* Head ------------------------------------------------------------------ */
+
+.dh-summary__head {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--30);
+}
+
+.dh-summary__eyebrow {
+	margin: 0;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-summary__eyebrow a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.dh-summary__eyebrow a:hover,
+.dh-summary__eyebrow a:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
+/*
+ * Three sizes, chosen by the length of the name (inc/product-page.php).
+ * Long names also narrow the width axis — at 125% a 110-character valve
+ * name is a five-line slab; at 100% it is three readable lines.
+ */
+.dh-summary .dh-summary__title {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--xxl);
+	line-height: 1.02;
+	overflow-wrap: anywhere;
+}
+
+.dh-summary .dh-summary__title.is-medium {
+	font-size: var(--wp--preset--font-size--xl);
+	line-height: 1.08;
+}
+
+.dh-summary .dh-summary__title.is-long {
+	font-size: var(--wp--preset--font-size--xl);
+	font-stretch: 100%;
+	letter-spacing: -0.01em;
+	line-height: 1.12;
+}
+
+.dh-summary__lede {
+	margin: 0;
+	max-inline-size: 40rem;
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 76%, transparent);
+	text-wrap: pretty;
+}
+
+/* Nameplate ------------------------------------------------------------- */
+
+.dh-plate {
+	display: grid;
+	gap: var(--wp--preset--spacing--50);
+	padding: var(--wp--preset--spacing--50);
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-plate__label {
+	display: block;
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	line-height: 1.2;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 62%, transparent);
+}
+
+.dh-plate__rows {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+	gap: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+	margin: 0;
+}
+
+.dh-plate__row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	min-inline-size: 0;
+}
+
+/* The SKU takes the full width: it is what a buyer copies onto an order. */
+.dh-plate__row--sku {
+	grid-column: 1 / -1;
+}
+
+.dh-plate__value {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 500;
+	line-height: 1.3;
+	overflow-wrap: anywhere;
+}
+
+.dh-plate__row--sku .dh-plate__value {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xl);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+	line-height: 1.1;
+	user-select: all;
+}
+
+/* The system line --------------------------------------------------------- */
+
+.dh-plate__line {
+	--_node: 0.75rem;
+	--_track: color-mix(in srgb, var(--wp--preset--color--paper) 30%, transparent);
+
+	padding-block-start: var(--wp--preset--spacing--50);
+	border-block-start: 1px solid color-mix(in srgb, var(--wp--preset--color--paper) 18%, transparent);
+}
+
+/* Only a nameplate with rows above it needs the divider. */
+.dh-plate__line:first-child {
+	padding-block-start: 0;
+	border-block-start: 0;
+}
+
+.dh-plate__system {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--20) var(--wp--preset--spacing--40);
+	margin: 0 0 var(--wp--preset--spacing--40);
+}
+
+.dh-plate__more {
+	font-size: var(--wp--preset--font-size--sm);
+	color: var(--wp--preset--color--paper);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--wp--preset--color--paper) 40%, transparent);
+	text-underline-offset: 0.25em;
+}
+
+.dh-plate__more:hover,
+.dh-plate__more:focus-visible {
+	text-decoration-color: currentColor;
+}
+
+.dh-plate__stages {
+	display: grid;
+	grid-template-columns: repeat(var(--_n, 5), minmax(0, 1fr));
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-plate__stage {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.55rem;
+	min-inline-size: 0;
+}
+
+/* Track: from this node's centre to the next node's centre. */
+.dh-plate__stage::before {
+	content: "";
+	position: absolute;
+	inset-block-start: calc(var(--_node) / 2 - 0.5px);
+	inset-inline-start: calc(var(--_node) / 2);
+	inline-size: 100%;
+	block-size: 1px;
+	background: var(--_track);
+	transform-origin: 0 50%;
+}
+
+[dir="rtl"] .dh-plate__stage::before {
+	transform-origin: 100% 50%;
+}
+
+.dh-plate__stage:last-child::before {
+	display: none;
+}
+
+.dh-plate__node {
+	position: relative;
+	z-index: 1;
+	inline-size: var(--_node);
+	block-size: var(--_node);
+	border: 1.5px solid color-mix(in srgb, var(--wp--preset--color--paper) 70%, transparent);
+	border-radius: 50%;
+	background: var(--wp--preset--color--canopy);
+	box-sizing: border-box;
+}
+
+.dh-plate__stage.is-current .dh-plate__node {
+	border-color: var(--wp--preset--color--field);
+	background: var(--wp--preset--color--field);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--wp--preset--color--field) 28%, transparent);
+}
+
+.dh-plate__stage-name {
+	font-size: var(--wp--preset--font-size--xs);
+	line-height: 1.25;
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 58%, transparent);
+	overflow-wrap: anywhere;
+}
+
+.dh-plate__stage.is-current .dh-plate__stage-name {
+	font-weight: 600;
+	color: var(--wp--preset--color--paper);
+}
+
+/*
+ * The line draws itself once, node to node, then the part's stage lights —
+ * the same device as the hero schematic and the archive's stage index, so a
+ * buyer who arrived from "Browse by stage" sees the line they came from.
+ * main.js adds .is-in; without JavaScript the .js gate never matches.
+ */
+.js .dh-plate__line .dh-plate__stage::before {
+	transform: scaleX(0);
+	transition: transform var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
+		calc(var(--wp--custom--motion--fast) + var(--i, 0) * 120ms);
+}
+
+.js .dh-plate__line .dh-plate__node {
+	transform: scale(0);
+	transition:
+		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease)
+			calc(var(--wp--custom--motion--fast) + var(--i, 0) * 120ms),
+		box-shadow var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
+}
+
+.js .dh-plate__line .dh-plate__stage.is-current .dh-plate__node {
+	box-shadow: 0 0 0 0 color-mix(in srgb, var(--wp--preset--color--field) 28%, transparent);
+}
+
+.js .dh-plate__line.is-in .dh-plate__stage::before {
+	transform: scaleX(1);
+}
+
+.js .dh-plate__line.is-in .dh-plate__node {
+	transform: scale(1);
+}
+
+.js .dh-plate__line.is-in .dh-plate__stage.is-current .dh-plate__node {
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--wp--preset--color--field) 28%, transparent);
+	transition-delay:
+		calc(var(--wp--custom--motion--fast) + var(--i, 0) * 120ms),
+		calc(var(--wp--custom--motion--base) + var(--_n, 5) * 120ms);
+}
+
+/* Quote action ------------------------------------------------------------ */
+
+.dh-summary__action {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+}
+
+.dh-quote-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.5rem 0.9rem 1.25rem;
+	border: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--water);
+	color: var(--wp--preset--color--white);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 500;
+	line-height: 1;
+	cursor: pointer;
+	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-quote-btn:hover {
+	background: color-mix(in srgb, var(--wp--preset--color--water) 78%, var(--wp--preset--color--ink));
+}
+
+.dh-quote-btn:focus-visible {
+	outline: 2px solid var(--wp--preset--color--water);
+	outline-offset: 3px;
+}
+
+.dh-summary__note {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+/* Specification ----------------------------------------------------------- */
+
+.dh-spec {
+	padding-block-start: var(--wp--preset--spacing--50);
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-spec .dh-spec__title {
+	margin: 0 0 var(--wp--preset--spacing--50);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-spec__empty {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--md);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+/*
+ * The body is descriptions imported from the old site, so it is styled from
+ * the elements up rather than from classes: headings, paragraphs, lists and
+ * tables are all that is left once the inline styles are stripped.
+ */
+.dh-spec__body {
+	font-size: var(--wp--preset--font-size--md);
+	line-height: 1.65;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 86%, transparent);
+	overflow-wrap: anywhere;
+}
+
+.dh-spec__body div {
+	margin: 0;
+}
+
+.dh-spec__body :is(p, ul, ol) {
+	margin: 0 0 var(--wp--preset--spacing--40);
+}
+
+.dh-spec__body > :last-child,
+.dh-spec__body :is(p, ul, ol):last-child {
+	margin-block-end: 0;
+}
+
+/*
+ * Imported headings are section labels ("Overview", "Key features"), not
+ * titles. The theme's global h3 is 2.5rem of stretched Archivo; here they
+ * become eyebrows so the spec reads as a sheet, not an article.
+ */
+.dh-spec__body :is(h1, h2, h3, h4, h5, h6) {
+	margin: var(--wp--preset--spacing--60) 0 var(--wp--preset--spacing--30);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 600;
+	font-stretch: normal;
+	letter-spacing: 0.08em;
+	line-height: 1.3;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-spec__body :is(h1, h2, h3, h4, h5, h6):first-child {
+	margin-block-start: 0;
+}
+
+.dh-spec__body strong,
+.dh-spec__body b {
+	font-weight: 600;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-spec__body :is(ul, ol) {
+	padding-inline-start: 1.25em;
+}
+
+.dh-spec__body li + li {
+	margin-block-start: 0.3em;
+}
+
+.dh-spec__body li::marker {
+	color: var(--wp--preset--color--field);
+}
+
+.dh-spec__body a {
+	color: var(--wp--preset--color--canopy);
+	text-underline-offset: 0.2em;
+}
+
+.dh-spec__body img {
+	max-inline-size: 100%;
+	block-size: auto;
+	border-radius: var(--wp--custom--radius--md);
+}
+
+/* Tables scroll inside the column instead of widening the page. */
+.dh-spec__table {
+	max-inline-size: 100%;
+	margin-block-end: var(--wp--preset--spacing--50);
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+}
+
+.dh-spec__table:last-child {
+	margin-block-end: 0;
+}
+
+.dh-spec__body table {
+	inline-size: 100%;
+	border-collapse: collapse;
+	border-block-start: var(--wp--custom--rule);
+	font-size: var(--wp--preset--font-size--sm);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.5;
+	overflow-wrap: normal;
+}
+
+.dh-spec__body :is(th, td) {
+	padding: 0.7rem 1rem 0.7rem 0;
+	border-block-end: var(--wp--custom--rule);
+	text-align: start;
+	vertical-align: top;
+}
+
+.dh-spec__body th {
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+/* Label / value tables: a fixed label column scans faster down a long sheet. */
+.dh-spec__body td:first-child:not(:only-child) {
+	inline-size: 36%;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+/* Editor placeholder ------------------------------------------------------ */
+
+.dh-summary-editor {
+	padding: var(--wp--preset--spacing--40);
+	border: var(--wp--custom--rule);
+	border-radius: var(--wp--custom--radius--md);
+	background: var(--wp--preset--color--paper);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+/* Small screens ----------------------------------------------------------- */
+
+@media (max-width: 40em) {
+	.dh-plate {
+		padding: var(--wp--preset--spacing--40);
+	}
+
+	.dh-quote-btn {
+		justify-content: center;
+		inline-size: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js .dh-plate__line .dh-plate__stage::before,
+	.js .dh-plate__line .dh-plate__node {
+		transition: none;
+		transform: none;
+	}
+
+	.js .dh-plate__line .dh-plate__stage.is-current .dh-plate__node {
+		box-shadow: 0 0 0 4px color-mix(in srgb, var(--wp--preset--color--field) 28%, transparent);
+	}
+
+	.dh-quote-btn {
+		transition: none;
+	}
+}

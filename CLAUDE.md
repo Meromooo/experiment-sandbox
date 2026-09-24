@@ -60,6 +60,16 @@ committed (see ADR-001 under Working agreement).
     adds SKU ordering via a `posts_clauses` join. There are no product attributes in the
     catalogue — specs live in description HTML — so there is nothing to facet by; category,
     brand-as-category, SKU and name are the only real axes.
+  - `product-page.php` — registers the `demas-theme/product-summary` block (the single
+    product page's datasheet: category, name, nameplate, quote action, specification) and its
+    helpers: the product's deepest-first category chain, brand and series read from that
+    chain, the stage it sits at on its system line, a title-length tier, and
+    `demas_theme_clean_description()`. That last one matters: the imported descriptions carry
+    the old site's CSS pasted in as visible text (53 products), ~3,500 inline style attributes
+    and Elementor/chat-tool wrapper markup. It is cleaned **at render only** — the database is
+    untouched. Brand children count as "series" only under Hunter, Rain Bird and Irritrol
+    (`demas_theme_get_series_brand_slugs()` in `system-map.php`); under tool brands they are
+    types.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
@@ -71,6 +81,10 @@ committed (see ADR-001 under Working agreement).
   thin — push real content into patterns, not directly into the part.
 - `templates/` — top-level block templates (`index.html` is the only one WordPress strictly
   requires to activate; `single-product.html` and `archive-product.html` are WooCommerce-specific).
+  `single-product.html` (AMM-138, 2026-09-24) is a datasheet: `core/post-featured-image` for the
+  photo (not WooCommerce's gallery — 641 of 643 products have one image, and the gallery pulls
+  in jQuery, flexslider and photoswipe), the product-summary block, and a related-parts
+  `product-collection`. No price, no add-to-cart, no tabs.
   `front-page.html` composes the homepage from the six `demas-theme/*` patterns and is used for
   the front page regardless of the Reading setting.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
