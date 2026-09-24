@@ -213,9 +213,15 @@ function demas_theme_clean_description( string $html ): string {
 	// tables as siblings — the shape the spec styles are written for.
 	$html = preg_replace( '#</?div\b[^>]*>#i', "\n", $html ) ?? $html;
 
-	// 311 list items (all 53 tool products) start with a typed "•" as well as
-	// being in a list, which would print two bullets.
-	$html = preg_replace( '#(<li\b[^>]*>)\s*(?:&\#8226;|&bull;|•|·)\s*#u', '$1', $html ) ?? $html;
+	// 311 list items (all 53 tool products) carry their own "•": the old site
+	// drew it as an absolutely positioned <span>&bull;</span> inside the <li>.
+	// With its styles gone that span prints a second bullet beside the list's
+	// own marker, so the glyph goes — bare or wrapped in an inline tag.
+	$html = preg_replace(
+		'#(<li\b[^>]*>)\s*(?:<(span|strong|b|i|em)\b[^>]*>\s*(?:&\#8226;|&bull;|•|·)\s*</\2>|&\#8226;|&bull;|•|·)\s*#u',
+		'$1',
+		$html
+	) ?? $html;
 
 	$html = preg_replace( '#<table\b#i', '<div class="dh-spec__table"><table', $html ) ?? $html;
 	$html = preg_replace( '#</table>#i', '</table></div>', $html ) ?? $html;
