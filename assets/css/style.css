@@ -505,8 +505,17 @@ svg {
 .js [data-reveal].is-in {
 	transform: none;
 	opacity: 1;
-	clip-path: inset(0 0 0 0 round var(--_r));
 	background-size: 100% 100%;
+}
+
+/*
+ * Only the reveals that start clipped end clipped — to the card's own radius,
+ * so the settled shape matches its border. Applying the rounded inset to every
+ * revealed element shaved the corners off anything that is not a card: the
+ * first stage label on a product nameplate lost its first letter to it.
+ */
+.js :is([data-reveal="dot"], [data-reveal="sliver"], [data-reveal="bar"]).is-in {
+	clip-path: inset(0 0 0 0 round var(--_r));
 }
 
 /* Content inside a revealing container fades in after the container lands. */
