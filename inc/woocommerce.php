@@ -117,9 +117,9 @@ add_filter(
 /*
  * The cloned menu also carries a Page List block, which lists every published
  * page — Cart and Checkout included — with no navigation-link of its own to
- * stop. It sits inside the navigation block, where neither pre_render_block
- * nor render_block_data reaches, so the two items are taken out of the page
- * list's finished markup instead. They are single links with no sub-pages.
+ * stop. Filtering get_pages() for the length of its render had no effect (the
+ * block evidently queries pages another way), so the two items are taken out
+ * of its finished markup instead. They are single links with no sub-pages.
  */
 add_filter(
 	'render_block_core/page-list',
