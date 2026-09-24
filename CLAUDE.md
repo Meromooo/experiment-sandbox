@@ -70,6 +70,19 @@ committed (see ADR-001 under Working agreement).
     untouched. Brand children count as "series" only under Hunter, Rain Bird and Irritrol
     (`demas_theme_get_series_brand_slugs()` in `system-map.php`); under tool brands they are
     types.
+  - `quote.php` — registers the quote list's two blocks (AMM-139, 2026-09-24):
+    `demas-theme/quote-button` ("Add to quote" — full on the product page, compact on catalogue
+    cards) and `demas-theme/quote-drawer` (the header's "Your quote" control and the list, a
+    native modal `<dialog>`). They share one Interactivity API store, `demas-theme/quote`,
+    defined in `src/quote-drawer/view.ts` — so the drawer must stay in `parts/header.html` or
+    every quote button stops working. The list lives in the buyer's `localStorage` as a snapshot
+    per part; nothing is sent anywhere until AMM-140.
+  - `woocommerce.php` also holds **no cart, no checkout** (decided 2026-09-24): every product is
+    SAR 0.00, so `woocommerce_is_purchasable` is false, `/cart` and `/checkout` 302 to the
+    catalogue, and the mini-cart plus Cart/Checkout menu links are stopped in
+    `pre_render_block`. Nothing is deleted — remove the filters and WooCommerce's cart comes
+    back. Link to the catalogue with `demas_theme_catalogue_url()`, not the archive link, until
+    AMM-147 fixes `/shop/`.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
@@ -77,7 +90,8 @@ committed (see ADR-001 under Working agreement).
   `credentials`, `numbers`, `categories`, `process`, `closing-cta`. Section bodies are `wp:html`
   blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
-  title, the mega-menu block and the navigation block; `footer.html` is still a stub. Keep these
+  title, the mega-menu block, the navigation block and the quote-drawer block (which hosts the
+  quote store — don't remove it); `footer.html` is still a stub. Keep these
   thin — push real content into patterns, not directly into the part.
 - `templates/` — top-level block templates (`index.html` is the only one WordPress strictly
   requires to activate; `single-product.html` and `archive-product.html` are WooCommerce-specific).

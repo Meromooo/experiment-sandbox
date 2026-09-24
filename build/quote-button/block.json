@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/quote-button",
+  "title": "Add to Quote",
+  "category": "woocommerce",
+  "icon": "plus-alt",
+  "description": "Adds the product to the buyer's quote list. Full size on a product page, compact on catalogue cards. Relies on the Quote List block in the header, which carries the shared store.",
+  "textdomain": "demas-theme",
+  "usesContext": [
+    "postId",
+    "postType"
+  ],
+  "style": "file:./style-index.css",
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "supports": {
+    "interactivity": true,
+    "html": false
+  },
+  "attributes": {
+    "variant": {
+      "type": "string",
+      "enum": [
+        "full",
+        "compact"
+      ],
+      "default": "full"
+    },
+    "productId": {
+      "type": "integer",
+      "default": 0
+    },
+    "describedBy": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

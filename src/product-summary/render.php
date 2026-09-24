@@ -154,16 +154,21 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 
 	<div class="dh-summary__action">
 		<?php
-		/*
-		 * The quote list (AMM-139) wires this button through the Interactivity
-		 * API. Its name is already the one it keeps — "Add to quote" — so the
-		 * template does not change when that lands, only this block.
-		 */
+		// The quote button is its own block (build/quote-button), shared with
+		// the catalogue cards; the store behind it lives in the header's Quote
+		// List block. The note below is its description for screen readers.
+		echo do_blocks( // phpcs:ignore WordPress.Security.EscapeOutput -- block markup, escaped in its render.php.
+			sprintf(
+				'<!-- wp:demas-theme/quote-button %s /-->',
+				wp_json_encode(
+					array(
+						'productId'   => $demas_id,
+						'describedBy' => $demas_note_id,
+					)
+				)
+			)
+		);
 		?>
-		<button type="button" class="dh-quote-btn" data-product-id="<?php echo esc_attr( (string) $demas_id ); ?>" aria-describedby="<?php echo esc_attr( $demas_note_id ); ?>">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
-			<span><?php esc_html_e( 'Add to quote', 'demas-theme' ); ?></span>
-		</button>
 		<p class="dh-summary__note" id="<?php echo esc_attr( $demas_note_id ); ?>"><?php esc_html_e( 'Priced on request by your nearest Demas branch.', 'demas-theme' ); ?></p>
 	</div>
 

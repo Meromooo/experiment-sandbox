@@ -288,32 +288,6 @@
 	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
 }
 
-.dh-quote-btn {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0.9rem 1.5rem 0.9rem 1.25rem;
-	border: 0;
-	border-radius: var(--wp--custom--radius--pill);
-	background: var(--wp--preset--color--water);
-	color: var(--wp--preset--color--white);
-	font-family: var(--wp--preset--font-family--body);
-	font-size: var(--wp--preset--font-size--md);
-	font-weight: 500;
-	line-height: 1;
-	cursor: pointer;
-	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
-}
-
-.dh-quote-btn:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--water) 78%, var(--wp--preset--color--ink));
-}
-
-.dh-quote-btn:focus-visible {
-	outline: 2px solid var(--wp--preset--color--water);
-	outline-offset: 3px;
-}
-
 .dh-summary__note {
 	margin: 0;
 	font-size: var(--wp--preset--font-size--sm);
@@ -470,8 +444,9 @@
 		padding: var(--wp--preset--spacing--40);
 	}
 
-	.dh-quote-btn {
-		justify-content: center;
+	/* The quote button spans the column on a phone; its own styles are in build/quote-button. */
+	.dh-summary__action .dh-quote-add,
+	.dh-summary__action .dh-quote-btn {
 		inline-size: 100%;
 	}
 }
@@ -485,9 +460,5 @@
 
 	.js .dh-plate__line .dh-plate__stage.is-current .dh-plate__node {
 		box-shadow: 0 0 0 4px color-mix(in srgb, var(--wp--preset--color--field) 28%, transparent);
-	}
-
-	.dh-quote-btn {
-		transition: none;
 	}
 }

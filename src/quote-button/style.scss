@@ -1,0 +1,133 @@
+/*
+ * Add to Quote — the only thing on the site set in `water`.
+ *
+ * Full (product page): solid water, white label — the page's one primary
+ * action. Compact (catalogue cards): outlined, so a grid of 24 parts is not
+ * 24 solid buttons. Added: the same tinted look in both sizes, with a tick,
+ * so the state reads without relying on colour alone.
+ *
+ * Text on a light ground uses water deepened with ink: plain water on paper
+ * is 4.5:1, right at the edge, and on the tinted "added" ground it falls
+ * below it. The deeper mix clears 6:1 on both.
+ */
+
+.dh-quote-add {
+	--_water: var(--wp--preset--color--water);
+	--_water-deep: color-mix(in srgb, var(--wp--preset--color--water) 70%, var(--wp--preset--color--ink));
+	--_water-tint: color-mix(in srgb, var(--wp--preset--color--water) 12%, var(--wp--preset--color--paper));
+
+	display: inline-flex;
+}
+
+.dh-quote-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.5rem 0.9rem 1.25rem;
+	border: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--_water);
+	color: var(--wp--preset--color--white);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	cursor: pointer;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-quote-btn:hover {
+	background: color-mix(in srgb, var(--_water) 78%, var(--wp--preset--color--ink));
+}
+
+.dh-quote-btn:focus-visible {
+	outline: 2px solid var(--_water);
+	outline-offset: 3px;
+}
+
+/*
+ * Before the store has loaded — or with no JavaScript at all, when the list
+ * cannot work — the button keeps its space but is not shown or reachable.
+ */
+.dh-quote-btn.is-pending {
+	visibility: hidden;
+}
+
+/* Two labels and two icons; the state decides which pair shows. */
+.dh-quote-btn__icon--added,
+.dh-quote-btn__label--added,
+.dh-quote-btn.is-added .dh-quote-btn__icon--add,
+.dh-quote-btn.is-added .dh-quote-btn__label--add {
+	display: none;
+}
+
+.dh-quote-btn.is-added .dh-quote-btn__icon--added,
+.dh-quote-btn.is-added .dh-quote-btn__label--added {
+	display: inline;
+}
+
+.dh-quote-btn__icon {
+	flex: none;
+}
+
+/* Compact — catalogue cards. */
+.dh-quote-add--compact .dh-quote-btn {
+	gap: 0.4rem;
+	padding: 0.55rem 0.95rem 0.55rem 0.8rem;
+	background: transparent;
+	color: var(--_water-deep);
+	box-shadow: inset 0 0 0 1.5px var(--_water);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.dh-quote-add--compact .dh-quote-btn:hover {
+	background: var(--_water-tint);
+}
+
+.dh-quote-add--compact .dh-quote-btn__icon {
+	inline-size: 16px;
+	block-size: 16px;
+}
+
+/*
+ * Added — the same in both sizes. One class stronger than the compact rules
+ * above, which would otherwise win on source order and clear the tint.
+ */
+.dh-quote-add .dh-quote-btn.is-added {
+	background: var(--_water-tint);
+	color: var(--_water-deep);
+	box-shadow: inset 0 0 0 1.5px var(--_water);
+}
+
+.dh-quote-add .dh-quote-btn.is-added:hover {
+	background: color-mix(in srgb, var(--_water) 20%, var(--wp--preset--color--paper));
+}
+
+/* Touch screens: every quote control is at least 44px tall. */
+@media (pointer: coarse) {
+	.dh-quote-btn {
+		min-block-size: 2.75rem;
+	}
+}
+
+/* Editor placeholder ------------------------------------------------------ */
+
+.dh-quote-add-editor {
+	display: inline-block;
+	padding: 0.5rem 0.9rem;
+	border: 1.5px solid var(--wp--preset--color--water);
+	border-radius: var(--wp--custom--radius--pill);
+	color: var(--wp--preset--color--water);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-quote-btn {
+		transition: none;
+	}
+}

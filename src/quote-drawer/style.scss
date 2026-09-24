@@ -1,0 +1,488 @@
+/*
+ * Quote List — the header control and the list itself.
+ *
+ * The list is a native <dialog> opened as a modal: a panel dropping from the
+ * top corner on desktop, a sheet rising from the bottom on a phone, where the
+ * thumb is. Lines are numbered 001, 002 like a bill of quantities, with the
+ * SKU in the data face under each name. `water` marks the count and nothing
+ * else here; the list is otherwise ink on paper.
+ *
+ * Every value resolves from theme.json. Logical properties so it mirrors
+ * under dir="rtl".
+ */
+
+.dh-quote {
+	display: flex;
+	align-items: center;
+}
+
+/* Header control ------------------------------------------------------- */
+
+.dh-quote-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-block-size: 2.5rem;
+	padding: 0.35rem 0.4rem 0.35rem 0.8rem;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1;
+	cursor: pointer;
+	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-quote-toggle:hover {
+	border-color: var(--wp--preset--color--ink);
+}
+
+.dh-quote-toggle:focus-visible {
+	outline: 2px solid var(--wp--preset--color--water);
+	outline-offset: 2px;
+}
+
+/* No count yet: close the gap the badge would fill. */
+.dh-quote-toggle:has(.dh-quote-toggle__count[hidden]) {
+	padding-inline-end: 0.8rem;
+}
+
+.dh-quote-toggle__icon {
+	flex: none;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+.dh-quote-toggle__count {
+	min-inline-size: 2.6em;
+	padding: 0.3rem 0.5rem;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--water);
+	color: var(--wp--preset--color--white);
+	font-size: var(--wp--preset--font-size--xs);
+	text-align: center;
+}
+
+/* The dialog -------------------------------------------------------------- */
+
+.dh-quote-dialog {
+	--_pad: var(--wp--preset--spacing--50);
+
+	position: fixed;
+	inset-block: var(--wp--preset--spacing--40) auto;
+	inset-inline: auto var(--wp--preset--spacing--40);
+	inline-size: min(31rem, calc(100vw - 2 * var(--wp--preset--spacing--40)));
+	max-inline-size: none;
+	max-block-size: calc(100dvh - 2 * var(--wp--preset--spacing--40));
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--ink);
+	box-shadow: var(--wp--preset--shadow--raised);
+	overflow: hidden;
+}
+
+/* Author `display` would override the browser's hiding of a closed dialog. */
+.dh-quote-dialog[open] {
+	display: flex;
+	flex-direction: column;
+	animation: dh-quote-drop var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
+}
+
+.dh-quote-dialog::backdrop {
+	background: color-mix(in srgb, var(--wp--preset--color--ink) 38%, transparent);
+}
+
+.dh-quote-dialog[open]::backdrop {
+	animation: dh-quote-fade var(--wp--custom--motion--fast) ease-out;
+}
+
+@keyframes dh-quote-drop {
+	from {
+		opacity: 0;
+		transform: translateY(-0.5rem) scale(0.98);
+	}
+}
+
+@keyframes dh-quote-rise {
+	from {
+		transform: translateY(100%);
+	}
+}
+
+@keyframes dh-quote-fade {
+	from {
+		opacity: 0;
+	}
+}
+
+/* The page behind a modal should not scroll; the gutter stops it jumping. */
+html:has(.dh-quote-dialog[open]) {
+	overflow: hidden;
+	scrollbar-gutter: stable;
+}
+
+/* Fills the dialog, so a click on the <dialog> itself is on the backdrop. */
+.dh-quote-dialog__inner {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-block-size: 0;
+}
+
+.dh-quote-dialog__head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--40);
+	padding: var(--_pad);
+	border-block-end: var(--wp--custom--rule);
+}
+
+.dh-quote-dialog .dh-quote-dialog__title {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1;
+}
+
+.dh-quote-dialog__count {
+	margin: 0.45rem 0 0;
+	font-size: var(--wp--preset--font-size--xs);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
+}
+
+.dh-quote-dialog__close {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	inline-size: 2.75rem;
+	block-size: 2.75rem;
+	margin: -0.5rem -0.5rem 0 0;
+	border: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	cursor: pointer;
+}
+
+[dir="rtl"] .dh-quote-dialog__close {
+	margin: -0.5rem 0 0 -0.5rem;
+}
+
+/* Lines --------------------------------------------------------------------- */
+
+.dh-quote-lines {
+	flex: 1 1 auto;
+	min-block-size: 0;
+	margin: 0;
+	padding: 0 var(--_pad);
+	list-style: none;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.dh-quote-line {
+	display: grid;
+	grid-template-columns: 2rem 3.5rem minmax(0, 1fr) auto auto;
+	grid-template-areas: "n img main qty remove";
+	align-items: center;
+	gap: var(--wp--preset--spacing--30);
+	padding-block: var(--wp--preset--spacing--40);
+	border-block-end: var(--wp--custom--rule);
+}
+
+.dh-quote-line:last-child {
+	border-block-end: 0;
+}
+
+.dh-quote-line__n {
+	grid-area: n;
+	font-size: var(--wp--preset--font-size--xs);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
+}
+
+.dh-quote-line__img {
+	grid-area: img;
+	inline-size: 3.5rem;
+	block-size: 3.5rem;
+	padding: 0.25rem;
+	border-radius: var(--wp--custom--radius--md);
+	background: var(--wp--preset--color--sand);
+	object-fit: contain;
+	box-sizing: border-box;
+}
+
+.dh-quote-line__main {
+	grid-area: main;
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	min-inline-size: 0;
+}
+
+.dh-quote-line__name {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	color: var(--wp--preset--color--ink);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1.3;
+	text-decoration: none;
+}
+
+.dh-quote-line__name:hover,
+.dh-quote-line__name:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.dh-quote-line__sku {
+	font-size: var(--wp--preset--font-size--xs);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
+	overflow-wrap: anywhere;
+}
+
+/* Quantity stepper */
+
+.dh-qty {
+	grid-area: qty;
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+}
+
+.dh-qty__step {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: 2rem;
+	block-size: 2rem;
+	border: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	cursor: pointer;
+}
+
+.dh-qty__step:disabled {
+	opacity: 0.35;
+	cursor: default;
+}
+
+.dh-qty__input {
+	inline-size: 3.25em;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	font-size: var(--wp--preset--font-size--sm);
+	text-align: center;
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+.dh-qty__input::-webkit-inner-spin-button,
+.dh-qty__input::-webkit-outer-spin-button {
+	margin: 0;
+	-webkit-appearance: none;
+}
+
+.dh-quote-line__remove {
+	grid-area: remove;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: 2.25rem;
+	block-size: 2.25rem;
+	border: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 55%, transparent);
+	cursor: pointer;
+}
+
+:is(.dh-quote-dialog__close, .dh-qty__step:not(:disabled), .dh-quote-line__remove):hover {
+	background: color-mix(in srgb, var(--wp--preset--color--sand) 70%, transparent);
+	color: var(--wp--preset--color--ink);
+}
+
+:is(.dh-quote-dialog__close, .dh-qty__step, .dh-qty__input, .dh-quote-line__remove, .dh-quote-dialog__clear, .dh-quote-empty__link):focus-visible {
+	outline: 2px solid var(--wp--preset--color--water);
+	outline-offset: 2px;
+}
+
+/* Empty ----------------------------------------------------------------- */
+
+.dh-quote-empty {
+	padding: var(--_pad) var(--_pad) var(--wp--preset--spacing--60);
+}
+
+.dh-quote-empty__title {
+	margin: 0 0 0.4rem;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+}
+
+.dh-quote-empty__text {
+	margin: 0 0 var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+.dh-quote-empty__link {
+	display: inline-flex;
+	align-items: center;
+	min-block-size: 2.75rem;
+	padding: 0 1.1rem;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	color: var(--wp--preset--color--ink);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+.dh-quote-empty__link:hover {
+	border-color: var(--wp--preset--color--ink);
+}
+
+/* Footer ----------------------------------------------------------------- */
+
+.dh-quote-dialog__foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--30);
+	padding: var(--wp--preset--spacing--40) var(--_pad);
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-quote-dialog__note {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-quote-dialog__clear {
+	min-block-size: 2.75rem;
+	padding: 0 0.5rem;
+	border: 0;
+	background: transparent;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+	cursor: pointer;
+}
+
+.dh-quote-dialog__clear:hover {
+	color: var(--wp--preset--color--ink);
+}
+
+/* Anything the store hides stays hidden, whatever display it is given above. */
+.dh-quote-toggle__count[hidden],
+.dh-quote-lines[hidden],
+.dh-quote-empty[hidden],
+.dh-quote-dialog__foot[hidden] {
+	display: none;
+}
+
+/* Editor placeholder ------------------------------------------------------ */
+
+.dh-quote-editor {
+	display: inline-block;
+	padding: 0.4rem 0.8rem;
+	border: var(--wp--custom--rule);
+	border-radius: var(--wp--custom--radius--pill);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+/* Touch screens: 44px targets ------------------------------------------- */
+
+@media (pointer: coarse) {
+	.dh-quote-toggle {
+		min-block-size: 2.75rem;
+	}
+
+	.dh-qty__step,
+	.dh-quote-line__remove {
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+	}
+}
+
+/* Phones: icon-and-count control, sheet from the bottom ------------------ */
+
+@media (max-width: 40em) {
+	.dh-quote-toggle__label {
+		position: absolute;
+		inline-size: 1px;
+		block-size: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.dh-quote-toggle,
+	.dh-quote-toggle:has(.dh-quote-toggle__count[hidden]) {
+		padding-inline: 0.7rem 0.4rem;
+	}
+
+	.dh-quote-toggle:has(.dh-quote-toggle__count[hidden]) {
+		padding-inline-end: 0.7rem;
+	}
+
+	.dh-quote-dialog {
+		inset: auto 0 0;
+		inline-size: 100%;
+		max-block-size: 88dvh;
+		border-end-start-radius: 0;
+		border-end-end-radius: 0;
+	}
+
+	.dh-quote-dialog[open] {
+		animation-name: dh-quote-rise;
+	}
+
+	/* Quantity drops under the name; remove stays at the end of the row. */
+	.dh-quote-line {
+		grid-template-columns: 1.75rem 3rem minmax(0, 1fr) auto;
+		grid-template-areas:
+			"n img main remove"
+			"n img qty remove";
+		row-gap: var(--wp--preset--spacing--20);
+	}
+
+	.dh-quote-line__img {
+		inline-size: 3rem;
+		block-size: 3rem;
+	}
+
+	.dh-qty {
+		justify-self: start;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-quote-dialog[open],
+	.dh-quote-dialog[open]::backdrop {
+		animation: none;
+	}
+
+	.dh-quote-toggle {
+		transition: none;
+	}
+}

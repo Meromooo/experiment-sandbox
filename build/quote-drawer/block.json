@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/quote-drawer",
+  "title": "Quote List",
+  "category": "woocommerce",
+  "icon": "clipboard",
+  "description": "The header control (\"Your quote\" with a count) and the quote list itself. Carries the shared demas-theme/quote store, so it belongs in the header on every page; Add to Quote buttons depend on it.",
+  "textdomain": "demas-theme",
+  "style": "file:./style-index.css",
+  "editorScript": "file:./index.js",
+  "viewScriptModule": "file:./view.js",
+  "render": "file:./render.php",
+  "supports": {
+    "interactivity": true,
+    "html": false,
+    "multiple": false
+  },
+  "attributes": {}
+}
