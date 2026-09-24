@@ -149,6 +149,15 @@ html:has(.dh-quote-dialog[open]) {
 	line-height: 1;
 }
 
+/*
+ * The heading takes focus when the list opens, and after a line is removed,
+ * so a screen reader announces where the user is. It is not a control, so it
+ * gets no focus ring; the ring would read as something to press.
+ */
+.dh-quote-dialog__title:focus {
+	outline: none;
+}
+
 .dh-quote-dialog__count {
 	margin: 0.45rem 0 0;
 	font-size: var(--wp--preset--font-size--xs);
