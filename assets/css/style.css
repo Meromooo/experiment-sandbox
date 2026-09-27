@@ -634,14 +634,56 @@ svg {
 }
 
 /*
- * Below that breakpoint the header stacks, so the menu's full-width in-flow
- * panel has room instead of overhanging the viewport.
+ * Below that breakpoint the header is two rows: the site title with the small
+ * controls beside it, then the product menu at full width, where its in-flow
+ * panel opens and pushes the page down.
+ *
+ *   Demas Group ............ ≡  (account)  (Your quote · 002)
+ *   [ Products                                         ⌄ ]
+ *
+ * It used to stack every item on its own full-width row, which — with the
+ * closed menu panel still holding its height — made the header ~730px tall
+ * on a phone (AMM-159). The nav group is flattened with display: contents so
+ * its children can sit in the bar's grid next to the title; it is a plain
+ * group, not a landmark, so nothing is lost to assistive technology.
+ *
+ * The account icon is not in parts/header.html: WooCommerce inserts it after
+ * the navigation block (block hooks). It gets its own cell so it lines up
+ * with the others; if it is ever absent, its column is simply empty.
  */
 @media (max-width: 56rem) {
-	.dh-header__bar,
-	.dh-header__nav {
-		flex-direction: column;
-		align-items: stretch;
+	.dh-header .dh-header__bar {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) repeat(3, auto);
+		grid-template-areas:
+			"title links account quote"
+			"menu  menu  menu    menu";
+		align-items: center;
+		gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
+	}
+
+	.dh-header .dh-header__nav {
+		display: contents;
+	}
+
+	.dh-header__bar > .wp-block-site-title {
+		grid-area: title;
+	}
+
+	.dh-header .dh-mega-menu {
+		grid-area: menu;
+	}
+
+	.dh-header .dh-header__links {
+		grid-area: links;
+	}
+
+	.dh-header .wp-block-woocommerce-customer-account {
+		grid-area: account;
+	}
+
+	.dh-header .dh-quote {
+		grid-area: quote;
 	}
 }
 

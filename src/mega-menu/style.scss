@@ -209,8 +209,14 @@
 
 /*
  * Below the breakpoint the panel stops floating and becomes part of the page
- * flow: a full-width stacked list that pushes the header down, rather than a
- * card overhanging a 375px viewport.
+ * flow: a full-width stacked list that pushes the page down when open, rather
+ * than a card overhanging a 375px viewport.
+ *
+ * In the flow, a closed panel must take no room. Clipping and hiding it (as
+ * the floating panel does) left it holding its full height — ~530px of blank
+ * header on every page on a phone (AMM-159). Closed, it now collapses to
+ * nothing; open, it grows to its height and the columns follow, the same
+ * container-then-content order as the desktop reveal.
  */
 @media (max-width: 56rem) {
 	.dh-mega-menu {
@@ -226,13 +232,39 @@
 	.dh-mega-menu__panel {
 		position: static;
 		inline-size: 100%;
-		max-block-size: min(70vh, 34rem);
-		overflow-y: auto;
-		margin-block-start: var(--wp--preset--spacing--30);
-		padding: var(--wp--preset--spacing--40);
-		box-shadow: none;
+		max-block-size: 0;
+		margin-block-start: 0;
+		padding-block: 0;
+		padding-inline: var(--wp--preset--spacing--40);
+		overflow: hidden;
 		border: var(--wp--custom--rule);
+		border-block-width: 0;
+		box-shadow: none;
+		clip-path: none;
 		transform: none;
+		transition:
+			max-block-size var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			margin-block-start var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			padding-block var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			border-block-width var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			visibility 0s linear var(--wp--custom--motion--base);
+	}
+
+	.is-open > .dh-mega-menu__panel {
+		max-block-size: min(70vh, 34rem);
+		margin-block-start: var(--wp--preset--spacing--30);
+		padding-block: var(--wp--preset--spacing--40);
+		border-block-width: 1px;
+		overflow-y: auto;
+		clip-path: none;
+		transition:
+			max-block-size var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			margin-block-start var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			padding-block var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			border-block-width var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			visibility 0s;
 	}
 
 	.dh-mega-menu__columns {
