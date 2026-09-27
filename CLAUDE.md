@@ -202,6 +202,10 @@ branch-routed contact form replaces published email addresses.
   committed to git alongside source — Hostinger's git auto-deploy has no build step of its
   own, so a stale or missing `build/` folder means the change isn't actually live. Always
   run `npm run build` and confirm `build/` is staged before every commit that touches a block.
+- **Adding a file to `patterns/` needs a version bump.** WordPress caches a theme's pattern list
+  keyed on the `Version:` in the root `style.css`, so a new pattern file is invisible — a
+  `wp:pattern` pointing at it renders nothing — until that version changes. Bump `Version:` and
+  `DEMAS_THEME_VERSION` in `functions.php` together (0.2.0 on 2026-09-27, for `not-found`).
 - **`three`, `@react-three/fiber`, `@react-three/drei` in `package.json`** are intentionally
   pre-installed, unused as of 2026-07-28. They're reserved for a planned phase-2 scroll-driven
   pipe/particle-flow scene (see the system design doc's "Future ideas" section) — not scope creep,
