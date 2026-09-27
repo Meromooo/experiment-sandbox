@@ -9,10 +9,10 @@
 <!-- wp:group {"tagName":"section","className":"dh-section dh-closing","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-closing" id="contact">
 <!-- wp:html -->
-<div class="dh-band dh-card dh-card--canopy dh-cta" data-reveal="bar">
+<div class="dh-band dh-card dh-card--canopy dh-cta" data-reveal="bar" role="region" aria-labelledby="dh-closing-title">
 	<div class="dh-cta__inner" data-reveal-content>
 		<p class="dh-eyebrow dh-eyebrow--on-dark">Start the conversation</p>
-		<h2 class="dh-band__title">Let's put your project on solid ground.</h2>
+		<h2 class="dh-band__title" id="dh-closing-title">Let's put your project on solid ground.</h2>
 		<p class="dh-band__lead">Send us your drawings, your BOQ, or just the problem you're trying to solve. Our engineering team responds with a specification and quotation — typically within two business days.</p>
 		<div class="dh-cta__actions">
 			<a class="dh-pill dh-pill--paper" href="#find-your-branch">Request a quotation</a>

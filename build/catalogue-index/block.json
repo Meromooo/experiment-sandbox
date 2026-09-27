@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/catalogue-index",
+  "title": "Catalogue Index",
+  "category": "woocommerce",
+  "icon": "list-view",
+  "description": "Every product group and its subcategories, in the mega menu's order, as a quiet site index for the footer. Server-rendered; works without JavaScript.",
+  "textdomain": "demas-theme",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "attributes": {}
+}

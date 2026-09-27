@@ -23,6 +23,114 @@ add_action( 'init', function () {
 } );
 
 /**
+ * The catalogue's groups and the subcategories under each, in the exact order
+ * of demas-mega-menu-content-spec.md, which mirrors the live demas-group.com
+ * menu. Declared rather than sorted from the database because the spec's
+ * order is authoritative and is not alphabetical (Irrigation runs Pipes →
+ * Fittings → Filtration → Accessories → EF Fittings).
+ *
+ * The mega menu and the footer's catalogue index both read this, so the two
+ * can never list different things.
+ *
+ * @return array<string, string[]> Parent slug => ordered child slugs.
+ */
+function demas_theme_get_catalogue_structure(): array {
+	return (array) apply_filters(
+		'demas_theme_mega_menu_structure',
+		array(
+			'irrigation'                => array( 'pipes', 'fittings', 'filtration', 'cp-accessories', 'electro-fusion-fittings' ),
+			'landscape'                 => array( 'rotors', 'controllers', 'landscape-valves', 'valve-boxes-fittings' ),
+			'fog-systems'               => array( 'controllers-dosingpumps-electromagneticvalves', 'tecnocooling-fittings', 'nozzles-and-extensions', 'water-treatment' ),
+			'industrial-tools-services' => array( 'band-saw-accessories', 'cutting-tools', 'welding-machines', 'magnetic-drills' ),
+			// Slug is misspelled on the live site ("non-wooven"); matching it is
+			// deliberate, because product URLs must survive the migration.
+			'swimming-pool'             => array(),
+			'non-wooven'                => array(),
+		)
+	);
+}
+
+/**
+ * Outbound links listed under a group. Non-Woven is a link to the sister site
+ * on the live menu, not a real subcategory, so it has no term to read.
+ *
+ * @return array<string, array<int, array{label: string, url: string}>> Parent slug => links.
+ */
+function demas_theme_get_catalogue_external_links(): array {
+	return (array) apply_filters(
+		'demas_theme_mega_menu_external_links',
+		array(
+			'non-wooven' => array(
+				array(
+					'label' => __( 'Visit DM Non-Wovens', 'demas-theme' ),
+					'url'   => 'https://demasnonwoven.com/',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * The catalogue structure resolved to terms, with one query for every term.
+ *
+ * Labels come from the WooCommerce terms, so an editor renaming a category
+ * renames it everywhere. A group whose parent term does not exist is dropped
+ * and a missing child is skipped, so a partially-built taxonomy degrades to
+ * fewer items rather than errors.
+ *
+ * @return array<string, array{term: WP_Term, children: WP_Term[], links: array}> Parent slug => group.
+ */
+function demas_theme_get_catalogue_columns(): array {
+	static $columns = null;
+
+	if ( null !== $columns ) {
+		return $columns;
+	}
+
+	$columns   = array();
+	$structure = demas_theme_get_catalogue_structure();
+	$external  = demas_theme_get_catalogue_external_links();
+	$slugs     = array_merge( array_keys( $structure ), ...array_values( $structure ) );
+	$terms     = get_terms(
+		array(
+			'taxonomy'   => 'product_cat',
+			'slug'       => $slugs,
+			'hide_empty' => false,
+		)
+	);
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		return $columns;
+	}
+
+	$by_slug = array();
+	foreach ( $terms as $term ) {
+		$by_slug[ $term->slug ] = $term;
+	}
+
+	foreach ( $structure as $parent_slug => $child_slugs ) {
+		if ( ! isset( $by_slug[ $parent_slug ] ) ) {
+			continue;
+		}
+
+		$children = array();
+		foreach ( $child_slugs as $child_slug ) {
+			if ( isset( $by_slug[ $child_slug ] ) ) {
+				$children[] = $by_slug[ $child_slug ];
+			}
+		}
+
+		$columns[ $parent_slug ] = array(
+			'term'     => $by_slug[ $parent_slug ],
+			'children' => $children,
+			'links'    => $external[ $parent_slug ] ?? array(),
+		);
+	}
+
+	return $columns;
+}
+
+/**
  * Inline icon for a product_cat slug, drawn as an engineering schematic rather
  * than a generic pictogram: valves use the apex-to-apex gate-valve symbol,
  * dosing pumps the circle-and-triangle pump symbol, cutting tools a rhombic

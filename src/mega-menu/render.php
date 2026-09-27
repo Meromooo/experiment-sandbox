@@ -2,15 +2,10 @@
 /**
  * Server-rendered markup for the Mega Menu block.
  *
- * Renders the five product groups and their subcategories in the exact order
- * of demas-mega-menu-content-spec.md, which mirrors the live demas-group.com
- * menu. Order is declared here rather than sorted from the database because
- * the spec's order is authoritative and is not alphabetical (Irrigation runs
- * Pipes → Fittings → Filtration → Accessories → EF Fittings).
- *
- * Labels come from the WooCommerce terms, so an editor renaming a category
- * renames it here too. A slug in the map with no matching term is skipped, so
- * a partially-built taxonomy degrades to fewer items rather than fatal errors.
+ * Renders the product groups and their subcategories in the exact order of
+ * demas-mega-menu-content-spec.md. The order, the term lookup and the
+ * outbound links live in demas_theme_get_catalogue_columns()
+ * (inc/navigation.php), which the footer's catalogue index shares.
  *
  * @param array    $attributes Block attributes.
  * @param string   $content    Inner block content (unused — fully dynamic).
@@ -21,69 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Column order and the subcategory order within each column.
- *
- * @param array $structure Map of parent slug => ordered child slugs.
- */
-$demas_structure = apply_filters(
-	'demas_theme_mega_menu_structure',
-	array(
-		'irrigation'                => array( 'pipes', 'fittings', 'filtration', 'cp-accessories', 'electro-fusion-fittings' ),
-		'landscape'                 => array( 'rotors', 'controllers', 'landscape-valves', 'valve-boxes-fittings' ),
-		'fog-systems'               => array( 'controllers-dosingpumps-electromagneticvalves', 'tecnocooling-fittings', 'nozzles-and-extensions', 'water-treatment' ),
-		'industrial-tools-services' => array( 'band-saw-accessories', 'cutting-tools', 'welding-machines', 'magnetic-drills' ),
-		// Slug is misspelled on the live site ("non-wooven"); matching it is
-		// deliberate, because product URLs must survive the migration.
-		'swimming-pool'             => array(),
-		'non-wooven'                => array(),
-	)
-);
-
-/**
- * Outbound links appended to a column. Non-Woven is a link to the sister site
- * on the live menu, not a real subcategory, so it has no term to read.
- *
- * @param array $links Map of parent slug => list of array( label, url ).
- */
-$demas_external = apply_filters(
-	'demas_theme_mega_menu_external_links',
-	array(
-		'non-wooven' => array(
-			array(
-				'label' => __( 'Visit DM Non-Wovens', 'demas-theme' ),
-				'url'   => 'https://demasnonwoven.com/',
-			),
-		),
-	)
-);
-
-// One query for every term the menu can show.
-$demas_slugs = array_merge( array_keys( $demas_structure ), ...array_values( $demas_structure ) );
-$demas_terms = get_terms(
-	array(
-		'taxonomy'   => 'product_cat',
-		'slug'       => $demas_slugs,
-		'hide_empty' => false,
-	)
-);
-
-if ( is_wp_error( $demas_terms ) || empty( $demas_terms ) ) {
-	return;
-}
-
-$demas_by_slug = array();
-foreach ( $demas_terms as $demas_term ) {
-	$demas_by_slug[ $demas_term->slug ] = $demas_term;
-}
-
-// Drop columns whose parent term does not exist yet.
-$demas_columns = array();
-foreach ( $demas_structure as $demas_parent_slug => $demas_child_slugs ) {
-	if ( isset( $demas_by_slug[ $demas_parent_slug ] ) ) {
-		$demas_columns[ $demas_parent_slug ] = $demas_child_slugs;
-	}
-}
+// Groups, subcategories and outbound links, resolved to terms — shared with
+// the footer's catalogue index (inc/navigation.php).
+$demas_columns = function_exists( 'demas_theme_get_catalogue_columns' ) ? demas_theme_get_catalogue_columns() : array();
 
 if ( empty( $demas_columns ) ) {
 	return;
@@ -125,9 +60,10 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 		<ul class="dh-mega-menu__columns">
 			<?php
 			$demas_column_index = 0;
-			foreach ( $demas_columns as $demas_parent_slug => $demas_child_slugs ) :
-				$demas_parent = $demas_by_slug[ $demas_parent_slug ];
-				$demas_links  = isset( $demas_external[ $demas_parent_slug ] ) ? $demas_external[ $demas_parent_slug ] : array();
+			foreach ( $demas_columns as $demas_column ) :
+				$demas_parent   = $demas_column['term'];
+				$demas_children = $demas_column['children'];
+				$demas_links    = $demas_column['links'];
 				?>
 				<li class="dh-mega-menu__column" style="--i:<?php echo (int) $demas_column_index; ?>">
 					<a
@@ -137,7 +73,7 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 						<?php echo esc_html( $demas_parent->name ); ?>
 					</a>
 
-					<?php if ( ! $demas_child_slugs && ! $demas_links ) : ?>
+					<?php if ( ! $demas_children && ! $demas_links ) : ?>
 						<?php // A group with no subcategories (Swimming Pool) still gets one row, so the column reads like its neighbours. ?>
 						<ul class="dh-mega-menu__list">
 							<li>
@@ -160,11 +96,7 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 					<?php else : ?>
 						<ul class="dh-mega-menu__list">
 							<?php
-							foreach ( $demas_child_slugs as $demas_child_slug ) :
-								if ( ! isset( $demas_by_slug[ $demas_child_slug ] ) ) {
-									continue;
-								}
-								$demas_child = $demas_by_slug[ $demas_child_slug ];
+							foreach ( $demas_children as $demas_child ) :
 								?>
 								<li>
 									<a class="dh-mega-menu__link" href="<?php echo esc_url( get_term_link( $demas_child ) ); ?>">

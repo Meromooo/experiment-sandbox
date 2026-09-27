@@ -42,7 +42,8 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
 - `assets/css/`, `assets/js/` — hand-written front-end assets, enqueued via `inc/enqueue.php`.
   No build tooling for these — they are plain files. `style.css` holds the shape grammar
   (cards, pills, the concave notch), marquee, and reveal motion; `main.js` is the small
-  dependency-free script that drives reveals and the marquee loop.
+  dependency-free script that drives reveals, the marquee loop, counters, the Branch Desk
+  (including `#branch-xxx` deep links) and the homepage footer slide-over.
 - `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
   Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
   third-party font CDN. Fetched from the Google Fonts API on 2026-09-14; the fetch script
@@ -65,7 +66,11 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
 - `inc/` — PHP includes, one concern per file, all required from `functions.php`:
   - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.)
   - `enqueue.php` — front-end script/style registration only
-  - `navigation.php` — nav menu registration and the mega-menu icon set
+  - `navigation.php` — nav menu registration, the mega-menu icon set, and the catalogue
+    structure both the mega menu and the footer read: `demas_theme_get_catalogue_structure()`
+    (group → subcategory order, filter `demas_theme_mega_menu_structure`),
+    `demas_theme_get_catalogue_external_links()` and `demas_theme_get_catalogue_columns()`
+    (resolved to terms, one query)
   - `patterns.php` — block pattern category registration only
   - `woocommerce.php` — WooCommerce compatibility declarations and any theme-side WC integration
   - `system-map.php` — the catalogue read as physical systems: `demas_theme_get_system_map()`
@@ -113,16 +118,31 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     to the catalogue at `/products/` (AMM-147) — both 302 until cutover. Live and sandbox share
     the same URL structure (`/products/`, `/product/…`, `/product-category/…`), so product and
     category URLs survive cutover unchanged.
+  - `branches.php` — the 15 branches as one list, keyed by the Branch Desk's three-letter
+    codes (`demas_theme_get_branches()`: city, lat/lon, main) and `demas_theme_branch_url()`
+    (`/#branch-jed`, which selects that city on the homepage Desk). AMM-140 will route by these
+    codes. No email address belongs here. The hero's Desk still has its own static copy of the
+    cities until AMM-153.
+  - `footer.php` — registers the footer's two server-rendered blocks (AMM-144, 2026-09-28):
+    `demas-theme/catalogue-index` (every group and subcategory, from the shared catalogue
+    structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**: one dot
+    per branch at its real latitude/longitude on a graticule, no drawn border; hovering a
+    branch lights its dot via generated `:has()` CSS; the dots reveal outward from Riyadh).
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
   live — never hardcoded into templates. Current set (homepage, 2026-09-15): `hero`,
   `credentials`, `numbers`, `categories`, `process`, `closing-cta`; plus `not-found` (the 404
-  head, core blocks, not inserter-visible). Section bodies are `wp:html`
+  head, core blocks, not inserter-visible) and `footer` (AMM-144 — the site footer drawn as an
+  engineering drawing's **title block**: catalogue index, branches + key plan, the company
+  plate, the closing line; not inserter-visible). The footer's CR number, VAT number and
+  registered name read "Pending" until Ammar supplies them; "Our certificates" links the
+  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. Section bodies are `wp:html`
   blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block and the quote-drawer block (which hosts the
-  quote store — don't remove it); `footer.html` is still a stub. The navigation block carries
+  quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
+  renders the `<footer>` landmark itself). The navigation block carries
   its own two links (Services, Contact → the homepage Branch Desk) — left empty it falls back
   to the cloned site's only navigation post, a Page List of every page (AMM-145). Contact must
   not point at the cloned Contact Us page: it publishes staff email addresses. WooCommerce
@@ -139,7 +159,10 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
   `product-collection`. No price, no add-to-cart, no tabs.
   `front-page.html` composes the homepage from the six `demas-theme/*` patterns and is used for
   the front page regardless of the Reading setting (the static front page is the cloned
-  "Homepage" page, id 17 — keep it published; its Kadence content is never shown).
+  "Homepage" page, id 17 — keep it published; its Kadence content is never shown). Its closing
+  CTA sits **outside `<main>`**, in a `.dh-finale` wrapper with the footer part, so the CTA can
+  stay pinned while the footer slides over it (CSS sticky; `main.js` supplies the CTA's
+  height); the CTA is its own labelled region instead.
   `page.html` (title + content, readable measure) and `404.html` (the `not-found` pattern plus
   the stage index for every system) added 2026-09-27. There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.
@@ -199,8 +222,9 @@ branch-routed contact form replaces published email addresses.
 - `demas-mega-menu-content-spec.md` — locked mega-menu category/subcategory content, sourced
   directly from the live demas-group.com site. Category/subcategory names, structure, and depth
   (two levels) here are authoritative — don't invent or alter them. **Implemented 2026-09-15**:
-  column and item order live in `src/mega-menu/render.php` (filterable via
-  `demas_theme_mega_menu_structure`), the Non-Woven outbound link via
+  column and item order live in `demas_theme_get_catalogue_structure()` in
+  `inc/navigation.php` (filterable via `demas_theme_mega_menu_structure`; the footer's
+  catalogue index reads the same list), the Non-Woven outbound link via
   `demas_theme_mega_menu_external_links`, and one schematic icon per subcategory slug in
   `demas_theme_get_category_icon()`. **Amended 2026-09-17:** Swimming Pool (59 products, no
   subcategories) is a sixth column by Ammar's decision; the Non-Woven slug is `non-wooven`
@@ -227,7 +251,8 @@ branch-routed contact form replaces published email addresses.
 - **Adding a file to `patterns/` needs a version bump.** WordPress caches a theme's pattern list
   keyed on the `Version:` in the root `style.css`, so a new pattern file is invisible — a
   `wp:pattern` pointing at it renders nothing — until that version changes. Bump `Version:` and
-  `DEMAS_THEME_VERSION` in `functions.php` together (0.2.0 on 2026-09-27, for `not-found`).
+  `DEMAS_THEME_VERSION` in `functions.php` together (0.2.0 on 2026-09-27, for `not-found`;
+  0.3.0 on 2026-09-28, for `footer`).
 - **`three`, `@react-three/fiber`, `@react-three/drei` in `package.json`** are intentionally
   pre-installed, unused as of 2026-07-28. They're reserved for a planned phase-2 scroll-driven
   pipe/particle-flow scene (see the system design doc's "Future ideas" section) — not scope creep,

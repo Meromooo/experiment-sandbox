@@ -1885,3 +1885,283 @@ svg {
 	outline: 2px solid var(--wp--preset--color--field);
 	outline-offset: 2px;
 }
+
+/* ------------------------------------------------------------------ */
+/* 13. Footer — the title block (AMM-144)                              */
+/* ------------------------------------------------------------------ */
+
+/*
+ * patterns/footer.php, placed by parts/footer.html. Drawn as the title block
+ * in the corner of an engineering drawing: ruled cells, mono labels, the
+ * facts a trade buyer checks. A sand sheet with the card radius on its top
+ * corners — sand because it is the Branch Desk's surface, so on this site it
+ * already means "branches and contact". The catalogue index and the branch
+ * plan style themselves (src/catalogue-index, src/branch-plan); this section
+ * is the frame, the company plate and the closing line.
+ */
+footer.wp-block-template-part {
+	position: relative;
+	z-index: 1;
+	margin-block-start: var(--wp--preset--spacing--80);
+}
+
+.dh-foot {
+	--_r: var(--wp--custom--radius--lg);
+	--_rule: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 18%, transparent);
+	--_water-deep: color-mix(in srgb, var(--wp--preset--color--water) 70%, var(--wp--preset--color--ink));
+
+	padding-block: var(--wp--preset--spacing--70) var(--wp--preset--spacing--50);
+	border-start-start-radius: var(--_r);
+	border-start-end-radius: var(--_r);
+	background: var(--wp--preset--color--sand);
+	color: var(--wp--preset--color--ink);
+}
+
+/* Cell labels: KEY PLAN, BRANCHES · 15, EST., CR NO. … */
+.dh-foot-label,
+.dh-plate dt {
+	margin: 0 0 var(--wp--preset--spacing--40);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-stretch: normal;
+	font-weight: 500;
+	line-height: 1.3;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+/* Rows of the sheet: index, then branches and company, then the closing line. */
+.dh-foot__sheet > * {
+	margin-block: 0;
+}
+
+.dh-foot__sheet > * + * {
+	margin-block-start: var(--wp--preset--spacing--60);
+	padding-block-start: var(--wp--preset--spacing--60);
+	border-block-start: var(--_rule);
+}
+
+.dh-foot__block {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--wp--preset--spacing--60);
+}
+
+.dh-foot__block > * {
+	margin-block: 0;
+	min-inline-size: 0;
+}
+
+.dh-foot__id {
+	padding-block-start: var(--wp--preset--spacing--60);
+	border-block-start: var(--_rule);
+}
+
+@media (min-width: 64rem) {
+	.dh-foot__block {
+		grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+		gap: 0;
+	}
+
+	.dh-foot__block > .dh-bplan {
+		padding-inline-end: var(--wp--preset--spacing--60);
+	}
+
+	.dh-foot__id {
+		padding-block-start: 0;
+		padding-inline-start: var(--wp--preset--spacing--60);
+		border-block-start: 0;
+		border-inline-start: var(--_rule);
+	}
+}
+
+/* Company plate ------------------------------------------------------ */
+
+.dh-foot__name {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--xl);
+	font-weight: 700;
+	line-height: var(--wp--custom--display--leading);
+	letter-spacing: var(--wp--custom--display--tracking);
+	text-transform: uppercase;
+}
+
+.dh-foot__trade {
+	margin: var(--wp--preset--spacing--20) 0 var(--wp--preset--spacing--50);
+	max-inline-size: 30rem;
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+}
+
+.dh-plate {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin: 0;
+	border-block-end: var(--_rule);
+}
+
+.dh-plate__row {
+	min-inline-size: 0;
+	padding-block: var(--wp--preset--spacing--30);
+	border-block-start: var(--_rule);
+}
+
+.dh-plate__row.is-wide {
+	grid-column: 1 / -1;
+}
+
+/* The second of each pair of half-width cells: a rule between them. */
+.dh-plate__row:not(.is-wide) + .dh-plate__row:not(.is-wide) {
+	padding-inline-start: var(--wp--preset--spacing--40);
+	border-inline-start: var(--_rule);
+}
+
+.dh-plate dt {
+	margin-block-end: var(--wp--preset--spacing--10);
+}
+
+.dh-plate dd {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.45;
+}
+
+.dh-plate dd.is-pending {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.04em;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+.dh-plate a {
+	color: var(--wp--preset--color--ink);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--wp--preset--color--ink) 35%, transparent);
+	text-underline-offset: 0.2em;
+}
+
+.dh-plate a:hover,
+.dh-plate a:focus-visible {
+	color: var(--wp--preset--color--canopy);
+	text-decoration-color: currentColor;
+}
+
+.dh-plate__doc {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	inline-size: fit-content;
+	margin-block-start: var(--wp--preset--spacing--10);
+}
+
+.dh-plate__meta {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+}
+
+/* Closing line ------------------------------------------------------- */
+
+.dh-foot__base {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.dh-foot__legal {
+	margin: 0;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 76%, transparent);
+}
+
+.dh-foot__links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--wp--preset--spacing--20) var(--wp--preset--spacing--50);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-foot__links a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	color: var(--wp--preset--color--ink);
+	text-decoration: none;
+}
+
+.dh-foot__links a:hover,
+.dh-foot__links a:focus-visible {
+	color: var(--wp--preset--color--canopy);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.dh-foot__out {
+	flex: none;
+}
+
+/* The same list as the header's "Your quote": the quote colour, nowhere else. */
+.dh-foot__quote {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.55em 1.1em;
+	border: 1px solid color-mix(in srgb, var(--_water-deep) 45%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	background: transparent;
+	font: inherit;
+	font-weight: 500;
+	line-height: 1;
+	color: var(--_water-deep);
+	cursor: pointer;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-foot__quote:hover,
+.dh-foot__quote:focus-visible {
+	border-color: var(--_water-deep);
+	background: color-mix(in srgb, var(--wp--preset--color--water) 12%, transparent);
+}
+
+@media (pointer: coarse) {
+	.dh-foot__links a,
+	.dh-foot__quote,
+	.dh-plate a {
+		min-block-size: 44px;
+	}
+
+	.dh-plate a {
+		display: inline-flex;
+		align-items: center;
+	}
+}
+
+/* Homepage: the footer slides over the closing CTA ------------------- */
+
+/*
+ * Motion reference, item 6. front-page.html puts the closing CTA and the
+ * footer part in one .dh-finale wrapper, so the CTA can stay sticky for the
+ * footer's whole passage. main.js measures the CTA into --dh-pin-h and adds
+ * .is-pinnable (no JS, no pin). The offset pins the CTA the moment its bottom
+ * edge reaches the bottom of the viewport, so every line of it has been on
+ * screen before the footer covers it — also when it is taller than the
+ * viewport, where the offset goes negative. svh, not dvh: the pin must not
+ * jump when a phone's address bar slides away.
+ */
+@media (prefers-reduced-motion: no-preference) {
+	.dh-finale.is-pinnable > .dh-closing {
+		position: sticky;
+		z-index: 0;
+		top: calc(100vh - var(--dh-pin-h));
+		top: calc(100svh - var(--dh-pin-h));
+	}
+}

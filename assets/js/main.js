@@ -1,7 +1,7 @@
 /**
  * Demas Theme (Sandbox) — front-end behaviour.
  *
- * Four jobs, no dependencies, no build step:
+ * Five jobs, no dependencies, no build step:
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
  *     viewport, and number the children of [data-reveal-group] (--i) so CSS
  *     can stagger them. Reduced-motion users get the final state at once.
@@ -11,7 +11,10 @@
  *     into view. The markup already holds the final value, so without this
  *     script — or with reduced motion — the number is simply there.
  *  4. Branch Desk: [data-branch-desk] pairs city buttons with detail panels.
- *     Without this script the first branch (Riyadh) stays visible.
+ *     Without this script the first branch (Riyadh) stays visible. A
+ *     #branch-xxx hash (the footer's branch links) selects that city.
+ *  5. Finale: measures the homepage's closing CTA so CSS can pin it while
+ *     the footer slides over it. Without this script nothing is pinned.
  *
  * The .js class on <html> is the gate for every hidden initial state in
  * assets/css/style.css — with this file absent or failing, nothing is hidden.
@@ -150,7 +153,42 @@
 				select(button.getAttribute('data-branch'));
 			});
 		});
+
+		// The footer's branch links arrive as /#branch-jed. The browser has
+		// already scrolled to that city's button (it carries the id); this
+		// selects it, on load and when the link is followed on this page.
+		function selectFromHash() {
+			var match = /^#branch-([a-z]+)$/.exec(window.location.hash);
+			if (match && desk.querySelector('[data-branch="' + match[1] + '"]')) {
+				select(match[1]);
+			}
+		}
+
+		selectFromHash();
+		window.addEventListener('hashchange', selectFromHash);
 	});
+
+	/* 5. Finale --------------------------------------------------------- */
+
+	// Homepage: the closing CTA stays pinned while the footer slides over it.
+	// CSS needs the CTA's height to pin it with its bottom edge at the bottom
+	// of the viewport (style.css, section 13); without this, no pin.
+	if ('ResizeObserver' in window) {
+		each(document.querySelectorAll('.dh-finale'), function (finale) {
+			var pinned = finale.querySelector(':scope > .dh-closing');
+			if (!pinned) {
+				return;
+			}
+
+			var measure = function () {
+				finale.style.setProperty('--dh-pin-h', pinned.offsetHeight + 'px');
+			};
+
+			measure();
+			new ResizeObserver(measure).observe(pinned);
+			finale.classList.add('is-pinnable');
+		});
+	}
 
 	/* Reduced-motion change at runtime --------------------------------- */
 

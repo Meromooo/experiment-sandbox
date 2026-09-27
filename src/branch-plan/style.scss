@@ -1,0 +1,233 @@
+/*
+ * Branches and Key Plan.
+ *
+ * The key plan is drawn like the locator map in a drawing's title block:
+ * hairline graticule, mono tick labels, one dot per branch, the main branch
+ * ringed and named. Hovering or focusing a branch in the list lights its dot
+ * and names it; the rest dim. The per-branch :has() rules that do that are
+ * generated in render.php from the branch list and set --_on to 1.
+ *
+ * Reveal: the dots fade in outward from the main branch (opacity only — the
+ * motion reference's grid stagger), driven by the theme's [data-reveal]
+ * observer. Hover uses transform and has no delay, so the stagger never
+ * slows the interaction down.
+ *
+ * The plan never mirrors: geography does not flip in Arabic.
+ */
+
+.dh-bplan {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--wp--preset--spacing--50);
+}
+
+.dh-bplan__branches {
+	order: -1;
+	min-inline-size: 0;
+}
+
+/* Key plan ----------------------------------------------------------- */
+
+.dh-plan {
+	margin: 0;
+	max-inline-size: 17rem;
+	direction: ltr;
+}
+
+.dh-plan .dh-foot-label {
+	direction: inherit;
+}
+
+[dir="rtl"] .dh-plan .dh-foot-label {
+	direction: rtl;
+}
+
+.dh-plan__svg {
+	display: block;
+	inline-size: 100%;
+	block-size: auto;
+	overflow: visible;
+}
+
+.dh-plan__grid line {
+	stroke: color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.dh-plan__tick,
+.dh-plan__sea,
+.dh-plan__code {
+	font-family: var(--wp--preset--font-family--mono);
+}
+
+.dh-plan__tick {
+	font-size: 8px;
+	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
+}
+
+.dh-plan__sea {
+	font-size: 7.5px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
+}
+
+.dh-plan__site {
+	opacity: calc(var(--_dim, 1) * 1);
+	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-plan__dot,
+.dh-plan__ring {
+	transform-box: fill-box;
+	transform-origin: center;
+	transition:
+		opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-plan__dot {
+	fill: var(--wp--preset--color--canopy);
+	transform: scale(calc(1 + var(--_on, 0) * 0.9));
+}
+
+.dh-plan__ring {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.dh-plan__code {
+	font-size: 10px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	fill: var(--wp--preset--color--ink);
+	opacity: var(--_on, 0);
+	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-plan__site.is-main .dh-plan__code {
+	opacity: 1;
+}
+
+/* While any branch link is hovered or focused, the others step back. */
+.dh-bplan:has([data-branch-link]:is(:hover, :focus-visible)) .dh-plan__site {
+	--_dim: calc(0.3 + var(--_on, 0) * 0.7);
+}
+
+/* …and the main branch's permanent label gives way to the one being pointed at. */
+.dh-bplan:has([data-branch-link]:is(:hover, :focus-visible)) .dh-plan__site.is-main .dh-plan__code {
+	opacity: var(--_on, 0);
+}
+
+/* First view: outward from the main branch, one step at a time. */
+.js .dh-plan[data-reveal] :is(.dh-plan__dot, .dh-plan__ring) {
+	opacity: 0;
+	transition-delay: calc(var(--i, 0) * var(--wp--custom--motion--stagger)), 0s;
+}
+
+.js .dh-plan[data-reveal].is-in :is(.dh-plan__dot, .dh-plan__ring) {
+	opacity: 1;
+}
+
+/* Branch list -------------------------------------------------------- */
+
+.dh-bplan__list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 var(--wp--preset--spacing--40);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-branch {
+	display: flex;
+	align-items: baseline;
+	gap: 0.6em;
+	padding-block: 0.3rem;
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.35;
+	color: var(--wp--preset--color--ink);
+	text-decoration: none;
+}
+
+.dh-branch__code {
+	flex: none;
+	inline-size: 2.6em;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.04em;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+	transition: color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-branch__city {
+	min-inline-size: 0;
+}
+
+.dh-branch__tag {
+	flex: none;
+	align-self: center;
+	padding: 0.15em 0.55em;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--canopy) 45%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	line-height: 1.2;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-branch:hover .dh-branch__city,
+.dh-branch:focus-visible .dh-branch__city {
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.dh-branch:hover .dh-branch__code,
+.dh-branch:focus-visible .dh-branch__code {
+	color: var(--wp--preset--color--canopy);
+}
+
+@media (pointer: coarse) {
+	.dh-branch {
+		align-items: center;
+		min-block-size: 44px;
+		padding-block: 0;
+	}
+}
+
+/*
+ * From 40em: the plan beside the list, the plan first. Column-major list so
+ * the company's order reads down each column, main branch at the top.
+ */
+@media (min-width: 40em) {
+	.dh-bplan {
+		grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
+		gap: var(--wp--preset--spacing--60);
+		align-items: start;
+	}
+
+	.dh-bplan__branches {
+		order: 0;
+	}
+
+	.dh-bplan__list {
+		grid-auto-flow: column;
+		grid-template-rows: repeat(8, auto);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-plan__site,
+	.dh-plan__dot,
+	.dh-plan__ring,
+	.dh-plan__code,
+	.dh-branch__code {
+		transition: none;
+	}
+}

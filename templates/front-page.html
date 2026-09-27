@@ -7,8 +7,18 @@
 	<!-- wp:pattern {"slug":"demas-theme/numbers"} /-->
 	<!-- wp:pattern {"slug":"demas-theme/categories"} /-->
 	<!-- wp:pattern {"slug":"demas-theme/process"} /-->
-	<!-- wp:pattern {"slug":"demas-theme/closing-cta"} /-->
 </main>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+<!--
+	The closing CTA and the footer share one wrapper so the CTA can stay pinned
+	while the footer slides up over it (style.css section 13, main.js). That
+	puts the CTA outside <main>; it is its own labelled region instead.
+-->
+<!-- wp:group {"className":"dh-finale","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-finale">
+	<!-- wp:pattern {"slug":"demas-theme/closing-cta"} /-->
+
+	<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
+</div>
+<!-- /wp:group -->
