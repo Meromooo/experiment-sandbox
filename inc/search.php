@@ -188,7 +188,8 @@ add_action(
 				$score = 2;
 			}
 
-			$scored[] = array( $score, $title, $id );
+			// Part-number hits read in part-number order; the rest by name.
+			$scored[] = array( $score, $score <= 1 ? $sku : $title, $id );
 		}
 
 		usort(
