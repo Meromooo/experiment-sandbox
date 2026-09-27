@@ -13,7 +13,7 @@ committed (see ADR-001 under Working agreement).
 
 ## Skills to use in this repo
 
-Ammar's standing instruction (2026-09-27): these two are always on for this project.
+Ammar's standing instruction (2026-09-27): these three are always on for this project.
 
 - **`frontend-design:frontend-design`** — invoke it before any front-end, visual, template,
   pattern, CSS or block work (`templates/`, `parts/`, `patterns/`, `src/*`, `assets/css/`,
