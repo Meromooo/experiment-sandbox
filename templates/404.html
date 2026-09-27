@@ -7,9 +7,14 @@
 -->
 <!-- wp:group {"tagName":"main","className":"dh-404","layout":{"type":"constrained"}} -->
 <main class="wp-block-group dh-404">
-	<!-- wp:pattern {"slug":"demas-theme/not-found"} /-->
+	<!-- Default-layout inner group: keeps the narrower head on the column's left edge (see page.html). -->
+	<!-- wp:group {"className":"dh-404__inner","layout":{"type":"default"}} -->
+	<div class="wp-block-group dh-404__inner">
+		<!-- wp:pattern {"slug":"demas-theme/not-found"} /-->
 
-	<!-- wp:demas-theme/system-index /-->
+		<!-- wp:demas-theme/system-index /-->
+	</div>
+	<!-- /wp:group -->
 </main>
 <!-- /wp:group -->
 

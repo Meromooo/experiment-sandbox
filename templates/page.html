@@ -5,11 +5,21 @@
 	pages are Kadence-built; inc/pages.php strips their Kadence styling at
 	render, so they read in this theme's type instead of the old design.
 -->
+<!--
+	The inner group matters: the constrained layout centres each of its
+	children with auto margins, so a narrow title and a narrow body would each
+	float to the middle at different offsets. One inner group takes the content
+	width and keeps both on the column's left edge, in line with the header.
+-->
 <!-- wp:group {"tagName":"main","className":"dh-page","layout":{"type":"constrained"}} -->
 <main class="wp-block-group dh-page">
-	<!-- wp:post-title {"level":1,"className":"dh-page__title"} /-->
+	<!-- wp:group {"className":"dh-page__inner","layout":{"type":"default"}} -->
+	<div class="wp-block-group dh-page__inner">
+		<!-- wp:post-title {"level":1,"className":"dh-page__title"} /-->
 
-	<!-- wp:post-content {"className":"dh-page__body","layout":{"type":"default"}} /-->
+		<!-- wp:post-content {"className":"dh-page__body","layout":{"type":"default"}} /-->
+	</div>
+	<!-- /wp:group -->
 </main>
 <!-- /wp:group -->
 

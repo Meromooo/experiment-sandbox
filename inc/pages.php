@@ -18,10 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Kadence's class prefixes. Anything else — core's wp-image-123 (needed for
+ * Kadence's class prefixes, plus the full/wide alignments Kadence rows set
+ * (layout choices of the old design, which would break these rows out of the
+ * page's reading column). Anything else — core's wp-image-123 (needed for
  * responsive images), wp-block-button__link, has-text-align-center — stays.
  */
-const DEMAS_THEME_KADENCE_CLASS = '/^(?:kb-|kt-|kb_|kt_|kadence|wp-block-kadence|reveal-on-scroll|aos)/i';
+const DEMAS_THEME_KADENCE_CLASS = '/^(?:kb-|kt-|kb_|kt_|kadence|wp-block-kadence|reveal-on-scroll|aos|alignfull$|alignwide$)/i';
 
 /**
  * One Kadence block's rendered HTML, with the Kadence design removed.

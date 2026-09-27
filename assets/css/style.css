@@ -1805,10 +1805,19 @@ svg {
 	font-size: var(--wp--preset--font-size--md);
 }
 
+/*
+ * Page photography is mood, not product: cropping is fine, a 980px portrait
+ * shot stacked in the reading column is not. Height is capped and the photo
+ * fills its frame. (Product photos never pass through here — they are
+ * contained, never cropped.)
+ */
 .dh-page__body img {
 	display: block;
+	inline-size: 100%;
 	max-inline-size: 100%;
 	block-size: auto;
+	max-block-size: 26rem;
+	object-fit: cover;
 	border-radius: var(--wp--custom--radius--md);
 }
 
