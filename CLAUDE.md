@@ -91,7 +91,11 @@ committed (see ADR-001 under Working agreement).
   blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block and the quote-drawer block (which hosts the
-  quote store — don't remove it); `footer.html` is still a stub. Keep these
+  quote store — don't remove it); `footer.html` is still a stub. WooCommerce also inserts a
+  customer-account icon (and would insert a mini-cart, now stopped) after the navigation block
+  via **block hooks** — it is not in the file. Below 56rem the header is a two-row grid in
+  `style.css` (title + controls, then the full-width product menu); the mega menu's closed
+  panel must collapse to zero height there (AMM-159) or the header grows by ~530px. Keep these
   thin — push real content into patterns, not directly into the part.
 - `templates/` — top-level block templates (`index.html` is the only one WordPress strictly
   requires to activate; `single-product.html` and `archive-product.html` are WooCommerce-specific).
