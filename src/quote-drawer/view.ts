@@ -180,7 +180,7 @@ const { state } = store( 'demas-theme/quote', {
 			}
 
 			if ( state.items.some( ( i ) => i.id === item.id ) ) {
-				state.isOpen = true;
+				showList();
 				return;
 			}
 
@@ -189,11 +189,11 @@ const { state } = store( 'demas-theme/quote', {
 		},
 
 		open(): void {
-			state.isOpen = true;
+			showList();
 		},
 
 		close(): void {
-			state.isOpen = false;
+			hideList();
 		},
 
 		/** Escape, or the dialog closing for any other reason. */
@@ -207,7 +207,7 @@ const { state } = store( 'demas-theme/quote', {
 		 */
 		onDialogClick( event: MouseEvent ): void {
 			if ( event.target === event.currentTarget ) {
-				state.isOpen = false;
+				hideList();
 			}
 		},
 
@@ -279,7 +279,11 @@ const { state } = store( 'demas-theme/quote', {
 			state.ready = true;
 		},
 
-		/** Keeps the native dialog in step with the store. */
+		/**
+		 * Back-stop only: the actions open and close the dialog themselves. This
+		 * runs a frame after any change to isOpen and corrects the dialog if
+		 * something else ever changed the state.
+		 */
 		syncDialog(): void {
 			const { ref } = getElement();
 			const dialog = ref as HTMLDialogElement | null;
@@ -300,6 +304,37 @@ const { state } = store( 'demas-theme/quote', {
 function save( items: Item[] ): void {
 	state.items = items;
 	write( items );
+}
+
+/*
+ * Open and close the dialog inside the click itself. Left to the store's
+ * watch alone, the dialog moved a frame later — and a busy or throttled page
+ * can hold that frame back, so a press on "Your quote" appeared to do nothing
+ * (seen in testing after closing with the ✕). Doing it here also keeps
+ * showModal() inside the user's gesture.
+ */
+function dialogElement(): HTMLDialogElement | null {
+	return document.getElementById( 'dh-quote-dialog' ) as HTMLDialogElement | null;
+}
+
+function showList(): void {
+	state.isOpen = true;
+
+	const dialog = dialogElement();
+
+	if ( dialog && ! dialog.open ) {
+		dialog.showModal();
+	}
+}
+
+function hideList(): void {
+	state.isOpen = false;
+
+	const dialog = dialogElement();
+
+	if ( dialog?.open ) {
+		dialog.close();
+	}
 }
 
 function currentQty( id: number ): number {
