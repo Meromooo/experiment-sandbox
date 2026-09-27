@@ -203,6 +203,14 @@ add_action(
 	20
 );
 
+/*
+ * WooCommerce jumps straight to the product when a search has one result,
+ * which is nearly every exact part number. The results page stays — the
+ * hit is tagged "Exact match" there — so a search URL always shows what
+ * was searched; the instant jump belongs to AMM-142's finder (Enter).
+ */
+add_filter( 'woocommerce_redirect_single_search_result', '__return_false' );
+
 // The union above already did the matching; WordPress's own LIKE clause
 // would drop every result that matched on its part number alone.
 add_filter(
