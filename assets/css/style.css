@@ -650,11 +650,16 @@ svg {
  * The account icon is not in parts/header.html: WooCommerce inserts it after
  * the navigation block (block hooks). It gets its own cell so it lines up
  * with the others; if it is ever absent, its column is simply empty.
+ *
+ * The title keeps its natural width and the links take the flexible column.
+ * Below 600px the links are a single hamburger; from 600px up to this
+ * breakpoint the cloned menu shows as a row of text links, which wrap inside
+ * their column instead of squeezing the title to nothing.
  */
 @media (max-width: 56rem) {
 	.dh-header .dh-header__bar {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) repeat(3, auto);
+		grid-template-columns: auto minmax(0, 1fr) auto auto;
 		grid-template-areas:
 			"title links account quote"
 			"menu  menu  menu    menu";
@@ -674,8 +679,15 @@ svg {
 		grid-area: menu;
 	}
 
+	/* Core navigation reads its list's alignment and wrapping from these. */
 	.dh-header .dh-header__links {
+		--navigation-layout-justify: flex-end;
+		--navigation-layout-wrap: wrap;
+
 		grid-area: links;
+		justify-self: end;
+		justify-content: flex-end;
+		flex-wrap: wrap;
 	}
 
 	.dh-header .wp-block-woocommerce-customer-account {
