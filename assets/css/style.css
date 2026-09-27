@@ -2000,7 +2000,6 @@ footer.wp-block-template-part {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	margin: 0;
-	border-block-end: var(--_rule);
 }
 
 .dh-plate__row {
@@ -2134,14 +2133,15 @@ footer.wp-block-template-part {
 
 @media (pointer: coarse) {
 	.dh-foot__links a,
-	.dh-foot__quote,
-	.dh-plate a {
+	.dh-foot__quote {
 		min-block-size: 44px;
 	}
 
+	/* Taller hit area without pushing the value below its neighbour's. */
 	.dh-plate a {
-		display: inline-flex;
-		align-items: center;
+		display: inline-block;
+		padding-block: 0.7em;
+		margin-block: -0.7em;
 	}
 }
 

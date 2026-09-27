@@ -30,7 +30,7 @@
 
 .dh-plan {
 	margin: 0;
-	max-inline-size: 17rem;
+	max-inline-size: 18rem;
 	direction: ltr;
 }
 
@@ -62,13 +62,13 @@
 }
 
 .dh-plan__tick {
-	font-size: 8px;
+	font-size: 10px;
 	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
 }
 
 .dh-plan__sea {
-	font-size: 7.5px;
-	letter-spacing: 0.18em;
+	font-size: 9.5px;
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
 }
@@ -100,7 +100,7 @@
 }
 
 .dh-plan__code {
-	font-size: 10px;
+	font-size: 12.5px;
 	font-weight: 500;
 	letter-spacing: 0.04em;
 	fill: var(--wp--preset--color--ink);
@@ -207,7 +207,7 @@
  */
 @media (min-width: 40em) {
 	.dh-bplan {
-		grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr);
+		grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
 		gap: var(--wp--preset--spacing--60);
 		align-items: start;
 	}

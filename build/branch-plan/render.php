@@ -89,16 +89,16 @@ $demas_wrapper    = get_block_wrapper_attributes( array( 'class' => 'dh-bplan' )
 			<g class="dh-plan__grid">
 				<?php foreach ( array( 20, 25, 30 ) as $demas_lat ) : ?>
 					<line x1="0" x2="<?php echo (int) $demas_width; ?>" y1="<?php echo esc_attr( $demas_y( $demas_lat ) ); ?>" y2="<?php echo esc_attr( $demas_y( $demas_lat ) ); ?>" />
-					<text class="dh-plan__tick" x="2" y="<?php echo esc_attr( $demas_y( $demas_lat ) - 3 ); ?>"><?php echo (int) $demas_lat; ?>°N</text>
+					<text class="dh-plan__tick" x="2" y="<?php echo esc_attr( $demas_y( $demas_lat ) - 4 ); ?>"><?php echo (int) $demas_lat; ?>°N</text>
 				<?php endforeach; ?>
 				<?php foreach ( array( 40, 45, 50 ) as $demas_lon ) : ?>
 					<line y1="0" y2="<?php echo (int) $demas_height; ?>" x1="<?php echo esc_attr( $demas_x( $demas_lon ) ); ?>" x2="<?php echo esc_attr( $demas_x( $demas_lon ) ); ?>" />
-					<text class="dh-plan__tick" x="<?php echo esc_attr( $demas_x( $demas_lon ) + 3 ); ?>" y="<?php echo (int) $demas_height - 3; ?>"><?php echo (int) $demas_lon; ?>°E</text>
+					<text class="dh-plan__tick" x="<?php echo esc_attr( $demas_x( $demas_lon ) + 3 ); ?>" y="<?php echo (int) $demas_height - 4; ?>"><?php echo (int) $demas_lon; ?>°E</text>
 				<?php endforeach; ?>
 			</g>
 
-			<text class="dh-plan__sea" transform="translate(<?php echo esc_attr( $demas_x( 37.6 ) . ' ' . $demas_y( 20.6 ) ); ?>) rotate(55)"><?php esc_html_e( 'Red Sea', 'demas-theme' ); ?></text>
-			<text class="dh-plan__sea" transform="translate(<?php echo esc_attr( $demas_x( 49.3 ) . ' ' . $demas_y( 29.2 ) ); ?>) rotate(54)"><?php esc_html_e( 'Arabian Gulf', 'demas-theme' ); ?></text>
+			<text class="dh-plan__sea" transform="translate(<?php echo esc_attr( $demas_x( 38.3 ) . ' ' . $demas_y( 19.7 ) ); ?>) rotate(55)"><?php esc_html_e( 'Red Sea', 'demas-theme' ); ?></text>
+			<text class="dh-plan__sea" transform="translate(<?php echo esc_attr( $demas_x( 48.9 ) . ' ' . $demas_y( 29.6 ) ); ?>) rotate(54)"><?php esc_html_e( 'Arabian Gulf', 'demas-theme' ); ?></text>
 
 			<?php foreach ( $demas_branches as $demas_code => $demas_branch ) : ?>
 				<?php
@@ -108,10 +108,10 @@ $demas_wrapper    = get_block_wrapper_attributes( array( 'class' => 'dh-bplan' )
 				?>
 				<g class="dh-plan__site<?php echo empty( $demas_branch['main'] ) ? '' : ' is-main'; ?>" data-code="<?php echo esc_attr( sanitize_key( $demas_code ) ); ?>" style="--i:<?php echo (int) $demas_order[ $demas_code ]; ?>">
 					<?php if ( ! empty( $demas_branch['main'] ) ) : ?>
-						<circle class="dh-plan__ring" cx="<?php echo esc_attr( $demas_cx ); ?>" cy="<?php echo esc_attr( $demas_cy ); ?>" r="7" />
+						<circle class="dh-plan__ring" cx="<?php echo esc_attr( $demas_cx ); ?>" cy="<?php echo esc_attr( $demas_cy ); ?>" r="8" />
 					<?php endif; ?>
-					<circle class="dh-plan__dot" cx="<?php echo esc_attr( $demas_cx ); ?>" cy="<?php echo esc_attr( $demas_cy ); ?>" r="2.75" />
-					<text class="dh-plan__code" x="<?php echo esc_attr( $demas_east ? $demas_cx - 10 : $demas_cx + 10 ); ?>" y="<?php echo esc_attr( $demas_cy + 3.5 ); ?>" text-anchor="<?php echo $demas_east ? 'end' : 'start'; ?>"><?php echo esc_html( strtoupper( $demas_code ) ); ?></text>
+					<circle class="dh-plan__dot" cx="<?php echo esc_attr( $demas_cx ); ?>" cy="<?php echo esc_attr( $demas_cy ); ?>" r="3.4" />
+					<text class="dh-plan__code" x="<?php echo esc_attr( $demas_east ? $demas_cx - 12 : $demas_cx + 12 ); ?>" y="<?php echo esc_attr( $demas_cy + 4.5 ); ?>" text-anchor="<?php echo $demas_east ? 'end' : 'start'; ?>"><?php echo esc_html( strtoupper( $demas_code ) ); ?></text>
 				</g>
 			<?php endforeach; ?>
 		</svg>
