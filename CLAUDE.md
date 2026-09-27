@@ -19,6 +19,11 @@ Ammar's standing instruction (2026-09-27): these two are always on for this proj
   pattern, CSS or block work (`templates/`, `parts/`, `patterns/`, `src/*`, `assets/css/`,
   `theme.json`). It is not needed for data scripts, server or security work, redirects, docs or
   Linear updates — its "take an aesthetic risk" brief is noise there.
+- **`agent-skills:frontend-ui-engineering`** — invoke it alongside frontend-design for the same
+  front-end work. frontend-design sets the direction; this one holds the engineering floor:
+  accessibility (keyboard, focus, labels, live regions, 44px touch targets), responsive checks at
+  320 / 768 / 1024 / 1440, empty and error states, and the design-system tokens in `theme.json`.
+  Its checklist is how front-end work is verified before it goes to In Review.
 - **`caveman:caveman`** (full intensity) — terse replies in chat. Code, commit messages, PR
   descriptions, repo docs (this file, ADRs, READMEs) and Linear issues stay in normal prose;
   security warnings, irreversible actions, step-by-step instructions and explanations of new
