@@ -11,6 +11,20 @@ Deploys via Git auto-deploy: pushing to `main` on this repo lands directly in
 files in this repo are the files WordPress reads, which is why compiled block output is
 committed (see ADR-001 under Working agreement).
 
+## Skills to use in this repo
+
+Ammar's standing instruction (2026-09-27): these two are always on for this project.
+
+- **`frontend-design:frontend-design`** — invoke it before any front-end, visual, template,
+  pattern, CSS or block work (`templates/`, `parts/`, `patterns/`, `src/*`, `assets/css/`,
+  `theme.json`). It is not needed for data scripts, server or security work, redirects, docs or
+  Linear updates — its "take an aesthetic risk" brief is noise there.
+- **`caveman:caveman`** (full intensity) — terse replies in chat. Code, commit messages, PR
+  descriptions, repo docs (this file, ADRs, READMEs) and Linear issues stay in normal prose;
+  security warnings, irreversible actions, step-by-step instructions and explanations of new
+  terms drop back to plain language. The caveman plugin's hooks already switch it on each
+  session; this line keeps it on if they ever don't.
+
 ## Version targets
 
 - WordPress: 6.5+
