@@ -24,7 +24,8 @@ if ( ! function_exists( 'demas_theme_get_systems_for_term' ) ) {
 	return;
 }
 
-if ( ! ( is_post_type_archive( 'product' ) || is_tax( get_object_taxonomies( 'product' ) ) ) ) {
+// Product archives, and the 404 page — where every system is the way back in.
+if ( ! ( is_post_type_archive( 'product' ) || is_tax( get_object_taxonomies( 'product' ) ) || is_404() ) ) {
 	return;
 }
 

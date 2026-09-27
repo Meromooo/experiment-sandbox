@@ -81,13 +81,22 @@ committed (see ADR-001 under Working agreement).
     SAR 0.00, so `woocommerce_is_purchasable` is false, `/cart` and `/checkout` 302 to the
     catalogue, and the mini-cart plus Cart/Checkout menu links are stopped in
     `pre_render_block`. Nothing is deleted — remove the filters and WooCommerce's cart comes
-    back. Link to the catalogue with `demas_theme_catalogue_url()`, not the archive link, until
-    AMM-147 fixes `/shop/`.
+    back. Link to the catalogue with `demas_theme_catalogue_url()` — the product archive, which
+    is `/products/` because WooCommerce's shop page is the cloned "Products" page. `/shop/` is
+    an unrelated empty "All Products" page (AMM-147).
+  - `pages.php` — generic pages (AMM-146, 2026-09-27). Every cloned content page (Services,
+    Contact Us, the old Homepage) is built from **Kadence Blocks**; a `render_block` filter strips
+    Kadence classes, inline styles, per-block `<style>`, row-separator SVGs and data attributes
+    at render and demotes their `<h1>`s, so the content shows in this theme's type and none of
+    the old design survives. Database untouched; core-block pages unaffected. Kadence forms
+    render nothing. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
+    emails) redirects to the homepage Branch Desk (302 until cutover).
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
   live — never hardcoded into templates. Current set (homepage, 2026-09-15): `hero`,
-  `credentials`, `numbers`, `categories`, `process`, `closing-cta`. Section bodies are `wp:html`
+  `credentials`, `numbers`, `categories`, `process`, `closing-cta`; plus `not-found` (the 404
+  head, core blocks, not inserter-visible). Section bodies are `wp:html`
   blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block and the quote-drawer block (which hosts the
@@ -107,7 +116,11 @@ committed (see ADR-001 under Working agreement).
   in jQuery, flexslider and photoswipe), the product-summary block, and a related-parts
   `product-collection`. No price, no add-to-cart, no tabs.
   `front-page.html` composes the homepage from the six `demas-theme/*` patterns and is used for
-  the front page regardless of the Reading setting.
+  the front page regardless of the Reading setting (the static front page is the cloned
+  "Homepage" page, id 17 — keep it published; its Kadence content is never shown).
+  `page.html` (title + content, readable measure) and `404.html` (the `not-found` pattern plus
+  the stage index for every system) added 2026-09-27. There is no `single.html`: the site has
+  no blog posts, and `index.html` covers the fallback.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for
   pieces that are shared across templates but aren't full parts.

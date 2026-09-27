@@ -1750,3 +1750,129 @@ svg {
 		padding: var(--wp--preset--spacing--50);
 	}
 }
+
+/* ------------------------------------------------------------------ */
+/* 12. Pages — generic page template and the 404                       */
+/* ------------------------------------------------------------------ */
+
+.dh-page {
+	padding-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--80);
+}
+
+.dh-page .dh-page__title {
+	max-inline-size: 24ch;
+	margin: 0 0 var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--xxl);
+}
+
+/*
+ * The page body. The cloned pages arrive as Kadence markup stripped of its
+ * styling (inc/pages.php): nested plain <div>s around headings, paragraphs,
+ * images and a button. So the type is set from the elements up, and the
+ * measure is held to a readable line rather than the full content width.
+ *
+ * No first-child margin resets: with the Kadence wrappers now plain blocks,
+ * a heading's top margin collapses through them into the title's, and the
+ * later ones keep their space above — resetting "first children" would strip
+ * the space from every section that happens to open its own wrapper.
+ */
+.dh-page__body {
+	max-inline-size: 46rem;
+	font-size: var(--wp--preset--font-size--md);
+	line-height: 1.7;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 86%, transparent);
+}
+
+.dh-page__body :is(p, ul, ol, figure) {
+	margin-block: 0 var(--wp--preset--spacing--40);
+}
+
+.dh-page__body :is(h2, h3, h4) {
+	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
+	color: var(--wp--preset--color--ink);
+	line-height: 1.1;
+}
+
+.dh-page__body h2 {
+	font-size: var(--wp--preset--font-size--xl);
+}
+
+.dh-page__body h3 {
+	font-size: var(--wp--preset--font-size--lg);
+}
+
+.dh-page__body h4 {
+	font-size: var(--wp--preset--font-size--md);
+}
+
+.dh-page__body img {
+	display: block;
+	max-inline-size: 100%;
+	block-size: auto;
+	border-radius: var(--wp--custom--radius--md);
+}
+
+.dh-page__body a:not(.wp-block-button__link) {
+	color: var(--wp--preset--color--canopy);
+	text-underline-offset: 0.2em;
+}
+
+.dh-page__body li::marker {
+	color: var(--wp--preset--color--field);
+}
+
+.dh-page__body .wp-block-button__link {
+	display: inline-flex;
+	margin-block: var(--wp--preset--spacing--30);
+}
+
+/* 404 ------------------------------------------------------------------ */
+
+.dh-404 {
+	padding-block: var(--wp--preset--spacing--70) var(--wp--preset--spacing--80);
+}
+
+.dh-404__head {
+	max-inline-size: 44rem;
+	margin-block-end: var(--wp--preset--spacing--70);
+}
+
+.dh-404 .dh-404__code {
+	margin: 0 0 var(--wp--preset--spacing--40);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-404 .dh-404__title {
+	margin: 0 0 var(--wp--preset--spacing--40);
+	font-size: var(--wp--preset--font-size--xxxl);
+}
+
+.dh-404 .dh-404__lede {
+	margin: 0 0 var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 76%, transparent);
+}
+
+.dh-404__actions {
+	gap: var(--wp--preset--spacing--30);
+}
+
+/* Core's outline style, in the theme's terms: ink hairline, ink text. */
+.dh-404__actions .is-style-outline .wp-block-button__link {
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-404__actions .is-style-outline .wp-block-button__link:hover,
+.dh-404__actions .is-style-outline .wp-block-button__link:focus-visible {
+	border-color: var(--wp--preset--color--ink);
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-404__actions .wp-block-button__link:focus-visible {
+	outline: 2px solid var(--wp--preset--color--field);
+	outline-offset: 2px;
+}

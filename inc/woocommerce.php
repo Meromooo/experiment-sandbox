@@ -54,13 +54,19 @@ add_filter(
 /**
  * The catalogue's front door, for redirects and "browse the catalogue" links.
  *
- * Not get_post_type_archive_link( 'product' ) yet: that resolves to /shop/,
- * where a static "All Products" page carried over from the clone shadows the
- * product archive (AMM-147). Once that is fixed, this returns the archive link
- * and every caller follows.
+ * WooCommerce's shop page is the cloned "Products" page, so the product
+ * archive lives at /products/ and that is what the archive link returns.
+ * (An earlier version of this function assumed the archive was /shop/ and
+ * linked to /?post_type=product instead. /shop/ is an unrelated, empty
+ * "All Products" page — AMM-147.)
  */
 function demas_theme_catalogue_url(): string {
-	return (string) apply_filters( 'demas_theme_catalogue_url', add_query_arg( 'post_type', 'product', home_url( '/' ) ) );
+	$url = get_post_type_archive_link( 'product' );
+
+	return (string) apply_filters(
+		'demas_theme_catalogue_url',
+		$url ? $url : add_query_arg( 'post_type', 'product', home_url( '/' ) )
+	);
 }
 
 // Nothing can be added to a cart — in any block, the classic templates, or the

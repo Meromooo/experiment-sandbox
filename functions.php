@@ -23,6 +23,7 @@ $demas_theme_includes = array(
 	'inc/catalog-filters.php',
 	'inc/product-page.php',
 	'inc/quote.php',
+	'inc/pages.php',
 	'inc/structured-data.php',
 );
 

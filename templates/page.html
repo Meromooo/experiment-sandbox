@@ -1,0 +1,16 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!--
+	Generic page: title, then the page's own content. The cloned content
+	pages are Kadence-built; inc/pages.php strips their Kadence styling at
+	render, so they read in this theme's type instead of the old design.
+-->
+<!-- wp:group {"tagName":"main","className":"dh-page","layout":{"type":"constrained"}} -->
+<main class="wp-block-group dh-page">
+	<!-- wp:post-title {"level":1,"className":"dh-page__title"} /-->
+
+	<!-- wp:post-content {"className":"dh-page__body","layout":{"type":"default"}} /-->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
