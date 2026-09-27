@@ -223,12 +223,19 @@ html:has(.dh-finder__dialog[open]) {
 
 /* Body ------------------------------------------------------------------ */
 
+/*
+ * Rows bleed 0.75rem past the text column so their hover ground reaches past
+ * the words; the scroll area is widened by the same amount so that bleed
+ * never becomes a sideways scroll.
+ */
 .dh-finder__body {
 	flex: 1 1 auto;
 	min-block-size: 0;
+	overflow-x: hidden;
 	overflow-y: auto;
 	overscroll-behavior: contain;
-	padding-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	margin-inline: -0.75rem;
+	padding: var(--wp--preset--spacing--30) 0.75rem var(--wp--preset--spacing--40);
 }
 
 .dh-finder__hint {

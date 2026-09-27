@@ -397,7 +397,7 @@ function setUp( root: HTMLElement ): void {
 
 		if ( found.total > 0 ) {
 			all!.href = found.resultsUrl;
-			all!.textContent = found.total === 1 ? strings.allOne : fill( strings.all, pad( found.total ) );
+			all!.textContent = found.total === 1 ? strings.allOne : fill( strings.all, found.total );
 			foot!.hidden = false;
 		} else {
 			foot!.hidden = true;
