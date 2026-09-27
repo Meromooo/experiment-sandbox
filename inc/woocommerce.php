@@ -81,11 +81,31 @@ add_action(
 );
 
 /*
- * The mini-cart icon and the "Cart" / "Checkout" links live inside the
- * navigation menu that came over with the clone (stored in the database, not
- * in parts/header.html). They are stopped before rendering rather than hidden
- * afterwards, so the mini-cart's scripts and its drawer markup are never
- * enqueued either. The rest of that menu is AMM-145.
+ * WooCommerce hooks its account icon and mini-cart into the header, after the
+ * navigation block (block hooks, since WC 8.4 — they are not in
+ * parts/header.html). Neither has a job here: there is no cart, and a buyer
+ * has nothing to sign in for, since the quote list lives in the browser.
+ * Taken out at the hook (WooCommerce adds them at priority 9), so they are
+ * never inserted. The account page itself still exists at /my-account/.
+ */
+add_filter(
+	'hooked_block_types',
+	function ( $hooked_blocks, $position, $anchor_block ) {
+		if ( 'after' !== $position || 'core/navigation' !== $anchor_block || ! is_array( $hooked_blocks ) ) {
+			return $hooked_blocks;
+		}
+
+		return array_values( array_diff( $hooked_blocks, array( 'woocommerce/customer-account', 'woocommerce/mini-cart' ) ) );
+	},
+	20,
+	3
+);
+
+/*
+ * Guards for anywhere else a mini-cart or a cart/checkout link turns up: a
+ * mini-cart placed by hand, a navigation-link to either page. Stopped before
+ * rendering rather than hidden afterwards, so the mini-cart's scripts and
+ * drawer markup are never enqueued either.
  */
 add_filter(
 	'pre_render_block',
@@ -115,11 +135,12 @@ add_filter(
 );
 
 /*
- * The cloned menu also carries a Page List block, which lists every published
- * page — Cart and Checkout included — with no navigation-link of its own to
- * stop. Filtering get_pages() for the length of its render had no effect (the
- * block evidently queries pages another way), so the two items are taken out
- * of its finished markup instead. They are single links with no sub-pages.
+ * Any Page List block lists every published page — Cart and Checkout
+ * included — with no navigation-link of its own to stop. The header no longer
+ * uses one (AMM-145), but the cloned site's navigation post is still a Page
+ * List, and a future footer or sitemap may be too. Filtering get_pages() for
+ * the length of its render had no effect (the block evidently queries pages
+ * another way), so the two items are taken out of its finished markup.
  */
 add_filter(
 	'render_block_core/page-list',

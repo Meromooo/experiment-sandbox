@@ -638,7 +638,7 @@ svg {
  * controls beside it, then the product menu at full width, where its in-flow
  * panel opens and pushes the page down.
  *
- *   Demas Group ............ ≡  (account)  (Your quote · 002)
+ *   Demas Group ....................... ≡  (Your quote · 002)
  *   [ Products                                         ⌄ ]
  *
  * It used to stack every item on its own full-width row, which — with the
@@ -647,22 +647,18 @@ svg {
  * its children can sit in the bar's grid next to the title; it is a plain
  * group, not a landmark, so nothing is lost to assistive technology.
  *
- * The account icon is not in parts/header.html: WooCommerce inserts it after
- * the navigation block (block hooks). It gets its own cell so it lines up
- * with the others; if it is ever absent, its column is simply empty.
- *
  * The title keeps its natural width and the links take the flexible column.
- * Below 600px the links are a single hamburger; from 600px up to this
- * breakpoint the cloned menu shows as a row of text links, which wrap inside
- * their column instead of squeezing the title to nothing.
+ * Below 600px the links (Services, Contact) sit behind the hamburger; from
+ * 600px up to this breakpoint they show as text and wrap inside their column
+ * rather than squeezing the title.
  */
 @media (max-width: 56rem) {
 	.dh-header .dh-header__bar {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto auto;
+		grid-template-columns: auto minmax(0, 1fr) auto;
 		grid-template-areas:
-			"title links account quote"
-			"menu  menu  menu    menu";
+			"title links quote"
+			"menu  menu  menu";
 		align-items: center;
 		gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
 	}
@@ -690,13 +686,22 @@ svg {
 		flex-wrap: wrap;
 	}
 
-	.dh-header .wp-block-woocommerce-customer-account {
-		grid-area: account;
-	}
-
 	.dh-header .dh-quote {
 		grid-area: quote;
 	}
+}
+
+/*
+ * The hamburger is core's 24px icon; give it a 44px target like the quote
+ * control. No `display` here — core hides this button from 600px up, and
+ * setting one would bring it back on desktop.
+ */
+.dh-header .wp-block-navigation__responsive-container-open {
+	align-items: center;
+	justify-content: center;
+	min-inline-size: 2.75rem;
+	min-block-size: 2.75rem;
+	border-radius: var(--wp--custom--radius--pill);
 }
 
 .wp-block-button__link {
