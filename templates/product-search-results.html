@@ -1,0 +1,68 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!--
+	Product search results (AMM-143). WooCommerce serves this template for any
+	search on products, and inc/search.php makes every front-end search one.
+	The matching (names, descriptions and part numbers), the ranking and the
+	highlighting are all in inc/search.php; this is the layout.
+-->
+<!-- wp:group {"tagName":"main","className":"dh-shop dh-results","layout":{"type":"constrained"}} -->
+<main class="wp-block-group dh-shop dh-results">
+
+	<!-- wp:group {"className":"dh-shop__head","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group dh-shop__head">
+		<!-- wp:woocommerce/breadcrumbs {"className":"dh-shop__crumbs"} /-->
+
+		<!-- wp:paragraph {"className":"dh-eyebrow dh-results__eyebrow"} -->
+		<p class="dh-eyebrow dh-results__eyebrow">Search</p>
+		<!-- /wp:paragraph -->
+
+		<!-- The headline is the query itself, in quotes (inc/search.php). -->
+		<!-- wp:query-title {"type":"search","level":1,"className":"dh-shop__title dh-results__title"} /-->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:woocommerce/store-notices /-->
+
+	<!--
+		Count, the categories whose names match, the search field (so the query
+		can be refined in place) and the sort: Best match, A–Z, SKU.
+	-->
+	<!-- wp:demas-theme/catalog-toolbar /-->
+
+	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":24,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/product-catalog","queryContextIncludes":["collection"],"className":"dh-grid"} -->
+	<div class="wp-block-woocommerce-product-collection dh-grid">
+		<!-- wp:woocommerce/product-template -->
+			<!-- wp:group {"className":"dh-pcard","layout":{"type":"default"}} -->
+			<div class="wp-block-group dh-pcard">
+				<!-- wp:woocommerce/product-image {"imageSizing":"single","isDescendentOfQueryLoop":true,"className":"dh-pcard__media"} /-->
+
+				<!-- wp:group {"className":"dh-pcard__body","layout":{"type":"default"}} -->
+				<div class="wp-block-group dh-pcard__body">
+					<!-- wp:post-title {"level":3,"isLink":true,"className":"dh-pcard__title"} /-->
+					<!-- Part number instead of price: someone searching by number needs to see numbers. -->
+					<!-- wp:woocommerce/product-sku {"isDescendentOfQueryLoop":true} /-->
+					<!-- wp:demas-theme/quote-button {"variant":"compact"} /-->
+				</div>
+				<!-- /wp:group -->
+			</div>
+			<!-- /wp:group -->
+		<!-- /wp:woocommerce/product-template -->
+
+		<!-- wp:query-pagination {"className":"dh-pagination","layout":{"type":"flex","justifyContent":"center"}} -->
+			<!-- wp:query-pagination-previous /-->
+			<!-- wp:query-pagination-numbers /-->
+			<!-- wp:query-pagination-next /-->
+		<!-- /wp:query-pagination -->
+
+		<!-- wp:woocommerce/product-collection-no-results -->
+			<!-- wp:demas-theme/search-empty /-->
+			<!-- wp:demas-theme/system-index /-->
+		<!-- /wp:woocommerce/product-collection-no-results -->
+	</div>
+	<!-- /wp:woocommerce/product-collection -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

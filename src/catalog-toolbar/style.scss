@@ -121,10 +121,17 @@
 .dh-toolbar__bar {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: baseline;
+	align-items: center;
 	justify-content: space-between;
 	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
 	padding-block: var(--wp--preset--spacing--30);
+}
+
+/* The search field (inc/search.php) takes the middle and gives way first. */
+.dh-toolbar__search {
+	flex: 1 1 16rem;
+	max-inline-size: 26rem;
+	min-inline-size: 0;
 }
 
 /*
@@ -218,8 +225,10 @@
 /* Small screens -------------------------------------------------------- */
 
 @media (max-width: 40em) {
-	.dh-toolbar__bar {
-		align-items: center;
+	/* Its own full-width row between the count and the sort. */
+	.dh-toolbar__search {
+		flex-basis: 100%;
+		max-inline-size: none;
 	}
 
 	.dh-toolbar__count-value {

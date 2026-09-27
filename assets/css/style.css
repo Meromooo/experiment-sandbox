@@ -2165,3 +2165,174 @@ footer.wp-block-template-part {
 		top: calc(100svh - var(--dh-pin-h));
 	}
 }
+
+/* ------------------------------------------------------------------ */
+/* 14. Search (AMM-143)                                                */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The search field (demas_theme_search_form() in inc/search.php): one pill
+ * with the submit button seated inside its end, used in the catalogue
+ * toolbar, on the results page (the same toolbar) and on the 404.
+ */
+.dh-search {
+	--_h: 2.75rem;
+	position: relative;
+	display: flex;
+	align-items: center;
+	inline-size: 100%;
+	max-inline-size: 30rem;
+	margin: 0;
+}
+
+.dh-search__input {
+	flex: 1 1 auto;
+	min-inline-size: 0;
+	block-size: var(--_h);
+	padding-block: 0;
+	padding-inline: 1.1rem calc(var(--_h) + 0.25rem);
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--white);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 1rem; /* Not smaller: iOS zooms the page into any field under 16px. */
+	color: var(--wp--preset--color--ink);
+	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-search__input::placeholder {
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 62%, transparent);
+	opacity: 1;
+}
+
+.dh-search__input:hover {
+	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 45%, transparent);
+}
+
+/* The global focus ring squares corners to radius-sm; a pill must stay a pill. */
+.dh-search__input:focus-visible {
+	border-color: var(--wp--preset--color--ink);
+	border-radius: var(--wp--custom--radius--pill);
+}
+
+.dh-search__submit {
+	position: absolute;
+	inset-block-start: 50%;
+	inset-inline-end: 0.25rem;
+	display: grid;
+	place-items: center;
+	inline-size: calc(var(--_h) - 0.5rem);
+	block-size: calc(var(--_h) - 0.5rem);
+	padding: 0;
+	border: 0;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+	cursor: pointer;
+	transform: translateY(-50%);
+	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-search__submit:hover,
+.dh-search__submit:focus-visible {
+	background: var(--wp--preset--color--ink);
+	border-radius: var(--wp--custom--radius--pill);
+}
+
+@media (pointer: coarse) {
+	.dh-search {
+		--_h: 3.25rem; /* The seated button is then 44px. */
+	}
+}
+
+/* Why a result is here: the matched fragment, in the site's highlight. */
+.dh-hit {
+	padding-inline: 0.08em;
+	margin-inline: -0.08em;
+	border-radius: var(--wp--custom--radius--sm);
+	background: color-mix(in srgb, var(--wp--preset--color--field) 38%, var(--wp--preset--color--paper));
+	color: inherit;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+/* Results page ------------------------------------------------------- */
+
+.dh-results__eyebrow {
+	margin-block-end: var(--wp--preset--spacing--20);
+}
+
+.dh-results .dh-results__title {
+	overflow-wrap: anywhere;
+}
+
+.dh-search__quote {
+	color: var(--wp--preset--color--field);
+}
+
+/* The card's part number, in place of the price. */
+.dh-pcard__sku {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.3rem 0.6rem;
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+}
+
+.dh-pcard__exact {
+	padding: 0.15em 0.55em;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--canopy) 45%, transparent);
+	border-radius: var(--wp--custom--radius--pill);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	line-height: 1.2;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--canopy);
+}
+
+/* No results: what was searched, then what to try. */
+.dh-empty {
+	max-inline-size: 44rem;
+	padding-block: var(--wp--preset--spacing--50) var(--wp--preset--spacing--60);
+}
+
+.dh-empty .dh-empty__title {
+	margin: 0 0 var(--wp--preset--spacing--30);
+	font-size: var(--wp--preset--font-size--xl);
+	overflow-wrap: anywhere;
+}
+
+.dh-empty__hint {
+	margin: 0 0 var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--md);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+}
+
+.dh-empty__try {
+	color: var(--wp--preset--color--canopy);
+	text-underline-offset: 0.2em;
+}
+
+.dh-empty__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--20);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (pointer: coarse) {
+	.dh-empty__actions .dh-pill {
+		min-block-size: 44px;
+	}
+}
+
+/* 404: the search sits between the explanation and the two ways out. */
+.dh-404__search {
+	margin-block: 0 var(--wp--preset--spacing--50);
+}

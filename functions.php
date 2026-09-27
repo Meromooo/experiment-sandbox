@@ -26,6 +26,7 @@ $demas_theme_includes = array(
 	'inc/pages.php',
 	'inc/branches.php',
 	'inc/footer.php',
+	'inc/search.php',
 	'inc/structured-data.php',
 );
 

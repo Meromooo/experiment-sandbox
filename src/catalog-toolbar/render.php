@@ -8,7 +8,12 @@
  *    whatever product-collection is about to render);
  *  - a way to narrow — the current category's children, or, on a leaf, its
  *    siblings with the current one marked and a way back up;
- *  - a sort order, as plain links so it works without JavaScript.
+ *  - a sort order, as plain links so it works without JavaScript;
+ *  - a search field (inc/search.php), which on the search results page is
+ *    also the way to refine the query.
+ *
+ * On a search, the rail offers the categories whose names match the query
+ * instead of children, and the default sort is "Best match".
  *
  * Nothing here is a filter facet: the catalogue has no product attributes,
  * so category is the only real axis and this block is built around that.
@@ -30,16 +35,42 @@ if ( ! ( is_post_type_archive( 'product' ) || is_tax( $demas_product_taxonomies 
 
 global $wp_query;
 
-$demas_term  = is_tax() ? get_queried_object() : null;
-$demas_total = (int) $wp_query->found_posts;
+$demas_term      = is_tax() ? get_queried_object() : null;
+$demas_total     = (int) $wp_query->found_posts;
+$demas_is_search = is_search();
+$demas_query     = $demas_is_search ? trim( get_search_query( false ) ) : '';
 
 /* Rail ------------------------------------------------------------------ */
 
-$demas_rail   = array();
-$demas_active = 0;
-$demas_back   = null;
+$demas_rail       = array();
+$demas_active     = 0;
+$demas_back       = null;
+$demas_rail_label = '';
 
-if ( $demas_term instanceof WP_Term ) {
+if ( $demas_is_search && '' !== $demas_query ) {
+	// Categories whose names match: the whole query, else any of its words.
+	foreach ( array_merge( array( $demas_query ), preg_split( '/\s+/u', $demas_query ) ?: array() ) as $demas_needle ) {
+		if ( mb_strlen( $demas_needle ) < 3 ) {
+			continue;
+		}
+
+		$demas_matches = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'name__like' => $demas_needle,
+				'hide_empty' => true,
+				'number'     => 12,
+			)
+		);
+
+		if ( ! is_wp_error( $demas_matches ) && $demas_matches ) {
+			$demas_rail = $demas_matches;
+			break;
+		}
+	}
+
+	$demas_rail_label = __( 'Matching categories', 'demas-theme' );
+} elseif ( $demas_term instanceof WP_Term ) {
 	$demas_children = get_terms(
 		array(
 			'taxonomy'   => 'product_cat',
@@ -70,12 +101,18 @@ if ( $demas_term instanceof WP_Term ) {
 
 /* Sort ------------------------------------------------------------------ */
 
-$demas_sorts = array(
-	''      => __( 'Default', 'demas-theme' ),
-	'title' => __( 'A–Z', 'demas-theme' ),
-	'date'  => __( 'Newest', 'demas-theme' ),
-	'sku'   => __( 'SKU', 'demas-theme' ), // Handled by inc/catalog-filters.php; not a native WooCommerce order.
-);
+$demas_sorts = $demas_is_search
+	? array(
+		''      => __( 'Best match', 'demas-theme' ), // Ranked in inc/search.php.
+		'title' => __( 'A–Z', 'demas-theme' ),
+		'sku'   => __( 'SKU', 'demas-theme' ),
+	)
+	: array(
+		''      => __( 'Default', 'demas-theme' ),
+		'title' => __( 'A–Z', 'demas-theme' ),
+		'date'  => __( 'Newest', 'demas-theme' ),
+		'sku'   => __( 'SKU', 'demas-theme' ), // Handled by inc/catalog-filters.php; not a native WooCommerce order.
+	);
 
 $demas_current_sort = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort parameter.
 if ( ! array_key_exists( $demas_current_sort, $demas_sorts ) ) {
@@ -83,20 +120,32 @@ if ( ! array_key_exists( $demas_current_sort, $demas_sorts ) ) {
 }
 
 // Sort links rebuild from the archive's own URL so they always reset to page 1.
-$demas_base = $demas_term instanceof WP_Term
-	? get_term_link( $demas_term )
-	: get_post_type_archive_link( 'product' );
+if ( $demas_is_search ) {
+	$demas_base = add_query_arg(
+		array(
+			's'         => rawurlencode( $demas_query ),
+			'post_type' => 'product',
+		),
+		home_url( '/' )
+	);
+} else {
+	$demas_base = $demas_term instanceof WP_Term
+		? get_term_link( $demas_term )
+		: get_post_type_archive_link( 'product' );
+}
 
 $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) );
 ?>
 <div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>>
 
 	<?php if ( $demas_rail ) : ?>
-		<nav class="dh-toolbar__rail" aria-label="<?php esc_attr_e( 'Narrow this category', 'demas-theme' ); ?>">
+		<nav class="dh-toolbar__rail" aria-label="<?php echo esc_attr( $demas_is_search ? __( 'Categories matching your search', 'demas-theme' ) : __( 'Narrow this category', 'demas-theme' ) ); ?>">
 			<?php
 			// One word for what the chips choose between — a kind of part, a
 			// manufacturer, or a model family — since the tree mixes all three.
-			$demas_rail_label = function_exists( 'demas_theme_get_rail_label' ) ? demas_theme_get_rail_label( $demas_rail ) : '';
+			if ( ! $demas_rail_label && function_exists( 'demas_theme_get_rail_label' ) ) {
+				$demas_rail_label = demas_theme_get_rail_label( $demas_rail );
+			}
 			?>
 			<?php if ( $demas_rail_label ) : ?>
 				<span class="dh-toolbar__rail-label dh-eyebrow"><?php echo esc_html( $demas_rail_label ); ?></span>
@@ -138,6 +187,12 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 			<span class="dh-toolbar__count-value dh-mono"><?php echo esc_html( str_pad( (string) $demas_total, 3, '0', STR_PAD_LEFT ) ); ?></span>
 			<span class="dh-toolbar__count-label"><?php echo esc_html( _n( 'product', 'products', $demas_total, 'demas-theme' ) ); ?></span>
 		</p>
+
+		<?php
+		if ( function_exists( 'demas_theme_search_form' ) ) {
+			echo demas_theme_search_form( array( 'class' => 'dh-toolbar__search' ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside the helper.
+		}
+		?>
 
 		<nav class="dh-toolbar__sort" aria-label="<?php esc_attr_e( 'Sort products', 'demas-theme' ); ?>">
 			<span class="dh-toolbar__sort-label"><?php esc_html_e( 'Sort', 'demas-theme' ); ?></span>

@@ -81,7 +81,9 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
   - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count, child-category
     rail with a "By brand / By type / By series" label, sort links; server-rendered, no JS) and
     the `demas-theme/system-index` block (the stage line rendered from `system-map.php`), and
-    adds SKU ordering via a `posts_clauses` join. There are no product attributes in the
+    adds SKU ordering via a `posts_clauses` join. The toolbar also carries the search field;
+    on a search its rail lists categories whose names match and its default sort is "Best
+    match". There are no product attributes in the
     catalogue — specs live in description HTML — so there is nothing to facet by; category,
     brand-as-category, SKU and name are the only real axes.
   - `product-page.php` — registers the `demas-theme/product-summary` block (the single
@@ -128,6 +130,16 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**: one dot
     per branch at its real latitude/longitude on a graticule, no drawn border; hovering a
     branch lights its dot via generated `:has()` CSS; the dots reveal outward from Riyadh).
+  - `search.php` — product search (AMM-143, 2026-09-28). A `request` filter makes **every
+    front-end search a product search** (content pages are not searchable), so WooCommerce
+    serves `templates/product-search-results.html`. The main search is widened to title/content
+    matches ∪ `wc_get_products( 'sku' )` (partial part-number match; `tcn ft 062` also tries
+    `tcn-ft-062`), its own LIKE clause emptied via `posts_search`, and — unless the buyer chose a
+    sort — ranked exact SKU → SKU prefix → name → rest. On results, `render_block` filters mark
+    the matched fragment (`<mark class="dh-hit">`) in titles and SKUs, tag an exact part-number
+    hit, and make the query-title just the quoted query. Registers `demas-theme/search-empty`
+    (the no-results state). `demas_theme_search_form()` is the one search field — toolbar and
+    404 use it; AMM-142's header finder should enhance it, not add another.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
@@ -163,6 +175,9 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
   CTA sits **outside `<main>`**, in a `.dh-finale` wrapper with the footer part, so the CTA can
   stay pinned while the footer slides over it (CSS sticky; `main.js` supplies the CTA's
   height); the CTA is its own labelled region instead.
+  `product-search-results.html` (AMM-143) is the search results page: the query as the h1,
+  the toolbar, the catalogue cards with each product's part number instead of its price, and an
+  empty state (`search-empty` block + the system index).
   `page.html` (title + content, readable measure) and `404.html` (the `not-found` pattern plus
   the stage index for every system) added 2026-09-27. There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.

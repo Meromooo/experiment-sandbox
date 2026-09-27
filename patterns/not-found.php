@@ -20,8 +20,12 @@ $demas_catalogue = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_
 	<!-- /wp:heading -->
 
 	<!-- wp:paragraph {"className":"dh-404__lede"} -->
-	<p class="dh-404__lede"><?php esc_html_e( 'If you followed an old link, the page may have moved when the site was rebuilt. Find a part by where it sits in its system below, or ask a branch to find it for you.', 'demas-theme' ); ?></p>
+	<p class="dh-404__lede"><?php esc_html_e( 'If you followed an old link, the page may have moved when the site was rebuilt. Search for the part by name or number, find it by where it sits in its system below, or ask a branch to find it for you.', 'demas-theme' ); ?></p>
 	<!-- /wp:paragraph -->
+
+	<!-- wp:html -->
+	<?php echo function_exists( 'demas_theme_search_form' ) ? demas_theme_search_form( array( 'class' => 'dh-404__search' ) ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside the helper. ?>
+	<!-- /wp:html -->
 
 	<!-- wp:buttons {"className":"dh-404__actions"} -->
 	<div class="wp-block-buttons dh-404__actions">

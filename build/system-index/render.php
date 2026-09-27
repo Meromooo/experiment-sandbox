@@ -25,6 +25,8 @@ if ( ! function_exists( 'demas_theme_get_systems_for_term' ) ) {
 }
 
 // Product archives, and the 404 page — where every system is the way back in.
+// A search is a product archive too, but there the index belongs only to the
+// empty state (templates/product-search-results.html places it inside it).
 if ( ! ( is_post_type_archive( 'product' ) || is_tax( get_object_taxonomies( 'product' ) ) || is_404() ) ) {
 	return;
 }
