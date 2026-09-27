@@ -182,6 +182,12 @@
 	color: var(--wp--preset--color--canopy);
 }
 
+/* Explicit: the site-wide link hover is field green, too faint on sand. */
+.dh-branch:hover,
+.dh-branch:focus-visible {
+	color: var(--wp--preset--color--ink);
+}
+
 .dh-branch:hover .dh-branch__city,
 .dh-branch:focus-visible .dh-branch__city {
 	text-decoration: underline;

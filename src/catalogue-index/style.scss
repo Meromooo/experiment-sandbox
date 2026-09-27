@@ -35,6 +35,7 @@
 
 .dh-cindex__all:hover,
 .dh-cindex__all:focus-visible {
+	color: var(--wp--preset--color--canopy);
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
 }
