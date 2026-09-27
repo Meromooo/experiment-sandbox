@@ -78,7 +78,6 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 		id="dh-quote-dialog"
 		class="dh-quote-dialog"
 		aria-labelledby="dh-quote-title"
-		data-wp-watch="callbacks.syncDialog"
 		data-wp-on--close="actions.onDialogClose"
 		data-wp-on--click="actions.onDialogClick"
 	>

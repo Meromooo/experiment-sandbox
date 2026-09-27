@@ -279,25 +279,6 @@ const { state } = store( 'demas-theme/quote', {
 			state.ready = true;
 		},
 
-		/**
-		 * Back-stop only: the actions open and close the dialog themselves. This
-		 * runs a frame after any change to isOpen and corrects the dialog if
-		 * something else ever changed the state.
-		 */
-		syncDialog(): void {
-			const { ref } = getElement();
-			const dialog = ref as HTMLDialogElement | null;
-
-			if ( ! dialog ) {
-				return;
-			}
-
-			if ( state.isOpen && ! dialog.open ) {
-				dialog.showModal();
-			} else if ( ! state.isOpen && dialog.open ) {
-				dialog.close();
-			}
-		},
 	},
 } );
 
@@ -307,11 +288,15 @@ function save( items: Item[] ): void {
 }
 
 /*
- * Open and close the dialog inside the click itself. Left to the store's
- * watch alone, the dialog moved a frame later — and a busy or throttled page
- * can hold that frame back, so a press on "Your quote" appeared to do nothing
- * (seen in testing after closing with the ✕). Doing it here also keeps
- * showModal() inside the user's gesture.
+ * The dialog is opened and closed here, inside the click, and nowhere else.
+ *
+ * An earlier version flipped state.isOpen and let a data-wp-watch move the
+ * dialog a frame later. A busy or throttled page held that frame back, so a
+ * press on "Your quote" after closing with the ✕ appeared to do nothing; and
+ * the watch could reopen a dialog the browser had just closed on Escape,
+ * because the browser's `close` event arrives a moment after the close. The
+ * only way the dialog closes without passing through here is the browser's
+ * own (Escape), and onDialogClose brings the state back into line for that.
  */
 function dialogElement(): HTMLDialogElement | null {
 	return document.getElementById( 'dh-quote-dialog' ) as HTMLDialogElement | null;
