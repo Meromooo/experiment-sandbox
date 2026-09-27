@@ -118,6 +118,11 @@ add_filter(
  * the homepage's Branch Desk instead. Its "About us" copy is worth keeping and
  * belongs in a rebuilt About section, not this page.
  *
+ * "All Products" (/shop/) is an empty page on both the live site and the
+ * sandbox; the catalogue is WooCommerce's shop page, "Products", at
+ * /products/. Anyone following an old /shop/ link lands on the catalogue.
+ * (AMM-147.)
+ *
  * Filterable, so a retirement can be reversed without a theme change.
  *
  * @return array<string, string> Page slug => destination URL.
@@ -127,6 +132,7 @@ function demas_theme_retired_pages(): array {
 		'demas_theme_retired_pages',
 		array(
 			'contact-us' => home_url( '/#find-your-branch' ),
+			'shop'       => function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' ),
 		)
 	);
 }

@@ -83,14 +83,17 @@ committed (see ADR-001 under Working agreement).
     `pre_render_block`. Nothing is deleted — remove the filters and WooCommerce's cart comes
     back. Link to the catalogue with `demas_theme_catalogue_url()` — the product archive, which
     is `/products/` because WooCommerce's shop page is the cloned "Products" page. `/shop/` is
-    an unrelated empty "All Products" page (AMM-147).
+    an unrelated empty "All Products" page, retired to `/products/` (AMM-147).
   - `pages.php` — generic pages (AMM-146, 2026-09-27). Every cloned content page (Services,
     Contact Us, the old Homepage) is built from **Kadence Blocks**; a `render_block` filter strips
     Kadence classes, inline styles, per-block `<style>`, row-separator SVGs and data attributes
     at render and demotes their `<h1>`s, so the content shows in this theme's type and none of
     the old design survives. Database untouched; core-block pages unaffected. Kadence forms
     render nothing. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
-    emails) redirects to the homepage Branch Desk (302 until cutover).
+    emails) redirects to the homepage Branch Desk, and the empty "All Products" page (`/shop/`)
+    to the catalogue at `/products/` (AMM-147) — both 302 until cutover. Live and sandbox share
+    the same URL structure (`/products/`, `/product/…`, `/product-category/…`), so product and
+    category URLs survive cutover unchanged.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
