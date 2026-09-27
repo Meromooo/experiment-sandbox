@@ -48,27 +48,8 @@ $demas_back       = null;
 $demas_rail_label = '';
 
 if ( $demas_is_search && '' !== $demas_query ) {
-	// Categories whose names match: the whole query, else any of its words.
-	foreach ( array_merge( array( $demas_query ), preg_split( '/\s+/u', $demas_query ) ?: array() ) as $demas_needle ) {
-		if ( mb_strlen( $demas_needle ) < 3 ) {
-			continue;
-		}
-
-		$demas_matches = get_terms(
-			array(
-				'taxonomy'   => 'product_cat',
-				'name__like' => $demas_needle,
-				'hide_empty' => true,
-				'number'     => 12,
-			)
-		);
-
-		if ( ! is_wp_error( $demas_matches ) && $demas_matches ) {
-			$demas_rail = $demas_matches;
-			break;
-		}
-	}
-
+	// Categories whose names match — the same lookup as the header finder.
+	$demas_rail       = function_exists( 'demas_theme_find_categories' ) ? demas_theme_find_categories( $demas_query ) : array();
 	$demas_rail_label = __( 'Matching categories', 'demas-theme' );
 } elseif ( $demas_term instanceof WP_Term ) {
 	$demas_children = get_terms(

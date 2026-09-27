@@ -15,24 +15,29 @@
  *  - On the results page the matched fragment is highlighted in each title
  *    and part number, and an exact part-number hit is tagged.
  *
- * Also holds the search form every entry point uses (toolbar, 404).
+ * Also holds the search form every entry point uses (toolbar, 404), and the
+ * header's Jump to part finder (AMM-142): its block, and the REST route it
+ * reads — the same matching and ranking, so the finder and the results page
+ * never disagree about what a query finds.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// The results page's empty state (server-rendered, from build/).
+// The results page's empty state, and the header finder (both from build/).
 add_action( 'init', function () {
-	$build_path = DEMAS_THEME_DIR . '/build/search-empty';
+	foreach ( array( 'search-empty', 'finder' ) as $block ) {
+		$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
-	if ( file_exists( $build_path . '/block.json' ) ) {
-		register_block_type( $build_path );
+		if ( file_exists( $build_path . '/block.json' ) ) {
+			register_block_type( $build_path );
+		}
 	}
 } );
 
 /**
- * The search as the site reads it, once per request.
+ * A query as the site reads it.
  *
  * @return array{raw: string, words: string[], skus: string[]}
  *     raw   — the trimmed query;
@@ -40,14 +45,8 @@ add_action( 'init', function () {
  *     skus  — forms to try against part numbers: as typed, and with spaces
  *             and underscores turned into hyphens ("tcn ft 062" → "tcn-ft-062").
  */
-function demas_theme_search_terms(): array {
-	static $terms = null;
-
-	if ( null !== $terms ) {
-		return $terms;
-	}
-
-	$raw   = trim( (string) get_query_var( 's' ) );
+function demas_theme_parse_search( string $raw ): array {
+	$raw   = trim( $raw );
 	$words = array_values(
 		array_unique(
 			array_filter(
@@ -66,13 +65,164 @@ function demas_theme_search_terms(): array {
 		}
 	}
 
-	$terms = array(
+	return array(
 		'raw'   => $raw,
 		'words' => $words,
 		'skus'  => $skus,
 	);
+}
+
+/**
+ * The current page's search, parsed once per request.
+ *
+ * @return array{raw: string, words: string[], skus: string[]}
+ */
+function demas_theme_search_terms(): array {
+	static $terms = null;
+
+	if ( null === $terms ) {
+		$terms = demas_theme_parse_search( (string) get_query_var( 's' ) );
+	}
 
 	return $terms;
+}
+
+/**
+ * Every published product a query matches: names and descriptions, as
+ * WordPress's own search would find them, and part numbers, partial match,
+ * as typed and hyphenated. Both through WordPress and WooCommerce APIs.
+ *
+ * Ranked unless asked not to: exact part number, part numbers starting with
+ * the query (in part-number order), then names containing it, then the rest
+ * (by name).
+ *
+ * @param string $raw  The query.
+ * @param bool   $rank Whether to rank; the order is arbitrary otherwise.
+ * @return int[] Product IDs.
+ */
+function demas_theme_find_product_ids( string $raw, bool $rank = true ): array {
+	$terms = demas_theme_parse_search( $raw );
+
+	if ( '' === $terms['raw'] ) {
+		return array();
+	}
+
+	$ids = get_posts(
+		array(
+			'post_type'        => 'product',
+			'post_status'      => 'publish',
+			's'                => $terms['raw'],
+			'fields'           => 'ids',
+			'posts_per_page'   => -1,
+			'no_found_rows'    => true,
+			'suppress_filters' => true,
+		)
+	);
+
+	foreach ( $terms['skus'] as $sku ) {
+		$ids = array_merge(
+			$ids,
+			wc_get_products(
+				array(
+					'sku'    => $sku,
+					'status' => 'publish',
+					'limit'  => -1,
+					'return' => 'ids',
+				)
+			)
+		);
+	}
+
+	$ids = array_values( array_unique( array_map( 'intval', $ids ) ) );
+
+	if ( ! $rank || ! $ids ) {
+		return $ids;
+	}
+
+	update_meta_cache( 'post', $ids );
+	_prime_post_caches( $ids, false, false );
+
+	$query  = mb_strtolower( $terms['raw'] );
+	$skus   = array_map( 'mb_strtolower', $terms['skus'] );
+	$scored = array();
+
+	foreach ( $ids as $id ) {
+		$sku   = mb_strtolower( (string) get_post_meta( $id, '_sku', true ) );
+		$title = mb_strtolower( get_the_title( $id ) );
+		$score = 3;
+
+		if ( '' !== $sku && in_array( $sku, $skus, true ) ) {
+			$score = 0;
+		} elseif ( '' !== $sku && array_filter( $skus, static fn( $s ) => str_starts_with( $sku, $s ) ) ) {
+			$score = 1;
+		} elseif ( str_contains( $title, $query ) ) {
+			$score = 2;
+		}
+
+		// Part-number hits read in part-number order; the rest by name.
+		$scored[] = array( $score, $score <= 1 ? $sku : $title, $id );
+	}
+
+	usort(
+		$scored,
+		static fn( $a, $b ) => array( $a[0], $a[1] ) <=> array( $b[0], $b[1] )
+	);
+
+	return array_column( $scored, 2 );
+}
+
+/**
+ * Categories whose names match: the whole query, else the first of its
+ * words (three characters or more) that matches anything. Empty categories
+ * are left out.
+ *
+ * @return WP_Term[]
+ */
+function demas_theme_find_categories( string $raw, int $limit = 12 ): array {
+	$raw = trim( $raw );
+
+	if ( '' === $raw ) {
+		return array();
+	}
+
+	foreach ( array_merge( array( $raw ), preg_split( '/\s+/u', $raw ) ?: array() ) as $needle ) {
+		if ( mb_strlen( $needle ) < 3 ) {
+			continue;
+		}
+
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'name__like' => $needle,
+				'hide_empty' => true,
+				'number'     => $limit,
+			)
+		);
+
+		if ( ! is_wp_error( $terms ) && $terms ) {
+			return $terms;
+		}
+	}
+
+	return array();
+}
+
+/**
+ * A category's place in the tree, top first: "Fog Systems / Fittings".
+ */
+function demas_theme_term_path( WP_Term $term ): string {
+	$names = array( $term->name );
+
+	foreach ( get_ancestors( $term->term_id, 'product_cat', 'taxonomy' ) as $ancestor_id ) {
+		$ancestor = get_term( $ancestor_id, 'product_cat' );
+
+		if ( $ancestor instanceof WP_Term ) {
+			array_unshift( $names, $ancestor->name );
+		}
+	}
+
+	// Plain text: term names are stored HTML-escaped (Fittings &amp; …).
+	return html_entity_decode( implode( ' / ', $names ), ENT_QUOTES, 'UTF-8' );
 }
 
 /**
@@ -126,80 +276,19 @@ add_action(
 			return;
 		}
 
-		// Names and descriptions, as WordPress would have matched them.
-		$ids = get_posts(
-			array(
-				'post_type'        => 'product',
-				'post_status'      => 'publish',
-				's'                => $terms['raw'],
-				'fields'           => 'ids',
-				'posts_per_page'   => -1,
-				'no_found_rows'    => true,
-				'suppress_filters' => true,
-			)
-		);
-
-		// Part numbers, partial match, as typed and hyphenated.
-		foreach ( $terms['skus'] as $sku ) {
-			$ids = array_merge(
-				$ids,
-				wc_get_products(
-					array(
-						'sku'    => $sku,
-						'status' => 'publish',
-						'limit'  => -1,
-						'return' => 'ids',
-					)
-				)
-			);
-		}
-
-		$ids = array_values( array_unique( array_map( 'intval', $ids ) ) );
+		$chosen = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort parameter.
+		$ids    = demas_theme_find_product_ids( $terms['raw'], '' === $chosen );
 
 		// The union replaces WordPress's own search clause (see posts_search
 		// below); an empty union must still return nothing.
 		$query->set( 'post__in', $ids ? $ids : array( 0 ) );
 		$query->set( 'demas_search', true );
 
-		$chosen = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only sort parameter.
-
-		if ( '' !== $chosen || ! $ids ) {
-			return;
+		// Best match first, unless the buyer picked a sort.
+		if ( '' === $chosen && $ids ) {
+			$query->set( 'orderby', 'post__in' );
+			$query->set( 'order', 'ASC' );
 		}
-
-		// Best match first.
-		update_meta_cache( 'post', $ids );
-		_prime_post_caches( $ids, false, false );
-
-		$raw    = mb_strtolower( $terms['raw'] );
-		$skus   = array_map( 'mb_strtolower', $terms['skus'] );
-		$scored = array();
-
-		foreach ( $ids as $id ) {
-			$sku   = mb_strtolower( (string) get_post_meta( $id, '_sku', true ) );
-			$title = mb_strtolower( get_the_title( $id ) );
-			$score = 3;
-
-			if ( '' !== $sku && in_array( $sku, $skus, true ) ) {
-				$score = 0;
-			} elseif ( '' !== $sku && array_filter( $skus, static fn( $s ) => str_starts_with( $sku, $s ) ) ) {
-				$score = 1;
-			} elseif ( str_contains( $title, $raw ) ) {
-				$score = 2;
-			}
-
-			// Part-number hits read in part-number order; the rest by name.
-			$scored[] = array( $score, $score <= 1 ? $sku : $title, $id );
-		}
-
-		usort(
-			$scored,
-			static fn( $a, $b ) => array( $a[0], $a[1] ) <=> array( $b[0], $b[1] )
-		);
-
-		$query->set( 'post__in', array_column( $scored, 2 ) );
-		$query->set( 'orderby', 'post__in' );
-		$query->set( 'order', 'ASC' );
 	},
 	20
 );
@@ -379,4 +468,103 @@ function demas_theme_search_form( array $args = array() ): string {
 	</form>
 	<?php
 	return (string) ob_get_clean();
+}
+
+/*
+ * The header finder's data: GET /wp-json/demas-theme/v1/find?q=…
+ *
+ * Public and read-only — published catalogue data a visitor could read on
+ * the site anyway. The same matching and ranking as the results page, cut
+ * to what a suggestion row shows. Short-cached: the catalogue changes by
+ * hand, not by the minute.
+ */
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'demas-theme/v1',
+			'/find',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'q' => array(
+						'type'              => 'string',
+						'required'          => true,
+						'sanitize_callback' => 'sanitize_text_field',
+						'validate_callback' => static fn( $value ) => is_string( $value ) && mb_strlen( $value ) <= 80,
+					),
+				),
+				'callback'            => 'demas_theme_rest_find',
+			)
+		);
+	}
+);
+
+/**
+ * Up to five categories and eight parts for a query, plus the total and the
+ * results page URL.
+ */
+function demas_theme_rest_find( WP_REST_Request $request ): WP_REST_Response {
+	$raw   = trim( (string) $request->get_param( 'q' ) );
+	$terms = demas_theme_parse_search( $raw );
+
+	$categories = array();
+	foreach ( demas_theme_find_categories( $raw, 5 ) as $term ) {
+		$categories[] = array(
+			'name'  => html_entity_decode( $term->name, ENT_QUOTES, 'UTF-8' ),
+			'path'  => demas_theme_term_path( $term ),
+			'count' => function_exists( 'demas_theme_term_product_count' ) ? demas_theme_term_product_count( $term ) : (int) $term->count,
+			'url'   => get_term_link( $term ),
+		);
+	}
+
+	$ids   = mb_strlen( $raw ) >= 2 ? demas_theme_find_product_ids( $raw ) : array();
+	$parts = array();
+	$skus  = array_map( 'mb_strtolower', $terms['skus'] );
+
+	foreach ( $ids as $id ) {
+		$product = wc_get_product( $id );
+
+		// Products hidden from search stay hidden here too.
+		if ( ! $product || ! in_array( $product->get_catalog_visibility(), array( 'visible', 'search' ), true ) ) {
+			continue;
+		}
+
+		$chain = function_exists( 'demas_theme_get_product_term_chain' ) ? demas_theme_get_product_term_chain( $id ) : array();
+		$sku   = (string) $product->get_sku();
+
+		$parts[] = array(
+			'name'  => html_entity_decode( $product->get_name(), ENT_QUOTES, 'UTF-8' ),
+			'sku'   => $sku,
+			'path'  => $chain ? demas_theme_term_path( $chain[0] ) : '',
+			'url'   => get_permalink( $id ),
+			'exact' => '' !== $sku && in_array( mb_strtolower( $sku ), $skus, true ),
+		);
+
+		if ( count( $parts ) >= 8 ) {
+			break;
+		}
+	}
+
+	$response = new WP_REST_Response(
+		array(
+			'query'      => $raw,
+			'needles'    => array_values( array_unique( array_merge( array( $raw ), $terms['skus'], $terms['words'] ) ) ),
+			'total'      => count( $ids ),
+			'categories' => $categories,
+			'parts'      => $parts,
+			'resultsUrl' => add_query_arg(
+				array(
+					's'         => rawurlencode( $raw ),
+					'post_type' => 'product',
+				),
+				home_url( '/' )
+			),
+		)
+	);
+
+	$response->header( 'Cache-Control', 'public, max-age=300' );
+
+	return $response;
 }

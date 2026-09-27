@@ -139,7 +139,14 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     the matched fragment (`<mark class="dh-hit">`) in titles and SKUs, tag an exact part-number
     hit, and make the query-title just the quoted query. Registers `demas-theme/search-empty`
     (the no-results state). `demas_theme_search_form()` is the one search field — toolbar and
-    404 use it; AMM-142's header finder should enhance it, not add another.
+    404 use it. The matching lives in `demas_theme_find_product_ids()` /
+    `demas_theme_find_categories()`, shared by the results page and the **header finder**
+    (AMM-142, `demas-theme/finder`, registered here): a REST route `demas-theme/v1/find?q=`
+    returns up to 5 categories and 8 parts with paths, part numbers and an exact flag, so the
+    finder and the results page always agree. The finder is a native modal `<dialog>` with an
+    ARIA combobox, opened by its header control or `/`; its view module is plain TypeScript,
+    not an Interactivity store (rows mark substrings, which the store's templating can't).
+    Without JavaScript the control is a link to the catalogue.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
@@ -152,8 +159,8 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
   `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. Section bodies are `wp:html`
   blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
-  title, the mega-menu block, the navigation block and the quote-drawer block (which hosts the
-  quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
+  title, the mega-menu block, the navigation block, the finder block (the header search) and
+  the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
   renders the `<footer>` landmark itself). The navigation block carries
   its own two links (Services, Contact → the homepage Branch Desk) — left empty it falls back
   to the cloned site's only navigation post, a Page List of every page (AMM-145). Contact must

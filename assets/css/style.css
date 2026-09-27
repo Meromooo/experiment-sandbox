@@ -655,10 +655,10 @@ svg {
 @media (max-width: 56rem) {
 	.dh-header .dh-header__bar {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-columns: auto minmax(0, 1fr) auto auto;
 		grid-template-areas:
-			"title links quote"
-			"menu  menu  menu";
+			"title links finder quote"
+			"menu  menu  menu   menu";
 		align-items: center;
 		gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
 	}
@@ -688,6 +688,10 @@ svg {
 
 	.dh-header .dh-quote {
 		grid-area: quote;
+	}
+
+	.dh-header .dh-finder {
+		grid-area: finder;
 	}
 }
 

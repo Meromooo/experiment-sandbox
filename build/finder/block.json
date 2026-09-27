@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/finder",
+  "title": "Jump to Part",
+  "category": "woocommerce",
+  "icon": "search",
+  "description": "The header search: a control that opens a finder over the page, suggesting categories and parts — by name or part number — as you type. Without JavaScript it is a link to the catalogue and its search field.",
+  "textdomain": "demas-theme",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScriptModule": "file:./view.js",
+  "render": "file:./render.php",
+  "supports": {
+    "html": false,
+    "multiple": false
+  },
+  "attributes": {}
+}
