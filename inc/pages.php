@@ -11,6 +11,12 @@
  * their text, images and links and lose everything that styled them, at
  * render only — the database is untouched, and pages rebuilt later with core
  * blocks and theme patterns are not affected.
+ *
+ * The same goes for the assets the Kadence plugin loads for those blocks —
+ * its stylesheets, per-block CSS, slider and form scripts, and a Google Fonts
+ * link to the old site's typeface (AMM-154). The plugin stays active; its
+ * front-end output is simply not loaded. Nothing here depends on Kadence: with
+ * the plugin gone, every step below finds nothing to do.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -110,13 +116,60 @@ add_filter(
 	2
 );
 
+/**
+ * Whether a registered asset belongs to the Kadence Blocks plugin: by its
+ * handle (kadence-*, kadence_blocks_css, kad-splide) or by where it is served
+ * from.
+ *
+ * @param string            $handle Registered handle.
+ * @param _WP_Dependency|null $asset  Its registration, if any.
+ */
+function demas_theme_is_kadence_asset( string $handle, $asset ): bool {
+	if ( preg_match( '/^(?:kadence|kad-|kb-)/i', $handle ) ) {
+		return true;
+	}
+
+	$src = $asset instanceof _WP_Dependency ? $asset->src : '';
+
+	return is_string( $src ) && false !== strpos( $src, '/plugins/kadence-blocks/' );
+}
+
+/*
+ * Dequeue Kadence's front-end assets. Kadence enqueues as it parses a page's
+ * blocks — including on the homepage, whose Kadence content is never shown —
+ * so this runs just before each print: the head's styles and scripts, then
+ * the footer's.
+ */
+$demas_theme_drop_kadence_assets = function () {
+	foreach ( array( wp_styles(), wp_scripts() ) as $deps ) {
+		foreach ( (array) $deps->queue as $handle ) {
+			if ( demas_theme_is_kadence_asset( (string) $handle, $deps->registered[ $handle ] ?? null ) ) {
+				$deps->dequeue( $handle );
+			}
+		}
+	}
+};
+add_action( 'wp_print_styles', $demas_theme_drop_kadence_assets, 1 );
+add_action( 'wp_print_scripts', $demas_theme_drop_kadence_assets, 1 );
+add_action( 'wp_print_footer_scripts', $demas_theme_drop_kadence_assets, 1 );
+add_action( 'wp_footer', $demas_theme_drop_kadence_assets, 1 );
+unset( $demas_theme_drop_kadence_assets );
+
+// Kadence prints its Google Fonts <link> directly (the old site's Trykker).
+add_filter( 'kadence_blocks_print_google_fonts', '__return_false' );
+
 /*
  * A page's content, once it is fully rendered:
  *  - an id used twice keeps only its first use (the Services page carried
  *    Kadence's "jsHeader" twice; duplicate ids break in-page links and
  *    labelling);
  *  - links to a retired page go straight to where that page now sends
- *    visitors, instead of through the redirect.
+ *    visitors, instead of through the redirect;
+ *  - photos are sized for the reading column (46rem, see .dh-page__body in
+ *    style.css) instead of the full-bleed width their srcset assumed, so a
+ *    phone downloads a ~768px file, not a 1536px one; and every photo after
+ *    the first loads lazily (AMM-154). WordPress leaves the first three
+ *    images eager, which on Services was 865 KB up front.
  */
 add_filter(
 	'render_block_core/post-content',
@@ -128,9 +181,22 @@ add_filter(
 		$retired   = demas_theme_retired_pages();
 		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
 		$seen      = array();
+		$images    = 0;
 		$processor = new WP_HTML_Tag_Processor( (string) $content );
 
 		while ( $processor->next_tag() ) {
+			if ( 'IMG' === $processor->get_tag() ) {
+				if ( $processor->get_attribute( 'srcset' ) ) {
+					$processor->set_attribute( 'sizes', '(max-width: 48rem) calc(100vw - 2rem), 46rem' );
+				}
+
+				if ( $images > 0 && ! $processor->get_attribute( 'loading' ) ) {
+					$processor->set_attribute( 'loading', 'lazy' );
+				}
+
+				++$images;
+			}
+
 			$id = $processor->get_attribute( 'id' );
 
 			if ( is_string( $id ) && '' !== $id ) {

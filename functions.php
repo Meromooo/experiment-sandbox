@@ -16,6 +16,7 @@ define( 'DEMAS_THEME_DIR', get_template_directory() );
 $demas_theme_includes = array(
 	'inc/setup.php',
 	'inc/enqueue.php',
+	'inc/performance.php',
 	'inc/navigation.php',
 	'inc/patterns.php',
 	'inc/woocommerce.php',

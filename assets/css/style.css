@@ -103,6 +103,57 @@ svg {
 /* ------------------------------------------------------------------ */
 
 /*
+ * Stand-in faces for the moment before the web fonts arrive (AMM-154).
+ * Text first paints in a system font and swaps when Archivo and Plex Sans
+ * load. Expanded Archivo is 22–28% wider than Arial, so headlines rewrapped
+ * onto more lines at the swap and the homepage hero jumped 84px (CLS 0.103).
+ * These are Arial (Roboto on Android) scaled to the web fonts' measured
+ * widths and vertical metrics, so a line breaks in the same place before and
+ * after the swap. They sit after the web fonts in theme.json's stacks and
+ * are only ever used while those load. Values measured in Chromium against
+ * the site's own headings and body copy; re-measure if a face changes.
+ */
+@font-face {
+	font-family: "Archivo Fallback";
+	src: local("Arial"), local("ArialMT"), local("Roboto"), local("Roboto-Regular");
+	font-weight: 100 550;
+	size-adjust: 128.34%;
+	ascent-override: 68.57%;
+	descent-override: 16.36%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: "Archivo Fallback";
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Roboto Bold"), local("Roboto-Bold");
+	font-weight: 551 900;
+	size-adjust: 122.17%;
+	ascent-override: 72.03%;
+	descent-override: 17.19%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: "IBM Plex Sans Fallback";
+	src: local("Arial"), local("ArialMT"), local("Roboto"), local("Roboto-Regular");
+	font-weight: 100 550;
+	size-adjust: 102%;
+	ascent-override: 100.98%;
+	descent-override: 27.45%;
+	line-gap-override: 0%;
+}
+
+@font-face {
+	font-family: "IBM Plex Sans Fallback";
+	src: local("Arial Bold"), local("Arial-BoldMT"), local("Roboto Bold"), local("Roboto-Bold");
+	font-weight: 551 900;
+	size-adjust: 97.14%;
+	ascent-override: 106.03%;
+	descent-override: 28.82%;
+	line-gap-override: 0%;
+}
+
+/*
  * theme.json cannot express font-stretch. The expanded axis is what turns
  * Archivo from a neutral grotesque into the display voice, so it lives here.
  */
