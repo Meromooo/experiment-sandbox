@@ -76,7 +76,8 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-pmeta' ) );
 	<div class="dh-pmeta__ids">
 		<?php if ( '' !== $demas_sku ) : ?>
 			<p class="dh-pmeta__sku dh-mono">
-				<span class="dh-sr"><?php esc_html_e( 'Part number', 'demas-theme' ); ?> </span><?php echo $demas_sku_html; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped above; highlight adds only <mark>. ?>
+				<?php // One span: in the flex line, a marked fragment would otherwise be spaced apart from the rest of the number. ?>
+				<span class="dh-pmeta__value"><span class="dh-sr"><?php esc_html_e( 'Part number', 'demas-theme' ); ?> </span><?php echo $demas_sku_html; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped above; highlight adds only <mark>. ?></span>
 				<?php if ( $demas_exact ) : ?>
 					<span class="dh-pcard__exact"><?php esc_html_e( 'Exact match', 'demas-theme' ); ?></span>
 				<?php endif; ?>
