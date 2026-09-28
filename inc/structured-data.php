@@ -4,24 +4,30 @@
  *
  * Built on the plugins' own generators, not a second one of ours:
  *
- *  - WooCommerce writes the Product and BreadcrumbList markup, from each
- *    product's own WooCommerce fields — a new product needs no extra step.
- *    Its product generator only runs from the classic single-product summary
- *    hook, which the datasheet template (templates/single-product.html) does
- *    not use, so it is started here.
+ *  - WooCommerce writes the BreadcrumbList, and would write the Product
+ *    markup — from each product's own WooCommerce fields, so a new product
+ *    needs no extra step. Its product generator only runs from the classic
+ *    single-product summary hook, which the datasheet template
+ *    (templates/single-product.html) does not use, so it is started here.
  *  - Yoast SEO writes WebSite (with the part-number search box), Organization
  *    and WebPage. On WooCommerce pages its own BreadcrumbList is dropped: it
  *    read "Home › Products › part", with no category, beside WooCommerce's
  *    "Home › Fog Systems › Water Treatment › part". One trail per page — the
  *    one the page shows, built from the same category tree as the live site.
  *
- * The adjustments, all through the plugins' documented filters:
+ * No Product markup while there are no prices (decided 2026-09-28).
+ * WooCommerce's generator writes Product only when a product has an offer, a
+ * rating or a review — Google's own rule for product results — and every
+ * product here has an empty price and is priced by a branch on request. The
+ * alternative, writing Product ourselves, would have put ~643 "invalid items"
+ * in Search Console for no gain. So today no product page carries Product
+ * markup. The day a product gets a real price or reviews, WooCommerce writes
+ * it, adjusted here through its documented filter:
  *
- *  - no offers. Every product is SAR 0.00 and priced by a branch on request;
- *    a price of zero is worse than none, and there is no honest way to mark
- *    up "ask for a price";
+ *  - a zero price is never published: its offer is dropped, and with no
+ *    rating or review left the whole Product is withheld;
  *  - names decoded: the imported titles carry "&#8243;" (″), and WooCommerce's
- *    breadcrumb double-encodes it to "&amp;#8243;";
+ *    breadcrumb double-encodes it to "&amp;#8243;" (that fix is live now);
  *  - the description comes from the cleaned description (inc/product-page.php):
  *    53 imported descriptions open with the old site's CSS as visible text;
  *  - category is the product's full path in the category tree ("Irrigation >
@@ -29,8 +35,8 @@
  *    only for manufacturer part numbers — never for the DMS- house references
  *    (tools/assign-house-skus.php), which stay as the sku.
  *
- * No price, no settings changed, and nothing here depends on Yoast: without
- * it, its two filters simply never run.
+ * No settings changed, and nothing here depends on Yoast: without it, its
+ * two filters simply never run.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -105,7 +111,16 @@ add_filter(
 			return $markup;
 		}
 
-		unset( $markup['offers'] );
+		// A zero price is never published. Without an offer, a Product needs a
+		// rating or a review to be valid; with neither, returning no @type makes
+		// WooCommerce's set_data() drop it altogether.
+		if ( (float) $product->get_price() <= 0 ) {
+			unset( $markup['offers'] );
+
+			if ( empty( $markup['aggregateRating'] ) && empty( $markup['review'] ) ) {
+				return array();
+			}
+		}
 
 		$markup['name'] = demas_theme_schema_text( (string) $product->get_name() );
 

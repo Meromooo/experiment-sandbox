@@ -185,7 +185,20 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     heading; `main.js` switches in place with View Transitions. Printing any catalogue page
     gives the sheet. Sheet rows carry a quantity field (in the compact quote button) that adds
     that quantity, and edits the quote once the part is in it.
-  - `structured-data.php` — JSON-LD / schema.org output for products and organization
+  - `structured-data.php` — JSON-LD (AMM-155, 2026-09-28), built on the plugins' own generators
+    and adjusted only through their documented filters. **One breadcrumb trail per page:** on
+    WooCommerce pages (product, category, catalogue, search) it is WooCommerce's — the same
+    trail the page shows, from the category tree, which is identical to the live site's —
+    with names fully decoded (`20″`, not `20&amp;#8243;`); Yoast's breadcrumb piece and its
+    WebPage reference are dropped there (`wpseo_schema_graph_pieces`, `wpseo_schema_webpage`).
+    Yoast keeps WebSite, Organization and WebPage. **No Product markup while there are no
+    prices:** WooCommerce's generator refuses a product without an offer, rating or review
+    (Google's rule too), and writing our own would have filled Search Console with ~643
+    invalid items. The generator is started on the datasheet template and its filter is ready
+    — the day a product has a real price or reviews, WooCommerce writes its Product with
+    clean names, the cleaned description, the category path, brand, sku, and mpn only for
+    manufacturer numbers (never DMS-); a zero price is never published. Branch locations in
+    the Organization wait for real addresses (AMM-148).
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
   live — never hardcoded into templates. Current set (homepage, 2026-09-15): `hero`,
