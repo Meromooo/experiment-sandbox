@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// WooCommerce's classic stylesheets: woocommerce-general, -layout, -smallscreen, -blocktheme.
+// WooCommerce's classic stylesheets: woocommerce-general, -layout, -smallscreen.
 add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
 
 /*
@@ -59,6 +59,10 @@ add_action(
 
 		// One rule for classic checkout forms (.form-row .required); there are none.
 		wp_dequeue_style( 'woocommerce-inline' );
+
+		// Classic cart, account, variation and review rules for block themes,
+		// enqueued outside woocommerce_enqueue_styles.
+		wp_dequeue_style( 'woocommerce-blocktheme' );
 	},
 	100
 );
