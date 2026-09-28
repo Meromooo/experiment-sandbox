@@ -42,6 +42,8 @@ interface Strings {
 	decrease: string;
 	increase: string;
 	remove: string;
+	item: string;
+	items: string;
 	sheetTitle: string;
 	printed: string;
 	colLine: string;
@@ -517,6 +519,20 @@ function totalQty(): number {
 	return state.items.reduce( ( sum, item ) => sum + item.qty, 0 );
 }
 
+/** "1 part" / "35 parts", for the printed and copied titles. */
+function partsCount(): string {
+	const n = state.items.length;
+
+	return `${ n } ${ n === 1 ? state.strings.part : state.strings.parts }`;
+}
+
+/** "1 item" / "86 items": the total quantity across the list. */
+function itemsCount(): string {
+	const n = totalQty();
+
+	return `${ n } ${ n === 1 ? state.strings.item : state.strings.items }`;
+}
+
 function printedDate(): string {
 	return new Date().toLocaleDateString( 'en-GB', {
 		day: 'numeric',
@@ -550,7 +566,7 @@ function buildSheet(): HTMLElement {
 
 	const head = el( 'header', 'dh-qsheet__head' );
 	head.append(
-		el( 'p', 'dh-qsheet__title', format( s.sheetTitle, String( state.items.length ), String( totalQty() ) ) ),
+		el( 'p', 'dh-qsheet__title', format( s.sheetTitle, partsCount(), itemsCount() ) ),
 		el( 'p', 'dh-qsheet__date', format( s.printed.replace( '%s', '%1$s' ), printedDate() ) )
 	);
 
@@ -634,7 +650,7 @@ function plainText(): string {
 	);
 
 	return [
-		format( state.strings.textTitle, String( state.items.length ), String( totalQty() ) ),
+		format( state.strings.textTitle, partsCount(), itemsCount() ),
 		...lines,
 	].join( '\n' );
 }

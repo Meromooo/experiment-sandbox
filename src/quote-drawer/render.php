@@ -48,8 +48,12 @@ wp_interactivity_state(
 			'remove'    => __( 'Remove %s from your quote', 'demas-theme' ),
 
 			// Printing and sharing the list (AMM-163).
-			/* translators: 1: zero-padded number of parts, 2: total quantity. */
-			'sheetTitle'   => __( 'Demas Group · Quote list · %1$s parts · %2$s items', 'demas-theme' ),
+			/* translators: singular noun after a total quantity, e.g. "1 item". */
+			'item'         => __( 'item', 'demas-theme' ),
+			/* translators: plural noun after a total quantity, e.g. "86 items". */
+			'items'        => __( 'items', 'demas-theme' ),
+			/* translators: 1: number of parts with its noun ("35 parts"), 2: total quantity with its noun ("86 items"). */
+			'sheetTitle'   => __( 'Demas Group · Quote list · %1$s · %2$s', 'demas-theme' ),
 			/* translators: %s: date. */
 			'printed'      => __( 'Printed %s', 'demas-theme' ),
 			'colLine'      => __( 'Line', 'demas-theme' ),
@@ -62,8 +66,8 @@ wp_interactivity_state(
 				__( 'Phone', 'demas-theme' ),
 				__( 'Project', 'demas-theme' ),
 			),
-			/* translators: 1: number of parts, 2: total quantity. */
-			'textTitle'    => __( 'Demas quote list — %1$s parts, %2$s items', 'demas-theme' ),
+			/* translators: 1: number of parts with its noun ("35 parts"), 2: total quantity with its noun ("86 items"). */
+			'textTitle'    => __( 'Demas quote list — %1$s, %2$s', 'demas-theme' ),
 			'copy'         => __( 'Copy list', 'demas-theme' ),
 			'share'        => __( 'Share', 'demas-theme' ),
 			'copied'       => __( 'List copied.', 'demas-theme' ),
