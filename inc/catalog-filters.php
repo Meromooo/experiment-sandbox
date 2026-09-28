@@ -7,6 +7,8 @@
  * description — so there are no facets to filter by. What a buyer can
  * navigate by is category, brand-as-category, SKU and name, and this file
  * exists to serve exactly that.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

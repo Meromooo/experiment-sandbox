@@ -1,6 +1,8 @@
 <?php
 /**
  * WooCommerce compatibility declarations and block-theme integration.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

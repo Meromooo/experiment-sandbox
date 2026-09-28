@@ -8,6 +8,8 @@
  * The page is a datasheet, not a shop page. Every price in the catalogue is
  * zero, so there is no price, no cart and no tabs: the buyer arrives to
  * confirm the part and leaves by asking what it costs.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

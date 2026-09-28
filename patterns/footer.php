@@ -12,6 +12,8 @@
  *
  * CR number, VAT number and the registered name are placeholders until Demas
  * supplies them (AMM-144). Staff email addresses never appear here.
+ *
+ * @package Demas_Theme
  */
 
 $demas_certificates = content_url( 'uploads/2026/03/DEMAS-Certificates.pdf' );

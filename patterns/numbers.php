@@ -4,7 +4,10 @@
  * Slug: demas-theme/numbers
  * Categories: demas
  * Description: Positioning statement beside four hard numbers, on a canopy-green band.
+ *
+ * @package Demas_Theme
  */
+
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-numbers","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-numbers">

@@ -18,6 +18,8 @@
  * @param array    $attributes Block attributes: variant, productId, describedBy.
  * @param string   $content    Inner content (unused — fully dynamic).
  * @param WP_Block $block      Block instance.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) || ! function_exists( 'wc_get_product' ) ) {
@@ -58,7 +60,14 @@ $demas_whose = 'compact' === $demas_variant
 <div
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
 	data-wp-interactive="demas-theme/quote"
-	<?php echo wp_interactivity_data_wp_context( array( 'item' => $demas_item, 'qty' => 1 ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
+	<?php
+	echo wp_interactivity_data_wp_context(
+		array(
+			'item' => $demas_item,
+			'qty'  => 1,
+		)
+	); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. 
+	?>
 >
 	<?php if ( 'compact' === $demas_variant ) : ?>
 		<?php

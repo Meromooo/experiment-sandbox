@@ -4,7 +4,10 @@
  * Slug: demas-theme/closing-cta
  * Categories: demas
  * Description: The final conversion section on a canopy band, bookending the hero, flowing into the footer.
+ *
+ * @package Demas_Theme
  */
+
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-closing","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-closing" id="contact">

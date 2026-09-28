@@ -4,6 +4,8 @@
  *
  * See CLAUDE.md for architecture, conventions, and forbidden patterns
  * before adding anything here.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

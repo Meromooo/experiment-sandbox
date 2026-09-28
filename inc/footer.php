@@ -11,6 +11,8 @@
  *    from the same list as the mega menu (inc/navigation.php);
  *  - demas-theme/branch-plan — the fifteen branches (inc/branches.php) and
  *    the key plan that plots them.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

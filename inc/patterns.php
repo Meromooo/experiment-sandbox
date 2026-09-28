@@ -5,6 +5,8 @@
  * Patterns themselves live in patterns/ and are registered by WordPress from
  * their file headers. This only declares the category they file under, so
  * they group together in the inserter.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

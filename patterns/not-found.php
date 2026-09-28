@@ -5,6 +5,8 @@
  * Categories: demas
  * Inserter: no
  * Description: Head of the 404 page. Says what happened without apologising, then offers the catalogue and a branch; the template adds the stage index below.
+ *
+ * @package Demas_Theme
  */
 
 $demas_catalogue = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' );

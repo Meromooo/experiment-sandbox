@@ -4,6 +4,8 @@
  * Slug: demas-theme/categories
  * Categories: demas
  * Description: Five category cards linking into the WooCommerce catalogue, product counts socketed into each corner.
+ *
+ * @package Demas_Theme
  */
 
 // Order and descriptors follow demas-homepage-brief.md; the fifth card is the

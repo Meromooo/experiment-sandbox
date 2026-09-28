@@ -17,6 +17,8 @@
  * link to the old site's typeface (AMM-154). The plugin stays active; its
  * front-end output is simply not loaded. Nothing here depends on Kadence: with
  * the plugin gone, every step below finds nothing to do.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

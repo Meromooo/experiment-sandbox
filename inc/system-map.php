@@ -13,6 +13,8 @@
  *
  * Both maps are filterable so the store can adjust them without a theme
  * change: `demas_theme_system_map` and `demas_theme_brand_term_slugs`.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

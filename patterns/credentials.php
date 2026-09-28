@@ -4,7 +4,10 @@
  * Slug: demas-theme/credentials
  * Categories: demas
  * Description: Certification and partnership marks, shown before any product content — proof before pitch.
+ *
+ * @package Demas_Theme
  */
+
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-section--tight dh-creds","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-section--tight dh-creds">

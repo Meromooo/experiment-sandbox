@@ -34,6 +34,8 @@
  *
  * NOT from ~/domains/demas-group.com/public_html. The guard below refuses to
  * run anywhere but the sandbox; do not remove it.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {

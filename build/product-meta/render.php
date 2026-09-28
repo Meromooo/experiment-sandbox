@@ -20,6 +20,8 @@
  * @param array    $attributes Block attributes (none).
  * @param string   $content    Inner content (unused — fully dynamic).
  * @param WP_Block $block      Block instance (context: postId).
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) || ! function_exists( 'wc_get_product' ) ) {

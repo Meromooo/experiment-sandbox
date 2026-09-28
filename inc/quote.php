@@ -20,6 +20,8 @@
  * part — ID, quantity, name, SKU, thumbnail, link — so it draws instantly on
  * every page without a request. Sending it to a branch is AMM-140; nothing
  * here leaves the browser.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

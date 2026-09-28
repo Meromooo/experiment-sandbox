@@ -10,6 +10,8 @@
  * @param array    $attributes Block attributes.
  * @param string   $content    Inner block content (unused — fully dynamic).
  * @param WP_Block $block      Block instance.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

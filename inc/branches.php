@@ -14,6 +14,8 @@
  * The Branch Desk in patterns/hero.php still carries its own copy of the
  * cities as static markup; it moves onto this list when AMM-153 converts the
  * homepage patterns to editable blocks.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

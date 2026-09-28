@@ -4,7 +4,10 @@
  * Slug: demas-theme/process
  * Categories: demas
  * Description: Four numbered steps joined by a pipeline line. Numbered because it genuinely is a sequence.
+ *
+ * @package Demas_Theme
  */
+
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-process","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-process">

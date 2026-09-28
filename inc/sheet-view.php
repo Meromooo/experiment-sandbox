@@ -22,6 +22,8 @@
  *
  * The toggle itself is in the catalogue toolbar; switching without a reload is
  * in assets/js/main.js. Printing any catalogue page gives the sheet.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

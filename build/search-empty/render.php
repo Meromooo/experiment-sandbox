@@ -12,6 +12,8 @@
  * @param array    $attributes Block attributes (none).
  * @param string   $content    Inner content (unused — fully dynamic).
  * @param WP_Block $block      Block instance.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -46,7 +48,19 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-empty' ) );
 	<p class="dh-empty__hint">
 		<?php if ( '' !== $demas_prefix ) : ?>
 			<?php esc_html_e( 'Part numbers match from the start. Try the family without its last part:', 'demas-theme' ); ?>
-			<a class="dh-empty__try dh-mono" href="<?php echo esc_url( add_query_arg( array( 's' => rawurlencode( $demas_prefix ), 'post_type' => 'product' ), home_url( '/' ) ) ); ?>"><?php echo esc_html( $demas_prefix ); ?></a>
+			<a class="dh-empty__try dh-mono" href="
+			<?php
+			echo esc_url(
+				add_query_arg(
+					array(
+						's'         => rawurlencode( $demas_prefix ),
+						'post_type' => 'product',
+					),
+					home_url( '/' )
+				)
+			);
+			?>
+													"><?php echo esc_html( $demas_prefix ); ?></a>
 		<?php else : ?>
 			<?php esc_html_e( 'Check the spelling, or search by part number — house references look like', 'demas-theme' ); ?>
 			<span class="dh-mono">DMS-FIL-009</span>.

@@ -1,6 +1,8 @@
 <?php
 /**
  * Front-end asset registration.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

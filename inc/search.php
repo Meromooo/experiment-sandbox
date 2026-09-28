@@ -19,6 +19,8 @@
  * header's Jump to part finder (AMM-142): its block, and the REST route it
  * reads — the same matching and ranking, so the finder and the results page
  * never disagree about what a query finds.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

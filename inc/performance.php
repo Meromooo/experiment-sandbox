@@ -27,6 +27,8 @@
  *
  * Nothing here changes a WooCommerce or WordPress setting — delete this file
  * from functions.php and everything comes back.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

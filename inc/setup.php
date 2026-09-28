@@ -1,6 +1,8 @@
 <?php
 /**
  * Core theme support declarations.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

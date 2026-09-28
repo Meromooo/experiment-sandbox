@@ -1,6 +1,8 @@
 <?php
 /**
  * Nav menu registration and the mega-menu's category icon set.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

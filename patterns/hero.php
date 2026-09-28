@@ -4,7 +4,10 @@
  * Slug: demas-theme/hero
  * Categories: demas
  * Description: Headline, the Branch Desk, the irrigation schematic card, and the city marquee.
+ *
+ * @package Demas_Theme
  */
+
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-hero">

@@ -37,6 +37,8 @@
  *
  * No settings changed, and nothing here depends on Yoast: without it, its
  * two filters simply never run.
+ *
+ * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
