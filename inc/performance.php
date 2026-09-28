@@ -19,8 +19,11 @@
  *  - The emoji detection script and styles: every supported browser draws
  *    emoji natively.
  *
- * It also preloads the two fonts every page paints with first, so they arrive
- * alongside the CSS instead of after it.
+ * Fonts are deliberately *not* preloaded. Tested on a throttled phone profile
+ * with Archivo + Plex Sans preloaded, first paint came 150–200 ms later on
+ * home, category and product pages: the 133 KB of fonts competed with the
+ * render-blocking CSS. The metric-matched stand-in faces in style.css already
+ * stop text from moving when the fonts swap in, so a preload bought nothing.
  *
  * Nothing here changes a WooCommerce or WordPress setting — delete this file
  * from functions.php and everything comes back.
@@ -74,40 +77,4 @@ add_action(
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 		remove_action( 'wp_print_styles', 'print_emoji_styles' );
 	}
-);
-
-/**
- * The fonts every page paints with first: Archivo for headings, IBM Plex Sans
- * for text, Latin subsets only. Plex Mono and the latin-ext / Arabic subsets
- * load on demand through their unicode-range, as before.
- *
- * @return string[] Theme-relative font paths.
- */
-function demas_theme_preload_fonts(): array {
-	return (array) apply_filters(
-		'demas_theme_preload_fonts',
-		array(
-			'assets/fonts/archivo/archivo-latin-100-900.woff2',
-			'assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-400-600.woff2',
-		)
-	);
-}
-
-add_action(
-	'wp_head',
-	function () {
-		foreach ( demas_theme_preload_fonts() as $font ) {
-			if ( ! file_exists( get_theme_file_path( $font ) ) ) {
-				continue;
-			}
-
-			// crossorigin is required: fonts are fetched in CORS mode, and a
-			// preload without it is fetched twice.
-			printf(
-				'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
-				esc_url( get_theme_file_uri( $font ) )
-			);
-		}
-	},
-	1
 );

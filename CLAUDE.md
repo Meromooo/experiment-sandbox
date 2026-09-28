@@ -48,7 +48,13 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
 - `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
   Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
   third-party font CDN. Fetched from the Google Fonts API on 2026-09-14; the fetch script
-  is not kept, the files are.
+  is not kept, the files are. IBM Plex Sans is one variable file per subset
+  (`ibm-plex-sans-latin-400-600.woff2`, `…-latin-ext-400-600.woff2`) declared once for weights
+  400–600; the API had served the same file for each weight and it was downloaded three times
+  (AMM-154). `style.css` section 2 holds **metric-matched stand-in faces** ("Archivo Fallback",
+  "IBM Plex Sans Fallback": Arial scaled to the web fonts' measured widths), listed after the
+  web fonts in `theme.json`'s stacks, so text wraps the same before and after the fonts swap
+  in. Change a face or its width axis and those values must be re-measured.
 - `assets/images/` — **not yet created.** Reserved for hand-placed theme imagery (logo,
   icons); photography for content goes through the Media Library, not this folder.
 - `tools/` — one-off operational scripts run by a human on the host, never by the theme at
@@ -67,6 +73,14 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
 - `inc/` — PHP includes, one concern per file, all required from `functions.php`:
   - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.)
   - `enqueue.php` — front-end script/style registration only
+  - `performance.php` — what the front end does **not** load (AMM-154, 2026-09-28):
+    WooCommerce's classic stylesheets (`woocommerce_enqueue_styles`, plus
+    `woocommerce-blocktheme`) and classic scripts (woocommerce, add-to-cart, blockUI,
+    js-cookie), which takes jQuery with them; order attribution (sourcebuster, `sbjs_*`
+    cookies — there is no checkout to attribute); the emoji script. WooCommerce **block**
+    styles stay. Fonts are deliberately not preloaded: measured, it delayed first paint
+    150–200 ms on a slow phone connection. No setting is changed — drop the file from
+    `functions.php` and it all comes back.
   - `navigation.php` — nav menu registration, the mega-menu icon set, and the catalogue
     structure both the mega menu and the footer read: `demas_theme_get_catalogue_structure()`
     (group → subcategory order, filter `demas_theme_mega_menu_structure`),
@@ -122,7 +136,11 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     Kadence classes, inline styles, per-block `<style>`, row-separator SVGs and data attributes
     at render and demotes their `<h1>`s, so the content shows in this theme's type and none of
     the old design survives. Database untouched; core-block pages unaffected. Kadence forms
-    render nothing. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
+    render nothing. Kadence's front-end **assets** are dropped too (AMM-154): its stylesheets,
+    per-block CSS, slider/form scripts and its Google Fonts `<link>` to the old site's
+    typeface (Trykker) — the plugin parses page 17's content even on the homepage, where it
+    is never shown. Page photos get a `sizes` for the 46rem reading column and all but the
+    first load lazily. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
     emails) redirects to the homepage Branch Desk, and the empty "All Products" page (`/shop/`)
     to the catalogue at `/products/` (AMM-147) — both 302 until cutover. Live and sandbox share
     the same URL structure (`/products/`, `/product/…`, `/product-category/…`), so product and
@@ -294,6 +312,11 @@ branch-routed contact form replaces published email addresses.
   `assets/css/style.css` all load on the same page, so two components sharing a class name
   style each other. The footer once reused `.dh-plate` (the product page's nameplate) and turned
   it unreadable; it is `.dh-foot-plate` now. Before naming a class, grep the repo for it.
+- **No jQuery, no classic WooCommerce assets.** Since AMM-154 no page loads jQuery,
+  WooCommerce's classic CSS/JS, order attribution, emoji or Kadence assets. Front-end code is
+  dependency-free (plain JS, TypeScript modules, the Interactivity API); don't add anything
+  that pulls jQuery back in. After any change to enqueues, run a network trace on home,
+  catalogue and product pages and compare with the before/after table in AMM-154.
 - **Adding a file to `patterns/` needs a version bump.** WordPress caches a theme's pattern list
   keyed on the `Version:` in the root `style.css`, so a new pattern file is invisible — a
   `wp:pattern` pointing at it renders nothing — until that version changes. Bump `Version:` and

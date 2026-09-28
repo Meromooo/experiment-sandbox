@@ -114,6 +114,10 @@ The decision is sound; the current execution has gaps. In priority order:
    made every large heading render at body size. *(2 hours)*
 4. **Trim platform assets.** Conditionally dequeue WooCommerce CSS/JS and jQuery on pages with
    no shop content; drop the emoji script. *(half a day)*
+   **Done 2026-09-28 (AMM-154):** WooCommerce's classic CSS/JS are dropped on every page, not
+   only non-shop ones — no template uses them — which takes jQuery with them; emoji, order
+   attribution and Kadence's leftover assets are gone too, and duplicate font files merged.
+   Homepage weight 450 → about 245 KB, CLS 0.103 → 0. See `inc/performance.php` and AMM-154.
 5. **Decide the Arabic approach** — Polylang, WPML, or separate installs — *before* building
    more templates. It changes URL structure, the database and every template. *(decision only)*
 
