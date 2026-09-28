@@ -407,9 +407,10 @@ add_filter(
 function demas_theme_search_form( array $args = array() ): string {
 	$id = wp_unique_id( 'dh-search-' );
 
-	// No count in it: the toolbar already shows the count beside the field,
-	// and "Search 643 parts or part numbers" was cut off on a 320px phone.
-	$placeholder = __( 'Search parts or part numbers', 'demas-theme' );
+	// Short enough for a 320px phone: "Search 643 parts or part numbers" and
+	// even "Search parts or part numbers" were cut off there. The count is
+	// beside the field in the toolbar; the label below says it in full.
+	$placeholder = __( 'Part name or part number', 'demas-theme' );
 
 	ob_start();
 	?>
