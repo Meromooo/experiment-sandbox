@@ -103,7 +103,13 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     native modal `<dialog>`). They share one Interactivity API store, `demas-theme/quote`,
     defined in `src/quote-drawer/view.ts` — so the drawer must stay in `parts/header.html` or
     every quote button stops working. The list lives in the buyer's `localStorage` as a snapshot
-    per part; nothing is sent anywhere until AMM-140.
+    per part; nothing is sent anywhere until AMM-140. **Print / Copy list / Share** (AMM-163,
+    2026-09-28): the dialog foot prints the list as a parts sheet (built as DOM on `<body>` only
+    while printing, under `html.dh-print-quote`, so it prints from any page; Ctrl+P while the
+    list is open does the same), and copies it as plain text — or opens the phone's share sheet
+    where `navigator.share` exists. The sheet's contact line is filterable
+    (`demas_theme_quote_sheet_contact`); it carries the company phone and the Branch Desk, never
+    a staff email.
   - `woocommerce.php` also holds **no cart, no checkout** (decided 2026-09-24): every product is
     SAR 0.00, so `woocommerce_is_purchasable` is false, `/cart` and `/checkout` 302 to the
     catalogue, and the mini-cart plus Cart/Checkout menu links are stopped in

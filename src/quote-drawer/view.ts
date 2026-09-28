@@ -42,6 +42,19 @@ interface Strings {
 	decrease: string;
 	increase: string;
 	remove: string;
+	sheetTitle: string;
+	printed: string;
+	colLine: string;
+	colPart: string;
+	colSku: string;
+	colQty: string;
+	blanks: string[];
+	textTitle: string;
+	copy: string;
+	share: string;
+	copied: string;
+	copyFallback: string;
+	contact: string;
 }
 
 interface ButtonContext {
@@ -118,6 +131,11 @@ const { state } = store( 'demas-theme/quote', {
 		ready: false,
 		announcement: '',
 		strings: {} as Strings,
+		/** "Copy list", or "Share" where the phone has a share sheet. */
+		shareLabel: '',
+		/** The copy-by-hand field, shown only when the clipboard is blocked. */
+		copyText: '',
+		showCopy: false,
 
 		get hasItems(): boolean {
 			return state.items.length > 0;
@@ -306,6 +324,49 @@ const { state } = store( 'demas-theme/quote', {
 			heading?.focus();
 		},
 
+		/*
+		 * Print the list (AMM-163). The sheet is built from the stored list and
+		 * printed on its own; the list reopens afterwards (see printQuote).
+		 */
+		printList(): void {
+			printQuote();
+		},
+
+		/**
+		 * The list as text: the phone's share sheet where there is one (WhatsApp,
+		 * Mail…), otherwise the clipboard — and, if the clipboard is blocked,
+		 * a selected field to copy from by hand.
+		 */
+		shareList(): void {
+			const text = plainText();
+
+			if ( ! text ) {
+				return;
+			}
+
+			if ( canShare() ) {
+				navigator
+					.share( { title: firstLine( text ), text } )
+					.catch( () => {
+						// Dismissed, or the share sheet failed: nothing to undo.
+					} );
+				return;
+			}
+
+			if ( navigator.clipboard?.writeText ) {
+				navigator.clipboard.writeText( text ).then(
+					() => {
+						state.showCopy = false;
+						announce( state.strings.copied );
+					},
+					() => showCopyField( text )
+				);
+				return;
+			}
+
+			showCopyField( text );
+		},
+
 		/** Another tab changed the list: follow it. */
 		syncFromStorage( event: StorageEvent ): void {
 			if ( event.key === STORAGE_KEY || event.key === null ) {
@@ -318,6 +379,20 @@ const { state } = store( 'demas-theme/quote', {
 		init(): void {
 			state.items = read();
 			state.ready = true;
+
+			if ( canShare() ) {
+				state.shareLabel = state.strings.share;
+			}
+
+			// Ctrl+P (or the browser's Print) while the list is open prints the
+			// list, not the page behind it.
+			window.addEventListener( 'beforeprint', () => {
+				if ( dialogElement()?.open && state.items.length ) {
+					preparePrint( true );
+				}
+			} );
+
+			window.addEventListener( 'afterprint', finishPrint );
 		},
 
 	},
@@ -385,6 +460,171 @@ function setQty( id: number, qty: number ): void {
 			item.id === id ? { ...item, qty: clamp( qty ) } : item
 		)
 	);
+}
+
+/* Printing and sharing (AMM-163) ------------------------------------------ */
+
+const SHEET_ID = 'dh-quote-print';
+const PRINT_CLASS = 'dh-print-quote';
+
+/** Reopen the list after printing: it was open when printing began. */
+let reopenAfterPrint = false;
+
+/** Phones and tablets with a share sheet; desktops copy instead. */
+function canShare(): boolean {
+	return (
+		typeof navigator.share === 'function' &&
+		window.matchMedia( '(pointer: coarse)' ).matches
+	);
+}
+
+/** "%1$s … %2$s" templates from the server. */
+function format( template: string, ...values: string[] ): string {
+	return values.reduce(
+		( out, value, i ) => out.replace( `%${ i + 1 }$s`, value ),
+		template
+	);
+}
+
+function totalQty(): number {
+	return state.items.reduce( ( sum, item ) => sum + item.qty, 0 );
+}
+
+function printedDate(): string {
+	return new Date().toLocaleDateString( 'en-GB', {
+		day: 'numeric',
+		month: 'short',
+		year: 'numeric',
+	} );
+}
+
+function el< K extends keyof HTMLElementTagNameMap >(
+	tag: K,
+	className: string,
+	text?: string
+): HTMLElementTagNameMap[ K ] {
+	const node = document.createElement( tag );
+	node.className = className;
+	if ( text !== undefined ) {
+		node.textContent = text;
+	}
+	return node;
+}
+
+/**
+ * The printed sheet, built as nodes from the stored list — text only, never
+ * parsed HTML. A real table, so the columns line up and the heading row
+ * repeats on every printed page.
+ */
+function buildSheet(): HTMLElement {
+	const s = state.strings;
+	const sheet = el( 'section', 'dh-qsheet' );
+	sheet.id = SHEET_ID;
+
+	const head = el( 'header', 'dh-qsheet__head' );
+	head.append(
+		el( 'p', 'dh-qsheet__title', format( s.sheetTitle, pad( state.items.length ), String( totalQty() ) ) ),
+		el( 'p', 'dh-qsheet__date', format( s.printed.replace( '%s', '%1$s' ), printedDate() ) )
+	);
+
+	const table = el( 'table', 'dh-qsheet__table' );
+	const headRow = document.createElement( 'tr' );
+	[ s.colLine, s.colPart, s.colSku, s.colQty ].forEach( ( label, i ) => {
+		const th = el( 'th', `dh-qsheet__col dh-qsheet__col--${ i }`, label );
+		th.scope = 'col';
+		headRow.append( th );
+	} );
+	table.createTHead().append( headRow );
+
+	const body = table.createTBody();
+	state.items.forEach( ( item, i ) => {
+		const row = document.createElement( 'tr' );
+		row.append(
+			el( 'td', 'dh-qsheet__line', pad( i + 1 ) ),
+			el( 'td', 'dh-qsheet__name', item.name ),
+			el( 'td', 'dh-qsheet__sku', item.sku ),
+			el( 'td', 'dh-qsheet__qty', String( item.qty ) )
+		);
+		body.append( row );
+	} );
+
+	const blanks = el( 'div', 'dh-qsheet__blanks' );
+	( s.blanks || [] ).forEach( ( label ) => {
+		const field = el( 'p', 'dh-qsheet__blank' );
+		field.append( el( 'span', 'dh-qsheet__blank-label', label ), el( 'span', 'dh-qsheet__blank-line' ) );
+		blanks.append( field );
+	} );
+
+	sheet.append( head, table, blanks, el( 'p', 'dh-qsheet__contact', s.contact ) );
+
+	return sheet;
+}
+
+/** Mount the sheet and switch the page to print only it. */
+function preparePrint( reopen: boolean ): void {
+	document.getElementById( SHEET_ID )?.remove();
+	reopenAfterPrint = reopen;
+	hideList();
+	document.body.append( buildSheet() );
+	document.documentElement.classList.add( PRINT_CLASS );
+}
+
+function printQuote(): void {
+	if ( ! state.items.length ) {
+		return;
+	}
+
+	preparePrint( true );
+	window.print();
+}
+
+/** After the print dialog closes — printed or cancelled — put the page back. */
+function finishPrint(): void {
+	if ( ! document.documentElement.classList.contains( PRINT_CLASS ) ) {
+		return;
+	}
+
+	document.documentElement.classList.remove( PRINT_CLASS );
+	document.getElementById( SHEET_ID )?.remove();
+
+	if ( reopenAfterPrint ) {
+		reopenAfterPrint = false;
+		showList();
+		document.querySelector< HTMLElement >( '.dh-quote-dialog__action--print' )?.focus();
+	}
+}
+
+/** The list as plain text, for WhatsApp or email. */
+function plainText(): string {
+	if ( ! state.items.length ) {
+		return '';
+	}
+
+	const lines = state.items.map( ( item, i ) =>
+		[ pad( i + 1 ), item.sku, item.name ].filter( Boolean ).join( '  ' ) + `  × ${ item.qty }`
+	);
+
+	return [
+		format( state.strings.textTitle, String( state.items.length ), String( totalQty() ) ),
+		...lines,
+	].join( '\n' );
+}
+
+function firstLine( text: string ): string {
+	return text.split( '\n' )[ 0 ];
+}
+
+/** Clipboard blocked: show the text, selected, to copy by hand. */
+function showCopyField( text: string ): void {
+	state.copyText = text;
+	state.showCopy = true;
+	announce( state.strings.copyFallback );
+
+	window.setTimeout( () => {
+		const field = document.getElementById( 'dh-quote-copy' ) as HTMLTextAreaElement | null;
+		field?.focus();
+		field?.select();
+	}, 60 );
 }
 
 /**

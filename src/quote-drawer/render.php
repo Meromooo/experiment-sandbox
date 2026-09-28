@@ -46,7 +46,46 @@ wp_interactivity_state(
 			'increase'  => __( 'One more %s', 'demas-theme' ),
 			/* translators: %s: product name. */
 			'remove'    => __( 'Remove %s from your quote', 'demas-theme' ),
+
+			// Printing and sharing the list (AMM-163).
+			/* translators: 1: zero-padded number of parts, 2: total quantity. */
+			'sheetTitle'   => __( 'Demas Group · Quote list · %1$s parts · %2$s items', 'demas-theme' ),
+			/* translators: %s: date. */
+			'printed'      => __( 'Printed %s', 'demas-theme' ),
+			'colLine'      => __( 'Line', 'demas-theme' ),
+			'colPart'      => __( 'Part', 'demas-theme' ),
+			'colSku'       => __( 'Part no.', 'demas-theme' ),
+			'colQty'       => __( 'Qty', 'demas-theme' ),
+			'blanks'       => array(
+				__( 'Name', 'demas-theme' ),
+				__( 'Company', 'demas-theme' ),
+				__( 'Phone', 'demas-theme' ),
+				__( 'Project', 'demas-theme' ),
+			),
+			/* translators: 1: number of parts, 2: total quantity. */
+			'textTitle'    => __( 'Demas quote list — %1$s parts, %2$s items', 'demas-theme' ),
+			'copy'         => __( 'Copy list', 'demas-theme' ),
+			'share'        => __( 'Share', 'demas-theme' ),
+			'copied'       => __( 'List copied.', 'demas-theme' ),
+			'copyFallback' => __( 'Copying is blocked here. The list is selected below — copy it with your keyboard.', 'demas-theme' ),
+			/*
+			 * The sheet's last line: who prices it and how to reach them. The
+			 * company phone and the Branch Desk, never a staff email address.
+			 */
+			'contact'      => (string) apply_filters(
+				'demas_theme_quote_sheet_contact',
+				sprintf(
+					/* translators: %s: address of the Branch Desk on this site. */
+					__( 'Prices are quoted by your nearest Demas branch · 011 463 4102 · %s', 'demas-theme' ),
+					wp_parse_url( home_url(), PHP_URL_HOST ) . '/#find-your-branch'
+				)
+			),
 		),
+		// Plain state, not a getter, so the server renders the label too; the
+		// store swaps it for "Share" on phones that have a share sheet.
+		'shareLabel' => __( 'Copy list', 'demas-theme' ),
+		'copyText'   => '',
+		'showCopy'   => false,
 	)
 );
 
@@ -126,7 +165,23 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 
 			<div class="dh-quote-dialog__foot" hidden data-wp-bind--hidden="!state.hasItems">
 				<p class="dh-quote-dialog__note"><?php esc_html_e( 'Prices come from your nearest Demas branch.', 'demas-theme' ); ?></p>
-				<button type="button" class="dh-quote-dialog__clear" data-wp-on--click="actions.clear"><?php esc_html_e( 'Clear all', 'demas-theme' ); ?></button>
+
+				<?php // Take the list out of the site (AMM-163): print it, or copy / share it as text. ?>
+				<div class="dh-quote-dialog__actions">
+					<button type="button" class="dh-quote-dialog__action dh-quote-dialog__action--print" data-wp-on--click="actions.printList">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 9V4h10v5"/><path d="M7 17H5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2"/><path d="M7 14h10v6H7z"/></svg>
+						<span><?php esc_html_e( 'Print', 'demas-theme' ); ?></span>
+					</button>
+					<button type="button" class="dh-quote-dialog__action" data-wp-on--click="actions.shareList">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>
+						<span data-wp-text="state.shareLabel"><?php esc_html_e( 'Copy list', 'demas-theme' ); ?></span>
+					</button>
+					<button type="button" class="dh-quote-dialog__clear" data-wp-on--click="actions.clear"><?php esc_html_e( 'Clear all', 'demas-theme' ); ?></button>
+				</div>
+
+				<?php // Only when the clipboard is blocked: the text, selected, to copy by hand. ?>
+				<label class="dh-sr" for="dh-quote-copy"><?php esc_html_e( 'Your quote as text', 'demas-theme' ); ?></label>
+				<textarea id="dh-quote-copy" class="dh-quote-dialog__copy dh-mono" rows="4" readonly hidden data-wp-bind--hidden="!state.showCopy" data-wp-bind--value="state.copyText"></textarea>
 			</div>
 		</div>
 	</dialog>
