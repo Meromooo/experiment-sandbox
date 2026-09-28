@@ -58,7 +58,14 @@ $demas_whose = 'compact' === $demas_variant
 <div
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
 	data-wp-interactive="demas-theme/quote"
-	<?php echo wp_interactivity_data_wp_context( array( 'item' => $demas_item, 'qty' => 1 ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
+	<?php
+	echo wp_interactivity_data_wp_context(
+		array(
+			'item' => $demas_item,
+			'qty'  => 1,
+		)
+	); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. 
+	?>
 >
 	<?php if ( 'compact' === $demas_variant ) : ?>
 		<?php

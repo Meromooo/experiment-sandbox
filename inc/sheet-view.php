@@ -31,13 +31,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** localStorage key shared with main.js and the head script. */
 const DEMAS_THEME_VIEW_KEY = 'demas-theme/view';
 
-add_action( 'init', function () {
-	$build_path = DEMAS_THEME_DIR . '/build/product-meta';
+add_action(
+	'init',
+	function () {
+		$build_path = DEMAS_THEME_DIR . '/build/product-meta';
 
-	if ( file_exists( $build_path . '/block.json' ) ) {
-		register_block_type( $build_path );
+		if ( file_exists( $build_path . '/block.json' ) ) {
+			register_block_type( $build_path );
+		}
 	}
-} );
+);
 
 /**
  * The view the URL asks for. Only the URL: the remembered choice lives in

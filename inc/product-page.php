@@ -14,13 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function () {
-	$build_path = DEMAS_THEME_DIR . '/build/product-summary';
+add_action(
+	'init',
+	function () {
+		$build_path = DEMAS_THEME_DIR . '/build/product-summary';
 
-	if ( file_exists( $build_path . '/block.json' ) ) {
-		register_block_type( $build_path );
+		if ( file_exists( $build_path . '/block.json' ) ) {
+			register_block_type( $build_path );
+		}
 	}
-} );
+);
 
 /**
  * A product's category chain from its deepest term up to the top level.

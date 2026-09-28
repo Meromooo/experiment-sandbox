@@ -7,20 +7,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'after_setup_theme', function () {
-	register_nav_menus( array(
-		'primary' => __( 'Primary Menu', 'demas-theme' ),
-		'footer'  => __( 'Footer Menu', 'demas-theme' ),
-	) );
-} );
-
-add_action( 'init', function () {
-	$build_path = DEMAS_THEME_DIR . '/build/mega-menu';
-
-	if ( file_exists( $build_path . '/block.json' ) ) {
-		register_block_type( $build_path );
+add_action(
+	'after_setup_theme',
+	function () {
+		register_nav_menus(
+			array(
+				'primary' => __( 'Primary Menu', 'demas-theme' ),
+				'footer'  => __( 'Footer Menu', 'demas-theme' ),
+			)
+		);
 	}
-} );
+);
+
+add_action(
+	'init',
+	function () {
+		$build_path = DEMAS_THEME_DIR . '/build/mega-menu';
+
+		if ( file_exists( $build_path . '/block.json' ) ) {
+			register_block_type( $build_path );
+		}
+	}
+);
 
 /*
  * The header's core Navigation block (Services, Contact) renders an
@@ -193,19 +201,19 @@ function demas_theme_get_category_icon( $slug ) {
 		// Electrofusion coupler: body, two terminal pins, heating coil.
 		'electro-fusion-fittings'
 			=> '<rect x="2.5" y="8.5" width="19" height="7" rx="2"/><path d="M8 8.5V5M16 8.5V5"/>'
-			   . '<path d="M6 12h2l1.4-2 1.4 4 1.4-4 1.4 4 1.4-2H18"/>',
+				. '<path d="M6 12h2l1.4-2 1.4 4 1.4-4 1.4 4 1.4-2H18"/>',
 
 		/* Landscape ------------------------------------------------------ */
 
 		// Rotor head on a riser, throwing two arcs.
 		'rotors'
 			=> '<path d="M12 21.5v-4"/><circle cx="12" cy="15.5" r="1.8"/>'
-			   . '<path d="M5 13a9 9 0 0 1 14 0"/><path d="M8.5 9.2a5 5 0 0 1 7 0"/>',
+				. '<path d="M5 13a9 9 0 0 1 14 0"/><path d="M8.5 9.2a5 5 0 0 1 7 0"/>',
 
 		// Controller enclosure: dial left, programme lines right.
 		'controllers'
 			=> '<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="12" r="3"/>'
-			   . '<path d="M9 12v-2"/><path d="M15 9h3M15 12h3M15 15h3"/>',
+				. '<path d="M9 12v-2"/><path d="M15 9h3M15 12h3M15 15h3"/>',
 
 		// Gate valve, ISO symbol: two triangles apex to apex, stem, handwheel.
 		'landscape-valves'
@@ -228,7 +236,7 @@ function demas_theme_get_category_icon( $slug ) {
 		// Nozzle body over a mist cone.
 		'nozzles-and-extensions'
 			=> '<path d="M10 3.5h4v4l-2 3-2-3v-4Z"/>'
-			   . '<path d="M12 12.5v1.5M8.8 15v1.4M15.2 15v1.4M6.4 18.4v1.6M12 17.6v1.6M17.6 18.4v1.6"/>',
+				. '<path d="M12 12.5v1.5M8.8 15v1.4M15.2 15v1.4M6.4 18.4v1.6M12 17.6v1.6M17.6 18.4v1.6"/>',
 
 		// Treated water: droplet with a process band.
 		'water-treatment'
@@ -247,7 +255,7 @@ function demas_theme_get_category_icon( $slug ) {
 		// Electrode striking an arc.
 		'welding-machines'
 			=> '<path d="M3.5 3.5 12 12"/><path d="M13 11.5l-3.2 4.6h3.6L10.6 21.5"/>'
-			   . '<path d="M17.5 8.5 20.5 5.5M18 12.5h3.5M16.5 16l2.6 2.6"/>',
+				. '<path d="M17.5 8.5 20.5 5.5M18 12.5h3.5M16.5 16l2.6 2.6"/>',
 
 		// Horseshoe magnet with pole faces.
 		'magnetic-drills'
@@ -258,7 +266,7 @@ function demas_theme_get_category_icon( $slug ) {
 		// Two wave lines under a pool ladder.
 		'swimming-pool'
 			=> '<path d="M3 17.5c2-1.6 4-1.6 6 0s4 1.6 6 0 4-1.6 6 0"/><path d="M3 12.5c2-1.6 4-1.6 6 0s4 1.6 6 0 4-1.6 6 0"/>'
-			   . '<path d="M8.5 12V4M14.5 12V4M8.5 6.5h6"/>',
+				. '<path d="M8.5 12V4M14.5 12V4M8.5 6.5h6"/>',
 
 		/* Fallbacks ------------------------------------------------------ */
 

@@ -11,10 +11,10 @@
 // of the locked category tree. Counts are the brief's verified figures and are
 // editable text — update them when the real catalogue lands.
 $demas_cats = array(
-	array( 'fog-systems',               'Fog Systems',              '267', 'High-pressure misting and cooling for outdoor commercial spaces.', 'nozzles-and-extensions', true ),
-	array( 'landscape',                 'Landscape',                '166', 'Equipment and materials for large-scale landscape engineering.',  'rotors',                 true ),
-	array( 'irrigation',                'Irrigation Products',      '122', 'Drip, spray, and rotor systems with filtration and control.',      'pipes',                  false ),
-	array( 'industrial-tools-services', 'Industrial Tool Services', '53',  'Professional tools and servicing for site teams.',                 'cutting-tools',          false ),
+	array( 'fog-systems', 'Fog Systems', '267', 'High-pressure misting and cooling for outdoor commercial spaces.', 'nozzles-and-extensions', true ),
+	array( 'landscape', 'Landscape', '166', 'Equipment and materials for large-scale landscape engineering.', 'rotors', true ),
+	array( 'irrigation', 'Irrigation Products', '122', 'Drip, spray, and rotor systems with filtration and control.', 'pipes', false ),
+	array( 'industrial-tools-services', 'Industrial Tool Services', '53', 'Professional tools and servicing for site teams.', 'cutting-tools', false ),
 );
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-cats","layout":{"type":"constrained"}} -->

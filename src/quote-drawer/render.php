@@ -28,24 +28,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 wp_interactivity_state(
 	'demas-theme/quote',
 	array(
-		'strings' => array(
+		'strings'    => array(
 			/* translators: singular noun used after a count, e.g. "001 part". */
-			'part'      => __( 'part', 'demas-theme' ),
+			'part'         => __( 'part', 'demas-theme' ),
 			/* translators: plural noun used after a count, e.g. "003 parts". */
-			'parts'     => __( 'parts', 'demas-theme' ),
+			'parts'        => __( 'parts', 'demas-theme' ),
 			/* translators: %s: product name. */
-			'added'     => __( 'Added %s to your quote.', 'demas-theme' ),
+			'added'        => __( 'Added %s to your quote.', 'demas-theme' ),
 			/* translators: %s: product name. */
-			'removed'   => __( 'Removed %s from your quote.', 'demas-theme' ),
-			'cleared'   => __( 'Your quote is empty.', 'demas-theme' ),
+			'removed'      => __( 'Removed %s from your quote.', 'demas-theme' ),
+			'cleared'      => __( 'Your quote is empty.', 'demas-theme' ),
 			/* translators: %s: product name. */
-			'quantity'  => __( 'Quantity of %s', 'demas-theme' ),
+			'quantity'     => __( 'Quantity of %s', 'demas-theme' ),
 			/* translators: %s: product name. */
-			'decrease'  => __( 'One fewer %s', 'demas-theme' ),
+			'decrease'     => __( 'One fewer %s', 'demas-theme' ),
 			/* translators: %s: product name. */
-			'increase'  => __( 'One more %s', 'demas-theme' ),
+			'increase'     => __( 'One more %s', 'demas-theme' ),
 			/* translators: %s: product name. */
-			'remove'    => __( 'Remove %s from your quote', 'demas-theme' ),
+			'remove'       => __( 'Remove %s from your quote', 'demas-theme' ),
 
 			// Printing and sharing the list (AMM-163).
 			/* translators: singular noun after a total quantity, e.g. "1 item". */

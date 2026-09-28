@@ -121,7 +121,7 @@ add_filter(
  * handle (kadence-*, kadence_blocks_css, kad-splide) or by where it is served
  * from.
  *
- * @param string            $handle Registered handle.
+ * @param string              $handle Registered handle.
  * @param _WP_Dependency|null $asset  Its registration, if any.
  */
 function demas_theme_is_kadence_asset( string $handle, $asset ): bool {

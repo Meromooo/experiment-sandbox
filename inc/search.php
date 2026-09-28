@@ -26,15 +26,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // The results page's empty state, and the header finder (both from build/).
-add_action( 'init', function () {
-	foreach ( array( 'search-empty', 'finder' ) as $block ) {
-		$build_path = DEMAS_THEME_DIR . '/build/' . $block;
+add_action(
+	'init',
+	function () {
+		foreach ( array( 'search-empty', 'finder' ) as $block ) {
+			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
-		if ( file_exists( $build_path . '/block.json' ) ) {
-			register_block_type( $build_path );
+			if ( file_exists( $build_path . '/block.json' ) ) {
+				register_block_type( $build_path );
+			}
 		}
 	}
-} );
+);
 
 /**
  * A query as the site reads it.

@@ -13,17 +13,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function () {
-	// The toolbar (count, rail, sort) and the system index (stages of the
-	// irrigation / fog / workshop line). Both server-rendered from build/.
-	foreach ( array( 'catalog-toolbar', 'system-index' ) as $block ) {
-		$build_path = DEMAS_THEME_DIR . '/build/' . $block;
+add_action(
+	'init',
+	function () {
+		// The toolbar (count, rail, sort) and the system index (stages of the
+		// irrigation / fog / workshop line). Both server-rendered from build/.
+		foreach ( array( 'catalog-toolbar', 'system-index' ) as $block ) {
+			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
-		if ( file_exists( $build_path . '/block.json' ) ) {
-			register_block_type( $build_path );
+			if ( file_exists( $build_path . '/block.json' ) ) {
+				register_block_type( $build_path );
+			}
 		}
 	}
-} );
+);
 
 /**
  * Order the archive by SKU when the toolbar asks for it.

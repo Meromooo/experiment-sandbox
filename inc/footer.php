@@ -17,12 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function () {
-	foreach ( array( 'catalogue-index', 'branch-plan' ) as $block ) {
-		$build_path = DEMAS_THEME_DIR . '/build/' . $block;
+add_action(
+	'init',
+	function () {
+		foreach ( array( 'catalogue-index', 'branch-plan' ) as $block ) {
+			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
-		if ( file_exists( $build_path . '/block.json' ) ) {
-			register_block_type( $build_path );
+			if ( file_exists( $build_path . '/block.json' ) ) {
+				register_block_type( $build_path );
+			}
 		}
 	}
-} );
+);

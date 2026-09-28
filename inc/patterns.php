@@ -11,12 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function () {
-	register_block_pattern_category(
-		'demas',
-		array(
-			'label'       => __( 'Demas', 'demas-theme' ),
-			'description' => __( 'Homepage and site sections for the Demas theme.', 'demas-theme' ),
-		)
-	);
-} );
+add_action(
+	'init',
+	function () {
+		register_block_pattern_category(
+			'demas',
+			array(
+				'label'       => __( 'Demas', 'demas-theme' ),
+				'description' => __( 'Homepage and site sections for the Demas theme.', 'demas-theme' ),
+			)
+		);
+	}
+);

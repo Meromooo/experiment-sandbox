@@ -74,7 +74,7 @@ $demas_stats  = array(
 );
 
 while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
-	$demas_stats['rows']++;
+	++$demas_stats['rows'];
 	$demas_r = array_combine( $demas_header, $demas_row );
 
 	$demas_id      = (int) $demas_r['product_id'];
@@ -83,7 +83,7 @@ while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
 	$demas_product = wc_get_product( $demas_id );
 
 	if ( ! $demas_product ) {
-		$demas_stats['missing']++;
+		++$demas_stats['missing'];
 		WP_CLI::warning( "#{$demas_id} not found — skipped." );
 		continue;
 	}
@@ -98,16 +98,16 @@ while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
 
 		if ( '' !== $demas_current ) {
 			// Already numbered — possibly a real manufacturer SKU added since. Never overwrite.
-			$demas_stats['sku_kept']++;
+			++$demas_stats['sku_kept'];
 			WP_CLI::log( "  keep  {$demas_label}  has {$demas_current}" );
 		} else {
 			$demas_owner = wc_get_product_id_by_sku( $demas_sku );
 
 			if ( $demas_owner && $demas_owner !== $demas_id ) {
-				$demas_stats['sku_conflict']++;
+				++$demas_stats['sku_conflict'];
 				WP_CLI::warning( "  CONFLICT {$demas_label}: {$demas_sku} already belongs to #{$demas_owner}" );
 			} else {
-				$demas_stats['sku_set']++;
+				++$demas_stats['sku_set'];
 				WP_CLI::log( "  sku   {$demas_label}  <- {$demas_sku}" );
 
 				if ( $demas_write ) {
@@ -126,7 +126,7 @@ while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
 		$demas_new  = array_values( array_diff( $demas_cats, $demas_have ) );
 
 		if ( $demas_new ) {
-			$demas_stats['cat_added']++;
+			++$demas_stats['cat_added'];
 			$demas_note = '' !== (string) $demas_r['note'] ? '  [' . $demas_r['note'] . ']' : '';
 			WP_CLI::log( "  cat   {$demas_label}  += " . implode( ',', $demas_new ) . $demas_note );
 
@@ -145,16 +145,18 @@ while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
 fclose( $demas_handle );
 
 WP_CLI::log( '' );
-WP_CLI::log( sprintf(
-	'%d rows: %d SKUs %s, %d already numbered (kept), %d conflicts, %d categorised, %d missing.',
-	$demas_stats['rows'],
-	$demas_stats['sku_set'],
-	$demas_write ? 'written' : 'to write',
-	$demas_stats['sku_kept'],
-	$demas_stats['sku_conflict'],
-	$demas_stats['cat_added'],
-	$demas_stats['missing']
-) );
+WP_CLI::log(
+	sprintf(
+		'%d rows: %d SKUs %s, %d already numbered (kept), %d conflicts, %d categorised, %d missing.',
+		$demas_stats['rows'],
+		$demas_stats['sku_set'],
+		$demas_write ? 'written' : 'to write',
+		$demas_stats['sku_kept'],
+		$demas_stats['sku_conflict'],
+		$demas_stats['cat_added'],
+		$demas_stats['missing']
+	)
+);
 
 if ( $demas_write ) {
 	// The lookup table drives SKU sort and the Store API; make sure it is current.
