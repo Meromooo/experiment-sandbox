@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * page's reading column). Anything else — core's wp-image-123 (needed for
  * responsive images), wp-block-button__link, has-text-align-center — stays.
  */
-const DEMAS_THEME_KADENCE_CLASS = '/^(?:kb-|kt-|kb_|kt_|kadence|wp-block-kadence|reveal-on-scroll|aos|alignfull$|alignwide$)/i';
+const DEMAS_THEME_KADENCE_CLASS = '/^(?:kb-|kt-|kb_|kt_|kadence|wp-block-kadence|reveal-on-scroll|aos|has-theme-palette|alignfull$|alignwide$)/i';
 
 /**
  * One Kadence block's rendered HTML, with the Kadence design removed.
@@ -108,6 +108,59 @@ add_filter(
 	},
 	10,
 	2
+);
+
+/*
+ * A page's content, once it is fully rendered:
+ *  - an id used twice keeps only its first use (the Services page carried
+ *    Kadence's "jsHeader" twice; duplicate ids break in-page links and
+ *    labelling);
+ *  - links to a retired page go straight to where that page now sends
+ *    visitors, instead of through the redirect.
+ */
+add_filter(
+	'render_block_core/post-content',
+	function ( $content ) {
+		if ( ! is_page() || '' === (string) $content ) {
+			return $content;
+		}
+
+		$retired   = demas_theme_retired_pages();
+		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
+		$seen      = array();
+		$processor = new WP_HTML_Tag_Processor( (string) $content );
+
+		while ( $processor->next_tag() ) {
+			$id = $processor->get_attribute( 'id' );
+
+			if ( is_string( $id ) && '' !== $id ) {
+				if ( isset( $seen[ $id ] ) ) {
+					$processor->remove_attribute( 'id' );
+				} else {
+					$seen[ $id ] = true;
+				}
+			}
+
+			if ( 'A' !== $processor->get_tag() ) {
+				continue;
+			}
+
+			$href = $processor->get_attribute( 'href' );
+
+			if ( ! is_string( $href ) ) {
+				continue;
+			}
+
+			$host = wp_parse_url( $href, PHP_URL_HOST );
+			$path = trim( (string) wp_parse_url( $href, PHP_URL_PATH ), '/' );
+
+			if ( '' !== $path && isset( $retired[ $path ] ) && ( ! $host || $host === $home_host ) ) {
+				$processor->set_attribute( 'href', $retired[ $path ] );
+			}
+		}
+
+		return $processor->get_updated_html();
+	}
 );
 
 /**

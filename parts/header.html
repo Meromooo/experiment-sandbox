@@ -1,5 +1,9 @@
-<!-- wp:group {"tagName":"header","className":"dh-header","layout":{"type":"constrained"}} -->
-<header class="wp-block-group dh-header">
+<!--
+	A plain group, not a <header>: the template part already renders the
+	<header> landmark around this, and a second one inside it made two banners.
+-->
+<!-- wp:group {"className":"dh-header","layout":{"type":"constrained"}} -->
+<div class="wp-block-group dh-header">
 	<!-- wp:group {"className":"dh-header__bar","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 	<div class="wp-block-group dh-header__bar">
 		<!-- wp:site-title {"level":0} /-->
@@ -28,5 +32,5 @@
 		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
-</header>
+</div>
 <!-- /wp:group -->

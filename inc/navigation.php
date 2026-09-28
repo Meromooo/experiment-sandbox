@@ -22,6 +22,31 @@ add_action( 'init', function () {
 	}
 } );
 
+/*
+ * The header's core Navigation block (Services, Contact) renders an
+ * unlabelled <nav>. A page also carries the mega menu, breadcrumbs, the
+ * footer's two indexes and more, and screen readers list navigation regions
+ * by name — so this one gets one.
+ */
+add_filter(
+	'render_block_core/navigation',
+	function ( $content, $block ) {
+		if ( false === strpos( (string) ( $block['attrs']['className'] ?? '' ), 'dh-header__links' ) ) {
+			return $content;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( (string) $content );
+
+		if ( $processor->next_tag( 'nav' ) && null === $processor->get_attribute( 'aria-label' ) ) {
+			$processor->set_attribute( 'aria-label', __( 'Site', 'demas-theme' ) );
+		}
+
+		return $processor->get_updated_html();
+	},
+	10,
+	2
+);
+
 /**
  * The catalogue's groups and the subcategories under each, in the exact order
  * of demas-mega-menu-content-spec.md, which mirrors the live demas-group.com

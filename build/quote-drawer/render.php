@@ -82,7 +82,8 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 		data-wp-on--click="actions.onDialogClick"
 	>
 		<div class="dh-quote-dialog__inner">
-			<header class="dh-quote-dialog__head">
+			<?php // Divs, not <header>/<footer>: inside the site header those became extra banner and contentinfo landmarks. ?>
+			<div class="dh-quote-dialog__head">
 				<div class="dh-quote-dialog__heading">
 					<h2 id="dh-quote-title" class="dh-quote-dialog__title" tabindex="-1"><?php esc_html_e( 'Your quote', 'demas-theme' ); ?></h2>
 					<p class="dh-quote-dialog__count dh-mono" hidden data-wp-bind--hidden="!state.hasItems" data-wp-text="state.partsLabel"></p>
@@ -90,7 +91,7 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 				<button type="button" class="dh-quote-dialog__close" data-wp-on--click="actions.close" aria-label="<?php esc_attr_e( 'Close your quote', 'demas-theme' ); ?>">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
 				</button>
-			</header>
+			</div>
 
 			<ol class="dh-quote-lines" aria-labelledby="dh-quote-title" hidden data-wp-bind--hidden="!state.hasItems">
 				<template data-wp-each--line="state.lines" data-wp-each-key="context.line.id">
@@ -123,10 +124,10 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 				<a class="dh-quote-empty__link" href="<?php echo esc_url( $demas_catalogue ); ?>"><?php esc_html_e( 'Browse the catalogue', 'demas-theme' ); ?></a>
 			</div>
 
-			<footer class="dh-quote-dialog__foot" hidden data-wp-bind--hidden="!state.hasItems">
+			<div class="dh-quote-dialog__foot" hidden data-wp-bind--hidden="!state.hasItems">
 				<p class="dh-quote-dialog__note"><?php esc_html_e( 'Prices come from your nearest Demas branch.', 'demas-theme' ); ?></p>
 				<button type="button" class="dh-quote-dialog__clear" data-wp-on--click="actions.clear"><?php esc_html_e( 'Clear all', 'demas-theme' ); ?></button>
-			</footer>
+			</div>
 		</div>
 	</dialog>
 </div>

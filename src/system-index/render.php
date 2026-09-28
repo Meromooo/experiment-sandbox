@@ -113,10 +113,11 @@ $demas_wrapper = get_block_wrapper_attributes(
 			aria-label="<?php echo esc_attr( sprintf( '%s — %s', $demas_eyebrow, $demas_system['label'] ) ); ?>"
 			data-reveal="rise"
 		>
-			<p class="dh-line__eyebrow dh-eyebrow">
+			<?php // An h2 styled as an eyebrow: the stage names below are h3s, and the page's h1 is above. ?>
+			<h2 class="dh-line__eyebrow dh-eyebrow">
 				<span><?php echo esc_html( $demas_eyebrow ); ?></span>
 				<span class="dh-line__system"><?php echo esc_html( $demas_system['label'] ); ?></span>
-			</p>
+			</h2>
 
 			<ol class="dh-line__stages">
 				<?php foreach ( $demas_system['stages'] as $demas_i => $demas_stage ) : ?>

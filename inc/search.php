@@ -456,6 +456,7 @@ function demas_theme_search_form( array $args = array() ): string {
 			name="s"
 			value="<?php echo esc_attr( get_search_query() ); ?>"
 			placeholder="<?php echo esc_attr( $placeholder ); ?>"
+			maxlength="80"
 			autocomplete="off"
 			spellcheck="false"
 			enterkeyhint="search"

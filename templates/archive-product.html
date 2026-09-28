@@ -31,6 +31,11 @@
 
 	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":24,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/product-catalog","queryContextIncludes":["collection"],"className":"dh-grid"} -->
 	<div class="wp-block-woocommerce-product-collection dh-grid">
+		<!-- A heading for screen readers only: the cards below are h3s. -->
+		<!-- wp:heading {"className":"dh-sr"} -->
+		<h2 class="wp-block-heading dh-sr">Products</h2>
+		<!-- /wp:heading -->
+
 		<!-- wp:woocommerce/product-template -->
 			<!-- wp:group {"className":"dh-pcard","layout":{"type":"default"}} -->
 			<div class="wp-block-group dh-pcard">

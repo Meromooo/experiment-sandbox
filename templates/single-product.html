@@ -3,9 +3,18 @@
 <!-- wp:group {"tagName":"main","className":"dh-product","layout":{"type":"constrained"}} -->
 <main class="wp-block-group dh-product">
 
-	<!-- wp:woocommerce/breadcrumbs {"className":"dh-shop__crumbs"} /-->
+	<!--
+		WooCommerce's breadcrumbs default to wide alignment, which put them 120px
+		outside the content column. Inside this plain group they take the
+		group's width — the column — as they do on the archive.
+	-->
+	<!-- wp:group {"className":"dh-product__head","layout":{"type":"default"}} -->
+	<div class="wp-block-group dh-product__head">
+		<!-- wp:woocommerce/breadcrumbs {"className":"dh-shop__crumbs"} /-->
 
-	<!-- wp:woocommerce/store-notices /-->
+		<!-- wp:woocommerce/store-notices /-->
+	</div>
+	<!-- /wp:group -->
 
 	<!--
 		A datasheet, not a shop page: the photo pinned on one side, the part's

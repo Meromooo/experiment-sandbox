@@ -34,7 +34,11 @@
 	color: var(--wp--preset--color--canopy);
 }
 
+/* A 24px-tall target from a 12px line, without moving the line. */
 .dh-summary__eyebrow a {
+	display: inline-block;
+	padding-block: 0.35rem;
+	margin-block: -0.35rem;
 	color: inherit;
 	text-decoration: none;
 }
@@ -162,6 +166,9 @@
 }
 
 .dh-plate__more {
+	display: inline-block;
+	padding-block: 0.3rem;
+	margin-block: -0.3rem;
 	font-size: var(--wp--preset--font-size--sm);
 	color: var(--wp--preset--color--paper);
 	text-decoration: underline;
@@ -232,7 +239,9 @@
 	font-size: var(--wp--preset--font-size--xs);
 	line-height: 1.25;
 	color: color-mix(in srgb, var(--wp--preset--color--paper) 58%, transparent);
-	overflow-wrap: anywhere;
+	/* Break a stage name only if it cannot fit whole ("Sour|ce" was unreadable). */
+	overflow-wrap: break-word;
+	hyphens: manual;
 }
 
 .dh-plate__stage.is-current .dh-plate__stage-name {
@@ -442,6 +451,11 @@
 @media (max-width: 40em) {
 	.dh-plate {
 		padding: var(--wp--preset--spacing--40);
+	}
+
+	/* The part number shrinks with the screen rather than splitting into pieces. */
+	.dh-plate__row--sku .dh-plate__value {
+		font-size: clamp(1.125rem, 6.2vw, 1.5rem);
 	}
 
 	/* The quote button spans the column on a phone; its own styles are in build/quote-button. */

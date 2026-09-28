@@ -33,3 +33,6 @@ references/
 
 # Completed one-off task briefs handed to Claude Code. Superseded once done.
 md_filesForCC/
+
+# Browser automation output (audit screenshots, console logs) — local only.
+.playwright-mcp/

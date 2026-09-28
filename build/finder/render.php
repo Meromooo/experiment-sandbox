@@ -94,6 +94,7 @@ $demas_wrapper = get_block_wrapper_attributes(
 					aria-autocomplete="list"
 					aria-describedby="dh-finder-hint"
 					placeholder="<?php echo esc_attr( $demas_label ); ?>"
+					maxlength="80"
 					autocomplete="off"
 					autocapitalize="off"
 					spellcheck="false"

@@ -270,6 +270,10 @@ branch-routed contact form replaces published email addresses.
   committed to git alongside source — Hostinger's git auto-deploy has no build step of its
   own, so a stale or missing `build/` folder means the change isn't actually live. Always
   run `npm run build` and confirm `build/` is staged before every commit that touches a block.
+- **CSS class names are global — namespace them per component.** A block's stylesheet and
+  `assets/css/style.css` all load on the same page, so two components sharing a class name
+  style each other. The footer once reused `.dh-plate` (the product page's nameplate) and turned
+  it unreadable; it is `.dh-foot-plate` now. Before naming a class, grep the repo for it.
 - **Adding a file to `patterns/` needs a version bump.** WordPress caches a theme's pattern list
   keyed on the `Version:` in the root `style.css`, so a new pattern file is invisible — a
   `wp:pattern` pointing at it renders nothing — until that version changes. Bump `Version:` and

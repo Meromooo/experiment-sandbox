@@ -30,14 +30,14 @@ $demas_certificates = content_url( 'uploads/2026/03/DEMAS-Certificates.pdf' );
 			<section class="dh-foot__id" aria-labelledby="dh-foot-company">
 				<h2 class="dh-foot__name" id="dh-foot-company">Demas Group</h2>
 				<p class="dh-foot__trade">Irrigation and landscape infrastructure, supplied and supported across the Kingdom.</p>
-				<dl class="dh-plate">
-					<div class="dh-plate__row"><dt>Est.</dt><dd class="dh-mono">1979</dd></div>
-					<div class="dh-plate__row"><dt>Telephone</dt><dd class="dh-mono"><a href="tel:+966114634102">011 463 4102</a></dd></div>
-					<div class="dh-plate__row is-wide"><dt>Head office</dt><dd>8018 King Abdulaziz Rd, As Sulimaniyah, Riyadh 12245</dd></div>
-					<div class="dh-plate__row is-wide"><dt>Registered name</dt><dd class="is-pending">Pending</dd></div>
-					<div class="dh-plate__row"><dt>CR no.</dt><dd class="is-pending">Pending</dd></div>
-					<div class="dh-plate__row"><dt>VAT no.</dt><dd class="is-pending">Pending</dd></div>
-					<div class="dh-plate__row is-wide"><dt>Certified</dt><dd><span class="dh-mono">ISO 9001 · 14001 · 45001</span> <a class="dh-plate__doc" href="<?php echo esc_url( $demas_certificates ); ?>">Our certificates <span class="dh-plate__meta">PDF, 1.2 MB</span></a></dd></div>
+				<dl class="dh-foot-plate">
+					<div class="dh-foot-plate__row"><dt>Est.</dt><dd class="dh-mono">1979</dd></div>
+					<div class="dh-foot-plate__row"><dt>Telephone</dt><dd class="dh-mono"><a href="tel:+966114634102">011 463 4102</a></dd></div>
+					<div class="dh-foot-plate__row is-wide"><dt>Head office</dt><dd>8018 King Abdulaziz Rd, As Sulimaniyah, Riyadh 12245</dd></div>
+					<div class="dh-foot-plate__row is-wide"><dt>Registered name</dt><dd class="is-pending">Pending</dd></div>
+					<div class="dh-foot-plate__row"><dt>CR no.</dt><dd class="is-pending">Pending</dd></div>
+					<div class="dh-foot-plate__row"><dt>VAT no.</dt><dd class="is-pending">Pending</dd></div>
+					<div class="dh-foot-plate__row is-wide"><dt>Certified</dt><dd><span class="dh-mono">ISO 9001 · 14001 · 45001</span> <a class="dh-foot-plate__doc" href="<?php echo esc_url( $demas_certificates ); ?>">Our certificates <span class="dh-foot-plate__meta">PDF, 1.2 MB</span></a></dd></div>
 				</dl>
 			</section>
 			<!-- /wp:html -->

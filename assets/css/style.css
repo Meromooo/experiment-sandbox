@@ -25,8 +25,13 @@
 	box-sizing: border-box;
 }
 
+/*
+ * The quote list and the finder hide the page's scrollbar while open; without
+ * a reserved gutter the page behind jumped sideways by its width.
+ */
 html {
 	-webkit-text-size-adjust: 100%;
+	scrollbar-gutter: stable;
 }
 
 /*
@@ -1923,7 +1928,7 @@ footer.wp-block-template-part {
 
 /* Cell labels: KEY PLAN, BRANCHES · 15, EST., CR NO. … */
 .dh-foot-label,
-.dh-plate dt {
+.dh-foot-plate dt {
 	margin: 0 0 var(--wp--preset--spacing--40);
 	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--xs);
@@ -2000,59 +2005,59 @@ footer.wp-block-template-part {
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
 }
 
-.dh-plate {
+.dh-foot-plate {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	margin: 0;
 }
 
-.dh-plate__row {
+.dh-foot-plate__row {
 	min-inline-size: 0;
 	padding-block: var(--wp--preset--spacing--30);
 	border-block-start: var(--_rule);
 }
 
-.dh-plate__row.is-wide {
+.dh-foot-plate__row.is-wide {
 	grid-column: 1 / -1;
 }
 
 /* The second of each pair of half-width cells: a rule between them. */
-.dh-plate__row:not(.is-wide) + .dh-plate__row:not(.is-wide) {
+.dh-foot-plate__row:not(.is-wide) + .dh-foot-plate__row:not(.is-wide) {
 	padding-inline-start: var(--wp--preset--spacing--40);
 	border-inline-start: var(--_rule);
 }
 
-.dh-plate dt {
+.dh-foot-plate dt {
 	margin-block-end: var(--wp--preset--spacing--10);
 }
 
-.dh-plate dd {
+.dh-foot-plate dd {
 	margin: 0;
 	font-size: var(--wp--preset--font-size--sm);
 	line-height: 1.45;
 }
 
-.dh-plate dd.is-pending {
+.dh-foot-plate dd.is-pending {
 	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--xs);
 	letter-spacing: 0.04em;
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
 }
 
-.dh-plate a {
+.dh-foot-plate a {
 	color: var(--wp--preset--color--ink);
 	text-decoration: underline;
 	text-decoration-color: color-mix(in srgb, var(--wp--preset--color--ink) 35%, transparent);
 	text-underline-offset: 0.2em;
 }
 
-.dh-plate a:hover,
-.dh-plate a:focus-visible {
+.dh-foot-plate a:hover,
+.dh-foot-plate a:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration-color: currentColor;
 }
 
-.dh-plate__doc {
+.dh-foot-plate__doc {
 	display: flex;
 	align-items: baseline;
 	gap: 0.5em;
@@ -2060,7 +2065,7 @@ footer.wp-block-template-part {
 	margin-block-start: var(--wp--preset--spacing--10);
 }
 
-.dh-plate__meta {
+.dh-foot-plate__meta {
 	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--xs);
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
@@ -2142,7 +2147,7 @@ footer.wp-block-template-part {
 	}
 
 	/* Taller hit area without pushing the value below its neighbour's. */
-	.dh-plate a {
+	.dh-foot-plate a {
 		display: inline-block;
 		padding-block: 0.7em;
 		margin-block: -0.7em;
