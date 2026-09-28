@@ -184,9 +184,11 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
  * category; then quantity and add.
  */
 #{$sheet} {
+	// The quantity and Add sit under the thumbnail as well as the name: in
+	// the name column alone, a 320px phone had no room for both.
 	@include sheet-rows(
 		2.25rem 3rem minmax(0, 1fr),
-		"line thumb name" "line thumb ids" "line thumb add"
+		"line thumb name" "line thumb ids" "line add add"
 	);
 
 	.dh-pcard {
@@ -199,18 +201,13 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 
 	.dh-pmeta__ids {
 		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 0.15rem 0.6rem;
+		flex-direction: column;
+		gap: 0.1rem;
 		grid-area: ids;
 	}
 
-	.dh-pmeta__sku + .dh-pmeta__cat::before {
-		content: "·";
-		margin-inline-end: 0.6rem;
-	}
-
 	.dh-quote-add {
+		flex-wrap: wrap;
 		justify-self: start;
 		margin-block-start: 0.3rem;
 	}
@@ -221,11 +218,16 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 	}
 }
 
-/* Wide screens: the full sheet, one line per part under column headings. */
+/*
+ * Wide screens: the full sheet, one line per part under column headings.
+ * The quantity column has a fixed width: sized to its content it was narrower
+ * in the heading row than in the part rows, and every other heading drifted
+ * off its values.
+ */
 @media (min-width: 64rem) {
 	#{$sheet} {
 		@include sheet-rows(
-			3rem 3rem minmax(0, 2.4fr) minmax(7.5rem, 1fr) minmax(0, 1.4fr) auto,
+			3rem 3rem minmax(0, 2.4fr) minmax(7.5rem, 1fr) minmax(0, 1.4fr) var(--_add, 17.5rem),
 			"line thumb name sku cat add"
 		);
 
@@ -241,11 +243,8 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 			display: contents;
 		}
 
-		.dh-pmeta__sku + .dh-pmeta__cat::before {
-			content: none;
-		}
-
 		.dh-quote-add {
+			flex-wrap: nowrap;
 			justify-self: end;
 			margin-block-start: 0;
 		}
@@ -253,6 +252,13 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 		.dh-sheet-head__add {
 			justify-self: end;
 		}
+	}
+}
+
+// Touch screens get 44px steppers, so the quantity column needs more room.
+@media (min-width: 64rem) and (pointer: coarse) {
+	#{$sheet} {
+		--_add: 19.5rem;
 	}
 }
 
