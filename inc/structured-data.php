@@ -122,7 +122,7 @@ add_filter(
 			}
 		}
 
-		$markup['name'] = demas_theme_schema_text( (string) $product->get_name() );
+		$markup['name'] = demas_theme_schema_text( wptexturize( (string) $product->get_name() ) );
 
 		$description = demas_theme_schema_description( $product );
 
@@ -138,7 +138,7 @@ add_filter(
 			$markup['category'] = implode(
 				' > ',
 				array_map(
-					fn( $term ) => demas_theme_schema_text( $term->name ),
+					fn( $term ) => demas_theme_schema_text( wptexturize( $term->name ) ),
 					array_reverse( $chain )
 				)
 			);
@@ -176,13 +176,16 @@ add_filter(
 			return $markup;
 		}
 
+		// wptexturize first, as the page's own breadcrumb does: category names
+		// are stored with a plain hyphen ("Clamp Saddle - PN6, PN16") that the
+		// page, and the live site, show as an en dash.
 		foreach ( $markup['itemListElement'] as $i => $element ) {
 			if ( isset( $element['item']['name'] ) ) {
-				$markup['itemListElement'][ $i ]['item']['name'] = demas_theme_schema_text( (string) $element['item']['name'] );
+				$markup['itemListElement'][ $i ]['item']['name'] = demas_theme_schema_text( wptexturize( (string) $element['item']['name'] ) );
 			}
 
 			if ( isset( $element['name'] ) ) {
-				$markup['itemListElement'][ $i ]['name'] = demas_theme_schema_text( (string) $element['name'] );
+				$markup['itemListElement'][ $i ]['name'] = demas_theme_schema_text( wptexturize( (string) $element['name'] ) );
 			}
 		}
 

@@ -212,7 +212,8 @@ html:has(.dh-quote-dialog[open]) {
 .dh-quote-line__n {
 	grid-area: n;
 	font-size: var(--wp--preset--font-size--xs);
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
+	// 70% ink: 50% measured 3.3:1 on paper (axe); this is 4.5:1 or better.
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
 }
 
 .dh-quote-line__img {

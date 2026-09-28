@@ -630,6 +630,17 @@ svg {
 /* 8. Blocks                                                           */
 /* ------------------------------------------------------------------ */
 
+/*
+ * The Sheet view's column headings (in templates/archive-product.html and
+ * product-search-results.html) are laid out by the Part Details block's
+ * stylesheet, which WordPress loads only when a product card renders. On a
+ * search with no results it never loads, and the headings showed as raw text
+ * ("LinePartPart no.CategoryQuantity"). Hidden here until it takes over.
+ */
+.dh-sheet-head {
+	display: none;
+}
+
 /* The site title is the only string on the page allowed to be unbreakable. */
 .wp-block-site-title {
 	overflow-wrap: anywhere;

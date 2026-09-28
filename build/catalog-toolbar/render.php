@@ -146,6 +146,37 @@ if ( $demas_is_search ) {
 	$demas_print_title = post_type_archive_title( '', false );
 }
 
+$demas_print_title = html_entity_decode( (string) $demas_print_title, ENT_QUOTES, 'UTF-8' );
+
+/*
+ * A page prints its own 24 lines, so a paginated listing says which lines
+ * these are — "lines 001–024 of 113 parts" — rather than "113 parts" above a
+ * sheet of 24 (AMM-141 audit).
+ */
+$demas_per_page = max( 1, (int) $wp_query->get( 'posts_per_page' ) );
+
+if ( $demas_total > $demas_per_page ) {
+	$demas_paged      = max( 1, (int) get_query_var( 'paged' ) );
+	$demas_first_line = min( $demas_total, ( $demas_paged - 1 ) * $demas_per_page + 1 );
+	$demas_last_line  = min( $demas_total, $demas_paged * $demas_per_page );
+
+	$demas_print_line = sprintf(
+		/* translators: 1: page title, 2: first line number, 3: last line number, 4: total number of parts. */
+		__( 'Demas Group · %1$s · lines %2$s–%3$s of %4$s parts', 'demas-theme' ),
+		$demas_print_title,
+		str_pad( (string) $demas_first_line, 3, '0', STR_PAD_LEFT ),
+		str_pad( (string) $demas_last_line, 3, '0', STR_PAD_LEFT ),
+		number_format_i18n( $demas_total )
+	);
+} else {
+	$demas_print_line = sprintf(
+		/* translators: 1: page title, 2: number of parts. */
+		_n( 'Demas Group · %1$s · %2$s part', 'Demas Group · %1$s · %2$s parts', $demas_total, 'demas-theme' ),
+		$demas_print_title,
+		number_format_i18n( $demas_total )
+	);
+}
+
 $demas_request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '/';
 
 $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) );
@@ -153,18 +184,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 <div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>>
 
 	<div class="dh-print-head" aria-hidden="true">
-		<p class="dh-print-head__title">
-			<?php
-			echo esc_html(
-				sprintf(
-					/* translators: 1: page title, 2: zero-padded number of parts. */
-					__( 'Demas Group · %1$s · %2$s parts', 'demas-theme' ),
-					html_entity_decode( (string) $demas_print_title, ENT_QUOTES, 'UTF-8' ),
-					str_pad( (string) $demas_total, 3, '0', STR_PAD_LEFT )
-				)
-			);
-			?>
-		</p>
+		<p class="dh-print-head__title"><?php echo esc_html( $demas_print_line ); ?></p>
 		<p class="dh-print-head__meta dh-mono">
 			<?php esc_html_e( 'Printed', 'demas-theme' ); ?> <span data-dh-print-date><?php echo esc_html( wp_date( 'j M Y' ) ); ?></span> · <?php echo esc_html( home_url( $demas_request_uri ) ); ?>
 		</p>

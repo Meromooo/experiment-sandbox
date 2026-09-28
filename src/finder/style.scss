@@ -56,6 +56,25 @@
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 62%, transparent);
 }
 
+/*
+ * Below 100rem the header has room for "Search parts" only: the full label
+ * was cut to "Search parts or part nu…" at 1280–1360px. The button's name
+ * stays the full label either way (aria-label in render.php).
+ */
+.dh-finder__label-short {
+	display: none;
+}
+
+@media (max-width: 99.99rem) {
+	.dh-finder__label-long {
+		display: none;
+	}
+
+	.dh-finder__label-short {
+		display: inline;
+	}
+}
+
 .dh-finder__key,
 .dh-finder__keys kbd {
 	flex: none;

@@ -216,6 +216,12 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 	.dh-sheet-head {
 		display: none;
 	}
+
+	// …and without them the list's top rule sat 24px under the toolbar's own,
+	// two lines around an empty band. The toolbar's rule is enough.
+	.wc-block-product-template {
+		border-block-start: 0;
+	}
 }
 
 /*
@@ -243,14 +249,16 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 			display: contents;
 		}
 
+		// Both from the column's start, so "Quantity" sits over the − 1 +
+		// stepper rather than over the Add button at the far end.
 		.dh-quote-add {
 			flex-wrap: nowrap;
-			justify-self: end;
+			justify-self: start;
 			margin-block-start: 0;
 		}
 
 		.dh-sheet-head__add {
-			justify-self: end;
+			justify-self: start;
 		}
 	}
 }

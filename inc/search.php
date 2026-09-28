@@ -405,14 +405,11 @@ add_filter(
  * @return string Form markup.
  */
 function demas_theme_search_form( array $args = array() ): string {
-	$id    = wp_unique_id( 'dh-search-' );
-	$count = wp_count_posts( 'product' );
-	$total = isset( $count->publish ) ? (int) $count->publish : 0;
+	$id = wp_unique_id( 'dh-search-' );
 
-	$placeholder = $total
-		/* translators: %s: number of products in the catalogue. */
-		? sprintf( __( 'Search %s parts or part numbers', 'demas-theme' ), number_format_i18n( $total ) )
-		: __( 'Search parts or part numbers', 'demas-theme' );
+	// No count in it: the toolbar already shows the count beside the field,
+	// and "Search 643 parts or part numbers" was cut off on a 320px phone.
+	$placeholder = __( 'Search parts or part numbers', 'demas-theme' );
 
 	ob_start();
 	?>

@@ -217,6 +217,15 @@
 	color: var(--wp--preset--color--paper);
 }
 
+// Touch screens: every View and Sort option is a 44px target (they were 27px).
+@media (pointer: coarse) {
+	.dh-toolbar__segment {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 2.75rem;
+	}
+}
+
 /* Editor placeholder --------------------------------------------------- */
 
 .dh-toolbar-editor {

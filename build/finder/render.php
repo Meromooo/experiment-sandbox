@@ -28,9 +28,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$demas_catalogue = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' );
-$demas_groups    = function_exists( 'demas_theme_get_catalogue_columns' ) ? demas_theme_get_catalogue_columns() : array();
-$demas_label     = __( 'Search parts or part numbers', 'demas-theme' );
+$demas_catalogue   = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' );
+$demas_groups      = function_exists( 'demas_theme_get_catalogue_columns' ) ? demas_theme_get_catalogue_columns() : array();
+$demas_label       = __( 'Search parts or part numbers', 'demas-theme' );
+$demas_label_short = __( 'Search parts', 'demas-theme' );
 
 $demas_strings = array(
 	'categories' => __( 'Categories', 'demas-theme' ),
@@ -71,10 +72,12 @@ $demas_wrapper = get_block_wrapper_attributes(
 		aria-haspopup="dialog"
 		aria-controls="dh-finder-dialog"
 		aria-keyshortcuts="/"
+		aria-label="<?php echo esc_attr( $demas_label ); ?>"
 		hidden
 	>
 		<?php echo $demas_search_icon; // phpcs:ignore WordPress.Security.EscapeOutput -- static author-controlled SVG. ?>
-		<span class="dh-finder__label"><?php echo esc_html( $demas_label ); ?></span>
+		<?php // Two visual lengths; the button's name is always the full label (aria-label). ?>
+		<span class="dh-finder__label" aria-hidden="true"><span class="dh-finder__label-long"><?php echo esc_html( $demas_label ); ?></span><span class="dh-finder__label-short"><?php echo esc_html( $demas_label_short ); ?></span></span>
 		<kbd class="dh-finder__key" aria-hidden="true">/</kbd>
 	</button>
 

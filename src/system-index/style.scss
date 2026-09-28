@@ -178,20 +178,22 @@
 	overflow-wrap: anywhere;
 }
 
+// Muted, but at 4.5:1 on paper: 60% opacity and 52% ink measured 3.0 and
+// 3.5 (axe, AMM-141 audit). 70% ink is the catalogue sheet's muted value too.
 .dh-line__count {
 	font-size: var(--wp--preset--font-size--xs);
-	opacity: 0.6;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
 }
 
 .dh-line__term[aria-current="page"] .dh-line__count {
-	opacity: 0.75;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 85%, transparent);
 }
 
 .dh-line__kids {
 	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--xs);
 	letter-spacing: 0.02em;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 52%, transparent);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
 	white-space: nowrap;
 }
 
