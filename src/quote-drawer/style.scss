@@ -434,6 +434,16 @@ html:has(.dh-quote-dialog[open]) {
 	flex: none;
 }
 
+/* Copy icon by default; the share icon where the button opens a share sheet. */
+.dh-quote-dialog__icon-share,
+.dh-quote-dialog__action.is-share .dh-quote-dialog__icon-copy {
+	display: none;
+}
+
+.dh-quote-dialog__action.is-share .dh-quote-dialog__icon-share {
+	display: block;
+}
+
 /* Only when the clipboard is blocked: the list as text, to copy by hand. */
 .dh-quote-dialog__copy {
 	flex: 1 1 100%;

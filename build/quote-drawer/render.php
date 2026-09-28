@@ -84,6 +84,7 @@ wp_interactivity_state(
 		// Plain state, not a getter, so the server renders the label too; the
 		// store swaps it for "Share" on phones that have a share sheet.
 		'shareLabel' => __( 'Copy list', 'demas-theme' ),
+		'canShare'   => false,
 		'copyText'   => '',
 		'showCopy'   => false,
 	)
@@ -172,8 +173,9 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 9V4h10v5"/><path d="M7 17H5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2"/><path d="M7 14h10v6H7z"/></svg>
 						<span><?php esc_html_e( 'Print', 'demas-theme' ); ?></span>
 					</button>
-					<button type="button" class="dh-quote-dialog__action" data-wp-on--click="actions.shareList">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>
+					<button type="button" class="dh-quote-dialog__action" data-wp-on--click="actions.shareList" data-wp-class--is-share="state.canShare">
+						<svg class="dh-quote-dialog__icon-copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>
+						<svg class="dh-quote-dialog__icon-share" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3.5M8 7.5l4-4 4 4"/><path d="M8 11H6.5A1.5 1.5 0 0 0 5 12.5v7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H16"/></svg>
 						<span data-wp-text="state.shareLabel"><?php esc_html_e( 'Copy list', 'demas-theme' ); ?></span>
 					</button>
 					<button type="button" class="dh-quote-dialog__clear" data-wp-on--click="actions.clear"><?php esc_html_e( 'Clear all', 'demas-theme' ); ?></button>

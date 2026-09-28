@@ -133,6 +133,8 @@ const { state } = store( 'demas-theme/quote', {
 		strings: {} as Strings,
 		/** "Copy list", or "Share" where the phone has a share sheet. */
 		shareLabel: '',
+		/** True where Copy list becomes Share: swaps the button's icon. */
+		canShare: false,
 		/** The copy-by-hand field, shown only when the clipboard is blocked. */
 		copyText: '',
 		showCopy: false,
@@ -382,7 +384,8 @@ const { state } = store( 'demas-theme/quote', {
 
 			// Set here, not left to the server's value: the store's own initial
 			// '' above would otherwise replace it and blank the button.
-			state.shareLabel = canShare() ? state.strings.share : state.strings.copy;
+			state.canShare = canShare();
+			state.shareLabel = state.canShare ? state.strings.share : state.strings.copy;
 
 			/*
 			 * Every print decides afresh what it prints. Print pressed: the list
