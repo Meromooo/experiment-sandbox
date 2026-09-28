@@ -547,7 +547,7 @@ function buildSheet(): HTMLElement {
 
 	const head = el( 'header', 'dh-qsheet__head' );
 	head.append(
-		el( 'p', 'dh-qsheet__title', format( s.sheetTitle, pad( state.items.length ), String( totalQty() ) ) ),
+		el( 'p', 'dh-qsheet__title', format( s.sheetTitle, String( state.items.length ), String( totalQty() ) ) ),
 		el( 'p', 'dh-qsheet__date', format( s.printed.replace( '%s', '%1$s' ), printedDate() ) )
 	);
 
