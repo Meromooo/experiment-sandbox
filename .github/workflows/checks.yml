@@ -28,7 +28,7 @@ jobs:
     # ubuntu-24.04 ships PHP 8.3 and Composer: the sandbox runs 8.3.
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Lint every tracked PHP file
         run: |
@@ -50,8 +50,11 @@ jobs:
     runs-on: ubuntu-24.04
     # Report-only until the existing violations are fixed (AMM-156, step 5).
     continue-on-error: true
+    permissions:
+      contents: read
+      checks: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install PHPCS + WordPress Coding Standards (on the runner only)
         run: |
@@ -59,33 +62,74 @@ jobs:
           composer global require --no-interaction --no-progress "wp-coding-standards/wpcs:^3.1"
           echo "$(composer global config bin-dir --absolute --quiet)" >> "$GITHUB_PATH"
 
-      # The reports also go to the run's summary page, which is public — job
-      # logs need an owner's sign-in even on a public repo.
       - name: Run PHPCS
         run: |
           phpcs --version
           status=0
-          phpcs --standard=phpcs.xml.dist --report=summary --report-width=120 > summary.txt || status=1
+          phpcs --standard=phpcs.xml.dist --report=json > report.json || status=1
           phpcs --standard=phpcs.xml.dist --report=source --report-width=120 > source.txt || true
-          phpcs --standard=phpcs.xml.dist --report=full --report-width=150 > full.txt || true
-          cat summary.txt source.txt full.txt
-          {
-            echo "## WordPress Coding Standards (report-only)"
-            echo '```'; cat summary.txt; echo '```'
-            echo "### By sniff"
-            echo '```'; cat source.txt; echo '```'
-            echo "### Full report"
-            echo '```'; head -c 900000 full.txt; echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-          exit "$status"
+          phpcs --standard=phpcs.xml.dist --report=full --report-width=150 || true
+          cat source.txt
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+        id: phpcs
+
+      # Job logs need an owner's sign-in even on a public repo, but check runs
+      # are public: the report is posted as the "PHPCS report" check on the
+      # commit — totals and counts by sniff in its summary, one annotation per
+      # violation (50 per request, the API's batch size).
+      - name: Publish the report as a check run
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+
+          token = os.environ["GH_TOKEN"]
+          base = f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/check-runs"
+
+          def call(method, url, body):
+              req = urllib.request.Request(url, data=json.dumps(body).encode(), method=method, headers={
+                  "Authorization": f"Bearer {token}",
+                  "Accept": "application/vnd.github+json",
+              })
+              with urllib.request.urlopen(req) as res:
+                  return json.load(res)
+
+          report = json.load(open("report.json"))
+          totals = report["totals"]
+          annotations = []
+          for path, data in report["files"].items():
+              rel = os.path.relpath(path)
+              for m in data["messages"]:
+                  line = max(1, int(m.get("line") or 1))
+                  annotations.append({
+                      "path": rel,
+                      "start_line": line,
+                      "end_line": line,
+                      "annotation_level": "failure" if m["type"] == "ERROR" else "warning",
+                      "message": f"{m['source']}: {m['message']}"[:60000],
+                  })
+
+          title = f"{totals['errors']} errors, {totals['warnings']} warnings ({totals['fixable']} auto-fixable)"
+          summary = "Report-only (AMM-156).\n\n```\n" + open("source.txt").read()[:60000] + "\n```"
+          run = call("POST", base, {"name": "PHPCS report", "head_sha": os.environ["GITHUB_SHA"], "status": "in_progress"})
+          for i in range(0, len(annotations), 50):
+              call("PATCH", f"{base}/{run['id']}", {"output": {"title": title, "summary": summary, "annotations": annotations[i:i + 50]}})
+          call("PATCH", f"{base}/{run['id']}", {"status": "completed", "conclusion": "neutral", "output": {"title": title, "summary": summary}})
+          print(title)
+          PY
+
+      - name: Fail the job when there are violations (still report-only overall)
+        run: exit "${{ steps.phpcs.outputs.status }}"
 
   build:
     name: build/ matches the source (ADR-001)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -110,7 +154,7 @@ jobs:
     name: theme.json and block.json parse
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Parse every theme.json and block.json
         run: |
@@ -133,7 +177,7 @@ jobs:
     name: No email addresses in the repo
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # CLAUDE.md: staff email addresses never appear in the repo, in markup or
       # in JavaScript. Image names like logo@2x.png and package@1.2.3 strings
@@ -158,7 +202,7 @@ jobs:
       group: deploy
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
