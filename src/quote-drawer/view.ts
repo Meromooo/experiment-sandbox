@@ -395,7 +395,7 @@ const { state } = store( 'demas-theme/quote', {
 				}
 
 				if ( dialogElement()?.open && state.items.length ) {
-					preparePrint( true );
+					preparePrint();
 				} else {
 					clearPrintMode();
 				}
@@ -491,9 +491,6 @@ function setQty( id: number, qty: number ): void {
 const SHEET_ID = 'dh-quote-print';
 const PRINT_CLASS = 'dh-print-quote';
 
-/** Reopen the list after printing: it was open when printing began. */
-let reopenAfterPrint = false;
-
 /** Between pressing Print (or Ctrl+P on the list) and the print finishing. */
 let printingQuote = false;
 
@@ -588,9 +585,8 @@ function buildSheet(): HTMLElement {
 }
 
 /** Mount the sheet and switch the page to print only it. */
-function preparePrint( reopen: boolean ): void {
+function preparePrint(): void {
 	clearPrintMode();
-	reopenAfterPrint = reopen;
 	printingQuote = true;
 	hideList();
 	document.body.append( buildSheet() );
@@ -608,28 +604,20 @@ function printQuote(): void {
 		return;
 	}
 
-	preparePrint( true );
+	preparePrint();
 	window.print();
 }
 
 /*
- * The print dialog closed — printed or cancelled. Reopen the list where the
- * buyer left it. The sheet itself stays until the next print or interaction:
- * some print paths (a PDF export, found in testing) fire afterprint before
- * they have captured the page, and removing it here printed the page instead.
+ * The print dialog closed — printed or cancelled. Nothing is touched here,
+ * deliberately: some print paths (a PDF export, found in testing) fire
+ * afterprint before they have captured the page, and either removing the
+ * sheet or reopening the list at this point printed the page instead. The
+ * sheet goes on the next print or interaction; the list stays closed, with
+ * focus back on "Your quote" (where the dialog returns it), one press away.
  */
 function finishPrint(): void {
-	if ( ! printingQuote ) {
-		return;
-	}
-
 	printingQuote = false;
-
-	if ( reopenAfterPrint ) {
-		reopenAfterPrint = false;
-		showList();
-		document.querySelector< HTMLElement >( '.dh-quote-dialog__action--print' )?.focus();
-	}
 }
 
 /** The list as plain text, for WhatsApp or email. */
