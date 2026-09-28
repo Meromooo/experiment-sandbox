@@ -1,0 +1,155 @@
+# Checks on every push, and the sandbox deploy (AMM-156).
+#
+# Hostinger deploys the `deploy` branch, not `main`. This workflow moves
+# `deploy` to the pushed commit only when every blocking check below passes,
+# so a PHP syntax error, a stale build/ or an email address never reaches
+# the sandbox — it stays on the last good commit and GitHub emails the owner.
+#
+# Blocking: php-lint, build, json, email-guard.
+# Report-only for now: phpcs (WordPress Coding Standards) — see AMM-156.
+
+name: Checks
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push supersedes an older one on the same branch.
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-lint:
+    name: PHP syntax (php -l, PHP 8.3)
+    # ubuntu-24.04 ships PHP 8.3 and Composer: the sandbox runs 8.3.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint every tracked PHP file
+        run: |
+          php -v | head -1
+          status=0
+          count=0
+          while IFS= read -r -d '' file; do
+            count=$((count + 1))
+            if ! output=$(php -l "$file" 2>&1); then
+              echo "::error file=${file}::${output}"
+              status=1
+            fi
+          done < <(git ls-files -z -- '*.php')
+          echo "Linted ${count} PHP files."
+          exit "$status"
+
+  phpcs:
+    name: WordPress Coding Standards (report-only)
+    runs-on: ubuntu-24.04
+    # Report-only until the existing violations are fixed (AMM-156, step 5).
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PHPCS + WordPress Coding Standards (on the runner only)
+        run: |
+          composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require --no-interaction --no-progress "wp-coding-standards/wpcs:^3.1"
+          echo "$(composer global config bin-dir --absolute --quiet)" >> "$GITHUB_PATH"
+
+      - name: Run PHPCS
+        run: |
+          phpcs --version
+          phpcs --standard=phpcs.xml.dist --report=summary --report-width=120 || true
+          phpcs --standard=phpcs.xml.dist --report=source --report-width=120 || true
+          phpcs --standard=phpcs.xml.dist --report-width=160
+
+  build:
+    name: build/ matches the source (ADR-001)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install from the lockfile
+        run: npm ci --no-audit --no-fund
+
+      - name: Build the blocks
+        run: npm run build
+
+      - name: Fail if build/ changed
+        run: |
+          if [ -n "$(git status --porcelain -- build/)" ]; then
+            echo "::error::build/ is out of date with src/. Run npm run build and commit build/ (ADR-001) — otherwise the change is not live."
+            git status --porcelain -- build/
+            git --no-pager diff --stat -- build/
+            exit 1
+          fi
+          echo "build/ is up to date."
+
+  json:
+    name: theme.json and block.json parse
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse every theme.json and block.json
+        run: |
+          node -e '
+            const fs = require("fs");
+            const { execSync } = require("child_process");
+            const files = execSync("git ls-files theme.json \"*block.json\"").toString().trim().split("\n");
+            let bad = 0;
+            for (const file of files) {
+              try { JSON.parse(fs.readFileSync(file, "utf8")); }
+              catch (e) { console.log(`::error file=${file}::${e.message}`); bad++; }
+            }
+            console.log(`Parsed ${files.length} JSON files, ${bad} invalid.`);
+            process.exit(bad ? 1 : 0);
+          '
+
+  email-guard:
+    name: No email addresses in the repo
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # CLAUDE.md: staff email addresses never appear in the repo, in markup or
+      # in JavaScript. Image names like logo@2x.png and package@1.2.3 strings
+      # are not addresses; package-lock.json is third-party metadata.
+      - name: Search every tracked file
+        run: |
+          pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.(?!(png|jpe?g|gif|webp|avif|svg|woff2?|css|js|json|map)\b)[A-Za-z]{2,}\b'
+          if git grep -InP "$pattern" -- . ':!package-lock.json'; then
+            echo "::error::An email address is in the repo. Staff emails never belong here (CLAUDE.md) — remove it before this can deploy."
+            exit 1
+          fi
+          echo "No email addresses found."
+
+  deploy:
+    name: Deploy to the sandbox (move the deploy branch)
+    if: github.ref == 'refs/heads/main'
+    needs: [php-lint, build, json, email-guard]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Fast-forward only: deploy is written by this job alone, so a rejected
+      # push means someone moved it by hand — stop and look, don't force.
+      - name: Fast-forward deploy to this commit
+        run: |
+          git push origin "HEAD:refs/heads/deploy"
+          echo "Sandbox deploy branch now at ${GITHUB_SHA}." | tee -a "$GITHUB_STEP_SUMMARY"
