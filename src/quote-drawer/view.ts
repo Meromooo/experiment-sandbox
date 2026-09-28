@@ -380,9 +380,9 @@ const { state } = store( 'demas-theme/quote', {
 			state.items = read();
 			state.ready = true;
 
-			if ( canShare() ) {
-				state.shareLabel = state.strings.share;
-			}
+			// Set here, not left to the server's value: the store's own initial
+			// '' above would otherwise replace it and blank the button.
+			state.shareLabel = canShare() ? state.strings.share : state.strings.copy;
 
 			// Ctrl+P (or the browser's Print) while the list is open prints the
 			// list, not the page behind it.
@@ -392,7 +392,12 @@ const { state } = store( 'demas-theme/quote', {
 				}
 			} );
 
-			window.addEventListener( 'afterprint', finishPrint );
+			// A beat later, not at once: some print paths (headless PDF, found in
+			// testing) fire afterprint before they capture the page, and an
+			// immediate clean-up printed the page instead of the list.
+			window.addEventListener( 'afterprint', () => {
+				window.setTimeout( finishPrint, 300 );
+			} );
 		},
 
 	},
