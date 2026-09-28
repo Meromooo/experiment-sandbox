@@ -1,7 +1,7 @@
 /**
  * Demas Theme (Sandbox) — front-end behaviour.
  *
- * Five jobs, no dependencies, no build step:
+ * Six jobs, no dependencies, no build step:
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
  *     viewport, and number the children of [data-reveal-group] (--i) so CSS
  *     can stagger them. Reduced-motion users get the final state at once.
@@ -15,6 +15,8 @@
  *     #branch-xxx hash (the footer's branch links) selects that city.
  *  5. Finale: measures the homepage's closing CTA so CSS can pin it while
  *     the footer slides over it. Without this script nothing is pinned.
+ *  6. Catalogue view: switches Gallery / Sheet in place, remembers it, and
+ *     animates. Without this script the toggle links reload with ?view=.
  *
  * The .js class on <html> is the gate for every hidden initial state in
  * assets/css/style.css — with this file absent or failing, nothing is hidden.
@@ -189,6 +191,110 @@
 			finale.classList.add('is-pinnable');
 		});
 	}
+
+	/* 6. Catalogue view: Gallery / Sheet (AMM-141) ---------------------- */
+
+	// The toolbar's Gallery | Sheet links reload with ?view=… without this;
+	// with it they switch in place, remember the choice for every catalogue
+	// page (applied before paint by the head script in inc/sheet-view.php),
+	// update the address so the view can be shared, and morph the cards
+	// between grid and rows where View Transitions are supported.
+	var VIEW_KEY = 'demas-theme/view';
+	var viewGrids = document.querySelectorAll('.dh-grid--catalogue');
+	var viewLinks = document.querySelectorAll('[data-dh-view]');
+
+	if (viewGrids.length && viewLinks.length) {
+		var currentView = function () {
+			return root.classList.contains('dh-view-sheet') || viewGrids[0].classList.contains('is-sheet') ? 'sheet' : 'gallery';
+		};
+
+		// Every link that reloads the catalogue carries the view, so the next
+		// page renders the same one even where storage is blocked.
+		var carryView = function (view) {
+			each(viewLinks, function (link) {
+				link.setAttribute('aria-current', String(link.getAttribute('data-dh-view') === view));
+			});
+
+			each(document.querySelectorAll('.dh-toolbar__sort:not(.dh-toolbar__view) a, .dh-toolbar__chips a, .dh-pagination a'), function (link) {
+				var url = new URL(link.href, window.location.href);
+				if (view === 'sheet') {
+					url.searchParams.set('view', 'sheet');
+				} else {
+					url.searchParams.delete('view');
+				}
+				link.href = url.toString();
+			});
+		};
+
+		var applyView = function (view) {
+			root.classList.toggle('dh-view-sheet', view === 'sheet');
+			each(viewGrids, function (grid) {
+				grid.classList.toggle('is-sheet', view === 'sheet');
+			});
+			carryView(view);
+		};
+
+		var chooseView = function (view) {
+			if (view === currentView()) {
+				return;
+			}
+
+			try {
+				window.localStorage.setItem(VIEW_KEY, view);
+			} catch (e) {
+				// Storage blocked: the address still carries the view.
+			}
+
+			var url = new URL(window.location.href);
+			if (view === 'sheet') {
+				url.searchParams.set('view', 'sheet');
+			} else {
+				url.searchParams.delete('view');
+			}
+			window.history.replaceState(window.history.state, '', url.toString());
+
+			if (typeof document.startViewTransition !== 'function' || reduce.matches) {
+				applyView(view);
+				return;
+			}
+
+			// Name each card for the transition so it morphs into its row;
+			// names are cleared afterwards to keep them out of later transitions.
+			var cards = document.querySelectorAll('.dh-grid--catalogue .dh-pcard');
+			each(cards, function (card, i) {
+				card.style.viewTransitionName = 'dh-card-' + i;
+			});
+
+			document.startViewTransition(function () {
+				applyView(view);
+			}).finished.finally(function () {
+				each(cards, function (card) {
+					card.style.viewTransitionName = '';
+				});
+			});
+		};
+
+		each(viewLinks, function (link) {
+			link.addEventListener('click', function (event) {
+				// New tab / window: let the browser follow the link.
+				if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+					return;
+				}
+				event.preventDefault();
+				chooseView(link.getAttribute('data-dh-view'));
+			});
+		});
+
+		carryView(currentView());
+	}
+
+	// The printed sheet's date is the day it is printed, not the day the
+	// page was served.
+	window.addEventListener('beforeprint', function () {
+		each(document.querySelectorAll('[data-dh-print-date]'), function (el) {
+			el.textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+		});
+	});
 
 	/* Reduced-motion change at runtime --------------------------------- */
 

@@ -1613,11 +1613,6 @@ svg {
 	color: var(--wp--preset--color--canopy);
 }
 
-.dh-pcard__price {
-	margin: 0;
-	font-size: var(--wp--preset--font-size--sm);
-}
-
 /* Unpriced catalogue: the substitute for "SAR 0.00", set in inc/woocommerce.php. */
 .dh-price-request {
 	display: inline-flex;
@@ -2279,17 +2274,7 @@ footer.wp-block-template-part {
 	color: var(--wp--preset--color--field);
 }
 
-/* The card's part number, in place of the price. */
-.dh-pcard__sku {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.3rem 0.6rem;
-	margin: 0;
-	font-size: var(--wp--preset--font-size--sm);
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
-}
-
+/* An exact part-number hit, tagged in its card (src/product-meta). */
 .dh-pcard__exact {
 	padding: 0.15em 0.55em;
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--canopy) 45%, transparent);

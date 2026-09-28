@@ -115,9 +115,60 @@ if ( $demas_is_search ) {
 		: get_post_type_archive_link( 'product' );
 }
 
+/* View (AMM-141) --------------------------------------------------------- */
+
+// The view the URL asked for. A remembered choice is applied in the browser,
+// and main.js keeps these links and the sort links in step with it.
+$demas_view = function_exists( 'demas_theme_catalogue_view' ) ? demas_theme_catalogue_view() : 'gallery';
+
+if ( 'sheet' === $demas_view ) {
+	$demas_base = add_query_arg( 'view', 'sheet', $demas_base );
+}
+
+$demas_views = array(
+	'gallery' => array(
+		'label' => __( 'Gallery', 'demas-theme' ),
+		'url'   => remove_query_arg( 'view' ),
+	),
+	'sheet'   => array(
+		'label' => __( 'Sheet', 'demas-theme' ),
+		'url'   => add_query_arg( 'view', 'sheet' ),
+	),
+);
+
+// Print heading: shown only on paper (src/product-meta/style.scss).
+if ( $demas_is_search ) {
+	/* translators: %s: the search query. */
+	$demas_print_title = sprintf( __( 'Search “%s”', 'demas-theme' ), $demas_query );
+} elseif ( $demas_term instanceof WP_Term ) {
+	$demas_print_title = $demas_term->name;
+} else {
+	$demas_print_title = post_type_archive_title( '', false );
+}
+
+$demas_request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '/';
+
 $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) );
 ?>
 <div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>>
+
+	<div class="dh-print-head" aria-hidden="true">
+		<p class="dh-print-head__title">
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: 1: page title, 2: zero-padded number of parts. */
+					__( 'Demas Group · %1$s · %2$s parts', 'demas-theme' ),
+					html_entity_decode( (string) $demas_print_title, ENT_QUOTES, 'UTF-8' ),
+					str_pad( (string) $demas_total, 3, '0', STR_PAD_LEFT )
+				)
+			);
+			?>
+		</p>
+		<p class="dh-print-head__meta dh-mono">
+			<?php esc_html_e( 'Printed', 'demas-theme' ); ?> <span data-dh-print-date><?php echo esc_html( wp_date( 'j M Y' ) ); ?></span> · <?php echo esc_html( home_url( $demas_request_uri ) ); ?>
+		</p>
+	</div>
 
 	<?php if ( $demas_rail ) : ?>
 		<nav class="dh-toolbar__rail" aria-label="<?php echo esc_attr( $demas_is_search ? __( 'Categories matching your search', 'demas-theme' ) : __( 'Narrow this category', 'demas-theme' ) ); ?>">
@@ -174,6 +225,28 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 			echo demas_theme_search_form( array( 'class' => 'dh-toolbar__search' ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside the helper.
 		}
 		?>
+
+		<?php
+		/*
+		 * Gallery | Sheet. Plain links, so they work without JavaScript; main.js
+		 * switches in place instead, remembers the choice, and animates.
+		 */
+		?>
+		<nav class="dh-toolbar__sort dh-toolbar__view" aria-label="<?php esc_attr_e( 'View', 'demas-theme' ); ?>">
+			<span class="dh-toolbar__sort-label"><?php esc_html_e( 'View', 'demas-theme' ); ?></span>
+			<ul class="dh-toolbar__segments">
+				<?php foreach ( $demas_views as $demas_key => $demas_option ) : ?>
+					<li>
+						<a
+							class="dh-toolbar__segment"
+							href="<?php echo esc_url( $demas_option['url'] ); ?>"
+							data-dh-view="<?php echo esc_attr( $demas_key ); ?>"
+							aria-current="<?php echo $demas_key === $demas_view ? 'true' : 'false'; ?>"
+						><?php echo esc_html( $demas_option['label'] ); ?></a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</nav>
 
 		<nav class="dh-toolbar__sort" aria-label="<?php esc_attr_e( 'Sort products', 'demas-theme' ); ?>">
 			<span class="dh-toolbar__sort-label"><?php esc_html_e( 'Sort', 'demas-theme' ); ?></span>

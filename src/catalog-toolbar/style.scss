@@ -116,6 +116,11 @@
 	opacity: 0.6;
 }
 
+/* Print heading — paper only (src/product-meta/style.scss shows it). */
+.dh-print-head {
+	display: none;
+}
+
 /* Count + sort bar ----------------------------------------------------- */
 
 .dh-toolbar__bar {

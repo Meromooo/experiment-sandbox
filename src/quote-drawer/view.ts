@@ -46,6 +46,8 @@ interface Strings {
 
 interface ButtonContext {
 	item?: Omit< Item, 'qty' >;
+	/** Sheet view: how many "Add to quote" adds, until the part is in the quote. */
+	qty?: number;
 }
 
 interface LineContext {
@@ -150,6 +152,21 @@ const { state } = store( 'demas-theme/quote', {
 		},
 
 		/**
+		 * Sheet view's quantity field: the quantity in the quote once the part
+		 * is there, otherwise the one the buyer is about to add.
+		 */
+		get rowQty(): number {
+			const { item, qty } = getContext< ButtonContext >();
+			const stored = item ? state.items.find( ( i ) => i.id === item.id ) : undefined;
+
+			return stored ? stored.qty : clamp( qty ?? 1 );
+		},
+
+		get rowAtMin(): boolean {
+			return state.rowQty <= 1;
+		},
+
+		/**
 		 * Numbered like the lines of a bill of quantities — 001, 002 — because a
 		 * buyer on the phone to a branch cites parts by line.
 		 */
@@ -184,8 +201,32 @@ const { state } = store( 'demas-theme/quote', {
 				return;
 			}
 
-			save( [ ...state.items, { ...item, qty: 1 } ] );
+			const { qty } = getContext< ButtonContext >();
+
+			save( [ ...state.items, { ...item, qty: clamp( qty ?? 1 ) } ] );
 			announce( fill( state.strings.added, item.name ) );
+		},
+
+		/*
+		 * Sheet view's steppers and field. Before the part is in the quote they
+		 * set the row's own quantity; after, they edit the quote — the same
+		 * number the list shows.
+		 */
+		rowIncrement(): void {
+			setRowQty( state.rowQty + 1 );
+		},
+
+		rowDecrement(): void {
+			setRowQty( state.rowQty - 1 );
+		},
+
+		rowSetQuantity( event: Event ): void {
+			const input = event.target as HTMLInputElement;
+			const typed = parseInt( input.value, 10 );
+			const next = Number.isFinite( typed ) ? clamp( typed ) : state.rowQty;
+
+			setRowQty( next );
+			input.value = String( next );
 		},
 
 		open(): void {
@@ -324,6 +365,18 @@ function hideList(): void {
 
 function currentQty( id: number ): number {
 	return state.items.find( ( item ) => item.id === id )?.qty ?? 1;
+}
+
+/** A card's quantity: into the quote if the part is there, else the card's own. */
+function setRowQty( qty: number ): void {
+	const context = getContext< ButtonContext >();
+	const { item } = context;
+
+	if ( item && state.items.some( ( i ) => i.id === item.id ) ) {
+		setQty( item.id, qty );
+	} else {
+		context.qty = clamp( qty );
+	}
 }
 
 function setQty( id: number, qty: number ): void {

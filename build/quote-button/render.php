@@ -58,8 +58,27 @@ $demas_whose = 'compact' === $demas_variant
 <div
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
 	data-wp-interactive="demas-theme/quote"
-	<?php echo wp_interactivity_data_wp_context( array( 'item' => $demas_item ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
+	<?php echo wp_interactivity_data_wp_context( array( 'item' => $demas_item, 'qty' => 1 ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
 >
+	<?php if ( 'compact' === $demas_variant ) : ?>
+		<?php
+		/*
+		 * Sheet view's quantity (AMM-141) — hidden in the gallery. Before the
+		 * part is in the quote it sets how many "Add to quote" adds; once it is,
+		 * it edits the quantity in the quote itself.
+		 */
+		?>
+		<div class="dh-qty dh-quote-add__qty is-pending" role="group" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'Quantity of %s', 'demas-theme' ), $demas_name ) ); ?>" data-wp-class--is-pending="!state.ready">
+			<button type="button" class="dh-qty__step" data-wp-on--click="actions.rowDecrement" data-wp-bind--disabled="state.rowAtMin" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'One fewer %s', 'demas-theme' ), $demas_name ) ); ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 12h12"/></svg>
+			</button>
+			<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" data-wp-bind--value="state.rowQty" data-wp-on--change="actions.rowSetQuantity" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'Quantity of %s', 'demas-theme' ), $demas_name ) ); ?>">
+			<button type="button" class="dh-qty__step" data-wp-on--click="actions.rowIncrement" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'One more %s', 'demas-theme' ), $demas_name ) ); ?>">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12"/></svg>
+			</button>
+		</div>
+	<?php endif; ?>
+
 	<button
 		type="button"
 		class="dh-quote-btn is-pending"

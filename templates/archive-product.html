@@ -29,12 +29,20 @@
 	-->
 	<!-- wp:demas-theme/catalog-toolbar /-->
 
-	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":24,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/product-catalog","queryContextIncludes":["collection"],"className":"dh-grid"} -->
-	<div class="wp-block-woocommerce-product-collection dh-grid">
+	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":24,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":true,"taxQuery":{},"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[]},"tagName":"div","displayLayout":{"type":"flex","columns":4,"shrinkColumns":true},"collection":"woocommerce/product-collection/product-catalog","queryContextIncludes":["collection"],"className":"dh-grid dh-grid--catalogue"} -->
+	<div class="wp-block-woocommerce-product-collection dh-grid dh-grid--catalogue">
 		<!-- A heading for screen readers only: the cards below are h3s. -->
 		<!-- wp:heading {"className":"dh-sr"} -->
 		<h2 class="wp-block-heading dh-sr">Products</h2>
 		<!-- /wp:heading -->
+
+		<!--
+			Sheet view's column headings (AMM-141): shown only in the sheet, and
+			hidden from screen readers — every value in a row carries its own label.
+		-->
+		<!-- wp:html -->
+		<div class="dh-sheet-head" aria-hidden="true"><span class="dh-sheet-head__line">Line</span><span class="dh-sheet-head__name">Part</span><span class="dh-sheet-head__sku">Part no.</span><span class="dh-sheet-head__cat">Category</span><span class="dh-sheet-head__add">Quantity</span></div>
+		<!-- /wp:html -->
 
 		<!-- wp:woocommerce/product-template -->
 			<!-- wp:group {"className":"dh-pcard","layout":{"type":"default"}} -->
@@ -44,7 +52,8 @@
 				<!-- wp:group {"className":"dh-pcard__body","layout":{"type":"default"}} -->
 				<div class="wp-block-group dh-pcard__body">
 					<!-- wp:post-title {"level":3,"isLink":true,"className":"dh-pcard__title"} /-->
-					<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"className":"dh-pcard__price"} /-->
+					<!-- Line number, part number and category; Gallery shows the part number only. -->
+					<!-- wp:demas-theme/product-meta /-->
 					<!-- wp:demas-theme/quote-button {"variant":"compact"} /-->
 				</div>
 				<!-- /wp:group -->

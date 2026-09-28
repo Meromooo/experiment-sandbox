@@ -75,6 +75,20 @@
 	flex: none;
 }
 
+/*
+ * Sheet view's quantity field (AMM-141) sits beside the compact button; the
+ * gallery hides it and the sheet shows it (src/product-meta/style.scss). Like
+ * the button, it holds its space but stays hidden until the list has loaded.
+ */
+/* Two classes: the list's own .dh-qty rule sets a display too. */
+.dh-quote-add .dh-quote-add__qty {
+	display: none;
+}
+
+.dh-quote-add__qty.is-pending {
+	visibility: hidden;
+}
+
 /* Compact — catalogue cards. */
 .dh-quote-add--compact .dh-quote-btn {
 	gap: 0.4rem;

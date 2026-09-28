@@ -43,7 +43,8 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
   No build tooling for these — they are plain files. `style.css` holds the shape grammar
   (cards, pills, the concave notch), marquee, and reveal motion; `main.js` is the small
   dependency-free script that drives reveals, the marquee loop, counters, the Branch Desk
-  (including `#branch-xxx` deep links) and the homepage footer slide-over.
+  (including `#branch-xxx` deep links), the homepage footer slide-over and the catalogue's
+  Gallery / Sheet switch.
 - `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
   Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
   third-party font CDN. Fetched from the Google Fonts API on 2026-09-14; the fetch script
@@ -147,6 +148,19 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     ARIA combobox, opened by its header control or `/`; its view module is plain TypeScript,
     not an Interactivity store (rows mark substrings, which the store's templating can't).
     Without JavaScript the control is a link to the catalogue.
+  - `sheet-view.php` — **Sheet view** (AMM-141, 2026-09-28): every catalogue page (archive,
+    categories, search) shows its cards as Gallery or as a numbered **parts sheet** from one
+    set of markup, reflowed by CSS (`src/product-meta/style.scss`; the card wrappers become
+    `display: contents` cells). `?view=sheet` is honoured server-side (`.is-sheet` on the
+    `.dh-grid--catalogue` product-collection); a remembered choice (`localStorage`
+    `demas-theme/view`) is applied by an inline `<head>` script before paint
+    (`.dh-view-sheet` on `<html>`) — not a cookie, because a CDN-cached page would ignore it.
+    Registers `demas-theme/product-meta` (line number continued across pages, part number —
+    marked on searches — and category path, each with a screen-reader label). 24 parts a page
+    (`loop_shop_per_page`). The toolbar carries the Gallery | Sheet links and a print-only
+    heading; `main.js` switches in place with View Transitions. Printing any catalogue page
+    gives the sheet. Sheet rows carry a quantity field (in the compact quote button) that adds
+    that quantity, and edits the quote once the part is in it.
   - `structured-data.php` — JSON-LD / schema.org output for products and organization
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections

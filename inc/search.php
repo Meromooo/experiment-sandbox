@@ -390,39 +390,8 @@ add_filter(
 	3
 );
 
-/*
- * Results page: each card's part number, with the matched part marked and an
- * exact hit tagged. Replaces WooCommerce's "SKU:" line outright, so the card
- * reads like the rest of the catalogue's data (mono, no label).
- */
-add_filter(
-	'render_block_woocommerce/product-sku',
-	function ( $content, $block, $instance ) {
-		if ( ! is_search() || ! $instance instanceof WP_Block ) {
-			return $content;
-		}
-
-		$product_id = (int) ( $instance->context['postId'] ?? 0 );
-		$sku        = $product_id ? (string) get_post_meta( $product_id, '_sku', true ) : '';
-
-		if ( '' === $sku ) {
-			return '';
-		}
-
-		$terms = demas_theme_search_terms();
-		$exact = in_array( mb_strtolower( $sku ), array_map( 'mb_strtolower', $terms['skus'] ), true );
-		$class = trim( 'dh-pcard__sku dh-mono ' . ( $block['attrs']['className'] ?? '' ) );
-
-		return sprintf(
-			'<p class="%1$s">%2$s%3$s</p>',
-			esc_attr( $class ),
-			demas_theme_highlight( esc_html( $sku ), array_merge( $terms['skus'], $terms['words'] ) ),
-			$exact ? '<span class="dh-pcard__exact">' . esc_html__( 'Exact match', 'demas-theme' ) . '</span>' : ''
-		);
-	},
-	10,
-	3
-);
+// Each card's part number — marked and tagged on a search — is rendered by
+// the Part Details block (src/product-meta), which calls the helpers above.
 
 /**
  * The search form. One component for every place a buyer can search from;
