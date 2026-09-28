@@ -180,7 +180,10 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
     `demas-theme/view`) is applied by an inline `<head>` script before paint
     (`.dh-view-sheet` on `<html>`) — not a cookie, because a CDN-cached page would ignore it.
     Registers `demas-theme/product-meta` (line number continued across pages, part number —
-    marked on searches — and category path, each with a screen-reader label). 24 parts a page
+    marked on searches — and category path, each with a screen-reader label). Its stylesheet
+    loads only when a card renders, so anything that must hold on an **empty** listing lives
+    in `style.css` instead — the column headings' base `display: none` does (they showed as raw
+    text on a search with no results). 24 parts a page
     (`loop_shop_per_page`). The toolbar carries the Gallery | Sheet links and a print-only
     heading; `main.js` switches in place with View Transitions. Printing any catalogue page
     gives the sheet. Sheet rows carry a quantity field (in the compact quote button) that adds
