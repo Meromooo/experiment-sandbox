@@ -384,20 +384,39 @@ const { state } = store( 'demas-theme/quote', {
 			// '' above would otherwise replace it and blank the button.
 			state.shareLabel = canShare() ? state.strings.share : state.strings.copy;
 
-			// Ctrl+P (or the browser's Print) while the list is open prints the
-			// list, not the page behind it.
+			/*
+			 * Every print decides afresh what it prints. Print pressed: the list
+			 * (already prepared). Otherwise, the list if it is open (Ctrl+P
+			 * while reading it), else the page.
+			 */
 			window.addEventListener( 'beforeprint', () => {
+				if ( printingQuote ) {
+					return;
+				}
+
 				if ( dialogElement()?.open && state.items.length ) {
 					preparePrint( true );
+				} else {
+					clearPrintMode();
 				}
 			} );
 
-			// A beat later, not at once: some print paths (headless PDF, found in
-			// testing) fire afterprint before they capture the page, and an
-			// immediate clean-up printed the page instead of the list.
-			window.addEventListener( 'afterprint', () => {
-				window.setTimeout( finishPrint, 300 );
-			} );
+			window.addEventListener( 'afterprint', finishPrint );
+
+			// The printed sheet is invisible on screen, so it can wait to be
+			// removed until the buyer next clicks or types — never while a print
+			// may still be capturing the page.
+			[ 'pointerdown', 'keydown' ].forEach( ( type ) =>
+				window.addEventListener(
+					type,
+					() => {
+						if ( ! printingQuote ) {
+							clearPrintMode();
+						}
+					},
+					true
+				)
+			);
 		},
 
 	},
@@ -474,6 +493,9 @@ const PRINT_CLASS = 'dh-print-quote';
 
 /** Reopen the list after printing: it was open when printing began. */
 let reopenAfterPrint = false;
+
+/** Between pressing Print (or Ctrl+P on the list) and the print finishing. */
+let printingQuote = false;
 
 /** Phones and tablets with a share sheet; desktops copy instead. */
 function canShare(): boolean {
@@ -567,11 +589,18 @@ function buildSheet(): HTMLElement {
 
 /** Mount the sheet and switch the page to print only it. */
 function preparePrint( reopen: boolean ): void {
-	document.getElementById( SHEET_ID )?.remove();
+	clearPrintMode();
 	reopenAfterPrint = reopen;
+	printingQuote = true;
 	hideList();
 	document.body.append( buildSheet() );
 	document.documentElement.classList.add( PRINT_CLASS );
+}
+
+/** Back to printing the page (the sheet is hidden on screen either way). */
+function clearPrintMode(): void {
+	document.documentElement.classList.remove( PRINT_CLASS );
+	document.getElementById( SHEET_ID )?.remove();
 }
 
 function printQuote(): void {
@@ -583,14 +612,18 @@ function printQuote(): void {
 	window.print();
 }
 
-/** After the print dialog closes — printed or cancelled — put the page back. */
+/*
+ * The print dialog closed — printed or cancelled. Reopen the list where the
+ * buyer left it. The sheet itself stays until the next print or interaction:
+ * some print paths (a PDF export, found in testing) fire afterprint before
+ * they have captured the page, and removing it here printed the page instead.
+ */
 function finishPrint(): void {
-	if ( ! document.documentElement.classList.contains( PRINT_CLASS ) ) {
+	if ( ! printingQuote ) {
 		return;
 	}
 
-	document.documentElement.classList.remove( PRINT_CLASS );
-	document.getElementById( SHEET_ID )?.remove();
+	printingQuote = false;
 
 	if ( reopenAfterPrint ) {
 		reopenAfterPrint = false;
