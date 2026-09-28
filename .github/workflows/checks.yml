@@ -185,8 +185,12 @@ jobs:
       - name: Search every tracked file
         run: |
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.(?!(png|jpe?g|gif|webp|avif|svg|woff2?|css|js|json|map)\b)[A-Za-z]{2,}\b'
-          if git grep -InP "$pattern" -- . ':!package-lock.json'; then
-            echo "::error::An email address is in the repo. Staff emails never belong here (CLAUDE.md) — remove it before this can deploy."
+          # File and line only — the address itself is not repeated in the log.
+          if matches=$(git grep -InP "$pattern" -- . ':!package-lock.json' | cut -d: -f1,2); then
+            while IFS=: read -r file line; do
+              echo "::error file=${file},line=${line}::Email address found here. Staff emails never belong in the repo (CLAUDE.md)."
+            done <<< "$matches"
+            echo "::error::An email address is in the repo — remove it before this can deploy."
             exit 1
           fi
           echo "No email addresses found." | tee -a "$GITHUB_STEP_SUMMARY"
