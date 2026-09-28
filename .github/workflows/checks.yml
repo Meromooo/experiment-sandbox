@@ -5,8 +5,8 @@
 # so a PHP syntax error, a stale build/ or an email address never reaches
 # the sandbox — it stays on the last good commit and GitHub emails the owner.
 #
-# Blocking: php-lint, build, json, email-guard.
-# Report-only for now: phpcs (WordPress Coding Standards) — see AMM-156.
+# All blocking: php-lint, phpcs (WordPress Coding Standards), build, json,
+# email-guard.
 
 name: Checks
 
@@ -46,10 +46,9 @@ jobs:
           exit "$status"
 
   phpcs:
-    name: WordPress Coding Standards (report-only)
+    name: WordPress Coding Standards (PHPCS)
     runs-on: ubuntu-24.04
-    # Report-only until the existing violations are fixed (AMM-156, step 5).
-    continue-on-error: true
+    # Blocking since the existing 169 violations were fixed (AMM-156).
     permissions:
       contents: read
       checks: write
@@ -112,15 +111,16 @@ jobs:
                   })
 
           title = f"{totals['errors']} errors, {totals['warnings']} warnings ({totals['fixable']} auto-fixable)"
-          summary = "Report-only (AMM-156).\n\n```\n" + open("source.txt").read()[:60000] + "\n```"
+          summary = "WordPress Coding Standards (phpcs.xml.dist).\n\n```\n" + open("source.txt").read()[:60000] + "\n```"
           run = call("POST", base, {"name": "PHPCS report", "head_sha": os.environ["GITHUB_SHA"], "status": "in_progress"})
           for i in range(0, len(annotations), 50):
               call("PATCH", f"{base}/{run['id']}", {"output": {"title": title, "summary": summary, "annotations": annotations[i:i + 50]}})
-          call("PATCH", f"{base}/{run['id']}", {"status": "completed", "conclusion": "neutral", "output": {"title": title, "summary": summary}})
+          conclusion = "failure" if annotations else "success"
+          call("PATCH", f"{base}/{run['id']}", {"status": "completed", "conclusion": conclusion, "output": {"title": title, "summary": summary}})
           print(title)
           PY
 
-      - name: Fail the job when there are violations (still report-only overall)
+      - name: Fail the job when there are violations
         run: exit "${{ steps.phpcs.outputs.status }}"
 
   build:
@@ -203,7 +203,7 @@ jobs:
   deploy:
     name: Deploy to the sandbox (move the deploy branch)
     if: github.ref == 'refs/heads/main'
-    needs: [php-lint, build, json, email-guard]
+    needs: [php-lint, phpcs, build, json, email-guard]
     runs-on: ubuntu-24.04
     permissions:
       contents: write

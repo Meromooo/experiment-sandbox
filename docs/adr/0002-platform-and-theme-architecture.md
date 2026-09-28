@@ -112,6 +112,11 @@ The decision is sound; the current execution has gaps. In priority order:
 3. **Basic CI.** PHP syntax check, CSS/JS lint, build verification on push. A real bug shipped
    for want of this: the `4xl` font-size slug that WordPress silently renamed to `4-xl`, which
    made every large heading render at body size. *(2 hours)*
+   **Done 2026-09-28 (AMM-156):** GitHub Actions on every push — `php -l` (PHP 8.3), WordPress
+   Coding Standards (169 existing violations fixed, now blocking), `build/` must match `src/`,
+   JSON validity, and an email-address guard — and the sandbox deploys a `deploy` branch that
+   only moves when every check passes. CSS/JS lint not added yet. The local environment
+   (correction 2) is AMM-165.
 4. **Trim platform assets.** Conditionally dequeue WooCommerce CSS/JS and jQuery on pages with
    no shop content; drop the emoji script. *(half a day)*
    **Done 2026-09-28 (AMM-154):** WooCommerce's classic CSS/JS are dropped on every page, not

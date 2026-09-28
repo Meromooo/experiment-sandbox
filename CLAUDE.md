@@ -6,10 +6,17 @@ with the live demas-group.com site, but is otherwise fully isolated — no live 
 or files are ever touched from work on this theme. See the repo `README.md` for the one-line
 summary and a pointer to the research doc behind this direction.
 
-Deploys via Git auto-deploy: pushing to `main` on this repo lands directly in
-`wp-content/themes/demas-theme` on the sandbox site. There is no server-side build step — the
-files in this repo are the files WordPress reads, which is why compiled block output is
-committed (see ADR-001 under Working agreement).
+Deploys via Git auto-deploy, **gated by CI** (AMM-156, 2026-09-28): a push to `main` runs
+`.github/workflows/checks.yml` — `php -l` on every PHP file (PHP 8.3, as the sandbox), WordPress
+Coding Standards (`phpcs.xml.dist`, zero violations and blocking), `build/` must match `src/`,
+`theme.json`/`block.json` must parse, and no email address anywhere in the repo. Only when all
+pass does the `deploy` job fast-forward the **`deploy` branch**, which is what Hostinger deploys
+into `wp-content/themes/demas-theme` on the sandbox. A failing push never reaches the sandbox;
+GitHub emails the owner. Never push to `deploy` by hand. Results are readable without signing
+in through the commit's check runs (`/commits/<sha>/check-runs` in GitHub's API); the PHPCS
+result is posted as its own "PHPCS report" check with one annotation per violation. There is no
+server-side build step — the files in this repo are the files WordPress reads, which is why
+compiled block output is committed (see ADR-001 under Working agreement).
 
 ## Skills to use in this repo
 
