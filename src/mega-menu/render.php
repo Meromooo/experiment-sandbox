@@ -34,6 +34,7 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
 	data-wp-interactive="demas-theme/mega-menu"
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core returns an escaped attribute.
 	echo wp_interactivity_data_wp_context(
 		array(
 			'isOpen'   => false,

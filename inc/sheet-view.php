@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** localStorage key shared with main.js and the head script. */
+/** The localStorage key shared with main.js and the head script. */
 const DEMAS_THEME_VIEW_KEY = 'demas-theme/view';
 
 add_action(

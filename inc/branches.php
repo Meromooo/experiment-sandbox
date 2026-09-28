@@ -129,6 +129,8 @@ function demas_theme_get_branches(): array {
  * Where a branch link goes: the homepage Branch Desk with that city selected
  * (assets/js/main.js reads the #branch-xxx hash). Without JavaScript the hash
  * still lands on the city's button in the Desk.
+ *
+ * @param string $code A branch code from demas_theme_get_branches(), e.g. "jed".
  */
 function demas_theme_branch_url( string $code ): string {
 	return home_url( '/#branch-' . sanitize_key( $code ) );

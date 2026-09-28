@@ -172,6 +172,8 @@ function demas_theme_get_systems_for_term( ?WP_Term $term ): array {
  * under DHF and Sumitomo) reads 0. WooCommerce keeps the inclusive figure
  * in term meta and swaps it in on some code paths but not all; read the meta
  * directly so every count on the page agrees.
+ *
+ * @param WP_Term $term A product category.
  */
 function demas_theme_term_product_count( WP_Term $term ): int {
 	$meta = get_term_meta( $term->term_id, 'product_count_' . $term->taxonomy, true );
@@ -231,6 +233,7 @@ function demas_theme_get_series_brand_slugs(): array {
  * What kind of choice a term represents: a kind of part, a manufacturer, or
  * one of a manufacturer's model families.
  *
+ * @param WP_Term $term A product category.
  * @return string 'type' | 'brand' | 'series'
  */
 function demas_theme_get_term_kind( WP_Term $term ): string {
@@ -253,6 +256,7 @@ function demas_theme_get_term_kind( WP_Term $term ): string {
  * A short, human label for a term's children — "2 brands", "9 types",
  * "10 series" — so a buyer knows what the next click asks before making it.
  *
+ * @param WP_Term $term A product category.
  * @return string Empty when the term has no children with products.
  */
 function demas_theme_describe_children( WP_Term $term ): string {

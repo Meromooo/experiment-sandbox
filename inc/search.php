@@ -42,8 +42,22 @@ add_action(
 );
 
 /**
+ * A query's words, split on whitespace. preg_split() returns false on
+ * failure; this always returns an array.
+ *
+ * @param string $raw The query.
+ * @return string[]
+ */
+function demas_theme_split_words( string $raw ): array {
+	$words = preg_split( '/\s+/u', $raw );
+
+	return is_array( $words ) ? $words : array();
+}
+
+/**
  * A query as the site reads it.
  *
+ * @param string $raw The query as typed.
  * @return array{raw: string, words: string[], skus: string[]}
  *     raw   — the trimmed query;
  *     words — its words of two or more characters (for highlighting);
@@ -55,7 +69,7 @@ function demas_theme_parse_search( string $raw ): array {
 	$words = array_values(
 		array_unique(
 			array_filter(
-				preg_split( '/\s+/u', $raw ) ?: array(),
+				demas_theme_split_words( $raw ),
 				static fn( $word ) => mb_strlen( $word ) >= 2
 			)
 		)
@@ -181,6 +195,8 @@ function demas_theme_find_product_ids( string $raw, bool $rank = true ): array {
  * words (three characters or more) that matches anything. Empty categories
  * are left out.
  *
+ * @param string $raw   The query.
+ * @param int    $limit Most categories to return.
  * @return WP_Term[]
  */
 function demas_theme_find_categories( string $raw, int $limit = 12 ): array {
@@ -190,7 +206,7 @@ function demas_theme_find_categories( string $raw, int $limit = 12 ): array {
 		return array();
 	}
 
-	foreach ( array_merge( array( $raw ), preg_split( '/\s+/u', $raw ) ?: array() ) as $needle ) {
+	foreach ( array_merge( array( $raw ), demas_theme_split_words( $raw ) ) as $needle ) {
 		if ( mb_strlen( $needle ) < 3 ) {
 			continue;
 		}
@@ -214,6 +230,9 @@ function demas_theme_find_categories( string $raw, int $limit = 12 ): array {
 
 /**
  * A category's place in the tree, top first: "Fog Systems / Fittings".
+ *
+ * @param WP_Term $term A product category.
+ * @return string
  */
 function demas_theme_term_path( WP_Term $term ): string {
 	$names = array( $term->name );
@@ -232,6 +251,9 @@ function demas_theme_term_path( WP_Term $term ): string {
 
 /**
  * Is this the main front-end product search?
+ *
+ * @param WP_Query $query The query being set up.
+ * @return bool
  */
 function demas_theme_is_product_search( WP_Query $query ): bool {
 	if ( is_admin() || ! $query->is_main_query() || ! $query->is_search() ) {
@@ -404,9 +426,7 @@ add_filter(
  * Works without JavaScript: a GET to /?s=… which the request filter above
  * turns into a product search.
  *
- * @param array $args {
- *     @type string $class Extra class on the form.
- * }
+ * @param array $args Optional. 'class' adds an extra class to the form.
  * @return string Form markup.
  */
 function demas_theme_search_form( array $args = array() ): string {
@@ -477,6 +497,9 @@ add_action(
 /**
  * Up to five categories and eight parts for a query, plus the total and the
  * results page URL.
+ *
+ * @param WP_REST_Request $request The request, carrying the query as `q`.
+ * @return WP_REST_Response
  */
 function demas_theme_rest_find( WP_REST_Request $request ): WP_REST_Response {
 	$raw   = trim( (string) $request->get_param( 'q' ) );

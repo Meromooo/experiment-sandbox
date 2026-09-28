@@ -35,10 +35,10 @@ $demas_theme_includes = array(
 );
 
 foreach ( $demas_theme_includes as $demas_theme_include ) {
-	$path = DEMAS_THEME_DIR . '/' . $demas_theme_include;
+	$demas_theme_path = DEMAS_THEME_DIR . '/' . $demas_theme_include;
 
-	if ( file_exists( $path ) ) {
-		require_once $path;
+	if ( file_exists( $demas_theme_path ) ) {
+		require_once $demas_theme_path;
 	}
 }
-unset( $demas_theme_includes, $demas_theme_include, $path );
+unset( $demas_theme_includes, $demas_theme_include, $demas_theme_path );

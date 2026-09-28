@@ -74,6 +74,7 @@ wp_interactivity_state(
 			'share'        => __( 'Share', 'demas-theme' ),
 			'copied'       => __( 'List copied.', 'demas-theme' ),
 			'copyFallback' => __( 'Copying is blocked here. The list is selected below — copy it with your keyboard.', 'demas-theme' ),
+
 			/*
 			 * The sheet's last line: who prices it and how to reach them. The
 			 * company phone and the Branch Desk, never a staff email address.

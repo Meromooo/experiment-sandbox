@@ -48,6 +48,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Text as it should read in JSON-LD: entities decoded — repeatedly, because
  * WooCommerce's breadcrumb encodes an already-encoded title — and tags gone.
+ *
+ * @param string $text Text to make JSON-LD-ready.
  */
 function demas_theme_schema_text( string $text ): string {
 	for ( $i = 0; $i < 3; $i++ ) {
@@ -68,6 +70,8 @@ function demas_theme_schema_text( string $text ): string {
  * description, with a space where each paragraph, list item or table cell
  * ended (so a spec table reads "Pressure 16 bar", not "Pressure16 bar"),
  * trimmed to a search-result length. Falls back to the short description.
+ *
+ * @param WC_Product $product The product.
  */
 function demas_theme_schema_description( WC_Product $product ): string {
 	$html = (string) $product->get_description();
@@ -205,7 +209,7 @@ function demas_theme_woocommerce_owns_breadcrumbs(): bool {
 	return function_exists( 'is_woocommerce' ) && is_woocommerce();
 }
 
-// Yoast: drop its Breadcrumb piece where WooCommerce has one…
+// Yoast: drop its Breadcrumb piece where WooCommerce has one.
 add_filter(
 	'wpseo_schema_graph_pieces',
 	function ( $pieces ) {

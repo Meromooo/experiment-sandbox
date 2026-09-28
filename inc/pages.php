@@ -44,6 +44,8 @@ const DEMAS_THEME_KADENCE_CLASS = '/^(?:kb-|kt-|kb_|kt_|kadence|wp-block-kadence
  *
  * Idempotent: an outer Kadence block (a row) re-processes its already-cleaned
  * children harmlessly. Each pass keeps its input if the pattern fails.
+ *
+ * @param string $html One Kadence block's rendered HTML.
  */
 function demas_theme_strip_kadence_markup( string $html ): string {
 	if ( '' === trim( $html ) ) {

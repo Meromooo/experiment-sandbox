@@ -48,6 +48,7 @@ $demas_sku   = trim( (string) $demas_product->get_sku() );
 
 /* Description and lede ---------------------------------------------------- */
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress's own content filter, applied on purpose.
 $demas_spec = demas_theme_clean_description( (string) apply_filters( 'the_content', $demas_product->get_description() ) );
 
 // The lede is prose: plain text, trimmed, and dropped when it only repeats

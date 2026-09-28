@@ -64,6 +64,7 @@ WP_CLI::log( 'Site: ' . $demas_site_url );
 WP_CLI::log( $demas_write ? 'Mode: WRITE' : 'Mode: dry run (pass "write" to apply)' );
 WP_CLI::log( '' );
 
+// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- a WP-CLI script reading its own CSV; WP_Filesystem adds nothing here.
 $demas_handle = fopen( $demas_csv, 'r' );
 $demas_header = fgetcsv( $demas_handle );
 $demas_stats  = array(
@@ -75,6 +76,7 @@ $demas_stats  = array(
 	'rows'         => 0,
 );
 
+// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- the standard fgetcsv() loop.
 while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
 	++$demas_stats['rows'];
 	$demas_r = array_combine( $demas_header, $demas_row );
@@ -144,7 +146,7 @@ while ( ( $demas_row = fgetcsv( $demas_handle ) ) !== false ) {
 	}
 }
 
-fclose( $demas_handle );
+fclose( $demas_handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- pairs with the fopen() above.
 
 WP_CLI::log( '' );
 WP_CLI::log(

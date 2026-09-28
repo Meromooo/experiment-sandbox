@@ -35,6 +35,7 @@ add_action(
  * returns them in says nothing about depth. The deepest one is the most
  * specific description of the part, so it leads.
  *
+ * @param int $product_id The product.
  * @return WP_Term[] Leaf first, top-level last. Empty when uncategorised.
  */
 function demas_theme_get_product_term_chain( int $product_id ): array {
@@ -138,6 +139,8 @@ function demas_theme_get_product_stage( array $chain ): ?array {
 
 /**
  * Plain text of an HTML fragment, for comparing two descriptions.
+ *
+ * @param string $html An HTML fragment.
  */
 function demas_theme_plain_text( string $html ): string {
 	$text = html_entity_decode( wp_strip_all_tags( $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
@@ -153,6 +156,8 @@ function demas_theme_plain_text( string $html ): string {
  * .woocommerce div.product div.images{background:#ffffff;…}"), which renders
  * as a wall of code. Two or more "selector{property:value;}" rules is not
  * something a product description says on purpose.
+ *
+ * @param string $text A run of text.
  */
 function demas_theme_looks_like_css( string $text ): bool {
 	return preg_match_all( '/[^{}]+\{[^{}]*:[^{}]*;?[^{}]*\}/', $text ) >= 2;
@@ -175,6 +180,8 @@ function demas_theme_looks_like_css( string $text ): bool {
  *  - tables get a scrolling wrapper, so a wide spec table scrolls inside the
  *    column on a phone instead of pushing the page sideways;
  *  - empty paragraphs left behind are removed.
+ *
+ * @param string $html The product's description HTML.
  */
 function demas_theme_clean_description( string $html ): string {
 	if ( '' === trim( $html ) ) {
@@ -245,6 +252,7 @@ function demas_theme_clean_description( string $html ): string {
  * Medium Flow"). Set at one size in stretched Archivo, the long ones become a
  * five-line block. Three tiers keep every name to about three lines.
  *
+ * @param string $title The product name.
  * @return string Modifier class, or '' for the default (short) size.
  */
 function demas_theme_title_tier( string $title ): string {
