@@ -42,7 +42,7 @@ jobs:
               status=1
             fi
           done < <(git ls-files -z -- '*.php')
-          echo "Linted ${count} PHP files."
+          echo "Linted ${count} PHP files." | tee -a "$GITHUB_STEP_SUMMARY"
           exit "$status"
 
   phpcs:
@@ -59,12 +59,25 @@ jobs:
           composer global require --no-interaction --no-progress "wp-coding-standards/wpcs:^3.1"
           echo "$(composer global config bin-dir --absolute --quiet)" >> "$GITHUB_PATH"
 
+      # The reports also go to the run's summary page, which is public — job
+      # logs need an owner's sign-in even on a public repo.
       - name: Run PHPCS
         run: |
           phpcs --version
-          phpcs --standard=phpcs.xml.dist --report=summary --report-width=120 || true
-          phpcs --standard=phpcs.xml.dist --report=source --report-width=120 || true
-          phpcs --standard=phpcs.xml.dist --report-width=160
+          status=0
+          phpcs --standard=phpcs.xml.dist --report=summary --report-width=120 > summary.txt || status=1
+          phpcs --standard=phpcs.xml.dist --report=source --report-width=120 > source.txt || true
+          phpcs --standard=phpcs.xml.dist --report=full --report-width=150 > full.txt || true
+          cat summary.txt source.txt full.txt
+          {
+            echo "## WordPress Coding Standards (report-only)"
+            echo '```'; cat summary.txt; echo '```'
+            echo "### By sniff"
+            echo '```'; cat source.txt; echo '```'
+            echo "### Full report"
+            echo '```'; head -c 900000 full.txt; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
 
   build:
     name: build/ matches the source (ADR-001)
@@ -91,7 +104,7 @@ jobs:
             git --no-pager diff --stat -- build/
             exit 1
           fi
-          echo "build/ is up to date."
+          echo "build/ is up to date with src/." | tee -a "$GITHUB_STEP_SUMMARY"
 
   json:
     name: theme.json and block.json parse
@@ -110,7 +123,9 @@ jobs:
               try { JSON.parse(fs.readFileSync(file, "utf8")); }
               catch (e) { console.log(`::error file=${file}::${e.message}`); bad++; }
             }
-            console.log(`Parsed ${files.length} JSON files, ${bad} invalid.`);
+            const line = `Parsed ${files.length} JSON files, ${bad} invalid.`;
+            console.log(line);
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + "\n");
             process.exit(bad ? 1 : 0);
           '
 
@@ -130,7 +145,7 @@ jobs:
             echo "::error::An email address is in the repo. Staff emails never belong here (CLAUDE.md) — remove it before this can deploy."
             exit 1
           fi
-          echo "No email addresses found."
+          echo "No email addresses found." | tee -a "$GITHUB_STEP_SUMMARY"
 
   deploy:
     name: Deploy to the sandbox (move the deploy branch)
