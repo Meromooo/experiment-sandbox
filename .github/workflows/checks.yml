@@ -185,11 +185,16 @@ jobs:
       - name: Search every tracked file
         run: |
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.(?!(png|jpe?g|gif|webp|avif|svg|woff2?|css|js|json|map)\b)[A-Za-z]{2,}\b'
-          # File and line only — the address itself is not repeated in the log.
-          if matches=$(git grep -InP "$pattern" -- . ':!package-lock.json' | cut -d: -f1,2); then
-            while IFS=: read -r file line; do
-              echo "::error file=${file},line=${line}::Email address found here. Staff emails never belong in the repo (CLAUDE.md)."
-            done <<< "$matches"
+          # The `if` must test git grep's own status (0 = found, 1 = none): an
+          # earlier version piped it through cut, whose status is always 0, and
+          # failed every push. File and line only — the address itself is not
+          # repeated in the log.
+          if hits=$(git grep -InP "$pattern" -- . ':!package-lock.json'); then
+            while IFS= read -r hit; do
+              file=${hit%%:*}
+              rest=${hit#*:}
+              echo "::error file=${file},line=${rest%%:*}::Email address found here. Staff emails never belong in the repo (CLAUDE.md)."
+            done <<< "$hits"
             echo "::error::An email address is in the repo — remove it before this can deploy."
             exit 1
           fi
