@@ -94,17 +94,6 @@ add_action(
 		if ( $product && isset( WC()->structured_data ) ) {
 			WC()->structured_data->generate_product_data( $product );
 		}
-
-		// TEMP diagnostic (AMM-155) — removed in the next commit.
-		$sd = isset( WC()->structured_data ) ? WC()->structured_data->get_data() : null;
-		printf(
-			"<!-- demas-sd qid=%d product=%s sd=%s data=%s prio=%s -->\n",
-			(int) get_queried_object_id(),
-			$product ? get_class( $product ) : 'none',
-			isset( WC()->structured_data ) ? 'yes' : 'no',
-			esc_html( is_array( $sd ) ? implode( ',', wp_list_pluck( $sd, '@type' ) ) : gettype( $sd ) ),
-			esc_html( (string) has_action( 'wp_footer', array( WC()->structured_data, 'output_structured_data' ) ) )
-		);
 	},
 	5
 );
