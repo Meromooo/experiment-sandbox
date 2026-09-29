@@ -11,7 +11,10 @@ Deploys via Git auto-deploy, **gated by CI** (AMM-156, 2026-09-28): a push to `m
 Coding Standards (`phpcs.xml.dist`, zero violations and blocking), `build/` must match `src/`,
 `theme.json`/`block.json` must parse, and no email address anywhere in the repo. Only when all
 pass does the `deploy` job fast-forward the **`deploy` branch**, which is what Hostinger deploys
-into `wp-content/themes/demas-theme` on the sandbox. A failing push never reaches the sandbox;
+into `wp-content/themes/demas-theme` on the sandbox (the sandbox site's Git setting was switched
+from `main` to `deploy` on 2026-09-29, with Ammar's OK, via the Hostinger API — sandbox domain
+only). Proven end to end the same day: a stale `build/` pushed to `main` was blocked and never
+reached the sandbox; the rebuild passed, moved `deploy`, and Hostinger deployed it on its own. A failing push never reaches the sandbox;
 GitHub emails the owner. Never push to `deploy` by hand. Results are readable without signing
 in through the commit's check runs (`/commits/<sha>/check-runs` in GitHub's API); the PHPCS
 result is posted as its own "PHPCS report" check with one annotation per violation. There is no
