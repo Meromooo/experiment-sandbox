@@ -23,7 +23,14 @@ compiled block output is committed (see ADR-001 under Working agreement).
 
 ## Skills to use in this repo
 
-Ammar's standing instruction (2026-09-27): these three are always on for this project.
+Ammar's standing instruction (2026-09-27): these three are always on for this project, and
+`ponytail` is added for debugging and fixing (2026-09-29).
+
+**Invoke the two front-end skills at the start of every front-end task — every plan, every
+build, and every fix or audit-fix pass — each time.** A skill loaded for an earlier task does
+not count. (A 2026-09-29 check of the transcript found them skipped on six front-end tasks —
+AMM-143, AMM-142, AMM-141, AMM-163 and two fix passes — and AMM-141 shipped 27px touch targets
+and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
 
 - **`frontend-design:frontend-design`** — invoke it before any front-end, visual, template,
   pattern, CSS or block work (`templates/`, `parts/`, `patterns/`, `src/*`, `assets/css/`,
@@ -39,6 +46,17 @@ Ammar's standing instruction (2026-09-27): these three are always on for this pr
   security warnings, irreversible actions, step-by-step instructions and explanations of new
   terms drop back to plain language. The caveman plugin's hooks already switch it on each
   session; this line keeps it on if they ever don't.
+- **`ponytail`** — invoke **only when debugging or fixing code**: a bug, a failing CI check, an
+  audit finding, a broken behaviour. Not for new features, plans, docs or Linear. It governs the
+  fix: read and trace the real flow first, fix the root cause where every caller routes through
+  rather than the one symptom reported, reuse what the codebase already has, smallest correct
+  diff, never cutting security, accessibility or error handling. Two adjustments for this repo:
+  its "code first, three short lines" output rule does not apply to reports, Linear comments or
+  explanations for Ammar (he is learning — those are requested); and its "leave one runnable
+  check" means the CI checks plus a verification on the sandbox, not new test files in the
+  theme (they would deploy to the site). Installed 2026-09-29 as the skill file only
+  (`~/.claude/skills/ponytail/SKILL.md`, from github.com/DietrichGebert/ponytail, MIT) — not the
+  plugin, whose hooks would switch it on for every session.
 
 ## Version targets
 
