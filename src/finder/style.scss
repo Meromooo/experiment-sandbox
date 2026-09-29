@@ -511,3 +511,8 @@ html:has(.dh-finder__dialog[open]) {
 		transition: none;
 	}
 }
+
+// CI gate test (AMM-156): a real change, deliberately not rebuilt.
+.dh-ci-gate-test {
+	outline: 0;
+}
