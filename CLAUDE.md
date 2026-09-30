@@ -68,7 +68,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
 ## Folder purposes
 
 - `assets/css/`, `assets/js/` — hand-written front-end assets, enqueued via `inc/enqueue.php`.
-  No build tooling for these — they are plain files. `style.css` holds the shape grammar
+  No build tooling for these — they are plain files. `editor.js` is editor-only (the Highlight
+  format, AMM-153). `style.css` holds the shape grammar
   (cards, pills, the concave notch), marquee, and reveal motion; `main.js` is the small
   dependency-free script that drives reveals, the marquee loop, counters, the Branch Desk
   (including `#branch-xxx` deep links), the homepage footer slide-over and the catalogue's
@@ -178,8 +179,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   - `branches.php` — the 15 branches as one list, keyed by the Branch Desk's three-letter
     codes (`demas_theme_get_branches()`: city, lat/lon, main) and `demas_theme_branch_url()`
     (`/#branch-jed`, which selects that city on the homepage Desk). AMM-140 will route by these
-    codes. No email address belongs here. The hero's Desk still has its own static copy of the
-    cities until AMM-153.
+    codes. No email address belongs here. Each branch also carries its `person` (who answers
+    there), shown on the homepage Branch Desk (AMM-153) — names only, never an address.
   - `footer.php` — registers the footer's two server-rendered blocks (AMM-144, 2026-09-28):
     `demas-theme/catalogue-index` (every group and subcategory, from the shared catalogue
     structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**: one dot
@@ -243,13 +244,24 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     sidebar; link and **live** product count come from `demas_theme_get_catalogue_columns()`
     and `demas_theme_term_product_count()`, and a slug with an outbound link in
     `demas_theme_get_catalogue_external_links()` — Non-Woven — becomes the sister-site card;
-    the editor canvas shows it through ServerSideRender). Registers
+    the editor canvas shows it through ServerSideRender), `/branch-desk` (every branch as
+    a button with who answers there, all from `demas_theme_get_branches()`; eyebrow and title
+    edited in the sidebar), `/schematic` (the self-drawing irrigation line; its corner note
+    edited in the sidebar) and `/marquee` (the scrolling lines under the hero: the branch
+    cities or an editor's list; a focusable `role="region"`, so keyboard focus pauses it and,
+    with reduced motion, scrolls it). Enqueues `assets/js/editor.js`, the **Highlight**
+    rich-text format (`<span class="dh-highlight" data-reveal="wipe">`) for the headline's
+    green word — a plain editor script, no build step. Registers
     the pills as **Button block styles** (`is-style-dh-pill-solid`, `-outline`, `-paper`,
     `-outline-paper`; rules beside `.dh-pill` in `style.css` section 4). And the **reveal
     bridge**: a `render_block` filter that turns classes on core blocks (`dh-reveal--rise`,
     `--bar`, `--dot` …, `dh-reveal-group`, `dh-reveal-content`) into the `data-reveal*`
     attributes the motion code reads — the browser gets the same markup as before, so
-    `main.js` and the motion CSS are unchanged. Core blocks inside a group get the block
+    `main.js` and the motion CSS barely change. A `data-reveal-group` numbers only **its own**
+    reveals (`main.js`): a group inside it numbers itself, and a reveal inside another reveal
+    (the highlighted word) inherits its container's `--i` and sweeps two beats after it — so no
+    inline `--i` is needed. A settled `dot` reveal (pills) keeps 6px of clip room, or its focus
+    ring is cut off. Core blocks inside a group get the block
     layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
     defaults has to be written down — see the section eyebrows in `style.css` section 9.
     **Don't set a block-level style in `theme.json` that reaches beyond the block** (like
@@ -265,11 +277,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   engineering drawing's **title block**: catalogue index, branches + key plan, the company
   plate, the closing line; not inserter-visible). The footer's CR number, VAT number and
   registered name read "Pending" until Ammar supplies them; "Our certificates" links the
-  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153 (in
-  progress):** `credentials`, `numbers`, `process`, `categories` and `closing-cta` are editable
-  blocks (core blocks + the theme blocks in `inc/homepage.php`), pixel-identical to the old HTML
-  at 320–1440 apart from the category counts, which are now live; `hero` is still `wp:html`
-  until AMM-153's step 3.
+  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153:** all six
+  homepage patterns are editable blocks (core blocks + the theme blocks in `inc/homepage.php`),
+  pixel-identical to the old HTML at 320–1440 apart from deliberate fixes (live category counts,
+  Branch Desk code contrast, the pills' focus ring). The homepage content moves into Pages →
+  Homepage in AMM-153's step 4.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part

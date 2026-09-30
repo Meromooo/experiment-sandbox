@@ -10,9 +10,14 @@
  *  - the section blocks: demas-theme/credentials and /credential (the marks
  *    under the hero, each with an optional tooltip), /stats and /stat (the
  *    numbers band, counting up), /steps and /step (the numbered process),
- *    /category-cards (the catalogue gateway, with live product counts);
+ *    /category-cards (the catalogue gateway, with live product counts),
+ *    /branch-desk (the branches and who answers at each, from
+ *    inc/branches.php), /schematic (the self-drawing irrigation line) and
+ *    /marquee (the scrolling lines under the hero);
  *  - the pills as Button block styles, so an editor picks "Pill" in the
  *    block's Styles panel instead of typing class names;
+ *  - the "Highlight" text format (assets/js/editor.js) for the headline's
+ *    green word;
  *  - the bridge that turns reveal classes on core blocks into the data
  *    attributes the motion code reads.
  *
@@ -26,7 +31,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'init',
 	function () {
-		foreach ( array( 'credentials', 'credential', 'stats', 'stat', 'steps', 'step', 'category-cards' ) as $block ) {
+		$blocks = array( 'credentials', 'credential', 'stats', 'stat', 'steps', 'step', 'category-cards', 'branch-desk', 'schematic', 'marquee' );
+
+		foreach ( $blocks as $block ) {
 			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
 			if ( file_exists( $build_path . '/block.json' ) ) {
@@ -49,6 +56,23 @@ add_action(
 					'name'  => $name,
 					'label' => $label,
 				)
+			);
+		}
+	}
+);
+
+add_action(
+	'enqueue_block_editor_assets',
+	function () {
+		$path = get_theme_file_path( 'assets/js/editor.js' );
+
+		if ( file_exists( $path ) ) {
+			wp_enqueue_script(
+				'demas-theme-editor',
+				get_theme_file_uri( 'assets/js/editor.js' ),
+				array( 'wp-block-editor', 'wp-element', 'wp-i18n', 'wp-rich-text' ),
+				(string) filemtime( $path ),
+				true
 			);
 		}
 	}

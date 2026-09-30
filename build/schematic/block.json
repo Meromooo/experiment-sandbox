@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/schematic",
+  "title": "Irrigation Schematic",
+  "category": "design",
+  "icon": "networking",
+  "description": "An irrigation line drawn as an engineering schematic that draws itself as it scrolls into view, with a short note socketed into its corner.",
+  "textdomain": "demas-theme",
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "tabTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "tabCopy": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/marquee",
+	"title": "Marquee",
+	"category": "design",
+	"icon": "leftright",
+	"description": "A line of words that scrolls across the page and pauses under the pointer. It lists the branch cities from the theme's branch list, or words of your own. It takes keyboard focus, which pauses it; with reduced motion it stands still and scrolls sideways.",
+	"textdomain": "demas-theme",
+	"editorScript": "file:./index.tsx",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"branches": {
+			"type": "boolean",
+			"default": false
+		},
+		"items": {
+			"type": "array",
+			"default": []
+		},
+		"reverse": {
+			"type": "boolean",
+			"default": false
+		}
+	}
+}

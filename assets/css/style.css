@@ -294,6 +294,9 @@ svg {
  */
 .wp-block-buttons > .wp-block-button[class*="is-style-dh-pill-"] {
 	display: flex;
+	/* The pill's own size, so a "dot" reveal on the block (its clip is in em)
+	   starts from the same dot as on a .dh-pill. */
+	font-size: var(--wp--preset--font-size--sm);
 }
 
 .wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link {
@@ -605,6 +608,12 @@ svg {
 	background-size: 0% 100%;
 }
 
+/* A highlighted word inside a revealing heading takes the heading's number
+   (--i, inherited) and sweeps in two beats after it lands. */
+.js .dh-highlight[data-reveal] {
+	--_delay: calc((var(--i, 0) + 2) * var(--wp--custom--motion--stagger));
+}
+
 [dir="rtl"].js [data-reveal="wipe"] {
 	background-position: 100% 0;
 }
@@ -623,6 +632,15 @@ svg {
  */
 .js :is([data-reveal="dot"], [data-reveal="sliver"], [data-reveal="bar"]).is-in {
 	clip-path: inset(0 0 0 0 round var(--_r));
+}
+
+/*
+ * A settled pill keeps 6px of room around it: its focus ring is drawn
+ * outside it (3px ring, 3px offset), and a clip at its own edge cut the ring
+ * off, so a keyboard user couldn't see which pill had focus.
+ */
+.js [data-reveal="dot"].is-in {
+	clip-path: inset(-6px round var(--_r));
 }
 
 /* Content inside a revealing container fades in after the container lands. */
@@ -646,6 +664,9 @@ svg {
 		background-size: 100% 100%;
 	}
 
+	/* Standing still, the line scrolls sideways instead (by keyboard too:
+	   the marquee takes focus). The copies main.js adds for the loop would
+	   only repeat the list. */
 	.dh-marquee {
 		overflow-x: auto;
 		mask-image: none;
@@ -654,6 +675,10 @@ svg {
 
 	.dh-marquee__track {
 		animation: none;
+	}
+
+	.dh-marquee__item[aria-hidden="true"] {
+		display: none;
 	}
 
 	.dh-pill,
@@ -931,7 +956,7 @@ svg {
  * by default. Written down since the sections became blocks (AMM-153): the
  * block layout zeroes the first block's margins in a group.
  */
-:is(.dh-section__head, .dh-band__copy, .dh-cta__inner) > .dh-eyebrow {
+:is(.dh-hero__head, .dh-section__head, .dh-band__copy, .dh-cta__inner) > .dh-eyebrow {
 	margin-block: 1em;
 }
 
@@ -980,6 +1005,7 @@ svg {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--wp--preset--spacing--20);
+	margin-block: 0;
 }
 
 .dh-hero__grid {
@@ -987,6 +1013,11 @@ svg {
 	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
 	gap: var(--wp--preset--spacing--50);
 	align-items: stretch;
+}
+
+/* Grid cells, not stacked blocks: no block-layout gap above the second. */
+.dh-hero__grid > * {
+	margin-block: 0;
 }
 
 /* Branch Desk */
@@ -1042,7 +1073,7 @@ svg {
 
 .dh-desk__code {
 	font-size: var(--wp--preset--font-size--xs);
-	opacity: 0.6;
+	opacity: 0.7; /* 5.7:1 on sand, 8.6:1 on the chosen city's ink */
 }
 
 .dh-desk__detail {

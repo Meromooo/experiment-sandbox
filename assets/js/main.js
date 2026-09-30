@@ -3,8 +3,8 @@
  *
  * Six jobs, no dependencies, no build step:
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
- *     viewport, and number the children of [data-reveal-group] (--i) so CSS
- *     can stagger them. Reduced-motion users get the final state at once.
+ *     viewport, and number the reveals of each [data-reveal-group] (--i) so
+ *     CSS can stagger them. Reduced-motion users get the final state at once.
  *  2. Marquee: clone each .dh-marquee__track's children once so the CSS
  *     translate(-50%) loop is seamless.
  *  3. Counters: [data-count] numbers count up from zero when they scroll
@@ -38,11 +38,19 @@
 
 	var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
 
+	// A group numbers its own reveals, in order. A group inside it numbers its
+	// own, and a reveal inside another reveal (the highlighted word in a
+	// headline) keeps its container's number, inherited through --i.
 	each(document.querySelectorAll('[data-reveal-group]'), function (group) {
-		each(group.querySelectorAll('[data-reveal]'), function (el, i) {
+		var i = 0;
+		each(group.querySelectorAll('[data-reveal]'), function (el) {
+			if (el.parentElement.closest('[data-reveal-group], [data-reveal]') !== group) {
+				return;
+			}
 			if (!el.style.getPropertyValue('--i')) {
 				el.style.setProperty('--i', String(i));
 			}
+			i += 1;
 		});
 	});
 
