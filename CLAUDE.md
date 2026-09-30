@@ -246,6 +246,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     `main.js` and the motion CSS are unchanged. Core blocks inside a group get the block
     layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
     defaults has to be written down — see the section eyebrows in `style.css` section 9.
+    **Don't set a block-level style in `theme.json` that reaches beyond the block** (like
+    `core/paragraph` → `lineHeight`, whose rule is `:root :where(p)`): WordPress prints it
+    only on pages where that block renders, so the same `<p>` — even the header's site title
+    — got 1.55 on one page and 1.6 on another. Removed 2026-09-30; paragraphs take the
+    body's 1.55 everywhere.
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
   live — never hardcoded into templates. Current set (homepage, 2026-09-15): `hero`,

@@ -503,11 +503,6 @@
 					}
 				}
 			},
-			"core/paragraph": {
-				"typography": {
-					"lineHeight": "1.6"
-				}
-			},
 			"core/separator": {
 				"color": {
 					"text": "color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent)"
