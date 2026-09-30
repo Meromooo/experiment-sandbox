@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/category-cards",
+	"title": "Category Cards",
+	"category": "design",
+	"icon": "screenoptions",
+	"description": "The catalogue's product groups as cards, each with its live product count, linking into the catalogue. A group with an outbound link (Non-Woven) links to that site instead. Names and descriptions are edited in the sidebar.",
+	"textdomain": "demas-theme",
+	"editorScript": "file:./index.tsx",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"attributes": {
+		"cards": {
+			"type": "array",
+			"default": []
+		}
+	}
+}

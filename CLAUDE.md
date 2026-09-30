@@ -237,7 +237,13 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     marks under the hero; a mark with a detail gets a keyboard-focusable tooltip), `/stats` +
     `/stat` (the numbers band: a `<dl>`, label as the term and the number shown above it by CSS
     `order`; a whole number counts up via `data-count`) and `/steps` + `/step` (the process: an
-    `<ol>` whose numerals are a CSS counter, each step a locked heading + paragraph). Registers
+    `<ol>` whose numerals are a CSS counter, each step a locked heading + paragraph) and
+    `/category-cards` (the catalogue gateway: one server-rendered block whose `cards`
+    attribute lists product_cat slugs with the editor's name and description, edited in the
+    sidebar; link and **live** product count come from `demas_theme_get_catalogue_columns()`
+    and `demas_theme_term_product_count()`, and a slug with an outbound link in
+    `demas_theme_get_catalogue_external_links()` — Non-Woven — becomes the sister-site card;
+    the editor canvas shows it through ServerSideRender). Registers
     the pills as **Button block styles** (`is-style-dh-pill-solid`, `-outline`, `-paper`,
     `-outline-paper`; rules beside `.dh-pill` in `style.css` section 4). And the **reveal
     bridge**: a `render_block` filter that turns classes on core blocks (`dh-reveal--rise`,
@@ -260,9 +266,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   plate, the closing line; not inserter-visible). The footer's CR number, VAT number and
   registered name read "Pending" until Ammar supplies them; "Our certificates" links the
   `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153 (in
-  progress):** `credentials`, `numbers`, `process` and `closing-cta` are editable blocks (core
-  blocks + the theme blocks in `inc/homepage.php`), pixel-identical to the old HTML at 320–1440;
-  `categories` and `hero` are still `wp:html` until AMM-153's steps 2 and 3.
+  progress):** `credentials`, `numbers`, `process`, `categories` and `closing-cta` are editable
+  blocks (core blocks + the theme blocks in `inc/homepage.php`), pixel-identical to the old HTML
+  at 320–1440 apart from the category counts, which are now live; `hero` is still `wp:html`
+  until AMM-153's step 3.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part

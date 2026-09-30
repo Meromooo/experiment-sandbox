@@ -9,7 +9,8 @@
  *
  *  - the section blocks: demas-theme/credentials and /credential (the marks
  *    under the hero, each with an optional tooltip), /stats and /stat (the
- *    numbers band, counting up), /steps and /step (the numbered process);
+ *    numbers band, counting up), /steps and /step (the numbered process),
+ *    /category-cards (the catalogue gateway, with live product counts);
  *  - the pills as Button block styles, so an editor picks "Pill" in the
  *    block's Styles panel instead of typing class names;
  *  - the bridge that turns reveal classes on core blocks into the data
@@ -25,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'init',
 	function () {
-		foreach ( array( 'credentials', 'credential', 'stats', 'stat', 'steps', 'step' ) as $block ) {
+		foreach ( array( 'credentials', 'credential', 'stats', 'stat', 'steps', 'step', 'category-cards' ) as $block ) {
 			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
 			if ( file_exists( $build_path . '/block.json' ) ) {
