@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/stats",
+	"title": "Numbers",
+	"category": "design",
+	"icon": "chart-bar",
+	"description": "Hard numbers in a two-column list, each counting up from zero as it scrolls into view.",
+	"textdomain": "demas-theme",
+	"allowedBlocks": [ "demas-theme/stat" ],
+	"editorScript": "file:./index.tsx",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false
+	},
+	"attributes": {}
+}

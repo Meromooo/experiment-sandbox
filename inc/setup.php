@@ -18,6 +18,8 @@ add_action(
 		add_theme_support( 'align-wide' );
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'editor-styles' );
+		// The editor shows the homepage sections as the site does (AMM-153).
+		add_editor_style( 'assets/css/style.css' );
 		add_theme_support( 'wp-block-styles' );
 		add_theme_support( 'woocommerce' );
 		add_theme_support( 'wc-product-gallery-zoom' );

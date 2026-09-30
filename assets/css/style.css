@@ -258,7 +258,13 @@ svg {
 /* 4. Pills                                                            */
 /* ------------------------------------------------------------------ */
 
-.dh-pill {
+/*
+ * Each pill is also a Button block style (inc/homepage.php, AMM-153), so an
+ * editor picks "Pill" in the block's Styles panel instead of typing classes:
+ * every .dh-pill rule below also names the block's link.
+ */
+.dh-pill,
+.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link {
 	--_r: var(--wp--custom--radius--pill);
 	display: inline-flex;
 	align-items: center;
@@ -279,29 +285,54 @@ svg {
 		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
+/*
+ * The block's own button styling steps aside: its wrapper becomes a plain
+ * flex box (an inline-block wrapper added a line box, and a few pixels, under
+ * the pill), and the block's full-width, full-height link, theme.json's
+ * canopy fill for every button, its centring and its word breaking are
+ * undone, so a pill block matches a .dh-pill exactly.
+ */
+.wp-block-buttons > .wp-block-button[class*="is-style-dh-pill-"] {
+	display: flex;
+}
+
+.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link {
+	inline-size: auto;
+	block-size: auto;
+	background: transparent;
+	text-align: inherit;
+	word-break: normal;
+}
+
 .dh-pill > svg {
 	inline-size: 1em;
 	block-size: 1em;
 	flex: none;
 }
 
-.dh-pill--solid {
+.dh-pill--solid,
+.wp-block-button.is-style-dh-pill-solid > .wp-block-button__link {
 	background: var(--wp--preset--color--canopy);
 	color: var(--wp--preset--color--paper);
 }
 
 .dh-pill--solid:hover,
-.dh-pill--solid:focus-visible {
+.dh-pill--solid:focus-visible,
+.wp-block-button.is-style-dh-pill-solid > .wp-block-button__link:hover,
+.wp-block-button.is-style-dh-pill-solid > .wp-block-button__link:focus-visible {
 	background: var(--wp--preset--color--ink);
 	color: var(--wp--preset--color--paper);
 }
 
-.dh-pill--outline {
+.dh-pill--outline,
+.wp-block-button.is-style-dh-pill-outline > .wp-block-button__link {
 	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
 }
 
 .dh-pill--outline:hover,
-.dh-pill--outline:focus-visible {
+.dh-pill--outline:focus-visible,
+.wp-block-button.is-style-dh-pill-outline > .wp-block-button__link:hover,
+.wp-block-button.is-style-dh-pill-outline > .wp-block-button__link:focus-visible {
 	border-color: var(--wp--preset--color--ink);
 }
 
@@ -506,6 +537,10 @@ svg {
  * main.js adds .js to <html> and .is-in when an element scrolls into view,
  * and sets --i on children of [data-reveal-group] for stagger. Without JS the
  * .js gate never matches, so everything renders in its final state.
+ *
+ * Core blocks carry these as classes instead (dh-reveal--rise, dh-reveal-group,
+ * dh-reveal-content …), which inc/homepage.php turns into the same attributes
+ * when the block is rendered.
  */
 .js [data-reveal] {
 	--_r: var(--wp--custom--radius--lg);
@@ -621,7 +656,8 @@ svg {
 		animation: none;
 	}
 
-	.dh-pill {
+	.dh-pill,
+	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link {
 		transition: none;
 	}
 }
@@ -888,6 +924,15 @@ svg {
 .dh-section__head {
 	max-inline-size: 42rem;
 	margin-block-end: var(--wp--preset--spacing--60);
+}
+
+/*
+ * A section's eyebrow keeps the 1em above and below it that a paragraph has
+ * by default. Written down since the sections became blocks (AMM-153): the
+ * block layout zeroes the first block's margins in a group.
+ */
+:is(.dh-section__head, .dh-band__copy, .dh-cta__inner) > .dh-eyebrow {
+	margin-block: 1em;
 }
 
 .dh-section__title {
@@ -1218,7 +1263,10 @@ svg {
 	border-block-start: 1px solid color-mix(in srgb, var(--wp--preset--color--paper) 22%, transparent);
 }
 
+/* The number comes after its label in the markup (term, then definition)
+   and is shown above it. */
 .dh-stat__value {
+	order: -1;
 	margin: 0;
 	font-family: var(--wp--preset--font-family--display);
 	font-size: var(--wp--preset--font-size--xxxl);
@@ -1366,7 +1414,7 @@ svg {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	counter-reset: none;
+	counter-reset: dh-step;
 }
 
 /* The pipeline: one field-green line running through all four numerals. */
@@ -1382,9 +1430,18 @@ svg {
 .dh-process__step {
 	position: relative;
 	margin: 0;
+	counter-increment: dh-step;
 }
 
-.dh-process__num {
+/*
+ * The numeral is counted, not typed (AMM-153): add, remove or reorder a step
+ * and the rest renumber. The list already tells a screen reader "1 of 4", so
+ * the numeral is hidden from it (the empty alternative text after "/"; a
+ * browser that doesn't know that syntax keeps the first declaration).
+ */
+.dh-process__step::before {
+	content: counter(dh-step, decimal-leading-zero);
+	content: counter(dh-step, decimal-leading-zero) / "";
 	position: relative;
 	z-index: 1;
 	display: inline-flex;
@@ -1395,8 +1452,11 @@ svg {
 	border: 2px solid var(--wp--preset--color--field);
 	border-radius: 50%;
 	background: var(--wp--preset--color--paper);
+	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--sm);
+	font-variant-numeric: tabular-nums;
 	font-weight: 500;
+	letter-spacing: 0.02em;
 	color: var(--wp--preset--color--canopy);
 }
 
@@ -1439,23 +1499,29 @@ svg {
 	color: color-mix(in srgb, var(--wp--preset--color--paper) 70%, transparent);
 }
 
-.dh-pill--paper {
+.dh-pill--paper,
+.wp-block-button.is-style-dh-pill-paper > .wp-block-button__link {
 	background: var(--wp--preset--color--paper);
 	color: var(--wp--preset--color--ink);
 }
 
 .dh-pill--paper:hover,
-.dh-pill--paper:focus-visible {
+.dh-pill--paper:focus-visible,
+.wp-block-button.is-style-dh-pill-paper > .wp-block-button__link:hover,
+.wp-block-button.is-style-dh-pill-paper > .wp-block-button__link:focus-visible {
 	background: var(--wp--preset--color--white);
 }
 
-.dh-pill--outline-paper {
+.dh-pill--outline-paper,
+.wp-block-button.is-style-dh-pill-outline-paper > .wp-block-button__link {
 	border-color: color-mix(in srgb, var(--wp--preset--color--paper) 40%, transparent);
 	color: var(--wp--preset--color--paper);
 }
 
 .dh-pill--outline-paper:hover,
-.dh-pill--outline-paper:focus-visible {
+.dh-pill--outline-paper:focus-visible,
+.wp-block-button.is-style-dh-pill-outline-paper > .wp-block-button__link:hover,
+.wp-block-button.is-style-dh-pill-outline-paper > .wp-block-button__link:focus-visible {
 	border-color: var(--wp--preset--color--paper);
 }
 
@@ -1504,7 +1570,7 @@ svg {
 		border-inline-start: 2px solid var(--wp--preset--color--field);
 	}
 
-	.dh-process__num {
+	.dh-process__step::before {
 		position: absolute;
 		inset-inline-start: calc(-1 * var(--wp--preset--spacing--50));
 		inset-block-start: 0;

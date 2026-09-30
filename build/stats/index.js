@@ -1,0 +1,1 @@
+(()=>{"use strict";const s=window.wp.blocks,e=window.wp.blockEditor,t=JSON.parse('{"UU":"demas-theme/stats"}'),o=window.ReactJSXRuntime;(0,s.registerBlockType)(t.UU,{edit:function(){const s=(0,e.useInnerBlocksProps)((0,e.useBlockProps)({className:"dh-stats"}),{template:[["demas-theme/stat"]]});return(0,o.jsx)("dl",{...s})},save:()=>(0,o.jsx)(e.InnerBlocks.Content,{})})})();

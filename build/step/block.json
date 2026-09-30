@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "demas-theme/step",
+  "title": "Process Step",
+  "category": "design",
+  "icon": "marker",
+  "description": "One step of the process: a short title and what happens at it.",
+  "textdomain": "demas-theme",
+  "parent": [
+    "demas-theme/steps"
+  ],
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "attributes": {}
+}

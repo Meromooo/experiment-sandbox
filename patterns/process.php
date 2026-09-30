@@ -10,36 +10,63 @@
 
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-process","layout":{"type":"constrained"}} -->
-<section class="wp-block-group dh-section dh-process">
-<!-- wp:html -->
-<div class="dh-section__head">
-	<p class="dh-eyebrow">How we work</p>
-	<h2 class="dh-section__title">From site survey to sustained performance.</h2>
-	<p class="dh-section__lead">Every project moves through the same disciplined sequence — the same rigour behind our ISO 9001 certification.</p>
-</div>
-<ol class="dh-process__steps" data-reveal-group>
-	<li class="dh-process__step" data-reveal="rise">
-		<span class="dh-process__num dh-mono" aria-hidden="true">01</span>
-		<h3 class="dh-process__title">Assess</h3>
-		<p class="dh-process__copy">We start on your site, not in a catalogue. A free site visit maps water sources, pressures, soil, climate, and the demands of your project.</p>
-	</li>
-	<li class="dh-process__step" data-reveal="rise">
-		<span class="dh-process__num dh-mono" aria-hidden="true">02</span>
-		<h3 class="dh-process__title">Engineer</h3>
-		<p class="dh-process__copy">Our licensed engineers design and specify the complete system — hydraulics, zoning, filtration, and control.</p>
-	</li>
-	<li class="dh-process__step" data-reveal="rise">
-		<span class="dh-process__num dh-mono" aria-hidden="true">03</span>
-		<h3 class="dh-process__title">Supply</h3>
-		<p class="dh-process__copy">We deliver from deep stock across fifteen branches, with every component matched to the approved specification.</p>
-	</li>
-	<li class="dh-process__step" data-reveal="rise">
-		<span class="dh-process__num dh-mono" aria-hidden="true">04</span>
-		<h3 class="dh-process__title">Support</h3>
-		<p class="dh-process__copy">Commissioning, maintenance, and technical support keep systems performing for their full design life — backed by a five-year warranty.</p>
-	</li>
-</ol>
+<section class="wp-block-group dh-section dh-process"><!-- wp:group {"className":"dh-section__head","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-section__head"><!-- wp:paragraph {"className":"dh-eyebrow"} -->
+<p class="dh-eyebrow">How we work</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"className":"dh-section__title"} -->
+<h2 class="wp-block-heading dh-section__title">From site survey to sustained performance.</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"dh-section__lead"} -->
+<p class="dh-section__lead">Every project moves through the same disciplined sequence — the same rigour behind our ISO 9001 certification.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+<!-- wp:demas-theme/steps -->
+<!-- wp:demas-theme/step -->
+<!-- wp:heading {"level":3,"className":"dh-process__title"} -->
+<h3 class="wp-block-heading dh-process__title">Assess</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"dh-process__copy"} -->
+<p class="dh-process__copy">We start on your site, not in a catalogue. A free site visit maps water sources, pressures, soil, climate, and the demands of your project.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:demas-theme/step -->
+
+<!-- wp:demas-theme/step -->
+<!-- wp:heading {"level":3,"className":"dh-process__title"} -->
+<h3 class="wp-block-heading dh-process__title">Engineer</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"dh-process__copy"} -->
+<p class="dh-process__copy">Our licensed engineers design and specify the complete system — hydraulics, zoning, filtration, and control.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:demas-theme/step -->
+
+<!-- wp:demas-theme/step -->
+<!-- wp:heading {"level":3,"className":"dh-process__title"} -->
+<h3 class="wp-block-heading dh-process__title">Supply</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"dh-process__copy"} -->
+<p class="dh-process__copy">We deliver from deep stock across fifteen branches, with every component matched to the approved specification.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:demas-theme/step -->
+
+<!-- wp:demas-theme/step -->
+<!-- wp:heading {"level":3,"className":"dh-process__title"} -->
+<h3 class="wp-block-heading dh-process__title">Support</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"className":"dh-process__copy"} -->
+<p class="dh-process__copy">Commissioning, maintenance, and technical support keep systems performing for their full design life — backed by a five-year warranty.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:demas-theme/step -->
+<!-- /wp:demas-theme/steps -->
+
+<!-- wp:paragraph {"className":"dh-process__close"} -->
 <p class="dh-process__close">One accountable partner across the entire lifecycle.</p>
-<!-- /wp:html -->
-</section>
+<!-- /wp:paragraph --></section>
 <!-- /wp:group -->

@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/stat",
+	"title": "Number",
+	"category": "design",
+	"icon": "performance",
+	"description": "One number and what it counts. A whole number counts up from zero as it scrolls into view.",
+	"textdomain": "demas-theme",
+	"parent": [ "demas-theme/stats" ],
+	"editorScript": "file:./index.tsx",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"attributes": {
+		"value": {
+			"type": "string",
+			"default": ""
+		},
+		"prefix": {
+			"type": "string",
+			"default": ""
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}

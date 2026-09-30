@@ -10,40 +10,25 @@
 
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-section--tight dh-creds","layout":{"type":"constrained"}} -->
-<section class="wp-block-group dh-section dh-section--tight dh-creds">
-<!-- wp:html -->
+<section class="wp-block-group dh-section dh-section--tight dh-creds"><!-- wp:paragraph {"className":"dh-eyebrow dh-creds__eyebrow"} -->
 <p class="dh-eyebrow dh-creds__eyebrow">Certified. Approved. Accountable.</p>
-<ul class="dh-creds__list" data-reveal-group>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark" tabindex="0" aria-describedby="cred-iso-9001">ISO 9001</span>
-		<span class="dh-creds__detail" id="cred-iso-9001" role="tooltip">Quality management</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark" tabindex="0" aria-describedby="cred-iso-14001">ISO 14001</span>
-		<span class="dh-creds__detail" id="cred-iso-14001" role="tooltip">Environmental management</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark" tabindex="0" aria-describedby="cred-iso-45001">ISO 45001</span>
-		<span class="dh-creds__detail" id="cred-iso-45001" role="tooltip">Occupational health and safety</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark" tabindex="0" aria-describedby="cred-wras">WRAS approved</span>
-		<span class="dh-creds__detail" id="cred-wras" role="tooltip">Water Regulations Approval Scheme</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark" tabindex="0" aria-describedby="cred-saso">SASO certified</span>
-		<span class="dh-creds__detail" id="cred-saso" role="tooltip">Saudi Standards, Metrology and Quality Organization</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark">National Water Company partner</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark">Licensed engineering firm</span>
-	</li>
-	<li class="dh-creds__item" data-reveal="dot">
-		<span class="dh-creds__mark">Saudi Vision 2030 partner</span>
-	</li>
-</ul>
-<!-- /wp:html -->
-</section>
+<!-- /wp:paragraph -->
+
+<!-- wp:demas-theme/credentials -->
+<!-- wp:demas-theme/credential {"name":"ISO 9001","detail":"Quality management"} /-->
+
+<!-- wp:demas-theme/credential {"name":"ISO 14001","detail":"Environmental management"} /-->
+
+<!-- wp:demas-theme/credential {"name":"ISO 45001","detail":"Occupational health and safety"} /-->
+
+<!-- wp:demas-theme/credential {"name":"WRAS approved","detail":"Water Regulations Approval Scheme"} /-->
+
+<!-- wp:demas-theme/credential {"name":"SASO certified","detail":"Saudi Standards, Metrology and Quality Organization"} /-->
+
+<!-- wp:demas-theme/credential {"name":"National Water Company partner"} /-->
+
+<!-- wp:demas-theme/credential {"name":"Licensed engineering firm"} /-->
+
+<!-- wp:demas-theme/credential {"name":"Saudi Vision 2030 partner"} /-->
+<!-- /wp:demas-theme/credentials --></section>
 <!-- /wp:group -->

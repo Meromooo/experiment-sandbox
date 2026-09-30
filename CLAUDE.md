@@ -99,7 +99,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   lists five corrections the current build still needs — read it before proposing a change of
   stack, hosting, or editing model.
 - `inc/` — PHP includes, one concern per file, all required from `functions.php`:
-  - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.)
+  - `setup.php` — theme support flags only (title-tag, thumbnails, WooCommerce support, etc.),
+    plus `add_editor_style( 'assets/css/style.css' )` so the editor shows the homepage sections
+    as the site does (AMM-153)
   - `enqueue.php` — front-end script/style registration only
   - `performance.php` — what the front end does **not** load (AMM-154, 2026-09-28):
     WooCommerce's classic stylesheets (`woocommerce_enqueue_styles`, plus
@@ -230,6 +232,20 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     clean names, the cleaned description, the category path, brand, sku, and mpn only for
     manufacturer numbers (never DMS-); a zero price is never published. Branch locations in
     the Organization wait for real addresses (AMM-148).
+  - `homepage.php` — the homepage's editable sections (AMM-153, from 2026-09-30). Registers the
+    small theme blocks core blocks can't replace — `demas-theme/credentials` + `/credential` (the
+    marks under the hero; a mark with a detail gets a keyboard-focusable tooltip), `/stats` +
+    `/stat` (the numbers band: a `<dl>`, label as the term and the number shown above it by CSS
+    `order`; a whole number counts up via `data-count`) and `/steps` + `/step` (the process: an
+    `<ol>` whose numerals are a CSS counter, each step a locked heading + paragraph). Registers
+    the pills as **Button block styles** (`is-style-dh-pill-solid`, `-outline`, `-paper`,
+    `-outline-paper`; rules beside `.dh-pill` in `style.css` section 4). And the **reveal
+    bridge**: a `render_block` filter that turns classes on core blocks (`dh-reveal--rise`,
+    `--bar`, `--dot` …, `dh-reveal-group`, `dh-reveal-content`) into the `data-reveal*`
+    attributes the motion code reads — the browser gets the same markup as before, so
+    `main.js` and the motion CSS are unchanged. Core blocks inside a group get the block
+    layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
+    defaults has to be written down — see the section eyebrows in `style.css` section 9.
 - `patterns/` — registered block patterns (PHP files with pattern header comments), filed under
   the "Demas" category declared in `inc/patterns.php`. This is where marketing/content sections
   live — never hardcoded into templates. Current set (homepage, 2026-09-15): `hero`,
@@ -238,8 +254,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   engineering drawing's **title block**: catalogue index, branches + key plan, the company
   plate, the closing line; not inserter-visible). The footer's CR number, VAT number and
   registered name read "Pending" until Ammar supplies them; "Our certificates" links the
-  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. Section bodies are `wp:html`
-  blocks for now so the notch, marquee and Branch Desk markup survive the editor intact.
+  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153 (in
+  progress):** `credentials`, `numbers`, `process` and `closing-cta` are editable blocks (core
+  blocks + the theme blocks in `inc/homepage.php`), pixel-identical to the old HTML at 320–1440;
+  `categories` and `hero` are still `wp:html` until AMM-153's steps 2 and 3.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
