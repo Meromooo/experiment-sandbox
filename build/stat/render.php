@@ -36,5 +36,5 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-stat' ) );
 ?>
 <div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>>
 	<dt class="dh-stat__label"><?php echo wp_kses( $demas_label, array() ); ?></dt>
-	<dd class="dh-stat__value"><?php if ( '' !== $demas_prefix ) : ?><span class="dh-stat__prefix"><?php echo esc_html( $demas_prefix ); ?></span><?php endif; ?><span<?php echo '' === $demas_count ? '' : ' data-count="' . esc_attr( $demas_count ) . '"'; ?>><?php echo wp_kses( $demas_value, array() ); ?></span></dd>
+	<dd class="dh-stat__value"><?php echo '' === $demas_prefix ? '' : '<span class="dh-stat__prefix">' . esc_html( $demas_prefix ) . '</span>'; ?><span<?php echo '' === $demas_count ? '' : ' data-count="' . esc_attr( $demas_count ) . '"'; ?>><?php echo wp_kses( $demas_value, array() ); ?></span></dd>
 </div>
