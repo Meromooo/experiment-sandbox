@@ -191,7 +191,7 @@ function demas_theme_get_branches(): array {
 				'lon'     => 40.21,
 				'main'    => false,
 				'map'     => 'https://maps.app.goo.gl/m3yrRnQ8oYjp85FU7',
-				'address' => 'King Fahd Bin Abdulaziz Rd, Al Sina'iyah, Skaka 72341',
+				'address' => 'King Fahd Bin Abdulaziz Rd, Al Sina\'iyah, Skaka 72341',
 				'hours'   => '',
 			),
 		)
