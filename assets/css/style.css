@@ -574,9 +574,10 @@ svg {
  * Origin is the top-start corner, not the bottom: the observer measures the
  * transformed box, and a 12% seed anchored at the bottom of a tall card sits
  * below the fold and never intersects. Anchored at the top it is on screen
- * as soon as the card's top edge is.
+ * as soon as the card's top edge is. Not gated on .js: the hero's seeds play
+ * without it (below).
  */
-.js [data-reveal="seed"] {
+[data-reveal="seed"] {
 	transform-origin: 0% 0%;
 }
 
@@ -585,7 +586,7 @@ svg {
 	opacity: 0;
 }
 
-[dir="rtl"].js [data-reveal="seed"] {
+[dir="rtl"] [data-reveal="seed"] {
 	transform-origin: 100% 0%;
 }
 
@@ -625,7 +626,7 @@ svg {
 	--_delay: calc((var(--i, 0) + 2) * var(--wp--custom--motion--stagger));
 }
 
-[dir="rtl"].js [data-reveal="wipe"] {
+[dir="rtl"] [data-reveal="wipe"] {
 	background-position: 100% 0;
 }
 
@@ -691,6 +692,129 @@ svg {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link {
 		transition: none;
+	}
+}
+
+/*
+ * The homepage hero plays as the page opens (AMM-168). It is on screen from
+ * the first paint, and main.js (in the footer) only switches the scroll
+ * reveals on after that paint, too late to hide it — so the hero plays on CSS
+ * alone, from the first frame, with or without JavaScript. main.js leaves any
+ * reveal that CSS animates alone. Each element plays its reveal type's motion
+ * in turn (--_step); nothing holds after the last frame, so the element's own
+ * styles apply. The Branch Desk and the schematic join only where they sit
+ * beside the head; narrower, they are below the fold and reveal on scroll.
+ * .home keeps it off the editor canvas, which loads this file too.
+ */
+@keyframes dh-hero-rise {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+}
+
+@keyframes dh-hero-seed {
+	from {
+		opacity: 0;
+		transform: scale(0.12);
+	}
+}
+
+@keyframes dh-hero-dot {
+	from {
+		clip-path: var(--_clip);
+	}
+
+	to {
+		clip-path: inset(0 0 0 0 round var(--wp--custom--radius--pill));
+	}
+}
+
+@keyframes dh-hero-wipe {
+	from {
+		background-size: 0% 100%;
+	}
+}
+
+@keyframes dh-hero-fade {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes dh-hero-draw {
+	from {
+		stroke-dashoffset: 1;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.home .dh-hero [data-reveal] {
+		--_at: calc(var(--_step, 0) * var(--wp--custom--motion--stagger));
+		animation: var(--wp--custom--motion--base) var(--wp--custom--motion--ease) var(--_at) backwards;
+	}
+
+	.home .dh-hero [data-reveal="rise"] {
+		animation-name: dh-hero-rise;
+	}
+
+	.home .dh-hero [data-reveal="dot"] {
+		--_clip: inset(0 calc(100% - 2.4em) 0 0 round var(--wp--custom--radius--pill));
+		animation-name: dh-hero-dot;
+	}
+
+	[dir="rtl"] .home .dh-hero [data-reveal="dot"] {
+		--_clip: inset(0 0 0 calc(100% - 2.4em) round var(--wp--custom--radius--pill));
+	}
+
+	.home .dh-hero [data-reveal="wipe"] {
+		animation-name: dh-hero-wipe;
+	}
+
+	.home .dh-hero__title {
+		--_step: 1;
+	}
+
+	.home .dh-hero__lead {
+		--_step: 2;
+	}
+
+	/* The word sweeps two beats after its headline; the buttons follow the lead. */
+	.home .dh-hero .dh-highlight,
+	.home .dh-hero__actions > * {
+		--_step: 3;
+	}
+
+	.home .dh-hero__actions > * + * {
+		--_step: 4;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 56.0625rem) {
+	.home .dh-hero__grid > [data-reveal="seed"] {
+		--_step: 3;
+		animation-name: dh-hero-seed;
+	}
+
+	.home .dh-hero__grid > [data-reveal="seed"] + [data-reveal="seed"] {
+		--_step: 4;
+	}
+
+	.home .dh-hero [data-reveal] [data-reveal-content] {
+		animation: dh-hero-fade var(--wp--custom--motion--fast) var(--wp--custom--motion--ease)
+			calc(var(--_at) + var(--wp--custom--motion--base)) backwards;
+	}
+
+	/* The schematic draws itself once its card has grown, in --i order. */
+	.home .dh-hero .dh-schem__line {
+		stroke-dasharray: 1;
+		animation: dh-hero-draw var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
+			calc(var(--_at) + var(--wp--custom--motion--base) + var(--i, 0) * 120ms) backwards;
+	}
+
+	.home .dh-hero .dh-schem__emit {
+		animation: dh-hero-fade var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+			calc(var(--_at) + var(--wp--custom--motion--base) + 7 * 120ms) backwards;
 	}
 }
 

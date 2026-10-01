@@ -5,6 +5,7 @@
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
  *     viewport, and number the reveals of each [data-reveal-group] (--i) so
  *     CSS can stagger them. Reduced-motion users get the final state at once.
+ *     The homepage hero is not one: CSS plays it as the page opens.
  *  2. Marquee: clone each .dh-marquee__track's children once so the CSS
  *     translate(-50%) loop is seamless.
  *  3. Counters: [data-count] numbers count up from zero when they scroll
@@ -25,7 +26,6 @@
 	'use strict';
 
 	var root = document.documentElement;
-	root.classList.add('js');
 
 	var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 	var hasObserver = 'IntersectionObserver' in window;
@@ -36,7 +36,18 @@
 
 	/* 1. Reveals ------------------------------------------------------- */
 
-	var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+	// A reveal that CSS already plays as the page opens (the homepage hero,
+	// style.css section 7) is left to CSS: marked landed before .js switches
+	// the scroll reveals on, so they never hide it.
+	var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]')).filter(function (el) {
+		if (window.getComputedStyle(el).animationName === 'none') {
+			return true;
+		}
+		el.classList.add('is-in', 'is-settled');
+		return false;
+	});
+
+	root.classList.add('js');
 
 	// A group numbers its own reveals, in order. A group inside it numbers its
 	// own, and a reveal inside another reveal (the highlighted word in a
