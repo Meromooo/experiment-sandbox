@@ -169,8 +169,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     the old design survives. Database untouched; core-block pages unaffected. Kadence forms
     render nothing. Kadence's front-end **assets** are dropped too (AMM-154): its stylesheets,
     per-block CSS, slider/form scripts and its Google Fonts `<link>` to the old site's
-    typeface (Trykker) — the plugin parses page 17's content even on the homepage, where it
-    is never shown. Page photos get a `sizes` for the 46rem reading column and all but the
+    typeface (Trykker) — the plugin parsed page 17's content even on the homepage (since
+    AMM-153 that page holds the homepage's own blocks, no Kadence). Page photos get a `sizes` for the 46rem reading column and all but the
     first load lazily. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
     emails) redirects to the homepage Branch Desk, and the empty "All Products" page (`/shop/`)
     to the catalogue at `/products/` (AMM-147) — both 302 until cutover. Live and sandbox share
@@ -280,8 +280,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153:** all six
   homepage patterns are editable blocks (core blocks + the theme blocks in `inc/homepage.php`),
   pixel-identical to the old HTML at 320–1440 apart from deliberate fixes (live category counts,
-  Branch Desk code contrast, the pills' focus ring). The homepage content moves into Pages →
-  Homepage in AMM-153's step 4.
+  Branch Desk code contrast, the pills' focus ring). Five of them are now the content of Pages →
+  Homepage (see `templates/` below), so for the homepage they are starting points, not the
+  source; `closing-cta` is still placed by the template.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
@@ -300,9 +301,14 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   photo (not WooCommerce's gallery — 641 of 643 products have one image, and the gallery pulls
   in jQuery, flexslider and photoswipe), the product-summary block, and a related-parts
   `product-collection`. No price, no add-to-cart, no tabs.
-  `front-page.html` composes the homepage from the six `demas-theme/*` patterns and is used for
-  the front page regardless of the Reading setting (the static front page is the cloned
-  "Homepage" page, id 17 — keep it published; its Kadence content is never shown). Its closing
+  `front-page.html` is used for the front page regardless of the Reading setting. Since
+  AMM-153 (2026-10-01) its `<main>` renders **`core/post-content`**: the homepage's sections
+  (hero, credentials, numbers, categories, process) are the content of the static front page,
+  the cloned "Homepage" page, id 17 — keep it published — and Demas edits them in **Pages →
+  Homepage**. Changing a pattern file no longer changes the homepage; edit the page (the
+  patterns stay in the inserter under "Demas" to re-insert a section). Its Kadence content was
+  replaced on the sandbox by a paste of the block markup; the same paste is a cutover step on
+  live (AMM-158). Its closing
   CTA sits **outside `<main>`**, in a `.dh-finale` wrapper with the footer part, so the CTA can
   stay pinned while the footer slides over it (CSS sticky; `main.js` supplies the CTA's
   height); the CTA is its own labelled region instead.

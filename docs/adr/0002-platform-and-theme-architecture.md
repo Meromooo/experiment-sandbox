@@ -106,6 +106,14 @@ The decision is sound; the current execution has gaps. In priority order:
    block markup, keeping raw HTML only where the notch and schematic genuinely require it.
    Left unfixed, the project carries all of WordPress's weight and none of its benefit.
    *(1–2 days)*
+   **Done 2026-10-01 (AMM-153):** every homepage section is block markup — core blocks plus
+   small theme blocks where core can't express the markup (credentials, numbers, process steps,
+   category cards with live counts, the Branch Desk from `inc/branches.php`, the schematic, the
+   marquees), a Highlight text format and pill Button styles. No `wp:html` is left. The
+   sections are the content of Pages → Homepage, edited there; the closing call to action stays
+   in the template (edited in the Site Editor). Verified pixel-identical to the old HTML at
+   320–1440 except deliberate fixes (live category counts, Branch Desk contrast, the pills'
+   focus ring, keyboard-reachable marquees).
 2. **Local development environment.** `@wordpress/env` (Docker) plus a documented
    staging→production plan. There is currently no PHP locally — code cannot even be
    syntax-checked before deploying — and the eventual cutover has no rehearsal. *(half a day)*
