@@ -260,8 +260,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     `main.js` and the motion CSS barely change. A `data-reveal-group` numbers only **its own**
     reveals (`main.js`): a group inside it numbers itself, and a reveal inside another reveal
     (the highlighted word) inherits its container's `--i` and sweeps two beats after it — so no
-    inline `--i` is needed. A settled `dot` reveal (pills) keeps 6px of clip room, or its focus
-    ring is cut off. Core blocks inside a group get the block
+    inline `--i` is needed. A reveal that grows out of a clip (`dot`, `sliver`, `bar`) **drops the
+    clip once it lands** (`main.js` adds `.is-settled` on the clip-path `transitionend`; with
+    reduced motion there is no clip at all): left in place it cut off focus rings, the
+    credentials' tooltips, the category cards' hover shadow and the first digit of their counts.
+    Core blocks inside a group get the block
     layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
     defaults has to be written down — see the section eyebrows in `style.css` section 9.
     **Don't set a block-level style in `theme.json` that reaches beyond the block** (like

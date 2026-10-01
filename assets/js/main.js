@@ -60,6 +60,18 @@
 		});
 	}
 
+	// A reveal that grows out of a clip drops the clip once it has landed
+	// (.is-settled, style.css section 7), so nothing drawn outside the element
+	// stays cut off: a focus ring, a tooltip, a hover shadow.
+	function settleAfterReveal(el) {
+		el.addEventListener('transitionend', function done(event) {
+			if (event.target === el && event.propertyName === 'clip-path') {
+				el.classList.add('is-settled');
+				el.removeEventListener('transitionend', done);
+			}
+		});
+	}
+
 	var revealObserver = null;
 
 	if (reduce.matches || !hasObserver) {
@@ -69,6 +81,7 @@
 			function (entries) {
 				entries.forEach(function (entry) {
 					if (entry.isIntersecting) {
+						settleAfterReveal(entry.target);
 						entry.target.classList.add('is-in');
 						revealObserver.unobserve(entry.target);
 					}

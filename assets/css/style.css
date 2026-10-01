@@ -635,12 +635,13 @@ svg {
 }
 
 /*
- * A settled pill keeps 6px of room around it: its focus ring is drawn
- * outside it (3px ring, 3px offset), and a clip at its own edge cut the ring
- * off, so a keyboard user couldn't see which pill had focus.
+ * Once landed, the clip goes (main.js adds .is-settled when the clip-path
+ * transition ends). Left in place, it cut off everything drawn outside the
+ * element: a pill's focus ring, a credential's tooltip, a card's hover
+ * shadow. The element's own border-radius keeps the same shape.
  */
-.js [data-reveal="dot"].is-in {
-	clip-path: inset(-6px round var(--_r));
+.js [data-reveal].is-settled {
+	clip-path: none;
 }
 
 /* Content inside a revealing container fades in after the container lands. */
@@ -656,6 +657,7 @@ svg {
 
 @media (prefers-reduced-motion: reduce) {
 	.js [data-reveal],
+	.js [data-reveal].is-in,
 	.js [data-reveal] [data-reveal-content] {
 		transition: none;
 		transform: none;
