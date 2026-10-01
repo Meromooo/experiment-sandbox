@@ -41,22 +41,17 @@ if ( ! $demas_branches ) {
 }
 
 /*
- * Projection: equirectangular, longitude scaled by cos(24°) so the Kingdom
- * keeps its proportions at its middle latitude. 36–52°E × 16–32°N, 20 units
- * per degree of latitude.
+ * Projection: demas_theme_branch_plan_point() (inc/branches.php), shared with
+ * the Contact page's layout plan. This plan shows 36–52°E × 16–32°N.
  */
-$demas_lon_min = 36;
-$demas_lat_max = 32;
-$demas_unit    = 20;
-$demas_kx      = $demas_unit * cos( deg2rad( 24 ) );
-$demas_width   = round( ( 52 - $demas_lon_min ) * $demas_kx );
-$demas_height  = ( $demas_lat_max - 16 ) * $demas_unit;
+$demas_width  = round( demas_theme_branch_plan_point( 16, 52 )[0] );
+$demas_height = demas_theme_branch_plan_point( 16, 52 )[1];
 
-$demas_x = static function ( float $lon ) use ( $demas_lon_min, $demas_kx ): float {
-	return round( ( $lon - $demas_lon_min ) * $demas_kx, 1 );
+$demas_x = static function ( float $lon ): float {
+	return demas_theme_branch_plan_point( 32, $lon )[0];
 };
-$demas_y = static function ( float $lat ) use ( $demas_lat_max, $demas_unit ): float {
-	return round( ( $demas_lat_max - $lat ) * $demas_unit, 1 );
+$demas_y = static function ( float $lat ): float {
+	return demas_theme_branch_plan_point( $lat, 36 )[1];
 };
 
 // Reveal order: nearest to the main branch first.

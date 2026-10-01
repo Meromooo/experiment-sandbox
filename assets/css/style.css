@@ -14,7 +14,7 @@
  * 7. Motion        grow-from-seed reveals, container-then-content
  * 8. Blocks        core and WooCommerce adjustments, small-screen fixes
  * 9.-14.          homepage, catalogue, product page, pages, footer, search
- * 15. Designed pages   the Services page (AMM-167)
+ * 15. Designed pages   Services (AMM-167), Contact (AMM-169)
  */
 
 /* ------------------------------------------------------------------ */
@@ -717,7 +717,9 @@ svg {
  * beside the head; narrower, they are below the fold and reveal on scroll.
  * .home keeps it off the editor canvas, which loads this file too. The
  * Services hero (a page on the "Designed page" template, AMM-167) opens the
- * same way, its photo joining where it sits beside the head.
+ * same way, its photo joining where it sits beside the head; so does the
+ * Contact hero (AMM-169), whose layout plan grows and then draws its pipes
+ * outward from the pump, then the list and the chosen branch's card follow.
  */
 @keyframes dh-hero-rise {
 	from {
@@ -763,39 +765,46 @@ svg {
 
 @media (prefers-reduced-motion: no-preference) {
 	.home .dh-hero [data-reveal],
-	.page-template-designed-page .dh-svc-hero [data-reveal] {
+	.page-template-designed-page .dh-svc-hero [data-reveal],
+	.page-template-designed-page .dh-ct-hero__intro [data-reveal] {
 		--_at: calc(var(--_step, 0) * var(--wp--custom--motion--stagger));
 		animation: var(--wp--custom--motion--base) var(--wp--custom--motion--ease) var(--_at) backwards;
 	}
 
 	.home .dh-hero [data-reveal="rise"],
-	.page-template-designed-page .dh-svc-hero [data-reveal="rise"] {
+	.page-template-designed-page .dh-svc-hero [data-reveal="rise"],
+	.page-template-designed-page .dh-ct-hero__intro [data-reveal="rise"] {
 		animation-name: dh-hero-rise;
 	}
 
 	.home .dh-hero [data-reveal="dot"],
-	.page-template-designed-page .dh-svc-hero [data-reveal="dot"] {
+	.page-template-designed-page .dh-svc-hero [data-reveal="dot"],
+	.page-template-designed-page .dh-ct-hero__intro [data-reveal="dot"] {
 		--_clip: inset(0 calc(100% - 2.4em) 0 0 round var(--wp--custom--radius--pill));
 		animation-name: dh-hero-dot;
 	}
 
 	[dir="rtl"] .home .dh-hero [data-reveal="dot"],
-	[dir="rtl"] .page-template-designed-page .dh-svc-hero [data-reveal="dot"] {
+	[dir="rtl"] .page-template-designed-page .dh-svc-hero [data-reveal="dot"],
+	[dir="rtl"] .page-template-designed-page .dh-ct-hero__intro [data-reveal="dot"] {
 		--_clip: inset(0 0 0 calc(100% - 2.4em) round var(--wp--custom--radius--pill));
 	}
 
 	.home .dh-hero [data-reveal="wipe"],
-	.page-template-designed-page .dh-svc-hero [data-reveal="wipe"] {
+	.page-template-designed-page .dh-svc-hero [data-reveal="wipe"],
+	.page-template-designed-page .dh-ct-hero__intro [data-reveal="wipe"] {
 		animation-name: dh-hero-wipe;
 	}
 
 	.home .dh-hero__title,
-	.page-template-designed-page .dh-svc-hero__title {
+	.page-template-designed-page .dh-svc-hero__title,
+	.page-template-designed-page .dh-ct-hero__title {
 		--_step: 1;
 	}
 
 	.home .dh-hero__lead,
-	.page-template-designed-page .dh-svc-hero .dh-svc-lead {
+	.page-template-designed-page .dh-svc-hero .dh-svc-lead,
+	.page-template-designed-page .dh-ct-hero .dh-ct-lead {
 		--_step: 2;
 	}
 
@@ -803,12 +812,15 @@ svg {
 	.home .dh-hero .dh-highlight,
 	.home .dh-hero__actions > *,
 	.page-template-designed-page .dh-svc-hero .dh-highlight,
-	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * {
+	.page-template-designed-page .dh-svc-hero .dh-svc-actions > *,
+	.page-template-designed-page .dh-ct-hero .dh-highlight,
+	.page-template-designed-page .dh-ct-hero .dh-ct-actions > * {
 		--_step: 3;
 	}
 
 	.home .dh-hero__actions > * + *,
-	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * + * {
+	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * + *,
+	.page-template-designed-page .dh-ct-hero .dh-ct-actions > * + * {
 		--_step: 4;
 	}
 }
@@ -839,6 +851,40 @@ svg {
 	.home .dh-hero .dh-schem__emit {
 		animation: dh-hero-fade var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
 			calc(var(--_at) + var(--wp--custom--motion--base) + 7 * 120ms) backwards;
+	}
+
+	/* Contact: the plan grows beside the head, its pipes draw outward from the
+	   pump in --i order (src/branch-finder), the heads come on, then the list
+	   and the card. */
+	.page-template-designed-page .dh-ct-hero :is(.dh-ct-pick, .dh-ct-cards, .dh-ct-plan) {
+		--_at: calc(var(--_step, 0) * var(--wp--custom--motion--stagger));
+		animation: var(--wp--custom--motion--base) var(--wp--custom--motion--ease) var(--_at) backwards;
+	}
+
+	.page-template-designed-page .dh-ct-hero .dh-ct-plan {
+		--_step: 3;
+		animation-name: dh-hero-seed;
+	}
+
+	.page-template-designed-page .dh-ct-hero .dh-ct-pick {
+		--_step: 5;
+		animation-name: dh-hero-rise;
+	}
+
+	.page-template-designed-page .dh-ct-hero .dh-ct-cards {
+		--_step: 16;
+		animation-name: dh-hero-rise;
+	}
+
+	.page-template-designed-page .dh-ct-hero :is(.dh-ct-plan__main, .dh-ct-plan__lateral) {
+		stroke-dasharray: 1;
+		animation: dh-hero-draw var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
+			calc(var(--_at) + var(--wp--custom--motion--base) + var(--i, 0) * 60ms) backwards;
+	}
+
+	.page-template-designed-page .dh-ct-hero :is(.dh-ct-plan__heads, .dh-ct-plan__valves, .dh-ct-plan__labels) {
+		animation: dh-hero-fade var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+			calc(var(--_at) + var(--wp--custom--motion--base) + 700ms) backwards;
 	}
 }
 
@@ -2648,7 +2694,7 @@ footer.wp-block-template-part {
 }
 
 /* ------------------------------------------------------------------ */
-/* 15. Designed pages — the Services page (AMM-167)                    */
+/* 15. Designed pages — Services (AMM-167), Contact (AMM-169)          */
 /* ------------------------------------------------------------------ */
 
 /*
@@ -2659,7 +2705,8 @@ footer.wp-block-template-part {
  * from the sections above; everything here is named dh-svc-.
  */
 
-.dh-svc-hero {
+.dh-svc-hero,
+.dh-ct-hero {
 	padding-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--70);
 }
 
@@ -2700,7 +2747,7 @@ footer.wp-block-template-part {
 	scroll-margin-block-start: var(--wp--preset--spacing--40);
 }
 
-:is(.dh-svc-hero__copy, .dh-svc__copy, .dh-svc-band__copy) > .dh-eyebrow {
+:is(.dh-svc-hero__copy, .dh-svc__copy, .dh-svc-band__copy, .dh-ct-hero__intro, .dh-ct-request__copy) > .dh-eyebrow {
 	margin-block: 0 var(--wp--preset--spacing--40);
 }
 
@@ -2718,24 +2765,29 @@ footer.wp-block-template-part {
 	line-height: var(--wp--custom--display--leading);
 }
 
-.dh-svc__title {
+.dh-svc__title,
+.dh-ct-title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
 	font-size: var(--wp--preset--font-size--xxl);
 }
 
 .dh-svc-lead,
-.dh-svc__text {
+.dh-svc__text,
+.dh-ct-lead,
+.dh-ct-text {
 	margin-block: 0;
 	max-inline-size: 36rem;
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
 }
 
-.dh-svc-lead {
+.dh-svc-lead,
+.dh-ct-lead {
 	font-size: var(--wp--preset--font-size--lg);
 	line-height: 1.5;
 }
 
-.dh-svc-actions {
+.dh-svc-actions,
+.dh-ct-actions {
 	margin-block: var(--wp--preset--spacing--50) 0;
 	gap: var(--wp--preset--spacing--20);
 }
@@ -2834,7 +2886,8 @@ footer.wp-block-template-part {
 }
 
 /* 01 Survey: what a site visit checks, as labelled rows. */
-.dh-svc__label {
+.dh-svc__label,
+.dh-ct-label {
 	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
 	font-family: var(--wp--preset--font-family--body);
 	font-size: var(--wp--preset--font-size--xs);
@@ -3388,6 +3441,136 @@ footer.wp-block-template-part {
 	aspect-ratio: 16 / 10;
 	border-radius: var(--wp--custom--radius--md);
 	outline: 6px solid var(--wp--preset--color--canopy);
+}
+
+/*
+ * The Contact page (AMM-169, patterns/contact.php). The hero is the intro
+ * beside the Branch Finder (src/branch-finder), whose wrapper steps out of
+ * the layout so its list and its stage — the chosen branch's card over the
+ * layout plan — take their places in this grid. Narrower, everything stacks:
+ * intro, plan, list, then the card right under the list it answers.
+ */
+.dh-ct-hero__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+	grid-template-rows: auto auto 1fr;
+	grid-template-areas:
+		"intro stage"
+		"pick stage"
+		". stage";
+	gap: var(--wp--preset--spacing--60);
+	align-items: start;
+}
+
+.dh-ct-hero__grid > * {
+	margin-block: 0;
+}
+
+.dh-ct-hero__intro {
+	grid-area: intro;
+}
+
+.dh-ct-hero__grid .dh-ct-pick {
+	grid-area: pick;
+}
+
+.dh-ct-hero__grid .dh-ct-stage {
+	grid-area: stage;
+}
+
+.dh-ct-hero__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--xxl);
+	line-height: var(--wp--custom--display--leading);
+}
+
+/* The request: what to expect, beside the form. */
+.dh-ct-request {
+	padding-block: var(--wp--preset--spacing--70) var(--wp--preset--spacing--80);
+	scroll-margin-block-start: var(--wp--preset--spacing--40);
+}
+
+/* Focused by the cards' "Send a request" (view.ts), to move keyboard focus
+   here; the section itself is not a control, so no ring. */
+.dh-ct-request:focus {
+	outline: none;
+}
+
+.dh-ct-request__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+	gap: var(--wp--preset--spacing--70);
+	align-items: start;
+}
+
+:is(.dh-ct-request__grid, .dh-ct-request__copy) > * {
+	margin-block: 0;
+}
+
+.dh-ct-request__copy > .dh-ct-label {
+	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
+}
+
+/* "What happens next": a real sequence, so numbered. */
+.dh-ct-next {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: dh-ct-next;
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-ct-next li {
+	display: grid;
+	grid-template-columns: 2.25rem minmax(0, 1fr);
+	gap: var(--wp--preset--spacing--30);
+	margin: 0;
+	padding-block: var(--wp--preset--spacing--30);
+	border-block-end: var(--wp--custom--rule);
+	counter-increment: dh-ct-next;
+}
+
+.dh-ct-next li::before {
+	content: counter(dh-ct-next, decimal-leading-zero);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	line-height: 2;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-ct-request__form {
+	aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 56rem) {
+	.dh-ct-hero__grid {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: none;
+		grid-template-areas:
+			"intro"
+			"plan"
+			"pick"
+			"cards";
+		gap: var(--wp--preset--spacing--50);
+	}
+
+	.dh-ct-hero__grid .dh-ct-stage {
+		display: contents;
+	}
+
+	.dh-ct-hero__grid .dh-ct-plan {
+		grid-area: plan;
+	}
+
+	.dh-ct-hero__grid .dh-ct-cards {
+		grid-area: cards;
+	}
+
+	.dh-ct-request__grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--wp--preset--spacing--60);
+	}
 }
 
 @media (max-width: 56rem) {

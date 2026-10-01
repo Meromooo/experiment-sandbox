@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/branch-finder",
+	"title": "Branch Finder",
+	"category": "design",
+	"icon": "location-alt",
+	"description": "The Contact page's fifteen branches: a list of cities, the chosen branch's card (who answers there, address, opening hours, directions) and the branches drawn as an irrigation layout plan, Riyadh head office as the pump. Branches, people, addresses and hours come from the theme's branch list (inc/branches.php); a photo per branch is chosen in the sidebar. /contact-us/#branch-jed opens with Jeddah chosen. Works without JavaScript.",
+	"textdomain": "demas-theme",
+	"editorScript": "file:./index.tsx",
+	"style": "file:./style-index.css",
+	"viewScriptModule": "file:./view.ts",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"attributes": {
+		"photos": {
+			"type": "object",
+			"default": {}
+		}
+	}
+}

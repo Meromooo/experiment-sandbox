@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'DEMAS_THEME_VERSION', '0.4.0' );
+define( 'DEMAS_THEME_VERSION', '0.5.0' );
 define( 'DEMAS_THEME_DIR', get_template_directory() );
 
 $demas_theme_includes = array(
@@ -33,6 +33,7 @@ $demas_theme_includes = array(
 	'inc/sheet-view.php',
 	'inc/structured-data.php',
 	'inc/homepage.php',
+	'inc/contact.php',
 );
 
 foreach ( $demas_theme_includes as $demas_theme_include ) {

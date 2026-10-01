@@ -173,14 +173,36 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     AMM-153 that page holds the homepage's own blocks, no Kadence). Page photos get a `sizes` for the 46rem reading column and all but the
     first load lazily. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
     emails) redirects to the homepage Branch Desk, and the empty "All Products" page (`/shop/`)
-    to the catalogue at `/products/` (AMM-147) — both 302 until cutover. Live and sandbox share
+    to the catalogue at `/products/` (AMM-147) — both 302 until cutover. A retired page comes
+    back once it is set to the Designed page template (choosing the template is the switch, so
+    the old content is never served in between) — Contact Us does, as the Contact page
+    (AMM-169). Live and sandbox share
     the same URL structure (`/products/`, `/product/…`, `/product-category/…`), so product and
     category URLs survive cutover unchanged.
   - `branches.php` — the 15 branches as one list, keyed by the Branch Desk's three-letter
     codes (`demas_theme_get_branches()`: city, lat/lon, main) and `demas_theme_branch_url()`
     (`/#branch-jed`, which selects that city on the homepage Desk). AMM-140 will route by these
     codes. No email address belongs here. Each branch also carries its `person` (who answers
-    there), shown on the homepage Branch Desk (AMM-153) — names only, never an address.
+    there), shown on the homepage Branch Desk (AMM-153) — names only, never an address. Since
+    AMM-169 each also has `map` (its Google Maps link, from the live Contact Us page), `address`
+    and `hours`, read from those public listings on 2026-10-01 for Demas to confirm; the
+    listings' phone numbers are deliberately not copied. Hours are written as people read them
+    (`Sat-Thu 08:00-12:00 16:00-20:00; Fri closed`; empty = not listed) and parsed by
+    `demas_theme_branch_hours()` into display lines and a week of minutes.
+    `demas_theme_branch_plan_point()` is the one lat/lon → plan projection, used by the
+    footer's key plan and the Contact page's layout plan.
+  - `contact.php` — the Contact page (AMM-169): registers `demas-theme/branch-finder` (the
+    branches as a list of in-page links, the chosen branch's card — photo, who answers there,
+    address, hours with an "Open now" status worked out in Riyadh time in the browser,
+    directions — and the branches drawn as an **irrigation layout plan**: Riyadh head office
+    as the pump, a mainline along its latitude, a lateral to each branch's real position;
+    choosing a branch runs water to it and the head sprays). Works without JavaScript: every
+    city and plan head links to its card (`#branch-jed`) and CSS shows the `:target` one; the
+    view module (`src/branch-finder/view.ts`) swaps cards in place and announces choices as a
+    `demas-theme:branch` event for the request form. A photo per branch is the block's only
+    setting (its sidebar; the drawn placeholder until then), so the editor gets the branch
+    list as `window.demasThemeBranches`. The block's wrapper is `display: contents`; the
+    page's hero grid (`style.css` section 15) places its list and its stage (card over plan).
   - `footer.php` — registers the footer's two server-rendered blocks (AMM-144, 2026-09-28):
     `demas-theme/catalogue-index` (every group and subcategory, from the shared catalogue
     structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**: one dot
@@ -340,7 +362,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   the `services` pattern (`patterns/services.php`: core blocks, the Service Record job card,
   the category-cards **"List"** style for "What we install"; CSS in `style.css` section 15,
   `dh-svc-` classes); its hero opens on CSS like the homepage's (the AMM-168 rules, scoped to
-  `.page-template-designed-page .dh-svc-hero`). Version 0.4.0 for the new pattern file. There is no `single.html`: the site has
+  `.page-template-designed-page .dh-svc-hero`). Version 0.4.0 for the new pattern file. The
+  Contact Us page uses it with the `contact` pattern (`patterns/contact.php`, AMM-169: the
+  intro and the Branch Finder as the hero, then the request section; `dh-ct-` classes), its
+  hero opening the same way at 56rem and up. Version 0.5.0 for that pattern file. There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for
@@ -437,7 +462,7 @@ branch-routed contact form replaces published email addresses.
   keyed on the `Version:` in the root `style.css`, so a new pattern file is invisible — a
   `wp:pattern` pointing at it renders nothing — until that version changes. Bump `Version:` and
   `DEMAS_THEME_VERSION` in `functions.php` together (0.2.0 on 2026-09-27, for `not-found`;
-  0.3.0 on 2026-09-28, for `footer`).
+  0.3.0 on 2026-09-28, for `footer`; 0.4.0 for `services`; 0.5.0 on 2026-10-01, for `contact`).
 - **`three`, `@react-three/fiber`, `@react-three/drei` in `package.json`** are intentionally
   pre-installed, unused as of 2026-07-28. They're reserved for a planned phase-2 scroll-driven
   pipe/particle-flow scene (see the system design doc's "Future ideas" section) — not scope creep,

@@ -249,6 +249,11 @@ add_filter(
  * /products/. Anyone following an old /shop/ link lands on the catalogue.
  * (AMM-147.)
  *
+ * A retired page comes back once it is rebuilt on the "Designed page"
+ * template: Contact Us does (AMM-169), its content replaced by the contact
+ * pattern. Choosing the template is the switch, so the old content — the
+ * email addresses — is never served in between.
+ *
  * Filterable, so a retirement can be reversed without a theme change.
  *
  * @return array<string, string> Page slug => destination URL.
@@ -281,7 +286,7 @@ add_action(
 
 		$retired = demas_theme_retired_pages();
 
-		if ( isset( $retired[ $page->post_name ] ) ) {
+		if ( isset( $retired[ $page->post_name ] ) && 'designed-page' !== get_page_template_slug( $page ) ) {
 			wp_safe_redirect( $retired[ $page->post_name ], 302 );
 			exit;
 		}
