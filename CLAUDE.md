@@ -339,7 +339,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   column (and `inc/pages.php` leaves its photo `sizes` alone). The Services page uses it with
   the `services` pattern (`patterns/services.php`: core blocks, the Service Record job card,
   the category-cards **"List"** style for "What we install"; CSS in `style.css` section 15,
-  `dh-svc-` classes). Version 0.4.0 for the new pattern file. There is no `single.html`: the site has
+  `dh-svc-` classes); its hero opens on CSS like the homepage's (the AMM-168 rules, scoped to
+  `.page-template-designed-page .dh-svc-hero`). Version 0.4.0 for the new pattern file. There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for

@@ -715,7 +715,9 @@ svg {
  * in turn (--_step); nothing holds after the last frame, so the element's own
  * styles apply. The Branch Desk and the schematic join only where they sit
  * beside the head; narrower, they are below the fold and reveal on scroll.
- * .home keeps it off the editor canvas, which loads this file too.
+ * .home keeps it off the editor canvas, which loads this file too. The
+ * Services hero (a page on the "Designed page" template, AMM-167) opens the
+ * same way, its photo joining where it sits beside the head.
  */
 @keyframes dh-hero-rise {
 	from {
@@ -760,49 +762,60 @@ svg {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.home .dh-hero [data-reveal] {
+	.home .dh-hero [data-reveal],
+	.page-template-designed-page .dh-svc-hero [data-reveal] {
 		--_at: calc(var(--_step, 0) * var(--wp--custom--motion--stagger));
 		animation: var(--wp--custom--motion--base) var(--wp--custom--motion--ease) var(--_at) backwards;
 	}
 
-	.home .dh-hero [data-reveal="rise"] {
+	.home .dh-hero [data-reveal="rise"],
+	.page-template-designed-page .dh-svc-hero [data-reveal="rise"] {
 		animation-name: dh-hero-rise;
 	}
 
-	.home .dh-hero [data-reveal="dot"] {
+	.home .dh-hero [data-reveal="dot"],
+	.page-template-designed-page .dh-svc-hero [data-reveal="dot"] {
 		--_clip: inset(0 calc(100% - 2.4em) 0 0 round var(--wp--custom--radius--pill));
 		animation-name: dh-hero-dot;
 	}
 
-	[dir="rtl"] .home .dh-hero [data-reveal="dot"] {
+	[dir="rtl"] .home .dh-hero [data-reveal="dot"],
+	[dir="rtl"] .page-template-designed-page .dh-svc-hero [data-reveal="dot"] {
 		--_clip: inset(0 0 0 calc(100% - 2.4em) round var(--wp--custom--radius--pill));
 	}
 
-	.home .dh-hero [data-reveal="wipe"] {
+	.home .dh-hero [data-reveal="wipe"],
+	.page-template-designed-page .dh-svc-hero [data-reveal="wipe"] {
 		animation-name: dh-hero-wipe;
 	}
 
-	.home .dh-hero__title {
+	.home .dh-hero__title,
+	.page-template-designed-page .dh-svc-hero__title {
 		--_step: 1;
 	}
 
-	.home .dh-hero__lead {
+	.home .dh-hero__lead,
+	.page-template-designed-page .dh-svc-hero .dh-svc-lead {
 		--_step: 2;
 	}
 
 	/* The word sweeps two beats after its headline; the buttons follow the lead. */
 	.home .dh-hero .dh-highlight,
-	.home .dh-hero__actions > * {
+	.home .dh-hero__actions > *,
+	.page-template-designed-page .dh-svc-hero .dh-highlight,
+	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * {
 		--_step: 3;
 	}
 
-	.home .dh-hero__actions > * + * {
+	.home .dh-hero__actions > * + *,
+	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * + * {
 		--_step: 4;
 	}
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 56.0625rem) {
-	.home .dh-hero__grid > [data-reveal="seed"] {
+	.home .dh-hero__grid > [data-reveal="seed"],
+	.page-template-designed-page .dh-svc-hero__grid > [data-reveal="seed"] {
 		--_step: 3;
 		animation-name: dh-hero-seed;
 	}
