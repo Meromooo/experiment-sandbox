@@ -110,11 +110,11 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-cats__grid'
 			</span>
 			<span class="dh-cat__arrow" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="<?php echo $demas_outbound ? 'M7 17 17 7M8.5 7H17v8.5' : 'M5 12h14M13 6l6 6-6 6'; ?>"/></svg></span>
 		</a>
-		<?php if ( $demas_outbound ) : ?>
+			<?php if ( $demas_outbound ) : ?>
 			<span class="dh-cat__count dh-notch__tab" data-notch="top-start"><?php esc_html_e( 'Sister site', 'demas-theme' ); ?></span>
-		<?php else : ?>
+			<?php else : ?>
 			<span class="dh-cat__count dh-notch__tab" data-notch="top-start"><span class="dh-mono"><?php echo esc_html( number_format_i18n( $demas_card['count'] ) ); ?></span> <?php echo esc_html( _n( 'product', 'products', $demas_card['count'], 'demas-theme' ) ); ?></span>
-		<?php endif; ?>
+			<?php endif; ?>
 	</li>
 		<?php endif; ?>
 	<?php endforeach; ?>
