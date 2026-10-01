@@ -173,7 +173,9 @@ add_filter( 'kadence_blocks_print_google_fonts', '__return_false' );
  *    style.css) instead of the full-bleed width their srcset assumed, so a
  *    phone downloads a ~768px file, not a 1536px one; and every photo after
  *    the first loads lazily (AMM-154). WordPress leaves the first three
- *    images eager, which on Services was 865 KB up front.
+ *    images eager, which on Services was 865 KB up front. A page on the
+ *    "Designed page" template (AMM-167) has no reading column, so its photos
+ *    keep WordPress's own sizes; the lazy loading still applies.
  */
 add_filter(
 	'render_block_core/post-content',
@@ -186,11 +188,12 @@ add_filter(
 		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
 		$seen      = array();
 		$images    = 0;
+		$column    = 'designed-page' !== get_page_template_slug();
 		$processor = new WP_HTML_Tag_Processor( (string) $content );
 
 		while ( $processor->next_tag() ) {
 			if ( 'IMG' === $processor->get_tag() ) {
-				if ( $processor->get_attribute( 'srcset' ) ) {
+				if ( $column && $processor->get_attribute( 'srcset' ) ) {
 					$processor->set_attribute( 'sizes', '(max-width: 48rem) calc(100vw - 2rem), 46rem' );
 				}
 

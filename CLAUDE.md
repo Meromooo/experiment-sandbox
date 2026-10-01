@@ -333,7 +333,13 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   the toolbar, the catalogue cards with each product's part number instead of its price, and an
   empty state (`search-empty` block + the system index).
   `page.html` (title + content, readable measure) and `404.html` (the `not-found` pattern plus
-  the stage index for every system) added 2026-09-27. There is no `single.html`: the site has
+  the stage index for every system) added 2026-09-27. `designed-page.html` (AMM-167,
+  2026-10-01) is the **"Designed page"** custom template (`theme.json` `customTemplates`),
+  picked per page in the editor: post-content full width, no automatic title, no reading
+  column (and `inc/pages.php` leaves its photo `sizes` alone). The Services page uses it with
+  the `services` pattern (`patterns/services.php`: core blocks, the Service Record job card,
+  the category-cards **"List"** style for "What we install"; CSS in `style.css` section 15,
+  `dh-svc-` classes). Version 0.4.0 for the new pattern file. There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for

@@ -510,6 +510,13 @@
 			}
 		}
 	},
+	"customTemplates": [
+		{
+			"name": "designed-page",
+			"title": "Designed page",
+			"postTypes": [ "page" ]
+		}
+	],
 	"templateParts": [
 		{
 			"name": "header",

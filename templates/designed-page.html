@@ -1,0 +1,16 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!--
+	"Designed page" (theme.json customTemplates), chosen per page in the
+	editor's sidebar. The page's own blocks fill the width, as on the homepage:
+	no automatic title (the content brings its h1) and no reading column. The
+	Services page uses it (patterns/services.php, AMM-167). Named so it never
+	applies itself to a page by slug, as a page-*.html template would.
+-->
+<!-- wp:group {"tagName":"main","className":"dh-designed","layout":{"type":"default"}} -->
+<main class="wp-block-group dh-designed">
+	<!-- wp:post-content {"layout":{"type":"default"}} /-->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

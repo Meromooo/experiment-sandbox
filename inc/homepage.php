@@ -58,6 +58,16 @@ add_action(
 				)
 			);
 		}
+
+		// Compact rows instead of cards (src/category-cards/render.php):
+		// Services' "What we install" (AMM-167).
+		register_block_style(
+			'demas-theme/category-cards',
+			array(
+				'name'  => 'list',
+				'label' => __( 'List', 'demas-theme' ),
+			)
+		);
 	}
 );
 

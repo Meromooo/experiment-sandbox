@@ -13,6 +13,8 @@
  * 6. Marquee
  * 7. Motion        grow-from-seed reveals, container-then-content
  * 8. Blocks        core and WooCommerce adjustments, small-screen fixes
+ * 9.-14.          homepage, catalogue, product page, pages, footer, search
+ * 15. Designed pages   the Services page (AMM-167)
  */
 
 /* ------------------------------------------------------------------ */
@@ -420,7 +422,9 @@ svg {
 	inset-inline-start: 0;
 }
 
-.dh-notch__tab[data-notch="bottom-start"] {
+/* The same variant as a class, for a notch built from core blocks (AMM-167). */
+.dh-notch__tab[data-notch="bottom-start"],
+.dh-notch__tab--bottom-start {
 	--_cy: 0%;
 	inset-block-start: auto;
 	inset-block-end: 0;
@@ -429,18 +433,25 @@ svg {
 	border-start-end-radius: var(--_r);
 }
 
-.dh-notch__tab[data-notch="bottom-start"]::before {
+.dh-notch__tab[data-notch="bottom-start"]::before,
+.dh-notch__tab--bottom-start::before {
 	inset-block-start: auto;
 	inset-block-end: 0;
 }
 
-.dh-notch__tab[data-notch="bottom-start"]::after {
+.dh-notch__tab[data-notch="bottom-start"]::after,
+.dh-notch__tab--bottom-start::after {
 	inset-block-start: auto;
 	inset-block-end: 100%;
 }
 
 [dir="rtl"] .dh-notch__tab {
 	--_cx: 0%;
+}
+
+/* A notch built from blocks sits in a group: no block-layout gap above it. */
+.dh-notch > .dh-notch__tab {
+	margin: 0;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1282,7 +1293,8 @@ svg {
 	color: var(--wp--preset--color--ink);
 }
 
-.dh-schem__tab-title {
+.dh-schem__tab-title,
+.dh-notch__title {
 	margin: 0 0 0.15rem;
 	font-family: var(--wp--preset--font-family--display);
 	font-size: var(--wp--preset--font-size--lg);
@@ -1292,7 +1304,8 @@ svg {
 	line-height: 1.1;
 }
 
-.dh-schem__tab-copy {
+.dh-schem__tab-copy,
+.dh-notch__copy {
 	margin: 0;
 	font-size: var(--wp--preset--font-size--sm);
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
@@ -2619,4 +2632,847 @@ footer.wp-block-template-part {
 /* 404: the search sits between the explanation and the two ways out. */
 .dh-404__search {
 	margin-block: 0 var(--wp--preset--spacing--50);
+}
+
+/* ------------------------------------------------------------------ */
+/* 15. Designed pages — the Services page (AMM-167)                    */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Pages on the "Designed page" template (templates/designed-page.html) fill
+ * the width with their own blocks. These are the Services page's sections
+ * (patterns/services.php), all core blocks plus the category-cards "List"
+ * style. Section rhythm, the eyebrow, pills, the band and the notch come
+ * from the sections above; everything here is named dh-svc-.
+ */
+
+.dh-svc-hero {
+	padding-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--70);
+}
+
+.dh-svc-hero__grid,
+.dh-svc__grid,
+.dh-svc-band {
+	display: grid;
+	align-items: center;
+}
+
+.dh-svc-hero__grid {
+	grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	gap: var(--wp--preset--spacing--60);
+	align-items: end;
+}
+
+.dh-svc__grid {
+	grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+	gap: var(--wp--preset--spacing--70);
+}
+
+.dh-svc__grid--flip {
+	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
+/* Grid cells and side-by-side pieces, not stacked blocks: no layout gap. */
+:is(.dh-svc-hero__grid, .dh-svc__grid, .dh-svc-band, .dh-svc-record-stage, .dh-svc-collage, .dh-svc-two, .dh-svc-parts__head, .dh-svc-record__head, .dh-svc-record__sign, .dh-svc-record) > * {
+	margin-block: 0;
+}
+
+.dh-svc {
+	scroll-margin-block-start: var(--wp--preset--spacing--40);
+}
+
+:is(.dh-svc-hero__copy, .dh-svc__copy, .dh-svc-band__copy) > .dh-eyebrow {
+	margin-block: 0 var(--wp--preset--spacing--40);
+}
+
+/* "01", "02", "03" in a section's eyebrow: the step's number, in data type. */
+.dh-svc .dh-eyebrow strong {
+	font-family: var(--wp--preset--font-family--mono);
+	font-weight: 500;
+	color: var(--wp--preset--color--canopy);
+	letter-spacing: 0.04em;
+}
+
+.dh-svc-hero__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--xxxl);
+	line-height: var(--wp--custom--display--leading);
+}
+
+.dh-svc__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	font-size: var(--wp--preset--font-size--xxl);
+}
+
+.dh-svc-lead,
+.dh-svc__text {
+	margin-block: 0;
+	max-inline-size: 36rem;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+}
+
+.dh-svc-lead {
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.5;
+}
+
+.dh-svc-actions {
+	margin-block: var(--wp--preset--spacing--50) 0;
+	gap: var(--wp--preset--spacing--20);
+}
+
+/* Photos: core Image blocks, cropped to the frame they sit in. */
+:is(.dh-svc-photo, .dh-svc-media, .dh-svc-record__photo, .dh-svc-collage__a, .dh-svc-collage__b) {
+	margin: 0;
+}
+
+:is(.dh-svc-photo, .dh-svc-media, .dh-svc-record__photo, .dh-svc-collage__a, .dh-svc-collage__b) img {
+	display: block;
+	inline-size: 100%;
+	block-size: auto;
+	border-radius: var(--wp--custom--radius--lg);
+	object-fit: cover;
+}
+
+.dh-svc-photo img {
+	aspect-ratio: 3 / 4;
+	max-block-size: 40rem;
+}
+
+.dh-svc-media img {
+	aspect-ratio: 4 / 3;
+}
+
+.dh-svc-hero__media .dh-notch__tab {
+	max-inline-size: min(70%, 18rem);
+}
+
+/* The stage line: three stations on one line, linking down the page. */
+.dh-svc-stages__list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-block: var(--wp--custom--rule);
+}
+
+.dh-svc-stages__list li {
+	position: relative;
+	margin: 0;
+}
+
+.dh-svc-stages__list li:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	inset-block-start: 50%;
+	inset-inline-start: 0.45rem;
+	inline-size: 100%;
+	border-block-start: 2px solid var(--wp--preset--color--field);
+}
+
+.dh-svc-stages__list a {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--30);
+	min-block-size: 2.75rem;
+	padding-block: var(--wp--preset--spacing--40);
+	padding-inline-end: var(--wp--preset--spacing--30);
+	background: var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--ink);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1.2;
+	text-decoration: none;
+}
+
+.dh-svc-stages__list a::before {
+	content: "";
+	flex: none;
+	inline-size: 0.9rem;
+	block-size: 0.9rem;
+	border: 2px solid var(--wp--preset--color--field);
+	border-radius: 50%;
+	background: var(--wp--preset--color--paper);
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-svc-stages__list a:hover::before,
+.dh-svc-stages__list a:focus-visible::before {
+	background: var(--wp--preset--color--field);
+	transform: scale(1.25);
+}
+
+.dh-svc-stages__list strong {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	color: var(--wp--preset--color--canopy);
+}
+
+/* 01 Survey: what a site visit checks, as labelled rows. */
+.dh-svc__label {
+	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	font-stretch: normal;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.dh-svc-checks {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-svc-checks li {
+	display: grid;
+	grid-template-columns: 11rem minmax(0, 1fr);
+	gap: var(--wp--preset--spacing--40);
+	margin: 0;
+	padding-block: var(--wp--preset--spacing--30);
+	border-block-end: var(--wp--custom--rule);
+}
+
+.dh-svc-checks strong {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	line-height: 1.7;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-svc-outcome {
+	display: flex;
+	gap: 0.6rem;
+	align-items: baseline;
+	margin-block: var(--wp--preset--spacing--50) 0;
+	font-weight: 500;
+}
+
+.dh-svc-outcome::before {
+	content: "→";
+	flex: none;
+	color: var(--wp--preset--color--field);
+	font-weight: 600;
+}
+
+/* A photo still to come, drawn the way a layout marks an empty frame. */
+.dh-svc-placeholder {
+	position: relative;
+	display: grid;
+	place-items: center;
+	aspect-ratio: 4 / 5;
+	padding: var(--wp--preset--spacing--50);
+	border-radius: var(--wp--custom--radius--lg);
+	background:
+		linear-gradient(to top right, transparent calc(50% - 0.6px), color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent) 50%, transparent calc(50% + 0.6px)),
+		linear-gradient(to bottom right, transparent calc(50% - 0.6px), color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent) 50%, transparent calc(50% + 0.6px)),
+		repeating-linear-gradient(0deg, transparent 0 23px, color-mix(in srgb, var(--wp--preset--color--ink) 5%, transparent) 23px 24px),
+		repeating-linear-gradient(90deg, transparent 0 23px, color-mix(in srgb, var(--wp--preset--color--ink) 5%, transparent) 23px 24px),
+		var(--wp--preset--color--sand);
+}
+
+.dh-svc-placeholder::after {
+	content: "";
+	position: absolute;
+	inset: var(--wp--preset--spacing--40);
+	border: 1px dashed color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
+	border-radius: var(--wp--custom--radius--md);
+	pointer-events: none;
+}
+
+.dh-svc-placeholder__chip {
+	position: relative;
+	z-index: 1;
+	max-inline-size: 16rem;
+	margin: 0;
+	padding: 0.7rem 1rem;
+	border-radius: var(--wp--custom--radius--sm);
+	background: var(--wp--preset--color--paper);
+	box-shadow: var(--wp--preset--shadow--card);
+	text-align: center;
+}
+
+.dh-svc-placeholder__chip > * {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.dh-svc-placeholder__chip > .dh-svc-placeholder__label {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--canopy);
+}
+
+/* 02 Installation: the work set on a sand plate. */
+.dh-svc--plate {
+	padding-block: var(--wp--preset--spacing--20);
+}
+
+.dh-svc-plate {
+	padding: var(--wp--preset--spacing--70);
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--sand);
+}
+
+.dh-svc-parts {
+	margin-block: var(--wp--preset--spacing--60) 0;
+	border-block-start: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+}
+
+.dh-svc-parts__head {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--wp--preset--spacing--20) var(--wp--preset--spacing--40);
+	padding-block: var(--wp--preset--spacing--50) var(--wp--preset--spacing--40);
+}
+
+.dh-svc-parts__title {
+	font-size: var(--wp--preset--font-size--xl);
+}
+
+.dh-svc-parts__all {
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+}
+
+.dh-svc-parts > .dh-cats__grid {
+	margin-block: 0;
+}
+
+/* The category-cards "List" style: compact rows into the catalogue. */
+.dh-cats__grid.is-style-list {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--wp--preset--spacing--30);
+}
+
+.dh-cat-row {
+	margin: 0;
+}
+
+.dh-cat-row__link {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--wp--preset--spacing--40);
+	min-block-size: 4.75rem;
+	padding: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+	border-radius: var(--wp--custom--radius--md);
+	background: var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--ink);
+	text-decoration: none;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-cat-row__link:hover,
+.dh-cat-row__link:focus-visible {
+	background: var(--wp--preset--color--white);
+	box-shadow: var(--wp--preset--shadow--card);
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-cat-row__link:focus-visible {
+	border-radius: var(--wp--custom--radius--md);
+}
+
+.dh-cat-row__icon {
+	color: var(--wp--preset--color--canopy);
+	line-height: 0;
+}
+
+.dh-cat-row__icon svg {
+	inline-size: 2.25rem;
+	block-size: 2.25rem;
+}
+
+.dh-cat-row__name {
+	display: block;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: -0.01em;
+	line-height: 1.1;
+}
+
+.dh-cat-row__count {
+	display: block;
+	margin-block-start: 0.2rem;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-cat-row__count b {
+	font-weight: 500;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-cat-row__arrow {
+	color: var(--wp--preset--color--canopy);
+	line-height: 0;
+	transition: translate var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-cat-row__link:hover .dh-cat-row__arrow,
+.dh-cat-row__link:focus-visible .dh-cat-row__arrow {
+	translate: 3px 0;
+}
+
+[dir="rtl"] .dh-cat-row__arrow svg {
+	transform: scaleX(-1);
+}
+
+/* 03 Maintenance: routine and emergency, side by side. */
+.dh-svc-two {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--wp--preset--spacing--50);
+	margin-block: var(--wp--preset--spacing--50) 0;
+}
+
+.dh-svc-two h3 {
+	margin-block: 0 var(--wp--preset--spacing--20);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	font-stretch: normal;
+	letter-spacing: 0.08em;
+	line-height: 1.3;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-svc-two p {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+}
+
+/*
+ * The Service Record: a technician's job card laid at an angle over the
+ * photo, ruled like the footer's drawing sheet. When it scrolls in (the
+ * reveal's .is-in, main.js) its ticks fill one by one and the warranty stamp
+ * lands once. Every word on it is a block an editor can change.
+ */
+.dh-svc-record-stage {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	padding-block-end: var(--wp--preset--spacing--60);
+}
+
+.dh-svc-record__photo {
+	grid-column: 4 / -1;
+	grid-row: 1;
+}
+
+.dh-svc-record__photo img {
+	aspect-ratio: 4 / 5;
+}
+
+.dh-svc-record {
+	position: relative;
+	grid-column: 1 / 11;
+	grid-row: 1;
+	align-self: end;
+	margin-block-end: calc(-1 * var(--wp--preset--spacing--60));
+	padding: var(--wp--preset--spacing--50);
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+	border-radius: var(--wp--custom--radius--sm);
+	background: var(--wp--preset--color--white);
+	box-shadow: var(--wp--preset--shadow--raised);
+	font-size: var(--wp--preset--font-size--sm);
+	rotate: -1.5deg;
+}
+
+.dh-svc-record__head {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--wp--preset--spacing--40);
+	padding-block-end: var(--wp--preset--spacing--30);
+	border-block-end: 2px solid var(--wp--preset--color--ink);
+}
+
+.dh-svc-record__title {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	font-stretch: normal;
+	letter-spacing: 0.16em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.dh-svc-record__brand {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	line-height: 1;
+}
+
+.dh-svc-record__fields {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-block-end: var(--wp--custom--rule);
+}
+
+.dh-svc-record__fields li {
+	margin: 0;
+	padding: var(--wp--preset--spacing--30) var(--wp--preset--spacing--30) var(--wp--preset--spacing--30) 0;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.dh-svc-record__fields li + li {
+	padding-inline-start: var(--wp--preset--spacing--30);
+	border-inline-start: var(--wp--custom--rule);
+}
+
+.dh-svc-record__fields strong {
+	display: block;
+	margin-block-end: 0.2rem;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+.dh-svc-record__checks {
+	display: grid;
+	gap: var(--wp--preset--spacing--20);
+	margin: 0;
+	padding: var(--wp--preset--spacing--40) 0;
+	list-style: none;
+}
+
+.dh-svc-record__checks li {
+	position: relative;
+	margin: 0;
+	padding-inline-start: 1.9rem;
+	line-height: 1.4;
+}
+
+/* The box, and the tick drawn inside it. */
+.dh-svc-record__checks li::before {
+	content: "";
+	position: absolute;
+	inset-inline-start: 0;
+	inset-block-start: 0.05rem;
+	inline-size: 1.15rem;
+	block-size: 1.15rem;
+	border: 1.5px solid var(--wp--preset--color--ink);
+	border-radius: 2px;
+}
+
+.dh-svc-record__checks li::after {
+	content: "";
+	position: absolute;
+	inset-inline-start: 0.42rem;
+	inset-block-start: 0.12rem;
+	inline-size: 0.42rem;
+	block-size: 0.78rem;
+	border-inline-end: 2.5px solid var(--wp--preset--color--canopy);
+	border-block-end: 2.5px solid var(--wp--preset--color--canopy);
+	rotate: 40deg;
+}
+
+.dh-svc-record__checks li:nth-child(2)::after {
+	--n: 1;
+}
+
+.dh-svc-record__checks li:nth-child(3)::after {
+	--n: 2;
+}
+
+.dh-svc-record__checks li:nth-child(4)::after {
+	--n: 3;
+}
+
+.dh-svc-record__checks li:nth-child(5)::after {
+	--n: 4;
+}
+
+.dh-svc-record__checks li:nth-child(6)::after {
+	--n: 5;
+}
+
+.dh-svc-record__sign {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--wp--preset--spacing--50);
+	padding-block-start: var(--wp--preset--spacing--40);
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-svc-record__sign p {
+	padding-block-start: var(--wp--preset--spacing--50);
+	border-block-end: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.12em;
+	line-height: 1;
+	text-transform: uppercase;
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+}
+
+/* The stamp: inked once, at an angle, over the signature line. */
+.dh-svc-stamp {
+	position: absolute;
+	inset-inline-end: var(--wp--preset--spacing--50);
+	inset-block-end: calc(-1 * var(--wp--preset--spacing--50));
+	display: grid;
+	place-content: center;
+	justify-items: center;
+	inline-size: 7rem;
+	aspect-ratio: 1;
+	margin: 0;
+	border: 3px solid var(--wp--preset--color--canopy);
+	border-radius: 50%;
+	box-shadow:
+		inset 0 0 0 4px var(--wp--preset--color--white),
+		inset 0 0 0 5.5px var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--canopy);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 0.5625rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	line-height: 1.3;
+	text-align: center;
+	text-transform: uppercase;
+	rotate: -12deg;
+	opacity: 0.92;
+	mix-blend-mode: multiply;
+	pointer-events: none;
+}
+
+.dh-svc-stamp strong {
+	display: block;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 2.75rem;
+	font-weight: 700;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: -0.03em;
+	line-height: 0.85;
+}
+
+.js .dh-svc-record:not(.is-in) .dh-svc-record__checks li::after {
+	clip-path: inset(0 0 100% 0);
+}
+
+.js .dh-svc-record:not(.is-in) .dh-svc-stamp {
+	opacity: 0;
+}
+
+.js .dh-svc-record.is-in .dh-svc-record__checks li::after {
+	animation: dh-svc-tick var(--wp--custom--motion--base) var(--wp--custom--motion--ease) calc(var(--n, 0) * 140ms + 400ms) both;
+}
+
+.js .dh-svc-record.is-in .dh-svc-stamp {
+	animation: dh-svc-stamp var(--wp--custom--motion--slow) cubic-bezier(0.3, 1.5, 0.5, 1) 1.25s both;
+}
+
+@keyframes dh-svc-tick {
+	from {
+		clip-path: inset(0 0 100% 0);
+	}
+
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@keyframes dh-svc-stamp {
+	from {
+		opacity: 0;
+		scale: 1.4;
+		rotate: -24deg;
+	}
+
+	to {
+		opacity: 0.92;
+		scale: 1;
+		rotate: -12deg;
+	}
+}
+
+/* Call to action: the canopy band with the photo collage. */
+.dh-svc-cta {
+	padding-block-end: var(--wp--preset--spacing--80);
+}
+
+.dh-svc-band {
+	grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+	gap: var(--wp--preset--spacing--60);
+}
+
+.dh-svc-band .dh-band__title {
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+}
+
+.dh-svc-band__copy > .wp-block-buttons {
+	margin-block: var(--wp--preset--spacing--50);
+	gap: var(--wp--preset--spacing--20);
+}
+
+.dh-svc-band__meta {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.5;
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 72%, transparent);
+}
+
+.dh-svc-collage {
+	position: relative;
+	padding-block-end: var(--wp--preset--spacing--60);
+}
+
+.dh-svc-collage__a img {
+	aspect-ratio: 16 / 11;
+}
+
+.dh-svc-collage__b {
+	position: absolute;
+	inset-inline-start: -10%;
+	inset-block-end: 0;
+	inline-size: 56%;
+}
+
+.dh-svc-collage__b img {
+	aspect-ratio: 16 / 10;
+	border-radius: var(--wp--custom--radius--md);
+	outline: 6px solid var(--wp--preset--color--canopy);
+}
+
+@media (max-width: 56rem) {
+	.dh-svc-hero__grid,
+	.dh-svc__grid,
+	.dh-svc__grid--flip,
+	.dh-svc-band {
+		grid-template-columns: 1fr;
+	}
+
+	.dh-svc-photo img {
+		aspect-ratio: 4 / 3;
+	}
+
+	.dh-svc-stages__list {
+		grid-template-columns: 1fr;
+		padding-block: var(--wp--preset--spacing--30);
+	}
+
+	/* The stage line runs down the page. */
+	.dh-svc-stages__list li:not(:last-child)::after {
+		inline-size: 0;
+		block-size: 100%;
+		border-block-start: 0;
+		border-inline-start: 2px solid var(--wp--preset--color--field);
+	}
+
+	.dh-svc-stages__list a {
+		padding-block: var(--wp--preset--spacing--20);
+	}
+
+	.dh-svc-plate {
+		padding: var(--wp--preset--spacing--50);
+	}
+
+	.dh-cats__grid.is-style-list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.dh-svc-record-stage {
+		grid-template-columns: 1fr;
+	}
+
+	.dh-svc-record__photo {
+		grid-column: 1;
+	}
+
+	.dh-svc-record__photo img {
+		aspect-ratio: 4 / 3;
+	}
+
+	.dh-svc-record {
+		grid-column: 1;
+		grid-row: 2;
+		margin-block: calc(-1 * var(--wp--preset--spacing--70)) 0;
+		margin-inline: var(--wp--preset--spacing--30);
+		rotate: none;
+	}
+
+	.dh-svc-stamp {
+		inset-inline-end: var(--wp--preset--spacing--30);
+		inline-size: 6rem;
+	}
+
+	.dh-svc-collage__b {
+		inset-inline-start: var(--wp--preset--spacing--30);
+	}
+}
+
+@media (max-width: 36rem) {
+	.dh-cats__grid.is-style-list,
+	.dh-svc-two,
+	.dh-svc-record__fields {
+		grid-template-columns: 1fr;
+	}
+
+	.dh-svc-checks li {
+		grid-template-columns: 1fr;
+		gap: 0.1rem;
+	}
+
+	.dh-svc-record__fields li + li {
+		padding-inline-start: 0;
+		border-inline-start: 0;
+		border-block-start: var(--wp--custom--rule);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-svc-stages__list a::before,
+	.dh-cat-row__link,
+	.dh-cat-row__arrow {
+		transition: none;
+	}
+
+	.js .dh-svc-record.is-in .dh-svc-record__checks li::after,
+	.js .dh-svc-record:not(.is-in) .dh-svc-record__checks li::after {
+		animation: none;
+		clip-path: none;
+	}
+
+	.js .dh-svc-record.is-in .dh-svc-stamp,
+	.js .dh-svc-record:not(.is-in) .dh-svc-stamp {
+		animation: none;
+		opacity: 0.92;
+	}
 }
