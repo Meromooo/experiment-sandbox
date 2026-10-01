@@ -260,10 +260,15 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     `main.js` and the motion CSS barely change. A `data-reveal-group` numbers only **its own**
     reveals (`main.js`): a group inside it numbers itself, and a reveal inside another reveal
     (the highlighted word) inherits its container's `--i` and sweeps two beats after it — so no
-    inline `--i` is needed. A reveal that grows out of a clip (`dot`, `sliver`, `bar`) **drops the
-    clip once it lands** (`main.js` adds `.is-settled` on the clip-path `transitionend`; with
-    reduced motion there is no clip at all): left in place it cut off focus rings, the
-    credentials' tooltips, the category cards' hover shadow and the first digit of their counts.
+    inline `--i` is needed. **A reveal steps aside once it lands** (AMM-166): its starting state
+    applies only `:not(.is-in)`, so it lands on the element's own values and asserts none of its
+    own; once the element's own transitions have finished (`getAnimations()` — at once if none
+    ran, which happens to the hero when it is already in view at load) `main.js` adds
+    `.is-settled`, which ends the reveal's transition and drops the clip of `dot`, `sliver` and
+    `bar` (with reduced motion there is no clip at all). The clip left in place cut off focus rings, the credentials' tooltips, the
+    category cards' hover shadow and the first digit of their counts; the reveal's
+    `transform: none` and transition, left in place, outranked the cards' own hover lift (it never
+    showed) — so a component styles its own revealed element as usual, no special case needed.
     Core blocks inside a group get the block
     layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
     defaults has to be written down — see the section eyebrows in `style.css` section 9.

@@ -541,6 +541,11 @@ svg {
  * and sets --i on children of [data-reveal-group] for stagger. Without JS the
  * .js gate never matches, so everything renders in its final state.
  *
+ * A reveal only ever *removes* its starting state (:not(.is-in)), so it lands
+ * on the element's own values and asserts nothing once in. Its transition
+ * lasts until main.js marks it .is-settled; after that the element's own
+ * transforms and transitions apply — a card's hover lift, at the card's speed.
+ *
  * Core blocks carry these as classes instead (dh-reveal--rise, dh-reveal-group,
  * dh-reveal-content …), which inc/homepage.php turns into the same attributes
  * when the block is rendered.
@@ -550,6 +555,9 @@ svg {
 	--_d: var(--wp--custom--motion--base);
 	--_e: var(--wp--custom--motion--ease);
 	--_delay: calc(var(--i, 0) * var(--wp--custom--motion--stagger));
+}
+
+.js [data-reveal]:not(.is-settled) {
 	transition:
 		transform var(--_d) var(--_e) var(--_delay),
 		opacity var(--_d) var(--_e) var(--_delay),
@@ -557,7 +565,7 @@ svg {
 		background-size var(--_d) var(--_e) var(--_delay);
 }
 
-.js [data-reveal="rise"] {
+.js [data-reveal="rise"]:not(.is-in) {
 	transform: translateY(12px);
 	opacity: 0;
 }
@@ -569,8 +577,11 @@ svg {
  * as soon as the card's top edge is.
  */
 .js [data-reveal="seed"] {
-	transform: scale(0.12);
 	transform-origin: 0% 0%;
+}
+
+.js [data-reveal="seed"]:not(.is-in) {
+	transform: scale(0.12);
 	opacity: 0;
 }
 
@@ -604,7 +615,7 @@ svg {
 	clip-path: inset(42% 0 42% 0 round var(--_r));
 }
 
-.js [data-reveal="wipe"] {
+.js [data-reveal="wipe"]:not(.is-in) {
 	background-size: 0% 100%;
 }
 
@@ -618,12 +629,6 @@ svg {
 	background-position: 100% 0;
 }
 
-.js [data-reveal].is-in {
-	transform: none;
-	opacity: 1;
-	background-size: 100% 100%;
-}
-
 /*
  * Only the reveals that start clipped end clipped — to the card's own radius,
  * so the settled shape matches its border. Applying the rounded inset to every
@@ -635,7 +640,7 @@ svg {
 }
 
 /*
- * Once landed, the clip goes (main.js adds .is-settled when the clip-path
+ * Once landed, the clip goes (main.js adds .is-settled when the reveal's
  * transition ends). Left in place, it cut off everything drawn outside the
  * element: a pill's focus ring, a credential's tooltip, a card's hover
  * shadow. The element's own border-radius keeps the same shape.
@@ -656,7 +661,7 @@ svg {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.js [data-reveal],
+	.js [data-reveal]:not(.is-in),
 	.js [data-reveal].is-in,
 	.js [data-reveal] [data-reveal-content] {
 		transition: none;

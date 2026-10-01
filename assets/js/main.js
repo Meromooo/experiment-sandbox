@@ -60,15 +60,23 @@
 		});
 	}
 
-	// A reveal that grows out of a clip drops the clip once it has landed
-	// (.is-settled, style.css section 7), so nothing drawn outside the element
-	// stays cut off: a focus ring, a tooltip, a hover shadow.
-	function settleAfterReveal(el) {
-		el.addEventListener('transitionend', function done(event) {
-			if (event.target === el && event.propertyName === 'clip-path') {
-				el.classList.add('is-settled');
-				el.removeEventListener('transitionend', done);
-			}
+	// Once a reveal has landed it settles (.is-settled, style.css section 7):
+	// its transition and clip let go, so the element's own transforms and
+	// transitions apply (a card's hover lift) and nothing drawn outside it
+	// stays cut off (a focus ring, a tooltip, a hover shadow). It waits for the
+	// element's own transitions, not its children's. With none running — it was
+	// already in its final state, so no transitionend would ever come — it
+	// settles at once.
+	function reveal(el) {
+		el.classList.add('is-in');
+		if (!el.getAnimations) {
+			return;
+		}
+		var running = el.getAnimations().map(function (animation) {
+			return animation.finished;
+		});
+		Promise.allSettled(running).then(function () {
+			el.classList.add('is-settled');
 		});
 	}
 
@@ -81,8 +89,7 @@
 			function (entries) {
 				entries.forEach(function (entry) {
 					if (entry.isIntersecting) {
-						settleAfterReveal(entry.target);
-						entry.target.classList.add('is-in');
+						reveal(entry.target);
 						revealObserver.unobserve(entry.target);
 					}
 				});
