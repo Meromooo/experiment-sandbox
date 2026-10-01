@@ -2685,6 +2685,12 @@ footer.wp-block-template-part {
 	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
 }
 
+/* Maintenance: the photo and the Service Record laid over it need the wider
+   column, or the card covers the photo. */
+.dh-svc__grid:has(> .dh-svc-record-stage) {
+	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
 /* Grid cells and side-by-side pieces, not stacked blocks: no layout gap. */
 :is(.dh-svc-hero__grid, .dh-svc__grid, .dh-svc-band, .dh-svc-record-stage, .dh-svc-collage, .dh-svc-two, .dh-svc-parts__head, .dh-svc-record__head, .dh-svc-record__sign, .dh-svc-record) > * {
 	margin-block: 0;
@@ -3089,7 +3095,7 @@ footer.wp-block-template-part {
 .dh-svc-record-stage {
 	display: grid;
 	grid-template-columns: repeat(12, minmax(0, 1fr));
-	padding-block-end: var(--wp--preset--spacing--60);
+	padding-block-end: var(--wp--preset--spacing--70);
 }
 
 .dh-svc-record__photo {
@@ -3103,10 +3109,10 @@ footer.wp-block-template-part {
 
 .dh-svc-record {
 	position: relative;
-	grid-column: 1 / 11;
+	grid-column: 1 / 10;
 	grid-row: 1;
 	align-self: end;
-	margin-block-end: calc(-1 * var(--wp--preset--spacing--60));
+	margin-block-end: calc(-1 * var(--wp--preset--spacing--70));
 	padding: var(--wp--preset--spacing--50);
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
 	border-radius: var(--wp--custom--radius--sm);
