@@ -164,7 +164,16 @@
 	transition: color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-branch__city {
+/*
+ * The name and, on the main branch, its tag. In a narrow column the tag
+ * wraps under the name rather than over it; the name keeps its line beside
+ * the code (a two-word name wraps inside itself, as before).
+ */
+.dh-branch__name {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.15rem 0.6em;
 	min-inline-size: 0;
 }
 

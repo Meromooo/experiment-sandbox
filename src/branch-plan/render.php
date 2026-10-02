@@ -127,10 +127,12 @@ $demas_wrapper    = get_block_wrapper_attributes( array( 'class' => 'dh-bplan' )
 				<li>
 					<a class="dh-branch" href="<?php echo esc_url( demas_theme_branch_url( $demas_code ) ); ?>" data-branch-link="<?php echo esc_attr( sanitize_key( $demas_code ) ); ?>">
 						<span class="dh-branch__code" aria-hidden="true"><?php echo esc_html( strtoupper( $demas_code ) ); ?></span>
-						<span class="dh-branch__city"><?php echo esc_html( $demas_branch['city'] ); ?></span>
-						<?php if ( ! empty( $demas_branch['main'] ) ) : ?>
-							<span class="dh-branch__tag"><?php esc_html_e( 'Main', 'demas-theme' ); ?></span>
-						<?php endif; ?>
+						<span class="dh-branch__name">
+							<span class="dh-branch__city"><?php echo esc_html( $demas_branch['city'] ); ?></span>
+							<?php if ( ! empty( $demas_branch['main'] ) ) : ?>
+								<span class="dh-branch__tag"><?php esc_html_e( 'Main', 'demas-theme' ); ?></span>
+							<?php endif; ?>
+						</span>
 					</a>
 				</li>
 			<?php endforeach; ?>
