@@ -57,6 +57,35 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   theme (they would deploy to the site). Installed 2026-09-29 as the skill file only
   (`~/.claude/skills/ponytail/SKILL.md`, from github.com/DietrichGebert/ponytail, MIT) — not the
   plugin, whose hooks would switch it on for every session.
+- **`design-taste-frontend`** (the "taste skill", added 2026-10-02 at Ammar's request) — a
+  strict design critic for **marketing surfaces only**: the homepage, Services, Contact, the
+  404 and the footer. Not for the catalogue, sheet view, product datasheet, search, finder or
+  quote list (the skill itself excludes data tables and product UI), and never for debugging,
+  PHP or performance (ponytail). It is expensive (~35k tokens), so:
+  1. **Invoke it once per marketing-page task**, at the plan or audit step, alongside the two
+     front-end skills — not on every turn of the build.
+  2. **Start with its one-line "design read".** For Demas: trust-first B2B (contractors,
+     municipalities, facility managers), not premium consumer — which keeps its consumer-only
+     rules (the cream/brass palette ban) from firing.
+  3. **Use its "redesign — preserve" mode** (its section 11): URLs, nav labels and content stay
+     stable, which the cutover (AMM-158) depends on.
+  4. **Run its final pre-flight checklist (its section 14) as an audit**; findings go to
+     Linear, and fixes follow the usual plan → go-ahead → build flow.
+
+  **Its rules apply to the site's visible copy and layout** — Ammar likes them, including the
+  hero subtext ≤ 20 words, max one eyebrow per three sections, max one middle dot per line,
+  and **no em dash or en dash in anything a visitor reads**. (Repo docs, code comments, commit
+  messages and Linear are not site copy; the dash ban does not reach them.)
+
+  **It does not override decisions already locked here:** the stack stays a WordPress block
+  theme with plain CSS and `theme.json` tokens (install none of the React / Tailwind / Motion /
+  design-system packages it names); the hand-drawn schematic icon set stays (its "never
+  hand-roll SVG icons" rule is overridden); the theme is light-only until Ammar decides
+  otherwise (its mandatory dark mode is not applied); no stock or picsum photography on the
+  site (real photos wait on AMM-149); the branch-city marquee is real content, not a "locale
+  strip". Installed as a project skill in the main checkout's `.claude/skills/` (from
+  github.com/leonxlnx/taste-skill, commit ce26fc2, MIT), kept out of git by
+  `.git/info/exclude` so it never deploys into the theme folder.
 
 ## Version targets
 
