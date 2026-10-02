@@ -3527,7 +3527,7 @@ footer.wp-block-template-part {
 	line-height: var(--wp--custom--display--leading);
 }
 
-/* The request: what to expect, beside the form. */
+/* The request: what to expect, beside the form (src/request-form). */
 .dh-ct-request {
 	padding-block: var(--wp--preset--spacing--70) var(--wp--preset--spacing--80);
 	scroll-margin-block-start: var(--wp--preset--spacing--40);
@@ -3580,10 +3580,6 @@ footer.wp-block-template-part {
 	font-weight: 500;
 	line-height: 2;
 	color: var(--wp--preset--color--canopy);
-}
-
-.dh-ct-request__form {
-	aspect-ratio: 4 / 3;
 }
 
 @media (max-width: 56rem) {

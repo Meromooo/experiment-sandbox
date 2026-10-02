@@ -292,6 +292,12 @@ function init( root: HTMLElement ): void {
 			: root.dataset.default ?? main;
 
 	select( first, { animate: false, told: true } );
+	// Tell the request form, without announcing: nobody chose anything yet.
+	document.dispatchEvent(
+		new CustomEvent< BranchEvent >( 'demas-theme:branch', {
+			detail: { code: first, source: 'finder' },
+		} )
+	);
 	if ( first !== main ) {
 		timer = window.setTimeout(
 			() => run( first, true ),
@@ -306,3 +312,6 @@ function init( root: HTMLElement ): void {
 document
 	.querySelectorAll< HTMLElement >( '[data-branch-finder]' )
 	.forEach( init );
+
+// A module, not a script: its names stay its own.
+export {};

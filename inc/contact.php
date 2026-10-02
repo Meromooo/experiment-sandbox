@@ -3,13 +3,18 @@
  * The Contact page (AMM-169): registers its server-rendered blocks.
  *
  * The page is a page on the "Designed page" template whose content is the
- * contact pattern (patterns/contact.php): core blocks for its copy, and
+ * contact pattern (patterns/contact.php): core blocks for its copy, and two
+ * theme blocks:
  *
  *  - demas-theme/branch-finder — the fifteen branches as a list, the chosen
  *    one's card (who answers there, address, hours, directions) and the
  *    branches drawn as an irrigation layout plan. All of it comes from the
  *    branch list in inc/branches.php; a photo per branch is the block's one
- *    setting, chosen in its sidebar.
+ *    setting, chosen in its sidebar;
+ *  - demas-theme/request-form — the request: what the buyer needs, the
+ *    branch (kept in step with the finder), their details and message, and
+ *    their quote list. Front end only: AMM-140 connects sending; until then
+ *    Send says so, and nothing typed leaves the browser.
  *
  * It lives at /contact-us/, the live site's URL. That page was retired while
  * it was the cloned page publishing staff email addresses, and comes back
@@ -25,10 +30,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'init',
 	function () {
-		$build_path = DEMAS_THEME_DIR . '/build/branch-finder';
+		foreach ( array( 'branch-finder', 'request-form' ) as $block ) {
+			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
-		if ( file_exists( $build_path . '/block.json' ) ) {
-			register_block_type( $build_path );
+			if ( file_exists( $build_path . '/block.json' ) ) {
+				register_block_type( $build_path );
+			}
 		}
 	}
 );

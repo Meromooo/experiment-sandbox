@@ -336,7 +336,8 @@
 				"pill": "999px"
 			},
 			"notch": "18px",
-			"rule": "1px solid color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent)",
+			"alert": "#A3361F",
+			"rule":"1px solid color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent)",
 			"motion": {
 				"fast": "250ms",
 				"base": "400ms",

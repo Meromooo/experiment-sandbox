@@ -232,6 +232,17 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     setting (its sidebar; the drawn placeholder until then), so the editor gets the branch
     list as `window.demasThemeBranches`. The block's wrapper is `display: contents`; the
     page's hero grid (`style.css` section 15) places its list and its stage (card over plan).
+    Also registers `demas-theme/request-form` (AMM-169 step 2): what the buyer needs (pill
+    radios; `?need=parts|survey|repair|other` preselects), the branch (`?branch=`; kept in step
+    with the finder both ways through the `demas-theme:branch` event), name, phone, email,
+    company, message, and the buyer's quote list (read from the same `localStorage` key as the
+    quote drawer) with an "Include" box. **Front end only:** its view module checks the fields
+    (messages on the field plus a summary that takes focus) and, on a complete form, says
+    sending isn't connected yet and offers head office's number and the branch's directions —
+    nothing typed leaves the browser. Without JavaScript Send stays disabled with a note.
+    AMM-140 adds the handler (branch code → address server-side, nonce, rate limit, honeypot),
+    after the privacy notice (AMM-162). Errors use `theme.json` `custom.alert` (#A3361F, 5:1
+    on sand), always with words too.
   - `footer.php` — registers the footer's two server-rendered blocks (AMM-144, 2026-09-28):
     `demas-theme/catalogue-index` (every group and subcategory, from the shared catalogue
     structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**: one dot

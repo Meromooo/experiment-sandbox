@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/request-form",
+	"title": "Request Form",
+	"category": "design",
+	"icon": "email-alt",
+	"description": "The Contact page's request form: what the buyer needs, which branch it goes to (kept in step with the Branch Finder), their details and their message, with their quote list attached when they have one. Front end only: sending is connected by AMM-140, and until then Send says so. Branches come from the theme's branch list (inc/branches.php).",
+	"textdomain": "demas-theme",
+	"editorScript": "file:./index.tsx",
+	"style": "file:./style-index.css",
+	"viewScriptModule": "file:./view.ts",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"attributes": {}
+}

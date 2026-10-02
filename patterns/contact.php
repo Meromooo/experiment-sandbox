@@ -13,8 +13,8 @@
 // AMM-169. Every word is an editable block except the Branch Finder, whose
 // branches, people, addresses and hours come from inc/branches.php (a photo
 // per branch is chosen in its sidebar). Layout and motion live in style.css
-// section 15 and src/branch-finder. The request form arrives in step 2; until
-// then its place is a drawn placeholder.
+// section 15, src/branch-finder and src/request-form. The form is front end
+// only until AMM-140 connects sending; it says so when a buyer presses Send.
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-ct-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-ct-hero"><!-- wp:group {"className":"dh-ct-hero__grid","layout":{"type":"default"}} -->
@@ -80,16 +80,6 @@
 <!-- /wp:list --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"dh-svc-placeholder dh-ct-request__form dh-reveal--rise","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-placeholder dh-ct-request__form dh-reveal--rise"><!-- wp:group {"className":"dh-svc-placeholder__chip","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-placeholder__chip"><!-- wp:paragraph {"className":"dh-svc-placeholder__label"} -->
-<p class="dh-svc-placeholder__label">Form to come</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>The request form arrives in step 2 of AMM-169.</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></div>
+<!-- wp:demas-theme/request-form /--></div>
 <!-- /wp:group --></section>
 <!-- /wp:group -->
