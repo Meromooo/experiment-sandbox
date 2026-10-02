@@ -10,8 +10,8 @@
  *    border — a hand-simplified outline of the Kingdom would be wrong
  *    somewhere, and the fifteen dots already trace it. Decorative, so hidden
  *    from assistive technology: the list says the same thing in words.
- *  - The branch list: every branch as a link to the homepage Branch Desk with
- *    that city selected.
+ *  - The branch list: every branch as a link to the Contact page with that
+ *    branch chosen (demas_theme_branch_url()).
  *
  * Hovering or focusing a branch link lights its dot. That coupling is CSS
  * (:has()), generated below from the same list, so nothing needs JavaScript.

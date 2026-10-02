@@ -210,7 +210,7 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     category URLs survive cutover unchanged.
   - `branches.php` — the 15 branches as one list, keyed by the Branch Desk's three-letter
     codes (`demas_theme_get_branches()`: city, lat/lon, main) and `demas_theme_branch_url()`
-    (`/#branch-jed`, which selects that city on the homepage Desk). AMM-140 will route by these
+    (`/contact-us/#branch-jed` since AMM-169: that branch chosen on the Contact page). AMM-140 will route by these
     codes. No email address belongs here. Each branch also carries its `person` (who answers
     there), shown on the homepage Branch Desk (AMM-153) — names only, never an address. Since
     AMM-169 each also has `map` (its Google Maps link, from the live Contact Us page), `address`
@@ -371,9 +371,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   title, the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
   renders the `<footer>` landmark itself). The navigation block carries
-  its own two links (Services, Contact → the homepage Branch Desk) — left empty it falls back
-  to the cloned site's only navigation post, a Page List of every page (AMM-145). Contact must
-  not point at the cloned Contact Us page: it publishes staff email addresses. WooCommerce
+  its own two links (Services, Contact → `/contact-us/`, the rebuilt Contact page since AMM-169)
+  — left empty it falls back to the cloned site's only navigation post, a Page List of every
+  page (AMM-145). WooCommerce
   would also block-hook a customer-account icon and a mini-cart after the navigation block;
   both are removed in `inc/woocommerce.php` (`hooked_block_types`). Below 56rem the header is a
   two-row grid in `style.css` (title + controls, then the full-width product menu); the mega
@@ -410,7 +410,16 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   `.page-template-designed-page .dh-svc-hero`). Version 0.4.0 for the new pattern file. The
   Contact Us page uses it with the `contact` pattern (`patterns/contact.php`, AMM-169: the
   intro and the Branch Finder as the hero, then the request section; `dh-ct-` classes), its
-  hero opening the same way at 56rem and up. Version 0.5.0 for that pattern file. There is no `single.html`: the site has
+  hero opening the same way at 56rem and up. Version 0.5.0 for that pattern file. It passed the
+  taste skill's audit in step 3 (2026-10-03): one eyebrow (the hero's), an 18-word subtext, a
+  headline sized to its column (`cqi`) so it takes two lines from 1024px up and the buttons show
+  on a 320x568 phone, hyphens not en dashes in the hours, one label per intent ("Get
+  directions"). **Every contact link goes through `demas_theme_contact_url( $branch, $need )`
+  (`inc/contact.php`)** — the header, the footer's branch links, the homepage Branch Desk's
+  "Message the X branch" (`?branch=`), the closing CTA and "Request a site visit" buttons
+  (`?need=survey`), the 404, an empty search and the header finder (`?need=parts`), the quote
+  sheet's contact line. Content already saved in pages keeps its links until edited: the
+  homepage hero (page 17) and Services (page 822) buttons were re-pointed in the editor. There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for

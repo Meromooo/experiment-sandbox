@@ -36,7 +36,7 @@ $demas_catalogue = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_
 		<!-- /wp:button -->
 
 		<!-- wp:button {"className":"is-style-outline"} -->
-		<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( home_url( '/#find-your-branch' ) ); ?>"><?php esc_html_e( 'Ask a branch', 'demas-theme' ); ?></a></div>
+		<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>"><?php esc_html_e( 'Ask a branch', 'demas-theme' ); ?></a></div>
 		<!-- /wp:button -->
 	</div>
 	<!-- /wp:buttons -->

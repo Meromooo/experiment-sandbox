@@ -57,7 +57,7 @@ $demas_wrapper = get_block_wrapper_attributes(
 	array(
 		'class'         => 'dh-finder',
 		'data-endpoint' => esc_url_raw( rest_url( 'demas-theme/v1/find' ) ),
-		'data-branch'   => esc_url_raw( home_url( '/#find-your-branch' ) ),
+		'data-branch'   => esc_url_raw( function_exists( 'demas_theme_contact_url' ) ? demas_theme_contact_url( '', 'parts' ) : home_url( '/contact-us/' ) ),
 		'data-strings'  => wp_json_encode( $demas_strings ),
 	)
 );

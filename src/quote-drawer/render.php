@@ -77,14 +77,14 @@ wp_interactivity_state(
 
 			/*
 			 * The sheet's last line: who prices it and how to reach them. The
-			 * company phone and the Branch Desk, never a staff email address.
+			 * company phone and the Contact page, never a staff email address.
 			 */
 			'contact'      => (string) apply_filters(
 				'demas_theme_quote_sheet_contact',
 				sprintf(
-					/* translators: %s: address of the Branch Desk on this site. */
+					/* translators: %s: address of the Contact page on this site. */
 					__( 'Prices are quoted by your nearest Demas branch · 011 463 4102 · %s', 'demas-theme' ),
-					wp_parse_url( home_url(), PHP_URL_HOST ) . '/#find-your-branch'
+					wp_parse_url( home_url(), PHP_URL_HOST ) . '/contact-us/'
 				)
 			),
 		),

@@ -28,7 +28,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-ct-lead dh-reveal--rise"} -->
-<p class="dh-ct-lead dh-reveal--rise">Pick your city in the list or on the plan. Every branch has a named person who answers for it, its own address and its own opening hours.</p>
+<p class="dh-ct-lead dh-reveal--rise">Pick your city. Every branch has a named person who answers for it, an address and opening hours.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:buttons {"className":"dh-ct-actions dh-reveal-group"} -->
@@ -49,11 +49,7 @@
 <!-- wp:group {"tagName":"section","anchor":"request","className":"dh-section dh-ct-request","layout":{"type":"constrained"}} -->
 <section id="request" class="wp-block-group dh-section dh-ct-request"><!-- wp:group {"className":"dh-ct-request__grid","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-ct-request__grid"><!-- wp:group {"className":"dh-ct-request__copy dh-reveal-group","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-ct-request__copy dh-reveal-group"><!-- wp:paragraph {"className":"dh-eyebrow dh-reveal--rise"} -->
-<p class="dh-eyebrow dh-reveal--rise">Send a request</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"className":"dh-ct-title dh-reveal--rise"} -->
+<div class="wp-block-group dh-ct-request__copy dh-reveal-group"><!-- wp:heading {"className":"dh-ct-title dh-reveal--rise"} -->
 <h2 class="wp-block-heading dh-ct-title dh-reveal--rise">Tell us what you need.</h2>
 <!-- /wp:heading -->
 

@@ -5,7 +5,7 @@
   "title": "Branches and Key Plan",
   "category": "widgets",
   "icon": "location-alt",
-  "description": "The fifteen branches as links to the homepage Branch Desk, beside a key plan plotting where each one sits in the Kingdom. Server-rendered; works without JavaScript.",
+  "description": "The fifteen branches as links to the Contact page with that branch chosen, beside a key plan plotting where each one sits in the Kingdom. Server-rendered; works without JavaScript.",
   "textdomain": "demas-theme",
   "editorScript": "file:./index.js",
   "style": "file:./style-index.css",

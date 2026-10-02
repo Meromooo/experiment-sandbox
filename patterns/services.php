@@ -33,7 +33,7 @@
 
 <!-- wp:buttons {"className":"dh-svc-actions dh-reveal-group"} -->
 <div class="wp-block-buttons dh-svc-actions dh-reveal-group"><!-- wp:button {"className":"is-style-dh-pill-solid dh-reveal--dot"} -->
-<div class="wp-block-button is-style-dh-pill-solid dh-reveal--dot"><a class="wp-block-button__link wp-element-button" href="/#find-your-branch">Request a site visit</a></div>
+<div class="wp-block-button is-style-dh-pill-solid dh-reveal--dot"><a class="wp-block-button__link wp-element-button" href="/contact-us/?need=survey#request">Request a site visit</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button {"className":"is-style-dh-pill-outline dh-reveal--dot"} -->
@@ -303,7 +303,7 @@
 
 <!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button {"className":"is-style-dh-pill-paper"} -->
-<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="/#find-your-branch">Find your branch</a></div>
+<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="/contact-us/">Find your branch</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button {"className":"is-style-dh-pill-outline-paper"} -->

@@ -134,10 +134,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 <div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?> data-branch-finder data-default="<?php echo esc_attr( $demas_chosen ); ?>" data-strings="<?php echo esc_attr( wp_json_encode( $demas_strings ) ); ?>">
 	<nav class="dh-ct-pick" aria-labelledby="<?php echo esc_attr( $demas_pick_id ); ?>" data-reveal="rise">
 		<p class="dh-ct-pick__label" id="<?php echo esc_attr( $demas_pick_id ); ?>">
-			<?php
-			/* translators: %d: number of branches. */
-			printf( esc_html__( 'Pick a branch · %d', 'demas-theme' ), count( $demas_branches ) );
-			?>
+			<?php esc_html_e( 'Pick a branch', 'demas-theme' ); ?>
 		</p>
 		<ul class="dh-ct-pick__list">
 			<?php foreach ( $demas_branches as $demas_code => $demas_branch ) : ?>
@@ -194,7 +191,9 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 					<div class="dh-ct-card__body">
 						<p class="dh-ct-card__meta">
 							<span class="dh-mono"><?php echo esc_html( strtoupper( $demas_code ) ); ?></span>
-							<?php echo ! empty( $demas_branch['main'] ) ? esc_html__( 'Main branch · head office', 'demas-theme' ) : esc_html__( 'Branch', 'demas-theme' ); ?>
+							<?php if ( ! empty( $demas_branch['main'] ) ) : ?>
+								<?php esc_html_e( 'Main branch, head office', 'demas-theme' ); ?>
+							<?php endif; ?>
 						</p>
 						<h2 class="dh-ct-card__city" id="<?php echo esc_attr( $demas_title_id ); ?>"><?php echo esc_html( $demas_branch['city'] ); ?></h2>
 

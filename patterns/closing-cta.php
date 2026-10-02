@@ -22,7 +22,7 @@
 
 <!-- wp:buttons {"className":"dh-cta__actions"} -->
 <div class="wp-block-buttons dh-cta__actions"><!-- wp:button {"className":"is-style-dh-pill-paper"} -->
-<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="#find-your-branch">Request a site visit</a></div>
+<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="/contact-us/?need=survey#request">Request a site visit</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button {"className":"is-style-dh-pill-outline-paper"} -->

@@ -27,6 +27,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Where the site sends anyone who wants to reach Demas: the Contact page,
+ * optionally straight to its request form with a branch and a need chosen
+ * (e.g. /contact-us/?branch=jed&need=survey#request). Every "contact" link
+ * in the theme goes through here — the header, the footer's branch links,
+ * the homepage Branch Desk, the closing call to action, the 404 page, an
+ * empty search, the header finder and the quote sheet.
+ *
+ * @param string $branch A branch code from demas_theme_get_branches(), or ''.
+ * @param string $need   parts, survey, repair or other, or ''.
+ */
+function demas_theme_contact_url( string $branch = '', string $need = '' ): string {
+	$url  = home_url( '/contact-us/' );
+	$args = array_filter(
+		array(
+			'branch' => sanitize_key( $branch ),
+			'need'   => sanitize_key( $need ),
+		)
+	);
+
+	return $args ? add_query_arg( $args, $url ) . '#request' : $url;
+}
+
 add_action(
 	'init',
 	function () {

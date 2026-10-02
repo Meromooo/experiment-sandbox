@@ -199,21 +199,22 @@ function demas_theme_get_branches(): array {
 }
 
 /**
- * Where a branch link goes: the homepage Branch Desk with that city selected
- * (assets/js/main.js reads the #branch-xxx hash). Without JavaScript the hash
- * still lands on the city's button in the Desk.
+ * Where a branch link goes: the Contact page with that branch chosen
+ * (AMM-169) — its card, its pipe on the layout plan and the request form all
+ * follow the #branch-xxx hash. Without JavaScript the hash shows that card.
  *
  * @param string $code A branch code from demas_theme_get_branches(), e.g. "jed".
  */
 function demas_theme_branch_url( string $code ): string {
-	return home_url( '/#branch-' . sanitize_key( $code ) );
+	return home_url( '/contact-us/#branch-' . sanitize_key( $code ) );
 }
 
 /**
  * A branch's opening hours, read from the written form in its "hours" field.
  *
- * Returns the lines to show, one per clause as written ("Sat–Wed" with its
- * times, "8:00–13:00" and "16:00–19:00"; no times means closed), and the
+ * Returns the lines to show, one per clause as written ("Sat-Wed" with its
+ * times, "8:00-13:00" and "16:00-19:00"; no times means closed; hyphens, not
+ * en dashes, in anything a visitor reads), and the
  * week as minutes from midnight per day, keyed 0 = Sunday … 6 = Saturday
  * like JavaScript's getDay(), for the "Open now" status the Contact page
  * works out in the browser. A day that is not written down is not in the
@@ -270,8 +271,8 @@ function demas_theme_branch_hours( string $spec ): array {
 		}
 
 		$lines[] = array(
-			'days'  => $names[ $order[ $from ] ] . ( $to > $from ? '–' . $names[ $order[ $to ] ] : '' ),
-			'times' => array_map( static fn( $range ) => $clock( $range[0] ) . '–' . $clock( $range[1] ), $ranges ),
+			'days'  => $names[ $order[ $from ] ] . ( $to > $from ? '-' . $names[ $order[ $to ] ] : '' ),
+			'times' => array_map( static fn( $range ) => $clock( $range[0] ) . '-' . $clock( $range[1] ), $ranges ),
 		);
 	}
 

@@ -78,9 +78,9 @@ $demas_strings = array(
 	'notSentTitle' => __( 'Sending isn’t connected yet', 'demas-theme' ),
 	'notSent'      => __( 'Nothing was sent, and everything you typed is still here. Until sending is switched on, call head office or visit the branch.', 'demas-theme' ),
 	'call'         => __( 'Call 011 463 4102', 'demas-theme' ),
+	'directions'   => __( 'Get directions', 'demas-theme' ),
 	/* translators: %s: city */
-	'directions'   => __( 'Directions to the %s branch', 'demas-theme' ),
-	'newTab'       => __( '(opens in a new tab)', 'demas-theme' ),
+	'directionsTo' => __( 'to the %s branch, on Google Maps (opens in a new tab)', 'demas-theme' ),
 	'partOne'      => __( '1 part', 'demas-theme' ),
 	/* translators: %d: number of parts */
 	'partMany'     => __( '%d parts', 'demas-theme' ),

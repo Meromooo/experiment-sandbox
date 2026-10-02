@@ -69,6 +69,6 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-empty' ) );
 
 	<ul class="dh-empty__actions">
 		<li><a class="dh-pill dh-pill--solid" href="<?php echo esc_url( $demas_catalogue ); ?>"><?php esc_html_e( 'Browse the catalogue', 'demas-theme' ); ?></a></li>
-		<li><a class="dh-pill dh-pill--outline" href="<?php echo esc_url( home_url( '/#find-your-branch' ) ); ?>"><?php esc_html_e( 'Ask a branch to source it', 'demas-theme' ); ?></a></li>
+		<li><a class="dh-pill dh-pill--outline" href="<?php echo esc_url( function_exists( 'demas_theme_contact_url' ) ? demas_theme_contact_url( '', 'parts' ) : home_url( '/contact-us/' ) ); ?>"><?php esc_html_e( 'Ask a branch to source it', 'demas-theme' ); ?></a></li>
 	</ul>
 </div>

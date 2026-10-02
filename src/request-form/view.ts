@@ -32,7 +32,7 @@ interface Strings {
 	notSent: string;
 	call: string;
 	directions: string;
-	newTab: string;
+	directionsTo: string;
 	partOne: string;
 	partMany: string;
 	more: string;
@@ -331,16 +331,22 @@ function init( form: HTMLFormElement ): void {
 		actions.append( call );
 
 		if ( map ) {
+			// The same label as the branch card's link; the branch is in the
+			// screen-reader text.
 			const directions = element(
 				'a',
 				'dh-pill dh-pill--outline',
-				format( strings.directions, city )
+				strings.directions
 			);
 			directions.href = map;
 			directions.target = '_blank';
 			directions.rel = 'noopener noreferrer';
 			directions.append(
-				element( 'span', 'screen-reader-text', ` ${ strings.newTab }` )
+				element(
+					'span',
+					'screen-reader-text',
+					` ${ format( strings.directionsTo, city ) }`
+				)
 			);
 			actions.append( directions );
 		}

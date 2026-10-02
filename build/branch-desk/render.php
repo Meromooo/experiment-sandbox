@@ -84,7 +84,7 @@ $demas_wrapper = get_block_wrapper_attributes(
 					<?php if ( ! empty( $demas_branch['person'] ) ) : ?>
 						<p class="dh-desk__name"><?php echo esc_html( $demas_branch['person'] ); ?></p>
 					<?php endif; ?>
-					<a class="dh-pill dh-pill--solid" href="#contact"><?php echo esc_html( $demas_branch['action'] ); ?></a>
+					<a class="dh-pill dh-pill--solid" href="<?php echo esc_url( function_exists( 'demas_theme_contact_url' ) ? demas_theme_contact_url( $demas_code ) : '#contact' ); ?>"><?php echo esc_html( $demas_branch['action'] ); ?></a>
 				</div>
 			<?php endforeach; ?>
 		</div>
