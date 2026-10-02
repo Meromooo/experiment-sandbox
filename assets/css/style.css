@@ -1847,6 +1847,21 @@ svg {
 	.dh-stats {
 		grid-template-columns: 1fr;
 	}
+
+	/* The hero's buttons must show without scrolling, even on a 320×568
+	   phone under the two-row header (AMM-170): one step down the type
+	   scale for the headline and lead, and a tighter top. */
+	.dh-hero {
+		padding-block-start: var(--wp--preset--spacing--30);
+	}
+
+	.dh-hero__title {
+		font-size: var(--wp--preset--font-size--xxl);
+	}
+
+	.dh-hero__lead {
+		font-size: var(--wp--preset--font-size--md);
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
