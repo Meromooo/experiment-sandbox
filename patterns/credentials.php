@@ -10,11 +10,7 @@
 
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-section--tight dh-creds","layout":{"type":"constrained"}} -->
-<section class="wp-block-group dh-section dh-section--tight dh-creds"><!-- wp:paragraph {"className":"dh-eyebrow dh-creds__eyebrow"} -->
-<p class="dh-eyebrow dh-creds__eyebrow">Certified. Approved. Accountable.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:demas-theme/credentials -->
+<section class="wp-block-group dh-section dh-section--tight dh-creds"><!-- wp:demas-theme/credentials -->
 <!-- wp:demas-theme/credential {"name":"ISO 9001","detail":"Quality management"} /-->
 
 <!-- wp:demas-theme/credential {"name":"ISO 14001","detail":"Environmental management"} /-->

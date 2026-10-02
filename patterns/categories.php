@@ -24,7 +24,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-section__lead"} -->
-<p class="dh-section__lead">Around 700 professional-grade products — pipes, fittings, filtration, valves, controllers, drippers, rotors, valve boxes, and fog systems — specified for commercial performance and Saudi conditions.</p>
+<p class="dh-section__lead">Around 700 professional-grade products, from pipes and valves to controllers and fog systems, specified for commercial performance and Saudi conditions.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 

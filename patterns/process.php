@@ -11,16 +11,12 @@
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-process","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-process"><!-- wp:group {"className":"dh-section__head","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-section__head"><!-- wp:paragraph {"className":"dh-eyebrow"} -->
-<p class="dh-eyebrow">How we work</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"className":"dh-section__title"} -->
+<div class="wp-block-group dh-section__head"><!-- wp:heading {"className":"dh-section__title"} -->
 <h2 class="wp-block-heading dh-section__title">From site survey to sustained performance.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-section__lead"} -->
-<p class="dh-section__lead">Every project moves through the same disciplined sequence — the same rigour behind our ISO 9001 certification.</p>
+<p class="dh-section__lead">Every project moves through the same disciplined sequence, with the rigour behind our ISO 9001 certification.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
@@ -41,7 +37,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-process__copy"} -->
-<p class="dh-process__copy">Our licensed engineers design and specify the complete system — hydraulics, zoning, filtration, and control.</p>
+<p class="dh-process__copy">Our licensed engineers design and specify the complete system: hydraulics, zoning, filtration and control.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:demas-theme/step -->
 
@@ -61,7 +57,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-process__copy"} -->
-<p class="dh-process__copy">Commissioning, maintenance, and technical support keep systems performing for their full design life — backed by a five-year warranty.</p>
+<p class="dh-process__copy">Commissioning, maintenance and technical support keep systems performing for their full design life. Every installation carries a five-year warranty.</p>
 <!-- /wp:paragraph -->
 <!-- /wp:demas-theme/step -->
 <!-- /wp:demas-theme/steps -->

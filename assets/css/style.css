@@ -1390,10 +1390,6 @@ svg {
 	text-align: center;
 }
 
-.dh-creds__eyebrow {
-	margin: 0 0 var(--wp--preset--spacing--40);
-}
-
 .dh-creds__list {
 	display: flex;
 	flex-wrap: wrap;
@@ -1520,6 +1516,38 @@ svg {
 	font-size: var(--wp--preset--font-size--sm);
 	line-height: 1.4;
 	color: color-mix(in srgb, var(--wp--preset--color--paper) 70%, transparent);
+}
+
+/*
+ * The homepage numbers, open on the page (AMM-170): no card, ink on paper,
+ * under one rule. The dark canopy card stays with the closing CTA alone, so
+ * the page has one dark block, not two in the same layout. .dh-band.dh-band--open
+ * outranks the small-screen .dh-band padding below.
+ */
+.dh-band.dh-band--open {
+	padding: var(--wp--preset--spacing--50) 0 0;
+	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-band--open .dh-band__title,
+.dh-band--open .dh-stat__value {
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-band--open .dh-band__lead {
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+}
+
+.dh-band--open .dh-stat {
+	border-block-start-color: color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+}
+
+.dh-band--open .dh-stat__prefix {
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-band--open .dh-stat__label {
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
 }
 
 /* Category gateway --------------------------------------------------- */
