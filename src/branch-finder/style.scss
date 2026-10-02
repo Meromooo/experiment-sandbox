@@ -52,6 +52,7 @@
 	flex-wrap: wrap; /* the Main tag wraps under a long name rather than over it */
 	align-items: center;
 	gap: 0.15rem 0.55rem;
+	block-size: 100%; /* tiles in a row stay one height */
 	min-block-size: 2.75rem;
 	padding: 0.35rem 0.7rem;
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent);
@@ -89,7 +90,7 @@
 }
 
 .dh-ct-city__name {
-	min-inline-size: 0;
+	flex: 1 1 0; /* keeps its line beside the code, wrapping inside itself; the tag wraps instead */
 }
 
 .dh-ct-city__tag {

@@ -221,9 +221,11 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 													<span class="dh-ct-hours__days"><?php echo esc_html( $demas_line['days'] ); ?></span>
 													<span class="dh-ct-hours__times">
 														<?php if ( $demas_line['times'] ) : ?>
-															<?php foreach ( $demas_line['times'] as $demas_n => $demas_range ) : ?>
-																<?php echo $demas_n ? ', ' : ''; ?><span class="dh-ct-hours__range"><?php echo esc_html( $demas_range ); ?></span>
-															<?php endforeach; ?>
+															<?php
+															foreach ( $demas_line['times'] as $demas_n => $demas_range ) {
+																echo ( $demas_n ? ', ' : '' ) . '<span class="dh-ct-hours__range">' . esc_html( $demas_range ) . '</span>';
+															}
+															?>
 														<?php else : ?>
 															<?php esc_html_e( 'Closed', 'demas-theme' ); ?>
 														<?php endif; ?>
