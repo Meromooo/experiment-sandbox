@@ -39,7 +39,7 @@ $demas_certificates = content_url( 'uploads/2026/03/DEMAS-Certificates.pdf' );
 					<div class="dh-foot-plate__row is-wide"><dt>Registered name</dt><dd class="is-pending">Pending</dd></div>
 					<div class="dh-foot-plate__row"><dt>CR no.</dt><dd class="is-pending">Pending</dd></div>
 					<div class="dh-foot-plate__row"><dt>VAT no.</dt><dd class="is-pending">Pending</dd></div>
-					<div class="dh-foot-plate__row is-wide"><dt>Certified</dt><dd><span class="dh-mono">ISO 9001 · 14001 · 45001</span> <a class="dh-foot-plate__doc" href="<?php echo esc_url( $demas_certificates ); ?>">Our certificates <span class="dh-foot-plate__meta">PDF, 1.2 MB</span></a></dd></div>
+					<div class="dh-foot-plate__row is-wide"><dt>Certified</dt><dd><span class="dh-mono">ISO 9001, 14001, 45001</span> <a class="dh-foot-plate__doc" href="<?php echo esc_url( $demas_certificates ); ?>">Our certificates <span class="dh-foot-plate__meta">PDF, 1.2 MB</span></a></dd></div>
 				</dl>
 			</section>
 			<!-- /wp:html -->
