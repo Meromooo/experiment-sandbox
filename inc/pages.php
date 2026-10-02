@@ -259,12 +259,22 @@ add_filter(
  * @return array<string, string> Page slug => destination URL.
  */
 function demas_theme_retired_pages(): array {
-	return (array) apply_filters(
+	$retired = (array) apply_filters(
 		'demas_theme_retired_pages',
 		array(
 			'contact-us' => home_url( '/#find-your-branch' ),
 			'shop'       => function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' ),
 		)
+	);
+
+	// Back on the Designed page template: back for links as well as visits.
+	return array_filter(
+		$retired,
+		static function ( $slug ) {
+			$page = get_page_by_path( (string) $slug );
+			return ! $page || 'designed-page' !== get_page_template_slug( $page );
+		},
+		ARRAY_FILTER_USE_KEY
 	);
 }
 
@@ -286,7 +296,7 @@ add_action(
 
 		$retired = demas_theme_retired_pages();
 
-		if ( isset( $retired[ $page->post_name ] ) && 'designed-page' !== get_page_template_slug( $page ) ) {
+		if ( isset( $retired[ $page->post_name ] ) ) {
 			wp_safe_redirect( $retired[ $page->post_name ], 302 );
 			exit;
 		}
