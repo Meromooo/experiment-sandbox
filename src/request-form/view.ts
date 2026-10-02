@@ -100,7 +100,7 @@ function init( form: HTMLFormElement ): void {
 		'[data-branch-select]'
 	);
 	const send = form.querySelector< HTMLButtonElement >( '[data-send]' );
-	const status = form.querySelector< HTMLElement >( '[data-status]' );
+	const status = form.querySelector< HTMLElement >( '[data-send-status]' );
 	const summary = form.querySelector< HTMLElement >( '[data-summary]' );
 	const summaryTitle = form.querySelector< HTMLElement >(
 		'[data-summary-title]'

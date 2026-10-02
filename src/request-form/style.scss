@@ -67,7 +67,7 @@
 	gap: var(--wp--preset--spacing--50) var(--wp--preset--spacing--40);
 }
 
-@container (min-width: 32rem) {
+@container (min-width: 28rem) {
 	.dh-ct-form__row {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	}

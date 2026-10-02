@@ -187,5 +187,5 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-
 		</p>
 	</noscript>
 
-	<div class="dh-ct-form__status" role="status" data-status></div>
+	<div class="dh-ct-form__status" role="status" data-send-status></div>
 </form>
