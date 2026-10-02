@@ -350,7 +350,12 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   pixel-identical to the old HTML at 320–1440 apart from deliberate fixes (live category counts,
   Branch Desk code contrast, the pills' focus ring). Five of them are now the content of Pages →
   Homepage (see `templates/` below), so for the homepage they are starting points, not the
-  source; `closing-cta` is still placed by the template.
+  source; `closing-cta` is still placed by the template. **AMM-170 (2026-10-02):** the homepage
+  passes the taste skill's pre-flight — two eyebrows (hero, Product categories), one marquee
+  (the supply list), no dashes, one middle dot per line, one label per CTA intent ("Request a
+  site visit"), the numbers band open on the page (`.dh-band--open`, so the dark canopy card
+  appears once, at the close). The patterns and Page 17 were changed together; when a homepage
+  section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
