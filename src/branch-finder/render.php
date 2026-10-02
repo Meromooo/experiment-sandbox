@@ -217,7 +217,18 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 									<?php if ( $demas_hours['lines'] ) : ?>
 										<ul class="dh-ct-hours">
 											<?php foreach ( $demas_hours['lines'] as $demas_line ) : ?>
-												<li><span class="dh-ct-hours__days"><?php echo esc_html( $demas_line['days'] ); ?></span> <span class="dh-ct-hours__times"><?php echo esc_html( $demas_line['times'] ); ?></span></li>
+												<li>
+													<span class="dh-ct-hours__days"><?php echo esc_html( $demas_line['days'] ); ?></span>
+													<span class="dh-ct-hours__times">
+														<?php if ( $demas_line['times'] ) : ?>
+															<?php foreach ( $demas_line['times'] as $demas_n => $demas_range ) : ?>
+																<?php echo $demas_n ? ', ' : ''; ?><span class="dh-ct-hours__range"><?php echo esc_html( $demas_range ); ?></span>
+															<?php endforeach; ?>
+														<?php else : ?>
+															<?php esc_html_e( 'Closed', 'demas-theme' ); ?>
+														<?php endif; ?>
+													</span>
+												</li>
 											<?php endforeach; ?>
 										</ul>
 										<p class="dh-ct-card__status" data-status hidden></p>
@@ -315,11 +326,21 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 				<div class="dh-ct-plan__labels">
 					<?php foreach ( $demas_points as $demas_code => $demas_point ) : ?>
 						<?php
-						$demas_left = ! empty( $demas_branches[ $demas_code ]['main'] )
-							|| ( $demas_point[0] - $demas_vx ) / $demas_vw > 0.7
-							|| ( $demas_point[1] - $demas_vy ) / $demas_vh > 0.75;
+						/*
+						 * A name sits at the end of its pipe: above a head north of
+						 * the mainline, below one south of it — unless another head
+						 * is right there (Unaizah, under Buraidah on one lateral);
+						 * then it goes to the left. The head office's is on the left.
+						 */
+						$demas_side = $demas_point[1] < $demas_hy ? -1 : 1;
+						$demas_at   = $demas_code === $demas_main ? 'left' : ( $demas_side < 0 ? 'above' : 'below' );
+						foreach ( $demas_points as $demas_other => $demas_near ) {
+							if ( $demas_other !== $demas_code && abs( $demas_near[0] - $demas_point[0] ) < 6 && ( $demas_near[1] - $demas_point[1] ) * $demas_side > 0 && abs( $demas_near[1] - $demas_point[1] ) < 14 ) {
+								$demas_at = 'left';
+							}
+						}
 						?>
-						<span class="dh-ct-plan__label<?php echo $demas_left ? ' is-left' : ''; ?><?php echo $demas_code === $demas_main ? ' is-main' : ''; ?><?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" data-code="<?php echo esc_attr( $demas_code ); ?>" style="--x:<?php echo esc_attr( $demas_pct( $demas_point[0], $demas_vx, $demas_vw ) ); ?>;--y:<?php echo esc_attr( $demas_pct( $demas_point[1], $demas_vy, $demas_vh ) ); ?>"><b><?php echo esc_html( strtoupper( $demas_code ) ); ?></b> <?php echo esc_html( $demas_branches[ $demas_code ]['city'] ); ?></span>
+						<span class="dh-ct-plan__label is-<?php echo esc_attr( $demas_at ); ?><?php echo $demas_code === $demas_main ? ' is-main' : ''; ?><?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" data-code="<?php echo esc_attr( $demas_code ); ?>" style="--x:<?php echo esc_attr( $demas_pct( $demas_point[0], $demas_vx, $demas_vw ) ); ?>;--y:<?php echo esc_attr( $demas_pct( $demas_point[1], $demas_vy, $demas_vh ) ); ?>"><b><?php echo esc_html( strtoupper( $demas_code ) ); ?></b> <?php echo esc_html( $demas_branches[ $demas_code ]['city'] ); ?></span>
 					<?php endforeach; ?>
 				</div>
 			</div>
@@ -328,7 +349,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 				<span class="dh-ct-plan__title"><?php esc_html_e( 'Layout plan', 'demas-theme' ); ?></span>
 				<span class="dh-ct-plan__key dh-ct-plan__key--main"><?php esc_html_e( 'Mainline from head office', 'demas-theme' ); ?></span>
 				<span class="dh-ct-plan__key dh-ct-plan__key--head"><?php esc_html_e( 'Branch', 'demas-theme' ); ?></span>
-				<span class="dh-ct-plan__scale" style="--km:<?php echo esc_attr( $demas_pct( $demas_vx + 200 / 111.32 * 20, $demas_vx, $demas_vw ) ); ?>"><?php esc_html_e( '200 km', 'demas-theme' ); ?></span>
+				<span class="dh-ct-plan__scale" style="--km:<?php echo esc_attr( round( 200 / 111.32 * 20 / $demas_vw * 100, 2 ) ); ?>"><?php esc_html_e( '200 km', 'demas-theme' ); ?></span>
 			</figcaption>
 		</figure>
 	</div>

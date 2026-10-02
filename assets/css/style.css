@@ -3503,7 +3503,7 @@ footer.wp-block-template-part {
 	align-items: start;
 }
 
-:is(.dh-ct-request__grid, .dh-ct-request__copy) > * {
+.dh-ct-request__grid > * {
 	margin-block: 0;
 }
 

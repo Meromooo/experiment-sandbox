@@ -212,14 +212,15 @@ function demas_theme_branch_url( string $code ): string {
 /**
  * A branch's opening hours, read from the written form in its "hours" field.
  *
- * Returns the lines to show, one per clause as written ("Sat–Wed",
- * "8:00–13:00 · 16:00–19:00"), and the week as minutes from midnight per
- * day, keyed 0 = Sunday … 6 = Saturday like JavaScript's getDay(), for the
- * "Open now" status the Contact page works out in the browser. A day that is
- * not written down is not in the week; a closed day is an empty list.
+ * Returns the lines to show, one per clause as written ("Sat–Wed" with its
+ * times, "8:00–13:00" and "16:00–19:00"; no times means closed), and the
+ * week as minutes from midnight per day, keyed 0 = Sunday … 6 = Saturday
+ * like JavaScript's getDay(), for the "Open now" status the Contact page
+ * works out in the browser. A day that is not written down is not in the
+ * week; a closed day is an empty list.
  *
  * @param string $spec The hours as written, e.g. "Sat-Thu 08:00-12:00 16:00-20:00; Fri closed".
- * @return array{lines: list<array{days: string, times: string}>, week: array<int, list<array{0: int, 1: int}>>}
+ * @return array{lines: list<array{days: string, times: list<string>}>, week: array<int, list<array{0: int, 1: int}>>}
  */
 function demas_theme_branch_hours( string $spec ): array {
 	$order = array( 'sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri' );
@@ -270,9 +271,7 @@ function demas_theme_branch_hours( string $spec ): array {
 
 		$lines[] = array(
 			'days'  => $names[ $order[ $from ] ] . ( $to > $from ? '–' . $names[ $order[ $to ] ] : '' ),
-			'times' => $ranges
-				? implode( ' · ', array_map( static fn( $range ) => $clock( $range[0] ) . '–' . $clock( $range[1] ), $ranges ) )
-				: __( 'Closed', 'demas-theme' ),
+			'times' => array_map( static fn( $range ) => $clock( $range[0] ) . '–' . $clock( $range[1] ), $ranges ),
 		);
 	}
 
