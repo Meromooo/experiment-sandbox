@@ -315,6 +315,45 @@ svg {
 	flex: none;
 }
 
+/*
+ * Every pill and header control takes taps over at least 44px of height
+ * (AMM-172), while keeping its drawn size: a transparent ::before reaches
+ * above and below the control until the tap area is 2.75rem, and stays
+ * flush with a control that is already taller. The site title is a tap
+ * target too. Wrapped pill rows get spacing-30 between them (below), so two
+ * tap areas never overlap.
+ */
+:is(
+	.dh-pill,
+	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+	.dh-mega-menu__trigger,
+	.dh-finder__trigger,
+	.dh-quote-toggle,
+	.dh-header .wp-block-navigation-item__content,
+	.dh-header .wp-block-site-title a
+) {
+	position: relative;
+}
+
+:is(
+	.dh-pill,
+	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+	.dh-mega-menu__trigger,
+	.dh-finder__trigger,
+	.dh-quote-toggle,
+	.dh-header .wp-block-navigation-item__content,
+	.dh-header .wp-block-site-title a
+)::before {
+	content: "";
+	position: absolute;
+	inset-inline: 0;
+	inset-block: min(0px, calc((100% - 2.75rem) / 2));
+}
+
+.wp-block-buttons:has(> .wp-block-button[class*="is-style-dh-pill-"]) {
+	row-gap: var(--wp--preset--spacing--30);
+}
+
 .dh-pill--solid,
 .wp-block-button.is-style-dh-pill-solid > .wp-block-button__link {
 	background: var(--wp--preset--color--canopy);
@@ -2748,16 +2787,10 @@ footer.wp-block-template-part {
 .dh-empty__actions {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--wp--preset--spacing--20);
+	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
 	margin: 0;
 	padding: 0;
 	list-style: none;
-}
-
-@media (pointer: coarse) {
-	.dh-empty__actions .dh-pill {
-		min-block-size: 44px;
-	}
 }
 
 /* 404: the search sits between the explanation and the two ways out. */
@@ -3728,6 +3761,15 @@ footer.wp-block-template-part {
 		padding-inline-start: 0;
 		border-inline-start: 0;
 		border-block-start: var(--wp--custom--rule);
+	}
+}
+
+/* On phones the Services hero takes the homepage hero's tighter top, which
+   pays for the wider gap between its stacked pills, so both buttons still
+   make a 320x568 first screen (AMM-172). */
+@media (max-width: 40em) {
+	.dh-svc-hero {
+		padding-block-start: var(--wp--preset--spacing--30);
 	}
 }
 
