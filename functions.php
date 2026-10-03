@@ -16,7 +16,6 @@ define( 'DEMAS_THEME_VERSION', '0.5.0' );
 define( 'DEMAS_THEME_DIR', get_template_directory() );
 
 $demas_theme_includes = array(
-	'inc/profiling.php', // TEMPORARY (AMM-164 step 1), first so it times the rest; removed next commit.
 	'inc/setup.php',
 	'inc/enqueue.php',
 	'inc/performance.php',
