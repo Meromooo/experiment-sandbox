@@ -254,8 +254,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     branch lights its dot via generated `:has()` CSS; the dots reveal outward from Riyadh).
   - `search.php` — product search (AMM-143, 2026-09-28). A `request` filter makes **every
     front-end search a product search** (content pages are not searchable), so WooCommerce
-    serves `templates/product-search-results.html`. The main search is widened to title/content
-    matches ∪ `wc_get_products( 'sku' )` (partial part-number match; `tcn ft 062` also tries
+    serves `templates/product-search-results.html`. The main search is title/excerpt matches —
+    **not full descriptions** (AMM-164, 2026-10-03: scanning them cost 86 ms a search, and the
+    stored descriptions still carry the old site's CSS as text, so they mostly added junk
+    matches) — ∪ `wc_get_products( 'sku' )` (partial part-number match; `tcn ft 062` also tries
     `tcn-ft-062`), its own LIKE clause emptied via `posts_search`, and — unless the buyer chose a
     sort — ranked exact SKU → SKU prefix → name → rest. On results, `render_block` filters mark
     the matched fragment (`<mark class="dh-hit">`) in titles and SKUs, tag an exact part-number

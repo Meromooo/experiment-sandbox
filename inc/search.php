@@ -6,9 +6,10 @@
  *  - Every front-end search is a product search. The catalogue is the site's
  *    content; the few content pages are not what anyone searches for.
  *  - WordPress's search matches titles and content only. A trade buyer
- *    mostly types a part number, so the main search query is widened to
- *    the union of the normal title/content matches and a partial SKU match
- *    (wc_get_products( 'sku' ) — WooCommerce's own API, no theme SQL).
+ *    mostly types a part number, so the main search query is the union of
+ *    title/excerpt matches (not full descriptions, AMM-164) and a partial
+ *    SKU match (wc_get_products( 'sku' ) — WooCommerce's own API, no theme
+ *    SQL).
  *  - Unless the buyer chose a sort, results are ranked: exact part number,
  *    then part numbers that start with the query, then names containing it,
  *    then everything else.
@@ -107,9 +108,14 @@ function demas_theme_search_terms(): array {
 }
 
 /**
- * Every published product a query matches: names and descriptions, as
- * WordPress's own search would find them, and part numbers, partial match,
- * as typed and hyphenated. Both through WordPress and WooCommerce APIs.
+ * Every published product a query matches: names and short descriptions
+ * (excerpts), and part numbers, partial match, as typed and hyphenated. Both
+ * through WordPress and WooCommerce APIs.
+ *
+ * Full descriptions are not searched (AMM-164, Ammar's decision 2026-10-03).
+ * Scanning them was 86 ms of every search, and the stored descriptions still
+ * hold the old site's CSS as text (cleaned only when shown), so they matched
+ * "font" on 106 products while real part words gained 0–6 results from them.
  *
  * Ranked unless asked not to: exact part number, part numbers starting with
  * the query (in part-number order), then names containing it, then the rest
@@ -131,6 +137,7 @@ function demas_theme_find_product_ids( string $raw, bool $rank = true ): array {
 			'post_type'        => 'product',
 			'post_status'      => 'publish',
 			's'                => $terms['raw'],
+			'search_columns'   => array( 'post_title', 'post_excerpt' ),
 			'fields'           => 'ids',
 			'posts_per_page'   => -1,
 			'no_found_rows'    => true,
