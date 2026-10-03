@@ -153,6 +153,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     slugs sit at each; `demas_theme_get_term_kind()` says whether a term is a part type, a
     brand or a model series. Pure data + helpers, filterable, **re-parents nothing** — the tree is
     locked; this only decides where a term is shown. Swimming Pool has no children and no entry.
+    `demas_theme_get_product_cat_index()` reads every product category once per request (by
+    slug, and children by parent, with their term meta): look terms up there rather than with
+    `get_term_by()` or a `get_terms( parent )` per term — one query each, which made the Browse
+    by System index ~105 queries a page until AMM-164.
   - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count, child-category
     rail with a "By brand / By type / By series" label, sort links; server-rendered, no JS) and
     the `demas-theme/system-index` block (the stage line rendered from `system-map.php`), and

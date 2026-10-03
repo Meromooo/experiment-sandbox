@@ -253,6 +253,47 @@ function demas_theme_get_term_kind( WP_Term $term ): string {
 }
 
 /**
+ * Every product category, read once per request: by slug, and by parent.
+ *
+ * The Browse by System index looks up each listed category by slug, reads
+ * its product count (term meta) and lists its children. Done one term at a
+ * time that was ~105 database queries a page (AMM-164); this one get_terms()
+ * call also loads every category's term meta, so those lookups cost nothing.
+ * Children keep get_terms()' own order, as when they were queried per parent.
+ *
+ * @return array{by_slug: array<string, WP_Term>, children: array<int, WP_Term[]>}
+ */
+function demas_theme_get_product_cat_index(): array {
+	static $index = null;
+
+	if ( null !== $index ) {
+		return $index;
+	}
+
+	$index = array(
+		'by_slug'  => array(),
+		'children' => array(),
+	);
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => false, // Callers filter on the inclusive count instead.
+		)
+	);
+
+	if ( is_wp_error( $terms ) ) {
+		return $index;
+	}
+
+	foreach ( $terms as $term ) {
+		$index['by_slug'][ $term->slug ]      = $term;
+		$index['children'][ $term->parent ][] = $term;
+	}
+
+	return $index;
+}
+
+/**
  * A short, human label for a term's children — "2 brands", "9 types",
  * "10 series" — so a buyer knows what the next click asks before making it.
  *
@@ -260,18 +301,7 @@ function demas_theme_get_term_kind( WP_Term $term ): string {
  * @return string Empty when the term has no children with products.
  */
 function demas_theme_describe_children( WP_Term $term ): string {
-	$children = get_terms(
-		array(
-			'taxonomy'   => 'product_cat',
-			'parent'     => $term->term_id,
-			'hide_empty' => false, // Filtered below on the inclusive count instead.
-		)
-	);
-
-	if ( is_wp_error( $children ) ) {
-		return '';
-	}
-
+	$children = demas_theme_get_product_cat_index()['children'][ $term->term_id ] ?? array();
 	$children = array_values( array_filter( $children, fn( $c ) => demas_theme_term_product_count( $c ) > 0 ) );
 
 	if ( ! $children ) {

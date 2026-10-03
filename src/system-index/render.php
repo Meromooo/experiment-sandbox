@@ -33,6 +33,13 @@ if ( ! ( is_post_type_archive( 'product' ) || is_tax( get_object_taxonomies( 'pr
 	return;
 }
 
+// WordPress renders a block's inner blocks before the block itself, so inside
+// a search's empty state this would be built, then thrown away, whenever the
+// search has results (AMM-164).
+if ( is_search() && $GLOBALS['wp_query']->found_posts ) {
+	return;
+}
+
 $demas_term    = is_tax( 'product_cat' ) ? get_queried_object() : null;
 $demas_term    = $demas_term instanceof WP_Term ? $demas_term : null;
 $demas_systems = demas_theme_get_systems_for_term( $demas_term );
@@ -52,6 +59,7 @@ if ( $demas_term ) {
  * and the column count is known before any markup is written.
  */
 $demas_resolved = array();
+$demas_by_slug  = demas_theme_get_product_cat_index()['by_slug'];
 
 foreach ( $demas_systems as $demas_key => $demas_system ) {
 	$demas_stages = array();
@@ -61,7 +69,7 @@ foreach ( $demas_systems as $demas_key => $demas_system ) {
 		$demas_terms = array();
 
 		foreach ( $demas_slugs as $demas_slug ) {
-			$demas_t = get_term_by( 'slug', $demas_slug, 'product_cat' );
+			$demas_t = $demas_by_slug[ $demas_slug ] ?? null;
 
 			if ( $demas_t instanceof WP_Term && demas_theme_term_product_count( $demas_t ) > 0 ) {
 				$demas_terms[] = $demas_t;
