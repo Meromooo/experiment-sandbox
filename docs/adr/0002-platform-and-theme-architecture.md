@@ -123,7 +123,8 @@ The decision is sound; the current execution has gaps. In priority order:
    **Done 2026-09-28 (AMM-156):** GitHub Actions on every push — `php -l` (PHP 8.3), WordPress
    Coding Standards (169 existing violations fixed, now blocking), `build/` must match `src/`,
    JSON validity, and an email-address guard — and the sandbox deploys a `deploy` branch that
-   only moves when every check passes. CSS/JS lint not added yet. The local environment
+   only moves when every check passes, and since AMM-173 holds only the files WordPress reads
+   (the rest of the repo was downloadable from the theme folder). CSS/JS lint not added yet. The local environment
    (correction 2) is AMM-165.
 4. **Trim platform assets.** Conditionally dequeue WooCommerce CSS/JS and jQuery on pages with
    no shop content; drop the emoji script. *(half a day)*

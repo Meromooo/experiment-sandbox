@@ -1,9 +1,11 @@
 # Checks on every push, and the sandbox deploy (AMM-156).
 #
-# Hostinger deploys the `deploy` branch, not `main`. This workflow moves
-# `deploy` to the pushed commit only when every blocking check below passes,
-# so a PHP syntax error, a stale build/ or an email address never reaches
-# the sandbox — it stays on the last good commit and GitHub emails the owner.
+# Hostinger deploys the `deploy` branch, not `main`. This workflow commits
+# the pushed commit's runtime files onto `deploy` only when every blocking
+# check below passes, so a PHP syntax error, a stale build/ or an email
+# address never reaches the sandbox — it stays on the last good commit and
+# GitHub emails the owner. Only the files WordPress reads are deployed
+# (AMM-173); the rest of the repo never reaches the server.
 #
 # All blocking: php-lint, phpcs (WordPress Coding Standards), build, json,
 # email-guard.
@@ -215,9 +217,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Only the files WordPress reads go to the server (AMM-173). Hostinger
+      # serves the theme folder as-is, so anything else committed here
+      # (CLAUDE.md, the briefs, docs/, tools/, src/, package files, .github/)
+      # would be downloadable by anyone. deploy is its own line of commits:
+      # each holds only the runtime files of the main commit that passed, on
+      # top of the previous deploy. A new folder WordPress reads (styles/,
+      # languages/) has to join RUNTIME.
+      #
       # Fast-forward only: deploy is written by this job alone, so a rejected
       # push means someone moved it by hand — stop and look, don't force.
-      - name: Fast-forward deploy to this commit
+      - name: Commit the runtime files onto deploy
+        env:
+          RUNTIME: style.css functions.php theme.json screenshot.png inc build templates parts patterns assets woocommerce
         run: |
-          git push origin "HEAD:refs/heads/deploy"
-          echo "Sandbox deploy branch now at ${GITHUB_SHA}." | tee -a "$GITHUB_STEP_SUMMARY"
+          # A re-run of an older commit must not roll the sandbox back.
+          if [ "$(git rev-parse origin/main)" != "$GITHUB_SHA" ]; then
+            echo "::notice::main has moved on from ${GITHUB_SHA}; not deploying an older commit."
+            exit 0
+          fi
+          export GIT_INDEX_FILE="$RUNNER_TEMP/deploy.index"
+          git ls-tree -r -z "$GITHUB_SHA" -- $RUNTIME | git update-index -z --index-info
+          tree=$(git write-tree)
+          # The main commit's author, read here, so no address is written into the repo.
+          commit=$(git -c user.name="$(git log -1 --format=%an)" -c user.email="$(git log -1 --format=%ae)" \
+            commit-tree "$tree" -p origin/deploy -m "Deploy ${GITHUB_SHA}" -m "$(git log -1 --format=%s)")
+          git push origin "${commit}:refs/heads/deploy"
+          echo "Sandbox deploy branch now at ${commit} (main ${GITHUB_SHA})." | tee -a "$GITHUB_STEP_SUMMARY"

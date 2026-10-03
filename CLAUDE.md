@@ -18,8 +18,21 @@ reached the sandbox; the rebuild passed, moved `deploy`, and Hostinger deployed 
 GitHub emails the owner. Never push to `deploy` by hand. Results are readable without signing
 in through the commit's check runs (`/commits/<sha>/check-runs` in GitHub's API); the PHPCS
 result is posted as its own "PHPCS report" check with one annotation per violation. There is no
-server-side build step — the files in this repo are the files WordPress reads, which is why
-compiled block output is committed (see ADR-001 under Working agreement).
+server-side build step — the theme's files in this repo are the files WordPress reads, which is
+why compiled block output is committed (see ADR-001 under Working agreement).
+
+**Only the runtime files deploy (AMM-173, 2026-10-03).** Hostinger serves the theme folder
+as-is, so every file in it can be downloaded — until then that was the whole repo (this file,
+the briefs, `docs/`, `tools/`, `src/`, the package files, `.github/`). The deploy job no longer
+fast-forwards `deploy` to `main`: it commits only `style.css`, `functions.php`, `theme.json`,
+`screenshot.png`, `inc/`, `build/`, `templates/`, `parts/`, `patterns/`, `assets/` and
+`woocommerce/` (the `RUNTIME` list in the workflow) on top of the previous `deploy` commit, still
+fast-forward only. So `deploy` is its own line of commits: each is titled `Deploy <main sha>`,
+which is how to tell which `main` commit is on the sandbox, and an older commit's re-run is
+skipped rather than rolling the sandbox back. **A new top-level file or folder WordPress reads
+(`styles/`, `languages/`) must be added to `RUNTIME`, or it never reaches the server.** Anything
+else committed here stays private by default. At cutover (AMM-158) the live theme must come from
+`deploy`, not `main`.
 
 ## Skills to use in this repo
 
@@ -121,8 +134,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   `wp eval-file`, dry-run by default): issues `DMS-<SEG>-<NNN>` house references to the 172
   products that had no manufacturer SKU and files the 23 uncategorised ones — see the file
   header for the grammar and why `DMS-` sits in the brand slot. Nine rows are flagged
-  `DUPLICATE` and get a category but no number; they are for Demas to delete. Nothing here is
-  loaded by `functions.php`.
+  `DUPLICATE` and get a category but no number; they are for Demas to delete (applied on the
+  sandbox: 172 `DMS-` SKUs). Nothing here is loaded by `functions.php`, and since AMM-173 none
+  of it is deployed: to run a tool again, upload it (with its CSV) outside the theme folder and
+  point `wp eval-file` at that copy.
 - `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
   rejected, what it costs. See `docs/adr/README.md` for the index. **ADR-002** records the
   platform/theme decision (WordPress + custom block theme over a page builder or headless) and
