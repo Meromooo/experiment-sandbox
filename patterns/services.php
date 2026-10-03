@@ -13,8 +13,10 @@
 // AMM-167. Every word is an editable block; layout and motion live in
 // style.css section 15. Photos are media-library images by id (relative
 // paths, so they resolve on any domain); the installation photo is
-// AI-generated and flagged for replacement (AMM-149). The survey's drawn
-// frame is a placeholder: delete it and insert an Image block in its place.
+// AI-generated and flagged for replacement (AMM-149). AMM-171: the sections
+// alternate side by side (hero, installation, call to action) and stacked
+// (survey, maintenance), and only the hero and the call to action carry an
+// eyebrow; the stage line under the hero numbers the three services.
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-svc-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-svc-hero"><!-- wp:group {"className":"dh-svc-hero__grid","layout":{"type":"default"}} -->
@@ -28,7 +30,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc-lead dh-reveal--rise"} -->
-<p class="dh-svc-lead dh-reveal--rise">We design, install and maintain complete irrigation systems across Saudi Arabia — for villas, commercial landscapes and farms. Forty-six years, thousands of projects, and a five-year warranty on what we install.</p>
+<p class="dh-svc-lead dh-reveal--rise">We design, install and maintain irrigation for villas, landscapes and farms across Saudi Arabia. Forty-six years, five-year warranty.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:buttons {"className":"dh-svc-actions dh-reveal-group"} -->
@@ -77,26 +79,22 @@
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"section","anchor":"survey","className":"dh-section dh-svc","layout":{"type":"constrained"}} -->
-<section id="survey" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc__grid","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__grid"><!-- wp:group {"className":"dh-svc__copy","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__copy"><!-- wp:paragraph {"className":"dh-eyebrow"} -->
-<p class="dh-eyebrow"><strong>01</strong> Survey &amp; design</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"className":"dh-svc__title"} -->
+<section id="survey" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc__head","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc__head"><!-- wp:heading {"className":"dh-svc__title"} -->
 <h2 class="wp-block-heading dh-svc__title">It starts with a visit to your site.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc-lead"} -->
 <p class="dh-svc-lead">A Demas engineer visits for free, looks at what you have, and recommends the system that suits your villa, landscape or farm.</p>
-<!-- /wp:paragraph -->
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
 
 <!-- wp:heading {"level":3,"className":"dh-svc__label"} -->
 <h3 class="wp-block-heading dh-svc__label">What we check</h3>
 <!-- /wp:heading -->
 
-<!-- wp:list {"className":"dh-svc-checks"} -->
-<ul class="wp-block-list dh-svc-checks"><!-- wp:list-item -->
+<!-- wp:list {"className":"dh-svc-checks dh-reveal--sliver"} -->
+<ul class="wp-block-list dh-svc-checks dh-reveal--sliver"><!-- wp:list-item -->
 <li><strong>Water source</strong> Well, network or tank</li>
 <!-- /wp:list-item -->
 
@@ -118,22 +116,8 @@
 <!-- /wp:list -->
 
 <!-- wp:paragraph {"className":"dh-svc-outcome"} -->
-<p class="dh-svc-outcome">You get a clear recommendation and a quotation — typically within two business days.</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group -->
-
-<!-- wp:group {"className":"dh-svc-placeholder dh-reveal--sliver","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-placeholder dh-reveal--sliver"><!-- wp:group {"className":"dh-svc-placeholder__chip","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-placeholder__chip"><!-- wp:paragraph {"className":"dh-svc-placeholder__label"} -->
-<p class="dh-svc-placeholder__label">Photo to come</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>An engineer on a site visit</p>
-<!-- /wp:paragraph --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></div>
-<!-- /wp:group --></section>
+<p class="dh-svc-outcome">You get a clear recommendation and a quotation, usually within two business days.</p>
+<!-- /wp:paragraph --></section>
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"section","anchor":"install","className":"dh-section dh-svc dh-svc--plate","layout":{"type":"constrained"}} -->
@@ -144,16 +128,12 @@
 <!-- /wp:image -->
 
 <!-- wp:group {"className":"dh-svc__copy","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__copy"><!-- wp:paragraph {"className":"dh-eyebrow"} -->
-<p class="dh-eyebrow"><strong>02</strong> Installation</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"className":"dh-svc__title"} -->
+<div class="wp-block-group dh-svc__copy"><!-- wp:heading {"className":"dh-svc__title"} -->
 <h2 class="wp-block-heading dh-svc__title">Everything that goes in the ground.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc__text"} -->
-<p class="dh-svc__text">We install the complete system — sprinklers, drip, valves, pipes, filtration and controllers — then program it to run on its own and waste less water. Many jobs are installed the same week, by expert technicians, with premium brands.</p>
+<p class="dh-svc__text">We install the whole system: sprinklers, drip, valves, pipes, filtration and controllers. Then we program it to run on its own and waste less water.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
@@ -175,18 +155,13 @@
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"section","anchor":"maintain","className":"dh-section dh-svc","layout":{"type":"constrained"}} -->
-<section id="maintain" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc__grid","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__grid"><!-- wp:group {"className":"dh-svc__copy","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__copy"><!-- wp:paragraph {"className":"dh-eyebrow"} -->
-<p class="dh-eyebrow"><strong>03</strong> Maintenance &amp; repairs</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"className":"dh-svc__title"} -->
+<section id="maintain" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc__head","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc__head"><!-- wp:heading {"className":"dh-svc__title"} -->
 <h2 class="wp-block-heading dh-svc__title">Small leaks don’t stay small.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc__text"} -->
-<p class="dh-svc__text">Most irrigation problems start small — a leak, a clogged emitter, a drop in pressure. We handle routine maintenance and emergency repairs, tune controllers, check the parts that wear, and stay with you after installation so the system stays reliable and the landscape healthy.</p>
+<p class="dh-svc__text">Most problems start small: a leak, a clogged emitter, a drop in pressure. We catch them early and keep the system reliable.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"className":"dh-svc-two","layout":{"type":"default"}} -->
@@ -282,7 +257,6 @@
 <p class="dh-svc-stamp"><strong>5</strong> Year warranty</p>
 <!-- /wp:paragraph --></article>
 <!-- /wp:group --></div>
-<!-- /wp:group --></div>
 <!-- /wp:group --></section>
 <!-- /wp:group -->
 
@@ -303,7 +277,7 @@
 
 <!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button {"className":"is-style-dh-pill-paper"} -->
-<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="/contact-us/">Find your branch</a></div>
+<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="/contact-us/?need=survey#request">Request a site visit</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button {"className":"is-style-dh-pill-outline-paper"} -->

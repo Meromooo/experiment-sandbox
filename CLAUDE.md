@@ -407,7 +407,18 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   the `services` pattern (`patterns/services.php`: core blocks, the Service Record job card,
   the category-cards **"List"** style for "What we install"; CSS in `style.css` section 15,
   `dh-svc-` classes); its hero opens on CSS like the homepage's (the AMM-168 rules, scoped to
-  `.page-template-designed-page .dh-svc-hero`). Version 0.4.0 for the new pattern file. The
+  `.page-template-designed-page .dh-svc-hero`). Version 0.4.0 for the new pattern file. It
+  passed the taste skill's audit in AMM-171 (2026-10-03): side-by-side and stacked sections
+  alternate (hero, survey stacked with its checks as one ruled inspection strip, installation,
+  maintenance stacked with the Service Record over its photo across the page, call to action);
+  two eyebrows (hero, call to action), the stage line under the hero numbering the services; a
+  headline sized to its column (`cqi`, two lines from 768px up, both buttons on a 320x568
+  phone); one label per intent ("Request a site visit"). The record's overhang below its photo
+  needs a two-class selector: WordPress zeroes a flow layout's last child's end margin with
+  `:root :where(.is-layout-flow) > :last-child`, which outweighs one class. The 404 got the
+  same audit: a 19-word lead, a title that takes two lines on a phone, and its system lines
+  headed by the system's name alone (no "Browse by stage" kicker; `.dh-404 .dh-line__eyebrow`
+  in `style.css` section 12; the catalogue and an empty search keep the kicker). The
   Contact Us page uses it with the `contact` pattern (`patterns/contact.php`, AMM-169: the
   intro and the Branch Finder as the hero, then the request section; `dh-ct-` classes), its
   hero opening the same way at 56rem and up. Version 0.5.0 for that pattern file. It passed the

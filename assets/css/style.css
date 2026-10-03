@@ -2260,9 +2260,11 @@ svg {
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
 }
 
+/* Two lines on a 320px phone, so the search and the first button make the
+   first screen (AMM-171); full size from about 400px up. */
 .dh-404 .dh-404__title {
 	margin: 0 0 var(--wp--preset--spacing--40);
-	font-size: var(--wp--preset--font-size--xxxl);
+	font-size: clamp(2rem, 10vw, var(--wp--preset--font-size--xxxl));
 }
 
 .dh-404 .dh-404__lede {
@@ -2293,6 +2295,33 @@ svg {
 .dh-404__actions .wp-block-button__link:focus-visible {
 	outline: 2px solid var(--wp--preset--color--field);
 	outline-offset: 2px;
+}
+
+/*
+ * The system lines (src/system-index) are the page's way back in, not a
+ * catalogue section: here each is headed by its system's name alone, in
+ * sentence case, without the "Browse by stage" kicker the catalogue shows
+ * (AMM-171, one eyebrow on the page). The nav's label still says it.
+ */
+.dh-404 .dh-line__eyebrow {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--xl);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	text-transform: none;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-404 .dh-line__eyebrow::before,
+.dh-404 .dh-line__eyebrow > :not(.dh-line__system),
+.dh-404 .dh-line__system::before {
+	display: none;
+}
+
+.dh-404 .dh-line__system {
+	color: inherit;
 }
 
 /* ------------------------------------------------------------------ */
@@ -2775,12 +2804,6 @@ footer.wp-block-template-part {
 	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
 }
 
-/* Maintenance: the photo and the Service Record laid over it need the wider
-   column, or the card covers the photo. */
-.dh-svc__grid:has(> .dh-svc-record-stage) {
-	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-}
-
 /* Grid cells and side-by-side pieces, not stacked blocks: no layout gap. */
 :is(.dh-svc-hero__grid, .dh-svc__grid, .dh-svc-band, .dh-svc-record-stage, .dh-svc-collage, .dh-svc-two, .dh-svc-parts__head, .dh-svc-record__head, .dh-svc-record__sign, .dh-svc-record) > * {
 	margin-block: 0;
@@ -2790,21 +2813,19 @@ footer.wp-block-template-part {
 	scroll-margin-block-start: var(--wp--preset--spacing--40);
 }
 
-:is(.dh-svc-hero__copy, .dh-svc__copy, .dh-svc-band__copy, .dh-ct-hero__intro, .dh-ct-request__copy) > .dh-eyebrow {
+:is(.dh-svc-hero__copy, .dh-svc-band__copy, .dh-ct-hero__intro, .dh-ct-request__copy) > .dh-eyebrow {
 	margin-block: 0 var(--wp--preset--spacing--40);
 }
 
-/* "01", "02", "03" in a section's eyebrow: the step's number, in data type. */
-.dh-svc .dh-eyebrow strong {
-	font-family: var(--wp--preset--font-family--mono);
-	font-weight: 500;
-	color: var(--wp--preset--color--canopy);
-	letter-spacing: 0.04em;
+.dh-svc-hero__copy {
+	container-type: inline-size; /* the headline is sized to this column */
 }
 
+/* Two lines from 768px up, sized to its column as on Contact (AMM-171); on
+   a 320x568 phone the buttons still make the first screen. */
 .dh-svc-hero__title {
-	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
-	font-size: var(--wp--preset--font-size--xxxl);
+	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	font-size: clamp(1.75rem, 9cqi, 4rem);
 	line-height: var(--wp--custom--display--leading);
 }
 
@@ -2812,6 +2833,20 @@ footer.wp-block-template-part {
 .dh-ct-title {
 	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
 	font-size: var(--wp--preset--font-size--xxl);
+}
+
+/* A section's title opens its block: no eyebrow above it (AMM-171). */
+.dh-svc__title {
+	margin-block-start: 0;
+}
+
+/*
+ * Survey and maintenance stack (AMM-171), between the side-by-side hero,
+ * installation and call to action: the head at a reading measure, then the
+ * work across the page.
+ */
+.dh-svc__head > :is(.dh-svc__title, .dh-svc-two) {
+	max-inline-size: 36rem;
 }
 
 .dh-svc-lead,
@@ -2928,7 +2963,8 @@ footer.wp-block-template-part {
 	color: var(--wp--preset--color--canopy);
 }
 
-/* 01 Survey: what a site visit checks, as labelled rows. */
+/* Survey: what a site visit checks, as one ruled strip across the page,
+   the way a survey sheet lays out its fields: a mono label over one line. */
 .dh-svc__label {
 	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
 	font-family: var(--wp--preset--font-family--body);
@@ -2941,19 +2977,28 @@ footer.wp-block-template-part {
 }
 
 .dh-svc-checks {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	border-block-start: var(--wp--custom--rule);
+	border-block-start: 2px solid var(--wp--preset--color--ink);
+	border-block-end: var(--wp--custom--rule);
 }
 
 .dh-svc-checks li {
-	display: grid;
-	grid-template-columns: 11rem minmax(0, 1fr);
-	gap: var(--wp--preset--spacing--40);
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--20);
 	margin: 0;
-	padding-block: var(--wp--preset--spacing--30);
-	border-block-end: var(--wp--custom--rule);
+	padding-block: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+	padding-inline: 0 var(--wp--preset--spacing--40);
+	line-height: 1.4;
+}
+
+.dh-svc-checks li + li {
+	padding-inline-start: var(--wp--preset--spacing--40);
+	border-inline-start: var(--wp--custom--rule);
 }
 
 .dh-svc-checks strong {
@@ -2981,58 +3026,7 @@ footer.wp-block-template-part {
 	font-weight: 600;
 }
 
-/* A photo still to come, drawn the way a layout marks an empty frame. */
-.dh-svc-placeholder {
-	position: relative;
-	display: grid;
-	place-items: center;
-	aspect-ratio: 4 / 5;
-	padding: var(--wp--preset--spacing--50);
-	border-radius: var(--wp--custom--radius--lg);
-	background:
-		linear-gradient(to top right, transparent calc(50% - 0.6px), color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent) 50%, transparent calc(50% + 0.6px)),
-		linear-gradient(to bottom right, transparent calc(50% - 0.6px), color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent) 50%, transparent calc(50% + 0.6px)),
-		repeating-linear-gradient(0deg, transparent 0 23px, color-mix(in srgb, var(--wp--preset--color--ink) 5%, transparent) 23px 24px),
-		repeating-linear-gradient(90deg, transparent 0 23px, color-mix(in srgb, var(--wp--preset--color--ink) 5%, transparent) 23px 24px),
-		var(--wp--preset--color--sand);
-}
-
-.dh-svc-placeholder::after {
-	content: "";
-	position: absolute;
-	inset: var(--wp--preset--spacing--40);
-	border: 1px dashed color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
-	border-radius: var(--wp--custom--radius--md);
-	pointer-events: none;
-}
-
-.dh-svc-placeholder__chip {
-	position: relative;
-	z-index: 1;
-	max-inline-size: 16rem;
-	margin: 0;
-	padding: 0.7rem 1rem;
-	border-radius: var(--wp--custom--radius--sm);
-	background: var(--wp--preset--color--paper);
-	box-shadow: var(--wp--preset--shadow--card);
-	text-align: center;
-}
-
-.dh-svc-placeholder__chip > * {
-	margin: 0;
-	font-size: var(--wp--preset--font-size--sm);
-}
-
-.dh-svc-placeholder__chip > .dh-svc-placeholder__label {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	font-weight: 500;
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
-	color: var(--wp--preset--color--canopy);
-}
-
-/* 02 Installation: the work set on a sand plate. */
+/* Installation: the work set on a sand plate. */
 .dh-svc--plate {
 	padding-block: var(--wp--preset--spacing--20);
 }
@@ -3155,7 +3149,7 @@ footer.wp-block-template-part {
 	transform: scaleX(-1);
 }
 
-/* 03 Maintenance: routine and emergency, side by side. */
+/* Maintenance: routine and emergency, side by side. */
 .dh-svc-two {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -3183,31 +3177,34 @@ footer.wp-block-template-part {
 
 /*
  * The Service Record: a technician's job card laid at an angle over the
- * photo, ruled like the footer's drawing sheet. When it scrolls in (the
- * reveal's .is-in, main.js) its ticks fill one by one and the warranty stamp
- * lands once. Every word on it is a block an editor can change.
+ * photo, ruled like the footer's drawing sheet, across the page under the
+ * maintenance copy. When it scrolls in (the reveal's .is-in, main.js) its
+ * ticks fill one by one and the warranty stamp lands once. Every word on it
+ * is a block an editor can change.
  */
 .dh-svc-record-stage {
 	display: grid;
 	grid-template-columns: repeat(12, minmax(0, 1fr));
+	margin-block-start: var(--wp--preset--spacing--60);
 	padding-block-end: var(--wp--preset--spacing--70);
 }
 
 .dh-svc-record__photo {
-	grid-column: 4 / -1;
+	grid-column: 5 / -1;
 	grid-row: 1;
 }
 
+/* Landscape, framed on the spray (the photo is portrait). */
 .dh-svc-record__photo img {
-	aspect-ratio: 4 / 5;
+	aspect-ratio: 3 / 2;
+	object-position: 50% 30%;
 }
 
 .dh-svc-record {
 	position: relative;
-	grid-column: 1 / 10;
+	grid-column: 1 / 8;
 	grid-row: 1;
 	align-self: end;
-	margin-block-end: calc(-1 * var(--wp--preset--spacing--70));
 	padding: var(--wp--preset--spacing--50);
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
 	border-radius: var(--wp--custom--radius--sm);
@@ -3215,6 +3212,13 @@ footer.wp-block-template-part {
 	box-shadow: var(--wp--preset--shadow--raised);
 	font-size: var(--wp--preset--font-size--sm);
 	rotate: -1.5deg;
+}
+
+/* It hangs below the photo. Two classes, because WordPress zeroes the end
+   margin of a flow layout's last child with a rule of that weight
+   (:root :where(.is-layout-flow) > :last-child). */
+.dh-svc-record-stage > .dh-svc-record {
+	margin-block-end: calc(-1 * var(--wp--preset--spacing--70));
 }
 
 .dh-svc-record__head {
@@ -3279,7 +3283,8 @@ footer.wp-block-template-part {
 
 .dh-svc-record__checks {
 	display: grid;
-	gap: var(--wp--preset--spacing--20);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--wp--preset--spacing--20) var(--wp--preset--spacing--50);
 	margin: 0;
 	padding: var(--wp--preset--spacing--40) 0;
 	list-style: none;
@@ -3648,6 +3653,28 @@ footer.wp-block-template-part {
 		padding-block: var(--wp--preset--spacing--20);
 	}
 
+	.dh-svc-checks {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.dh-svc-checks li + li {
+		padding-inline-start: 0;
+		border-inline-start: 0;
+	}
+
+	.dh-svc-checks li:nth-child(even) {
+		padding-inline-start: var(--wp--preset--spacing--40);
+		border-inline-start: var(--wp--custom--rule);
+	}
+
+	.dh-svc-checks li:nth-child(n + 3) {
+		border-block-start: var(--wp--custom--rule);
+	}
+
+	.dh-svc-checks li:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+
 	.dh-svc-plate {
 		padding: var(--wp--preset--spacing--50);
 	}
@@ -3671,9 +3698,12 @@ footer.wp-block-template-part {
 	.dh-svc-record {
 		grid-column: 1;
 		grid-row: 2;
-		margin-block: calc(-1 * var(--wp--preset--spacing--70)) 0;
 		margin-inline: var(--wp--preset--spacing--30);
 		rotate: none;
+	}
+
+	.dh-svc-record-stage > .dh-svc-record {
+		margin-block: calc(-1 * var(--wp--preset--spacing--70)) 0;
 	}
 
 	.dh-svc-stamp {
@@ -3689,13 +3719,9 @@ footer.wp-block-template-part {
 @media (max-width: 36rem) {
 	.dh-cats__grid.is-style-list,
 	.dh-svc-two,
-	.dh-svc-record__fields {
+	.dh-svc-record__fields,
+	.dh-svc-record__checks {
 		grid-template-columns: 1fr;
-	}
-
-	.dh-svc-checks li {
-		grid-template-columns: 1fr;
-		gap: 0.1rem;
 	}
 
 	.dh-svc-record__fields li + li {
