@@ -39,10 +39,11 @@ $GLOBALS['demas_theme_timing'] = array(
 /**
  * Records a stage of the request: time since the request began, and queries so far.
  *
- * While the template renders (template_include end → wp_head start), every
- * hook is traced too: the time from one hook firing to the next is booked to
- * the first. Rough — it includes the caller's own work after the hook — but
- * it names where per-card time goes.
+ * During two phases — the main query (wp_loaded end → wp start) and the
+ * template (template_include end → wp_head start) — every hook is traced
+ * too: the time from one hook firing to the next is booked to the first.
+ * Rough — it includes the caller's own work after the hook — but it names
+ * where the time goes.
  *
  * @param string $label Stage name.
  */
@@ -51,10 +52,16 @@ function demas_theme_timing_mark( $label ) {
 
 	$demas_theme_timing['marks'][] = array( $label, timer_float() * 1000, get_num_queries() );
 
-	if ( 'template_include end' === $label ) {
-		$demas_theme_timing['trace'] = true;
-	} elseif ( 'wp_head start' === $label ) {
-		demas_theme_timing_hook( 'wp_head' );
+	$phases = array(
+		'wp_loaded end'        => 'main query',
+		'template_include end' => 'template',
+	);
+
+	if ( isset( $phases[ $label ] ) ) {
+		$demas_theme_timing['trace'] = $phases[ $label ];
+		$demas_theme_timing['last']  = null;
+	} elseif ( in_array( $label, array( 'wp start', 'wp_head start' ), true ) ) {
+		demas_theme_timing_hook( '(phase end)' );
 		$demas_theme_timing['trace'] = false;
 	}
 }
@@ -74,10 +81,11 @@ function demas_theme_timing_hook( $hook ) {
 	$now = microtime( true );
 
 	if ( null !== $demas_theme_timing['last'] ) {
-		$name = $demas_theme_timing['last'][0];
-		$row  = $demas_theme_timing['hooks'][ $name ] ?? array( 0, 0.0 );
+		$name  = $demas_theme_timing['last'][0];
+		$phase = $demas_theme_timing['trace'];
+		$row   = $demas_theme_timing['hooks'][ $phase ][ $name ] ?? array( 0, 0.0 );
 
-		$demas_theme_timing['hooks'][ $name ] = array( $row[0] + 1, $row[1] + ( $now - $demas_theme_timing['last'][1] ) * 1000 );
+		$demas_theme_timing['hooks'][ $phase ][ $name ] = array( $row[0] + 1, $row[1] + ( $now - $demas_theme_timing['last'][1] ) * 1000 );
 	}
 
 	$demas_theme_timing['last'] = array( (string) $hook, $now );
@@ -202,18 +210,19 @@ add_action(
 			$lines[] = sprintf( '%-40s %5d %9.1f %9.1f %7d %7d', $name, $row[0], $row[1], $row[2], $row[3], $row[4] );
 		}
 
-		$hooks = $demas_theme_timing['hooks'];
-		uasort(
-			$hooks,
-			function ( $a, $b ) {
-				return $b[1] <=> $a[1];
-			}
-		);
+		foreach ( $demas_theme_timing['hooks'] as $phase => $hooks ) {
+			uasort(
+				$hooks,
+				function ( $a, $b ) {
+					return $b[1] <=> $a[1];
+				}
+			);
 
-		$lines[] = '';
-		$lines[] = sprintf( '%-60s %6s %9s', 'hook during the template (top 40)', 'fired', 'ms after' );
-		foreach ( array_slice( $hooks, 0, 40, true ) as $name => $row ) {
-			$lines[] = sprintf( '%-60s %6d %9.1f', $name, $row[0], $row[1] );
+			$lines[] = '';
+			$lines[] = sprintf( '%-60s %6s %9s', 'hook during the ' . $phase . ' (top 30)', 'fired', 'ms after' );
+			foreach ( array_slice( $hooks, 0, 30, true ) as $name => $row ) {
+				$lines[] = sprintf( '%-60s %6d %9.1f', $name, $row[0], $row[1] );
+			}
 		}
 
 		echo "\n<!--\n" . esc_html( implode( "\n", $lines ) ) . "\n-->\n";
