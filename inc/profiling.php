@@ -88,7 +88,26 @@ function demas_theme_timing_hook( $hook ) {
 		$demas_theme_timing['hooks'][ $phase ][ $name ] = array( $row[0] + 1, $row[1] + ( $now - $demas_theme_timing['last'][1] ) * 1000 );
 	}
 
-	$demas_theme_timing['last'] = array( (string) $hook, $now );
+	$name = (string) $hook;
+
+	/*
+	 * A database query is booked under its shape, so the slow one can be
+	 * named: table prefix dropped, every string and number replaced, lists
+	 * collapsed. No values reach the page.
+	 */
+	if ( 'query' === $name ) {
+		global $wpdb;
+
+		$sql  = (string) ( func_get_args()[1] ?? '' );
+		$sql  = str_replace( $wpdb->prefix, '', $sql );
+		$sql  = preg_replace( "/'(?:[^'\\\\]|\\\\.)*'/", '?', $sql );
+		$sql  = preg_replace( '/\b\d+\b/', 'N', $sql );
+		$sql  = preg_replace( '/(?:[N?]\s*,\s*)+[N?]/', 'N…', $sql );
+		$sql  = preg_replace( '/\s+/', ' ', $sql );
+		$name = 'query: ' . substr( trim( $sql ), 0, 150 );
+	}
+
+	$demas_theme_timing['last'] = array( $name, $now );
 }
 add_action( 'all', 'demas_theme_timing_hook' );
 
@@ -219,9 +238,9 @@ add_action(
 			);
 
 			$lines[] = '';
-			$lines[] = sprintf( '%-60s %6s %9s', 'hook during the ' . $phase . ' (top 30)', 'fired', 'ms after' );
+			$lines[] = sprintf( '%-150s %6s %9s', 'hook during the ' . $phase . ' (top 30)', 'fired', 'ms after' );
 			foreach ( array_slice( $hooks, 0, 30, true ) as $name => $row ) {
-				$lines[] = sprintf( '%-60s %6d %9.1f', $name, $row[0], $row[1] );
+				$lines[] = sprintf( '%-150s %6d %9.1f', $name, $row[0], $row[1] );
 			}
 		}
 
