@@ -518,6 +518,10 @@ branch-routed contact form replaces published email addresses.
   `assets/css/style.css` all load on the same page, so two components sharing a class name
   style each other. The footer once reused `.dh-plate` (the product page's nameplate) and turned
   it unreadable; it is `.dh-foot-plate` now. Before naming a class, grep the repo for it.
+- **Touch targets are 44px (AMM-172).** Pills and header controls keep their drawn size and
+  take taps through a transparent `::before` (`style.css` section 4, one `:is()` list): a new
+  pill style or header control joins that list, and a wrapped row of them needs `spacing-30`
+  between rows so tap areas don't overlap. Other new controls are 44px themselves.
 - **No jQuery, no classic WooCommerce assets.** Since AMM-154 no page loads jQuery,
   WooCommerce's classic CSS/JS, order attribution, emoji or Kadence assets. Front-end code is
   dependency-free (plain JS, TypeScript modules, the Interactivity API); don't add anything
