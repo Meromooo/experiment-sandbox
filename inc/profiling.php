@@ -39,8 +39,8 @@ $GLOBALS['demas_theme_timing'] = array(
 /**
  * Records a stage of the request: time since the request began, and queries so far.
  *
- * During two phases — the main query (wp_loaded end → wp start) and the
- * template (template_include end → wp_head start) — every hook is traced
+ * During three phases — init, the main query (wp_loaded end → wp start) and
+ * the template (template_include end → wp_head start) — every hook is traced
  * too: the time from one hook firing to the next is booked to the first.
  * Rough — it includes the caller's own work after the hook — but it names
  * where the time goes.
@@ -53,6 +53,7 @@ function demas_theme_timing_mark( $label ) {
 	$demas_theme_timing['marks'][] = array( $label, timer_float() * 1000, get_num_queries() );
 
 	$phases = array(
+		'init start'           => 'init',
 		'wp_loaded end'        => 'main query',
 		'template_include end' => 'template',
 	);
@@ -60,7 +61,7 @@ function demas_theme_timing_mark( $label ) {
 	if ( isset( $phases[ $label ] ) ) {
 		$demas_theme_timing['trace'] = $phases[ $label ];
 		$demas_theme_timing['last']  = null;
-	} elseif ( in_array( $label, array( 'wp start', 'wp_head start' ), true ) ) {
+	} elseif ( in_array( $label, array( 'init end', 'wp start', 'wp_head start' ), true ) ) {
 		demas_theme_timing_hook( '(phase end)' );
 		$demas_theme_timing['trace'] = false;
 	}
