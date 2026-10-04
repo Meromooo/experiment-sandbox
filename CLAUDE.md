@@ -53,7 +53,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   front-end work. frontend-design sets the direction; this one holds the engineering floor:
   accessibility (keyboard, focus, labels, live regions, 44px touch targets), responsive checks at
   320 / 768 / 1024 / 1440, empty and error states, and the design-system tokens in `theme.json`.
-  Its checklist is how front-end work is verified before it goes to In Review.
+  Its checklist is how front-end work is verified before it goes to In Review — on the sandbox,
+  in Chrome DevTools (below), measured rather than eyeballed.
 - **`caveman:caveman`** (full intensity) — terse replies in chat. Code, commit messages, PR
   descriptions, repo docs (this file, ADRs, READMEs) and Linear issues stay in normal prose;
   security warnings, irreversible actions, step-by-step instructions and explanations of new
@@ -70,6 +71,19 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   theme (they would deploy to the site). Installed 2026-09-29 as the skill file only
   (`~/.claude/skills/ponytail/SKILL.md`, from github.com/DietrichGebert/ponytail, MIT) — not the
   plugin, whose hooks would switch it on for every session.
+- **Chrome DevTools MCP** (added 2026-10-04 at Ammar's request; plugin
+  `chrome-devtools-mcp@chrome-devtools-plugins`, user scope, Google's official
+  github.com/ChromeDevTools/chrome-devtools-mcp) — **the browser tool for every check on the
+  sandbox**, replacing Playwright. Screenshots and widths (`resize_page`, `emulate` for a phone
+  with touch), the accessibility tree (`take_snapshot`), `lighthouse_audit`, console and network
+  (`list_console_messages`, `list_network_requests`), performance traces with LCP/CLS insights.
+  Load its skills as the job needs them: `chrome-devtools-mcp:chrome-devtools` (basics),
+  `chrome-devtools-mcp:a11y-debugging`, `chrome-devtools-mcp:debug-optimize-lcp`. Playwright
+  stays installed only as the fallback for what DevTools lacks — chiefly `prefers-reduced-motion`
+  (its `browser_emulate_media`), which every reveal and the hero's opening motion must be
+  checked under. The global rule is `~/.claude/rules/chrome-devtools.md`. Google's usage
+  statistics are switched off in `~/.claude/settings.json`; a performance trace still sends the
+  traced URL to Google's CrUX API, harmless for the public sandbox and live URLs.
 - **`design-taste-frontend`** (the "taste skill", added 2026-10-02 at Ammar's request) — a
   strict design critic for **marketing surfaces only**: the homepage, Services, Contact, the
   404 and the footer. Not for the catalogue, sheet view, product datasheet, search, finder or
@@ -83,7 +97,26 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   3. **Use its "redesign — preserve" mode** (its section 11): URLs, nav labels and content stay
      stable, which the cutover (AMM-158) depends on.
   4. **Run its final pre-flight checklist (its section 14) as an audit**; findings go to
-     Linear, and fixes follow the usual plan → go-ahead → build flow.
+     Linear, and fixes follow the usual plan → go-ahead → build flow. **Run it on the sandbox
+     in Chrome DevTools, at 320 / 768 / 1024 / 1440, and measure every box that can be
+     measured** — a finding carries the number and a screenshot, not an impression:
+     - *No em or en dash:* `evaluate_script` counting `—` and `–` in `document.body.innerText`
+       (and in `alt` / `aria-label` values).
+     - *Button, form and text contrast:* `chrome-devtools-mcp:a11y-debugging` —
+       `lighthouse_audit` (accessibility) plus computed colours for anything it flags.
+     - *Hero fits the viewport:* screenshots at 1440×900 and a 375×812 phone; headline line
+       count (height ÷ line-height), subtext word count (≤ 20), CTA bottom above the fold.
+     - *CTA labels on one line at desktop, nav on one line and ≤ 80px:* element heights at 1440.
+     - *Eyebrow count ≤ ceil(sections ÷ 3), one marquee per page:* count `.dh-eyebrow` (and
+       other eyebrows) against sections, `.dh-marquee` per page.
+     - *Mobile collapse:* no `scrollWidth > innerWidth` at 320; 44px tap targets.
+     - *Core Web Vitals:* `chrome-devtools-mcp:debug-optimize-lcp` — a reload trace for LCP and
+       CLS (INP needs an interaction trace).
+     - *Reduced motion:* the Playwright fallback (`browser_emulate_media`) — DevTools can't
+       emulate it.
+     - Console and network clean on the page.
+     The judgement boxes (layout families, copy self-audit, AI tells) stay a read of the page
+     and its screenshots.
 
   **Its rules apply to the site's visible copy and layout** — Ammar likes them, including the
   hero subtext ≤ 20 words, max one eyebrow per three sections, max one middle dot per line,
@@ -547,7 +580,8 @@ branch-routed contact form replaces published email addresses.
   WooCommerce's classic CSS/JS, order attribution, emoji or Kadence assets. Front-end code is
   dependency-free (plain JS, TypeScript modules, the Interactivity API); don't add anything
   that pulls jQuery back in. After any change to enqueues, run a network trace on home,
-  catalogue and product pages and compare with the before/after table in AMM-154.
+  catalogue and product pages (Chrome DevTools `list_network_requests`) and compare with the
+  before/after table in AMM-154.
 - **Adding a file to `patterns/` needs a version bump.** WordPress caches a theme's pattern list
   keyed on the `Version:` in the root `style.css`, so a new pattern file is invisible — a
   `wp:pattern` pointing at it renders nothing — until that version changes. Bump `Version:` and
