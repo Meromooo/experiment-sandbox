@@ -5,9 +5,10 @@
   "title": "Irrigation Schematic",
   "category": "design",
   "icon": "networking",
-  "description": "An irrigation line drawn as an engineering schematic that draws itself as it scrolls into view, with a short note socketed into its corner.",
+  "description": "An irrigation line drawn as an engineering schematic that draws itself as it scrolls into view, with a short note socketed into its corner. Choose a film in the sidebar and the card plays it instead: a site plan drawn, fitted, run and grown, once, with a pause and replay button.",
   "textdomain": "demas-theme",
   "editorScript": "file:./index.js",
+  "viewScriptModule": "file:./view.js",
   "render": "file:./render.php",
   "supports": {
     "html": false
@@ -18,6 +19,14 @@
       "default": ""
     },
     "tabCopy": {
+      "type": "string",
+      "default": ""
+    },
+    "film": {
+      "type": "object",
+      "default": {}
+    },
+    "filmLabel": {
       "type": "string",
       "default": ""
     }

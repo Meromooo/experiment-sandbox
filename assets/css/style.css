@@ -1409,6 +1409,132 @@ svg {
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
 }
 
+/*
+ * Film mode (AMM-175; src/schematic/render.php and view.ts): the film is a
+ * pale sheet laid on the card, and the tab sits in the card's corner under
+ * it, in the flow, so the sheet always stops above it. The sheet takes the
+ * film's own shape, so the picture fills it to the edge and is never cropped:
+ * a browser renders video colour a shade off the page's, and a band of CSS
+ * paper round the picture showed the join. Where the card is taller (beside
+ * the Branch Desk) the sheet sits in the middle of the board above the tab. The
+ * padding is wider than the notch radius, so the tab's fillet never touches
+ * the sheet.
+ */
+.dh-schem--film {
+	display: grid;
+	grid-template-rows: minmax(0, 1fr) auto;
+	gap: var(--wp--preset--spacing--40);
+	padding: var(--wp--preset--spacing--50);
+}
+
+.dh-schem--film > .dh-notch__tab {
+	position: relative;
+	align-self: end;
+	justify-self: start;
+	max-inline-size: min(85%, 18rem);
+	margin: 0 0 calc(-1 * var(--wp--preset--spacing--50)) calc(-1 * var(--wp--preset--spacing--50));
+}
+
+.dh-film {
+	position: relative;
+	align-self: center;
+	overflow: hidden;
+	aspect-ratio: 1200 / 950;
+	border-radius: var(--wp--custom--radius--md);
+	background: var(--wp--preset--color--paper);
+}
+
+.dh-film :is(img, video) {
+	position: absolute;
+	inset: 0;
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: contain;
+}
+
+/* The first frame (an image) shows until the video is actually playing. */
+.dh-film__video {
+	opacity: 0;
+}
+
+.dh-film.is-started .dh-film__video {
+	opacity: 1;
+}
+
+/* The last frame stands in when the film doesn't play by itself: reduced
+   motion, Save-Data, a refused play (view.ts adds .is-still), or no
+   JavaScript (the <noscript> copy). */
+.dh-film__still {
+	display: none;
+}
+
+.dh-film.is-still .dh-film__still,
+.dh-film__still.is-shown {
+	display: block;
+}
+
+/* Pause / Play / Replay, in the sheet's emptiest corner. Its label (set by
+   view.ts) says what it will do; the glyph follows the state. */
+.dh-film__toggle {
+	position: absolute;
+	z-index: 1;
+	inset-block-start: var(--wp--preset--spacing--30);
+	inset-inline-start: var(--wp--preset--spacing--30);
+	display: grid;
+	place-items: center;
+	inline-size: 2.75rem;
+	block-size: 2.75rem;
+	padding: 0;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 18%, transparent);
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--wp--preset--color--paper) 90%, transparent);
+	color: var(--wp--preset--color--ink);
+	cursor: pointer;
+	transition:
+		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+/* display: grid above would otherwise show it before view.ts is ready. */
+.dh-film__toggle[hidden] {
+	display: none;
+}
+
+.dh-film__toggle:hover {
+	border-color: var(--wp--preset--color--ink);
+	background: var(--wp--preset--color--paper);
+}
+
+.dh-film__icon {
+	inline-size: 1.25rem;
+	block-size: 1.25rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.dh-film__glyph {
+	display: none;
+}
+
+.dh-film[data-state="playing"] .dh-film__glyph--pause,
+.dh-film:is([data-state="idle"], [data-state="paused"]) .dh-film__glyph--play,
+.dh-film[data-state="ended"] .dh-film__glyph--replay {
+	display: inline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-film:not(.is-started) .dh-film__still {
+		display: block;
+	}
+
+	.dh-film__toggle {
+		transition: none;
+	}
+}
+
 /* City marquee under the hero: a field-green dot after each item. */
 .dh-marquee__item::after {
 	content: "";
@@ -1845,6 +1971,11 @@ svg {
 	.dh-schem {
 		min-block-size: 0;
 		aspect-ratio: 4 / 3;
+	}
+
+	/* With a film the card grows round the sheet instead. */
+	.dh-schem--film {
+		aspect-ratio: auto;
 	}
 
 	.dh-cats__grid {
