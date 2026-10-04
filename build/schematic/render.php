@@ -53,7 +53,8 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-schem dh-no
 	<?php if ( $demas_has_film ) : ?>
 		<div class="dh-film" data-film>
 			<?php if ( '' !== $demas_film['poster'] ) : ?>
-				<img class="dh-film__poster" src="<?php echo esc_url( $demas_film['poster'] ); ?>" alt="" width="1200" height="950" decoding="async">
+				<?php // Lazy: below 56rem the card is below the fold, and fetched early the frame cost the phone's LCP (the hero's lead) ~200 ms. On desktop it is in view and loads at first layout. ?>
+				<img class="dh-film__poster" src="<?php echo esc_url( $demas_film['poster'] ); ?>" alt="" width="1200" height="950" loading="lazy" decoding="async">
 			<?php endif; ?>
 			<video class="dh-film__video" muted playsinline preload="none" aria-hidden="true" width="1200" height="950">
 				<?php if ( '' !== $demas_film['av1'] ) : ?>
