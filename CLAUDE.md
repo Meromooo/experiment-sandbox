@@ -370,7 +370,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     edited in the sidebar), `/schematic` (the self-drawing irrigation line; its corner note
     edited in the sidebar; **film mode, AMM-175:** with a film chosen in its "Film" panel it
     plays the site-plan film instead, as a paper sheet laid on the card with the tab under it,
-    in the flow. Four media-library files made by `tools/hero-film.sh`: AV1 WebM, H.264 MP4,
+    in the flow. Four media-library files made by `tools/hero-film.sh`: AV1 MP4 (not WebM: the
+    host serves `.webm` as `text/plain`), H.264 MP4,
     the first frame (an `<img>` under the video, so it paints at once and is the desktop LCP
     candidate) and the last frame (the still for reduced motion, Save-Data, a refused play and
     `<noscript>`). `src/schematic/view.ts` plays it once when the card is half in view and its

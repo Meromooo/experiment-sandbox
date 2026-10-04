@@ -24,7 +24,8 @@
 #
 # Writes four files to OUT_DIR, which are uploaded to the Media Library and
 # chosen in the schematic block's "Film" panel:
-#   demas-hero-film-av1.webm   AV1, for browsers that decode it
+#   demas-hero-film-av1.mp4    AV1, for browsers that decode it (MP4, not
+#                              WebM: Hostinger serves .webm as text/plain)
 #   demas-hero-film-h264.mp4   H.264, plays everywhere
 #   demas-hero-film-start.webp the first frame, the video's poster
 #   demas-hero-film-end.webp   the last frame, shown still with reduced
@@ -67,7 +68,7 @@ graph+="scale=out_range=tv:out_color_matrix=bt709,format=yuv420p[v]"
 tags=(-colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv)
 
 ffmpeg -v error -y -i "$1" -i "$2" -i "$3" -i "$4" -filter_complex "$graph" -map '[v]' -an \
-	-c:v libsvtav1 -preset 4 -crf 40 -g 120 "${tags[@]}" "$out/demas-hero-film-av1.webm"
+	-c:v libsvtav1 -preset 4 -crf 40 -g 120 "${tags[@]}" -movflags +faststart "$out/demas-hero-film-av1.mp4"
 
 ffmpeg -v error -y -i "$1" -i "$2" -i "$3" -i "$4" -filter_complex "$graph" -map '[v]' -an \
 	-c:v libx264 -preset veryslow -crf 26 -tune animation -profile:v high -g 48 "${tags[@]}" \

@@ -43,7 +43,7 @@ const FILES: Array< {
 	{
 		key: 'av1',
 		label: __( 'Film, AV1', 'demas-theme' ),
-		help: 'demas-hero-film-av1.webm',
+		help: 'demas-hero-film-av1.mp4',
 		types: [ 'video' ],
 	},
 	{
