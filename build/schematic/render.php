@@ -12,7 +12,8 @@
  * With a film chosen in the sidebar (AMM-175), the card plays it instead of
  * drawing: a pale sheet laid on the card, the tab under it. The film's
  * files are media-library attachments (`film`: av1, mp4, poster, still), made
- * by tools/hero-film.sh. The poster (the bare plan) shows at once; view.ts
+ * by tools/hero-film.sh. The AV1 film is an MP4 as well, not WebM: the host
+ * serves .webm as text/plain. The poster (the bare plan) shows at once; view.ts
  * plays the film once the card is in view and has landed, leaves it on the
  * finished garden, and adds the Pause / Play / Replay button. The still (the
  * finished garden) stands in with reduced motion, Save-Data or no
@@ -56,7 +57,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-schem dh-no
 			<?php endif; ?>
 			<video class="dh-film__video" muted playsinline preload="none" aria-hidden="true" width="1200" height="950">
 				<?php if ( '' !== $demas_film['av1'] ) : ?>
-					<source src="<?php echo esc_url( $demas_film['av1'] ); ?>" type='video/webm; codecs="av01.0.08M.08"'>
+					<source src="<?php echo esc_url( $demas_film['av1'] ); ?>" type='video/mp4; codecs="av01.0.08M.08"'>
 				<?php endif; ?>
 				<?php if ( '' !== $demas_film['mp4'] ) : ?>
 					<source src="<?php echo esc_url( $demas_film['mp4'] ); ?>" type="video/mp4">
