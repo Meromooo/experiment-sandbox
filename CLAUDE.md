@@ -168,7 +168,12 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   products that had no manufacturer SKU and files the 23 uncategorised ones — see the file
   header for the grammar and why `DMS-` sits in the brand slot. Nine rows are flagged
   `DUPLICATE` and get a category but no number; they are for Demas to delete (applied on the
-  sandbox: 172 `DMS-` SKUs). Nothing here is loaded by `functions.php`, and since AMM-173 none
+  sandbox: 172 `DMS-` SKUs). `hero-film.sh` (AMM-175, needs ffmpeg) joins the four Vidu clips
+  of the homepage's site-plan film, grades each clip's background to `paper` and the pipes to
+  about `water`, crops the empty left of the frame (keeping the full height), and writes the
+  four files the schematic block's film mode uses; re-run it on new clips. It never hides the
+  "Vidu AI" mark: clean clips come from a Vidu plan that allows commercial use, which is still
+  open in AMM-175. Nothing here is loaded by `functions.php`, and since AMM-173 none
   of it is deployed: to run a tool again, upload it (with its CSV) outside the theme folder and
   point `wp eval-file` at that copy.
 - `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
@@ -363,7 +368,19 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     the editor canvas shows it through ServerSideRender), `/branch-desk` (every branch as
     a button with who answers there, all from `demas_theme_get_branches()`; eyebrow and title
     edited in the sidebar), `/schematic` (the self-drawing irrigation line; its corner note
-    edited in the sidebar) and `/marquee` (the scrolling lines under the hero: the branch
+    edited in the sidebar; **film mode, AMM-175:** with a film chosen in its "Film" panel it
+    plays the site-plan film instead, as a paper sheet laid on the card with the tab under it,
+    in the flow. Four media-library files made by `tools/hero-film.sh`: AV1 WebM, H.264 MP4,
+    the first frame (an `<img>` under the video, so it paints at once and is the desktop LCP
+    candidate) and the last frame (the still for reduced motion, Save-Data, a refused play and
+    `<noscript>`). `src/schematic/view.ts` plays it once when the card is half in view and its
+    reveal has landed (`.is-settled`, 3 s fallback), leaves it on the finished garden, and runs
+    the Pause / Play / Replay button (WCAG 2.2.2), placed top-left, clear of the picture's
+    corners. The video has `preload="none"`, so it is only fetched when it plays. The sheet
+    takes the film's exact shape (1200 / 950): a browser renders video colour a shade off the
+    page's, and a band of CSS paper round the picture showed the join. With no film file it
+    draws the schematic as before, which is what live shows until the cutover (AMM-158)
+    re-uploads the files there) and `/marquee` (the scrolling lines under the hero: the branch
     cities or an editor's list; a focusable `role="region"`, so keyboard focus pauses it and,
     with reduced motion, scrolls it). Enqueues `assets/js/editor.js`, the **Highlight**
     rich-text format (`<span class="dh-highlight" data-reveal="wipe">`) for the headline's
