@@ -25,11 +25,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The newest modification time among the theme's files and folders, skipping
  * dot-entries (a host's .git folder changes on every fetch).
- *
- * ponytail: ~200 file stats per uncached request (about a millisecond); a
- * stamp written by the deploy job would replace it if the theme grows a lot.
  */
 function demas_theme_deploy_stamp(): string {
+	// Ponytail: ~200 file stats per uncached request (about a millisecond); a
+	// stamp written by the deploy job would replace it if the theme grows a lot.
 	$folders = new RecursiveCallbackFilterIterator(
 		new RecursiveDirectoryIterator( DEMAS_THEME_DIR, FilesystemIterator::SKIP_DOTS ),
 		static fn( SplFileInfo $entry ) => '.' !== $entry->getFilename()[0]
@@ -57,6 +56,6 @@ add_action(
 		}
 
 		update_option( 'demas_theme_deploy_stamp', $stamp, false );
-		do_action( 'litespeed_purge_all' );
+		do_action( 'litespeed_purge_all' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- LiteSpeed Cache's own documented hook.
 	}
 );
