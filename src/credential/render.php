@@ -56,7 +56,8 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-cred' ) );
 		<?php if ( $demas_logo ) : ?>
 			<span class="dh-cred__mark">
 				<span class="dh-cred__ink" style="--dh-logo:url(<?php echo esc_url( $demas_logo ); ?>)" aria-hidden="true"></span>
-				<img class="dh-cred__logo" src="<?php echo esc_url( $demas_logo ); ?>" alt="" width="168" height="68" loading="lazy" decoding="async">
+				<?php // crossorigin: the mask fetches the file in CORS mode; an image fetched the same way shares that download instead of making a second. ?>
+				<img class="dh-cred__logo" src="<?php echo esc_url( $demas_logo ); ?>" alt="" width="168" height="68" loading="lazy" decoding="async" crossorigin="anonymous">
 			</span>
 			<span class="dh-sr"><?php echo wp_kses( $demas_name, array() ); ?></span>
 		<?php else : ?>
