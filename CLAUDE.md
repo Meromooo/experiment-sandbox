@@ -132,6 +132,29 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   strip". Installed as a project skill in the main checkout's `.claude/skills/` (from
   github.com/leonxlnx/taste-skill, commit ce26fc2, MIT), kept out of git by
   `.git/info/exclude` so it never deploys into the theme folder.
+- **`name-that-ui`** (added 2026-10-05 at Ammar's request; project skill in this repo's
+  `.claude/skills/name-that-ui/`, from namethatui.com) — the shared vocabulary for UI
+  components. **On** whenever a component is named: every front-end plan, Linear issue, commit
+  and CLAUDE.md entry (first mention uses the standard name, ours beside it: "the quote list (a
+  modal dialog)"), whenever Ammar describes a component in his own words (answer with the name
+  and its entry), when naming a new block or class, and when choosing a new control's ARIA
+  pattern. It holds a glossary of **our** components under their standard names (finder =
+  command palette + combobox, Gallery | Sheet = segmented control, the parts sheet = data
+  table…); a new component gets its row in the same commit. Cheap (~2k tokens), so load it at
+  the plan step of any front-end task, beside the two front-end skills.
+- **`favicon-cheat-sheet`** (added 2026-10-05; project skill in `.claude/skills/favicon-cheat-sheet/`,
+  distilled from github.com/audreyfeldroy/favicon-cheat-sheet, MIT) — the icon rules: the
+  modern minimum (`favicon.ico` 32, an SVG icon, a 180px opaque `apple-touch-icon`, a manifest
+  with 192 / 512 / maskable icons, `theme-color` from `theme.json`), what the sandbox serves
+  today (WordPress's Site Icon only: no `/favicon.ico`, SVG, manifest or `theme-color`; a 300px
+  touch icon) and where each piece lives here (`assets/images/`, the `site_icon_meta_tags`
+  filter, the domain root as Ammar's server work, the Site Icon as database content). **On**
+  for anything touching icons, the logo or brand mark, head tags for icons or the manifest, a
+  `/favicon.ico` 404 in a network trace, and the cutover checklist (AMM-158).
+
+  Both are committed with the repo (`git add -f`, since `.git/info/exclude` lists
+  `.claude/skills/`), so every worktree session has them; since AMM-173 nothing outside the
+  theme's runtime files deploys, so they stay private.
 
 ## Version targets
 
