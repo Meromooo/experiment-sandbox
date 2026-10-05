@@ -6,8 +6,9 @@
  *     viewport, and number the reveals of each [data-reveal-group] (--i) so
  *     CSS can stagger them. Reduced-motion users get the final state at once.
  *     The homepage hero is not one: CSS plays it as the page opens.
- *  2. Marquee: clone each .dh-marquee__track's children once so the CSS
- *     translate(-50%) loop is seamless.
+ *  2. Marquee and belt: clone each .dh-marquee__track's and .dh-belt__track's
+ *     children once so the CSS translate(-50%) loop is seamless; then drive
+ *     the certificates belt (stamp-in, ease to a stop, stop on focus).
  *  3. Counters: [data-count] numbers count up from zero when they scroll
  *     into view. The markup already holds the final value, so without this
  *     script — or with reduced motion — the number is simply there.
@@ -114,19 +115,181 @@
 		});
 	}
 
-	/* 2. Marquee -------------------------------------------------------- */
+	/* 2. Marquee and belt ----------------------------------------------- */
 
-	each(document.querySelectorAll('.dh-marquee__track'), function (track) {
+	// The copies only fill the loop: hidden from screen readers, out of the
+	// keyboard's reach (inert), and without ids, so nothing points at them.
+	each(document.querySelectorAll('.dh-marquee__track, .dh-belt__track'), function (track) {
 		if (track.getAttribute('data-cloned') === '1') {
 			return;
 		}
 		var originals = Array.prototype.slice.call(track.children);
-		originals.forEach(function (node) {
+		var copyOf = function (node) {
 			var copy = node.cloneNode(true);
 			copy.setAttribute('aria-hidden', 'true');
-			track.appendChild(copy);
+			copy.setAttribute('inert', '');
+			each(copy.querySelectorAll('[id]'), function (el) {
+				el.removeAttribute('id');
+			});
+			each(copy.querySelectorAll('[aria-describedby]'), function (el) {
+				el.removeAttribute('aria-describedby');
+			});
+			return copy;
+		};
+		originals.forEach(function (node) {
+			track.appendChild(copyOf(node));
 		});
+		// The belt keeps a set before the originals too (its loop runs over
+		// the middle third), so focus can bring any plate to mid belt with
+		// plates either side of it.
+		if (track.classList.contains('dh-belt__track')) {
+			originals.forEach(function (node) {
+				track.insertBefore(copyOf(node), originals[0]);
+			});
+		}
 		track.setAttribute('data-cloned', '1');
+	});
+
+	// The certificates belt (AMM-178, style.css "Credentials") waits still
+	// until it first comes into view, stamps its plates in one after another,
+	// then runs. The pointer slows it to a stop and lets it go again. Keyboard
+	// focus stops it at once and moves the loop so the focused plate sits mid
+	// belt: it is never focused out of sight. With reduced motion the plates
+	// stand still as a wall and none of this runs.
+	each(document.querySelectorAll('.dh-belt'), function (belt) {
+		var track = belt.querySelector('.dh-belt__track');
+		var loop = track && track.getAnimations ? track.getAnimations()[0] : null;
+		if (!loop || reduce.matches) {
+			return;
+		}
+
+		var plates = track.querySelectorAll('.dh-cred:not([aria-hidden])');
+		each(track.children, function (plate, i) {
+			plate.style.setProperty('--i', String(i % plates.length));
+		});
+		belt.classList.add('is-driven');
+
+		var run = function () {
+			belt.classList.remove('is-waiting', 'is-stamping');
+		};
+
+		if (hasObserver && plates.length) {
+			belt.classList.add('is-waiting');
+			var arrival = new IntersectionObserver(
+				function (entries) {
+					if (!entries[0].isIntersecting) {
+						return;
+					}
+					arrival.disconnect();
+					belt.classList.replace('is-waiting', 'is-stamping');
+					// The last plate's stamp ends the stamp-in; its transition
+					// exists from the next frame. 3 s in case it never runs.
+					var fallback = window.setTimeout(run, 3000);
+					window.requestAnimationFrame(function () {
+						var last = plates[plates.length - 1];
+						var stamping = last.getAnimations().map(function (animation) {
+							return animation.finished;
+						});
+						Promise.allSettled(stamping).then(function () {
+							window.clearTimeout(fallback);
+							run();
+						});
+					});
+				},
+				{ threshold: 0.4 }
+			);
+			arrival.observe(belt);
+		}
+
+		// One motion at a time: easing the speed, or gliding to a plate.
+		var ramp = 0;
+		// How far the track is moved past where the loop can take it (the CSS
+		// translate property, on top of the loop's transform): the first
+		// plates sit at the start of the loop, so reaching mid belt needs more.
+		var extra = 0;
+
+		function tween(ms, step) {
+			window.cancelAnimationFrame(ramp);
+			var start = null;
+
+			function frame(now) {
+				if (start === null) {
+					start = now;
+				}
+				var progress = Math.min(1, (now - start) / ms);
+				step(1 - Math.pow(1 - progress, 3));
+				if (progress < 1) {
+					ramp = window.requestAnimationFrame(frame);
+				}
+			}
+
+			ramp = window.requestAnimationFrame(frame);
+		}
+
+		function moveExtra(px) {
+			extra = px;
+			track.style.translate = px ? px + 'px' : '';
+		}
+
+		// Running again, the belt also slides back onto its loop.
+		function easeTo(rate) {
+			var from = loop.playbackRate;
+			var fromExtra = extra;
+			tween(600, function (eased) {
+				loop.playbackRate = from + (rate - from) * eased;
+				if (rate > 0 && fromExtra) {
+					moveExtra(fromExtra * (1 - eased));
+				}
+			});
+		}
+
+		belt.addEventListener('pointerenter', function (event) {
+			if (event.pointerType === 'mouse') {
+				easeTo(0);
+			}
+		});
+
+		belt.addEventListener('pointerleave', function (event) {
+			if (event.pointerType === 'mouse' && !belt.contains(document.activeElement)) {
+				easeTo(1);
+			}
+		});
+
+		belt.addEventListener('focusin', function (event) {
+			var plate = event.target.closest('.dh-cred');
+			if (!plate) {
+				return;
+			}
+			loop.playbackRate = 0;
+			belt.scrollLeft = 0; // Where overflow: clip is missing, focus scrolls a hidden overflow.
+
+			// The loop moves the track by a third of its width (the originals'
+			// length); its progress is how far along that it is. The plate's
+			// centre goes to the belt's: as far as the loop reaches, then the
+			// rest with the translate.
+			var set = track.scrollWidth / 3;
+			var duration = loop.effect.getComputedTiming().duration;
+			var toPx = window.getComputedStyle(track).direction === 'rtl' ? set : -set;
+			var view = belt.getBoundingClientRect();
+			var box = plate.getBoundingClientRect();
+			var shift = view.left + view.width / 2 - (box.left + box.width / 2);
+			var from = (Number(loop.currentTime) % duration) / duration;
+			var fromExtra = extra;
+			var target = from + (extra + shift) / toPx;
+			var to = Math.min(1, Math.max(0, target));
+			var toExtra = (target - to) * toPx;
+
+			tween(350, function (eased) {
+				loop.currentTime = (from + (to - from) * eased) * duration;
+				moveExtra(fromExtra + (toExtra - fromExtra) * eased);
+			});
+		});
+
+		belt.addEventListener('focusout', function (event) {
+			if (!belt.contains(event.relatedTarget) && !belt.matches(':hover')) {
+				easeTo(1);
+			}
+		});
 	});
 
 	/* 3. Counters ------------------------------------------------------- */

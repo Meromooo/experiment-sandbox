@@ -1549,70 +1549,378 @@ svg {
 	border-block-start: 0;
 }
 
-/* Credentials -------------------------------------------------------- */
+/* Credentials: approval plates on a belt (AMM-178) ------------------- */
 
-.dh-creds {
-	text-align: center;
+/*
+ * Markup (src/credentials, src/credential):
+ *   <div class="dh-belt" role="region" aria-label="Certificates and approvals">
+ *     <ul class="dh-belt__track">
+ *       <li class="dh-cred">
+ *         <a class="dh-cred__plate" …>        (a <span>, focusable, without a link)
+ *           <span class="dh-cred__mark">
+ *             <span class="dh-cred__ink" style="--dh-logo:url(…)"></span>
+ *             <img class="dh-cred__logo" …>
+ *           </span>
+ *           <span class="dh-cred__tag" aria-hidden="true">…</span>
+ *
+ * Every plate is an equipment approval plate: one size, paper, a hairline
+ * edge, two rivets. Its logo (a file from tools/credential-logos.py, all on
+ * one canvas) is drawn in canopy at rest, the file as a mask, so ten logos
+ * read as one family; under the pointer or focus it shows its own colours
+ * and a tag drops beneath it on a string.
+ *
+ * The belt loops like the marquee (section 6), the other way from the supply
+ * line above it, and slowly. main.js copies the plates to either side
+ * (hidden, inert), stamps them in the first time the belt comes into view
+ * (.is-waiting, then .is-stamping), eases it to a stop under the pointer and
+ * stops it on keyboard focus (.is-driven).
+ */
+.dh-belt {
+	--dh-belt-duration: 75s;
+	position: relative;
+	overflow: hidden;
+	padding-block: var(--wp--preset--spacing--40);
 }
 
-.dh-creds__list {
+/* Clipped sideways only: the hang tag drops below the belt. */
+@supports (overflow: clip) {
+	.dh-belt {
+		overflow-x: clip;
+		overflow-y: visible;
+	}
+}
+
+/* The ends fade into the page: drawn over the plates rather than masked, as a
+   mask would cut the tag off too. */
+.dh-belt::before,
+.dh-belt::after {
+	content: "";
+	position: absolute;
+	inset-block: 0;
+	z-index: 1;
+	inline-size: clamp(1.5rem, 6%, 4.5rem);
+	background: linear-gradient(to right, var(--wp--preset--color--paper), transparent);
+	pointer-events: none;
+}
+
+.dh-belt::before {
+	inset-inline-start: 0;
+}
+
+.dh-belt::after {
+	inset-inline-end: 0;
+	transform: scaleX(-1);
+}
+
+[dir="rtl"] .dh-belt::before {
+	transform: scaleX(-1);
+}
+
+[dir="rtl"] .dh-belt::after {
+	transform: none;
+}
+
+.dh-belt__track {
+	display: flex;
+	inline-size: max-content;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	animation: dh-belt var(--dh-belt-duration) linear infinite;
+}
+
+/* main.js puts a set of copies on either side of the plates: the loop runs
+   over the middle third, from the plates to the copies after them. */
+@keyframes dh-belt {
+	from {
+		transform: translateX(calc(100% / -3));
+	}
+
+	to {
+		transform: translateX(calc(200% / -3));
+	}
+}
+
+[dir="rtl"] .dh-belt__track {
+	animation-name: dh-belt-rtl;
+}
+
+@keyframes dh-belt-rtl {
+	from {
+		transform: translateX(calc(100% / 3));
+	}
+
+	to {
+		transform: translateX(calc(200% / 3));
+	}
+}
+
+/* Without main.js the pointer and focus pause it, as they do the supply line;
+   main.js eases it instead. It also holds it still until the plates are in. */
+.dh-belt:not(.is-driven):is(:hover, :focus-within) .dh-belt__track,
+.dh-belt:is(.is-waiting, .is-stamping) .dh-belt__track {
+	animation-play-state: paused;
+}
+
+.dh-cred {
+	position: relative;
+	flex: none;
+	/* Each plate's own margin, not a track gap: the three sets (copies,
+	   plates, copies) measure the same, so the loop lands on the seam. */
+	margin-inline-end: var(--wp--preset--spacing--40);
+}
+
+/* Lifted above its neighbours and the fades while its tag is out. */
+.dh-cred:is(:hover, :focus-within) {
+	z-index: 2;
+}
+
+.dh-cred__plate {
+	--_rivet: color-mix(in srgb, var(--wp--preset--color--ink) 34%, transparent);
+	position: relative;
+	display: grid;
+	place-items: center;
+	inline-size: 12rem;
+	padding: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	border: var(--wp--custom--rule);
+	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+	border-radius: var(--wp--custom--radius--md);
+	background:
+		radial-gradient(circle at 0.55rem 0.55rem, var(--_rivet) 0 1.5px, transparent 2px),
+		radial-gradient(circle at calc(100% - 0.55rem) 0.55rem, var(--_rivet) 0 1.5px, transparent 2px),
+		var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--canopy);
+	text-decoration: none;
+	transition:
+		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-cred__plate:is(:hover, :focus-visible) {
+	transform: translateY(-3px);
+	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 45%, transparent);
+	box-shadow: 0 10px 18px -12px color-mix(in srgb, var(--wp--preset--color--canopy) 55%, transparent);
+}
+
+/* The global focus style rounds to the small radius; the plate keeps its own. */
+.dh-cred__plate:focus-visible {
+	border-radius: var(--wp--custom--radius--md);
+}
+
+/* The logo's box: the canvas tools/credential-logos.py draws every logo on. */
+.dh-cred__mark,
+.dh-cred__name {
+	display: grid;
+	inline-size: 100%;
+	aspect-ratio: 168 / 68;
+}
+
+.dh-cred__mark > * {
+	grid-area: 1 / 1;
+	inline-size: 100%;
+	block-size: 100%;
+	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-cred__ink {
+	background: var(--wp--preset--color--canopy);
+	-webkit-mask: var(--dh-logo) center / contain no-repeat;
+	mask: var(--dh-logo) center / contain no-repeat;
+}
+
+.dh-cred__logo {
+	object-fit: contain;
+	opacity: 0;
+}
+
+.dh-cred__plate:is(:hover, :focus-visible) .dh-cred__ink {
+	opacity: 0;
+}
+
+.dh-cred__plate:is(:hover, :focus-visible) .dh-cred__logo {
+	opacity: 1;
+}
+
+/* A credential without a logo: its name, set on the plate. */
+.dh-cred__name {
+	place-items: center;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	line-height: 1.1;
+	text-align: center;
+	text-wrap: balance;
+}
+
+/* The hang tag, on a string from the plate's lower edge, threaded through a
+   punched hole. It swings in from a slight angle. */
+.dh-cred__tag {
+	position: absolute;
+	inset-block-start: calc(100% + 0.9rem);
+	inset-inline-start: 50%;
+	display: grid;
+	gap: 0.1rem;
+	inline-size: max-content;
+	max-inline-size: 15rem;
+	padding: 1.05rem 0.9rem 0.75rem;
+	border-radius: var(--wp--custom--radius--sm);
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--paper);
+	font-size: var(--wp--preset--font-size--xs);
+	line-height: 1.35;
+	text-align: start;
+	transform: translate(-50%, -6px) rotate(-3deg);
+	transform-origin: 50% -0.9rem;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition:
+		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		transform var(--wp--custom--motion--base) cubic-bezier(0.3, 1.5, 0.5, 1),
+		visibility 0s linear var(--wp--custom--motion--fast);
+}
+
+.dh-cred__tag::before {
+	content: "";
+	position: absolute;
+	inset-block-end: calc(100% - 0.55rem);
+	inset-inline-start: 50%;
+	inline-size: 1px;
+	block-size: 1.45rem;
+	background: color-mix(in srgb, var(--wp--preset--color--ink) 55%, transparent);
+}
+
+.dh-cred__tag::after {
+	content: "";
+	position: absolute;
+	inset-block-start: 0.4rem;
+	inset-inline-start: calc(50% - 0.2rem);
+	inline-size: 0.4rem;
+	block-size: 0.4rem;
+	border-radius: 50%;
+	background: var(--wp--preset--color--paper);
+}
+
+[dir="rtl"] .dh-cred__tag {
+	transform: translate(50%, -6px) rotate(3deg);
+}
+
+.dh-cred__plate:is(:hover, :focus-visible) .dh-cred__tag {
+	transform: translate(-50%, 0) rotate(0deg);
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transition-delay: 0s;
+}
+
+[dir="rtl"] .dh-cred__plate:is(:hover, :focus-visible) .dh-cred__tag {
+	transform: translate(50%, 0) rotate(0deg);
+}
+
+.dh-cred__tag-name {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+}
+
+.dh-cred__tag-text {
+	display: grid;
+}
+
+.dh-cred__tag-issuer {
+	font-family: var(--wp--preset--font-family--mono);
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 72%, transparent);
+}
+
+.dh-cred__tag-link {
+	margin-block-start: var(--wp--preset--spacing--10);
+	color: var(--wp--preset--color--field);
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+/* Stamp-in: held up and faded until the belt first comes into view, then
+   pressed down one after another, with a small overshoot. */
+.dh-belt.is-waiting .dh-cred {
+	transform: scale(1.14) rotate(-2deg);
+	opacity: 0;
+}
+
+.dh-belt.is-stamping .dh-cred {
+	transition:
+		transform var(--wp--custom--motion--base) cubic-bezier(0.3, 1.45, 0.55, 1) calc(var(--i, 0) * var(--wp--custom--motion--stagger)),
+		opacity var(--wp--custom--motion--fast) linear calc(var(--i, 0) * var(--wp--custom--motion--stagger));
+}
+
+/* The editor shows the plates standing still, as a wall, the logos in their
+   own colours and each one's name under it. */
+.dh-belt__wall {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
-	gap: var(--wp--preset--spacing--20);
+	gap: var(--wp--preset--spacing--40);
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.dh-creds__item {
-	--_r: var(--wp--custom--radius--pill);
-	position: relative;
+.dh-belt__wall .dh-cred {
+	margin: 0;
 }
 
-.dh-creds__mark {
-	display: inline-flex;
-	align-items: center;
-	padding: 0.6em 1.1em;
-	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
-	border-radius: var(--wp--custom--radius--pill);
-	font-size: var(--wp--preset--font-size--sm);
-	font-weight: 500;
-	line-height: 1;
-	white-space: nowrap;
-	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
-}
-
-.dh-creds__item:hover .dh-creds__mark,
-.dh-creds__mark:focus-visible {
-	border-color: var(--wp--preset--color--ink);
-}
-
-/* One line of context on hover or focus — a tooltip, so the row never reflows. */
-.dh-creds__detail {
-	position: absolute;
-	inset-block-start: calc(100% + 0.4rem);
-	inset-inline-start: 50%;
-	z-index: 5;
-	padding: 0.45em 0.8em;
-	border-radius: var(--wp--custom--radius--sm);
-	background: var(--wp--preset--color--ink);
-	color: var(--wp--preset--color--paper);
-	font-size: var(--wp--preset--font-size--xs);
-	line-height: 1.3;
-	white-space: nowrap;
-	transform: translate(-50%, -4px);
-	opacity: 0;
-	pointer-events: none;
-	transition:
-		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
-}
-
-.dh-creds__item:hover .dh-creds__detail,
-.dh-creds__item:focus-within .dh-creds__detail {
+.dh-belt__wall .dh-cred__logo {
 	opacity: 1;
-	transform: translate(-50%, 0);
+}
+
+.dh-belt__wall .dh-cred__caption {
+	margin-block-start: var(--wp--preset--spacing--10);
+	font-size: var(--wp--preset--font-size--xs);
+	color: var(--wp--preset--color--ink);
+}
+
+@media (max-width: 36rem) {
+	.dh-cred__plate {
+		inline-size: 9.5rem;
+		padding: var(--wp--preset--spacing--20) var(--wp--preset--spacing--30);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	/* Standing still, the plates make a wall: wrapped rows, no copies, no
+	   fades, and the tags still drop below. */
+	.dh-belt {
+		overflow: visible;
+	}
+
+	.dh-belt::before,
+	.dh-belt::after {
+		display: none;
+	}
+
+	.dh-belt__track {
+		flex-wrap: wrap;
+		justify-content: center;
+		row-gap: var(--wp--preset--spacing--40);
+		inline-size: auto;
+		animation: none;
+	}
+
+	.dh-cred {
+		margin-inline: calc(var(--wp--preset--spacing--40) / 2);
+	}
+
+	.dh-cred[aria-hidden="true"] {
+		display: none;
+	}
+
+	.dh-cred__plate,
+	.dh-cred__mark > *,
+	.dh-cred__tag {
+		transition: none;
+	}
 }
 
 /* Bands (numbers, closing CTA) -------------------------------------- */
@@ -2044,7 +2352,6 @@ svg {
 
 	.dh-cat,
 	.dh-cat__arrow,
-	.dh-creds__detail,
 	.dh-desk__city {
 		transition: none;
 	}
