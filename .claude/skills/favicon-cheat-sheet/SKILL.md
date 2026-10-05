@@ -27,11 +27,11 @@ Source: [favicon-cheat-sheet](https://github.com/audreyfeldroy/favicon-cheat-she
 
 When an icon changes, bust caches with a version query (`favicon.ico?v=2`); browsers hold favicons for a long time.
 
-## What the sandbox serves today (measured 2026-10-04)
+## What the theme serves (since 2026-10-05)
 
-- WordPress's **Site Icon** setting (the image in Settings → General) points at `demas-site-icon` in the Media Library (uploaded 2026-03), on the sandbox **and** live. WordPress prints a 32px and a 192px PNG, uses the **300px** PNG as `apple-touch-icon` (wrong: 180 and opaque) and adds an `msapplication-TileImage` (legacy).
-- **No `/favicon.ico`** (the server answers 404), **no SVG icon, no manifest, no `theme-color`.**
-- Open question for Ammar: is there a vector (SVG) master of the Demas mark? Every size should be cut from one master, not from the PNG.
+- `inc/site-icons.php` prints the full modern minimum from `assets/images/` and replaces WordPress's Site Icon tags on the front end. The Site Icon setting (`demas-site-icon`, the old 300px PNG) still serves the admin and login screens, and is what live prints until cutover.
+- **Two masters, one script.** `tools/make-icons.py` holds the full "dm" mark (measured from the logo PNG; no designer's vector file exists) and a 16px-grid simplification for tab sizes, both as rectangles, and writes every file. Edit the masters there and re-run; never hand-edit a PNG.
+- Still missing: a file at the domain root `/favicon.ico` (server work for Ammar). Browsers that read the link tags don't need it.
 
 ## Where things live in this project
 

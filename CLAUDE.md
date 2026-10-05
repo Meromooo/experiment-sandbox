@@ -186,8 +186,16 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   "IBM Plex Sans Fallback": Arial scaled to the web fonts' measured widths), listed after the
   web fonts in `theme.json`'s stacks, so text wraps the same before and after the fonts swap
   in. Change a face or its width axis and those values must be re-measured.
-- `assets/images/` — **not yet created.** Reserved for hand-placed theme imagery (logo,
-  icons); photography for content goes through the Media Library, not this folder.
+- `assets/images/` — hand-placed theme imagery (logo, icons); photography for content goes
+  through the Media Library, not this folder. Since 2026-10-05 it holds the **icon set**, made
+  by `tools/make-icons.py` from two rectangle-only masters of the Demas "dm" mark (blue
+  `#1B7EB2`, indigo `#232D8E`, the bowl's ground white, as in the logo): `demas-mark.svg` (the
+  full mark, measured from the logo PNG Ammar supplied) and `favicon.svg` (a tab-size
+  simplification on a 16px grid — the full mark is too tall and thin to read at 16px; shape from
+  a ChatGPT sketch Ammar approved, redrawn so every bar is two whole pixels). Plus
+  `favicon.ico` (16/32/48), `apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png`,
+  `icon-maskable-512.png` (all on a `paper` tile) and `site.webmanifest`. Change an icon by
+  editing the masters in the script and re-running it, never by hand-editing a PNG.
 - `tools/` — one-off operational scripts run by a human on the host, never by the theme at
   runtime. `create-product-categories.sh` (WP-CLI, builds the locked category tree; superseded
   by the 2026-09-17 live clone). `assign-house-skus.php` + `house-skus.csv` (run with
@@ -205,7 +213,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   transparent, any frame round the file or box round the mark dropped, trimmed, sized for equal
   visual weight (equal area, a little more for sparse marks) and centred on one 336 x 136
   canvas, so every plate shows its logo at one size; the files are uploaded and picked per
-  credential. Nothing here is loaded by `functions.php`, and since AMM-173 none
+  credential. `make-icons.py` (2026-10-05, Python 3 with Pillow; run locally as
+  `python tools/make-icons.py assets/images`) writes the whole icon set from its two rectangle
+  masters (see `assets/images/`). Nothing here is loaded by `functions.php`, and since AMM-173 none
   of it is deployed: to run a tool again, upload it (with its CSV) outside the theme folder and
   point `wp eval-file` at that copy.
 - `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
@@ -398,6 +408,15 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     uncached (the plugin's default; each query is its own URL and rarely repeats). Nothing in
     a page may vary by visitor: no cookies, nonces or user data in the HTML, which the theme
     never had (per-visitor state lives in `localStorage` and the browser).
+  - `site-icons.php` — the browser-tab and home-screen icons (2026-10-05). Replaces WordPress's
+    Site Icon tags on the front end (`remove_action( 'wp_head', 'wp_site_icon', 99 )`) with the
+    theme's set in `assets/images/`: `favicon.ico` (`sizes="32x32"`), `favicon.svg`,
+    `apple-touch-icon.png`, `site.webmanifest`, each with its file time as `?ver=`, and a
+    `theme-color` read from the `theme.json` palette (`paper`; the manifest repeats `#FAF9F6`, so
+    change both together). Without the files it falls back to WordPress's tags. The Site Icon
+    setting stays for the admin and login screens. No `/favicon.ico` at the domain root yet:
+    that would be server work for Ammar, and browsers follow the link tags. Rules:
+    `.claude/skills/favicon-cheat-sheet`.
   - `homepage.php` — the homepage's editable sections (AMM-153, from 2026-09-30). Registers the
     small theme blocks core blocks can't replace — `demas-theme/credentials` + `/credential` (the
     **certificates belt** under the hero, AMM-178, 2026-10-05: each credential is an approval
