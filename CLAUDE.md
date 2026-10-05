@@ -438,8 +438,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   `credentials`, `numbers`, `categories`, `process`, `closing-cta`; plus `not-found` (the 404
   head, core blocks, not inserter-visible) and `footer` (AMM-144 — the site footer drawn as an
   engineering drawing's **title block**: catalogue index, branches + key plan, the company
-  plate, the closing line; not inserter-visible). The footer's CR number, VAT number and
-  registered name read "Pending" until Ammar supplies them; "Our certificates" links the
+  plate, the closing line; not inserter-visible). The plate's registered name (English, plus
+  the Arabic of the CR certificate as a `lang="ar"` line), CR number (1010028038) and VAT
+  number (300054069400003) come from the certificates PDF (AMM-162); "Our certificates" links the
   `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153:** all six
   homepage patterns are editable blocks (core blocks + the theme blocks in `inc/homepage.php`),
   pixel-identical to the old HTML at 320–1440 apart from deliberate fixes (live category counts,
