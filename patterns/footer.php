@@ -10,8 +10,9 @@
  * blocks because they are data (inc/navigation.php, inc/branches.php); the
  * company details below are copy an editor may change.
  *
- * CR number, VAT number and the registered name are placeholders until Demas
- * supplies them (AMM-144). Staff email addresses never appear here.
+ * Registered name (English, and the Arabic of the CR certificate), CR number
+ * and VAT number are from Demas's certificates PDF (AMM-162). Staff email
+ * addresses never appear here.
  *
  * @package Demas_Theme
  */
@@ -36,9 +37,9 @@ $demas_certificates = content_url( 'uploads/2026/03/DEMAS-Certificates.pdf' );
 					<div class="dh-foot-plate__row"><dt>Est.</dt><dd class="dh-mono">1979</dd></div>
 					<div class="dh-foot-plate__row"><dt>Telephone</dt><dd class="dh-mono"><a href="tel:+966114634102">011 463 4102</a></dd></div>
 					<div class="dh-foot-plate__row is-wide"><dt>Head office</dt><dd>8018 King Abdulaziz Rd, As Sulimaniyah, Riyadh 12245</dd></div>
-					<div class="dh-foot-plate__row is-wide"><dt>Registered name</dt><dd class="is-pending">Pending</dd></div>
-					<div class="dh-foot-plate__row"><dt>CR no.</dt><dd class="is-pending">Pending</dd></div>
-					<div class="dh-foot-plate__row"><dt>VAT no.</dt><dd class="is-pending">Pending</dd></div>
+					<div class="dh-foot-plate__row is-wide"><dt>Registered name</dt><dd>Demas Company for Trading and Contracting <span class="dh-foot-plate__ar" lang="ar">شركة ديماس للتجارة والمقاولات</span></dd></div>
+					<div class="dh-foot-plate__row"><dt>CR no.</dt><dd class="dh-mono">1010028038</dd></div>
+					<div class="dh-foot-plate__row"><dt>VAT no.</dt><dd class="dh-mono">300054069400003</dd></div>
 					<div class="dh-foot-plate__row is-wide"><dt>Certified</dt><dd><span class="dh-mono">ISO 9001, 14001, 45001</span> <a class="dh-foot-plate__doc" href="<?php echo esc_url( $demas_certificates ); ?>">Our certificates <span class="dh-foot-plate__meta">PDF, 1.2 MB</span></a></dd></div>
 				</dl>
 			</section>

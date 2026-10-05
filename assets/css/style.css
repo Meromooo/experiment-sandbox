@@ -2636,11 +2636,13 @@ footer.wp-block-template-part {
 	line-height: 1.45;
 }
 
-.dh-foot-plate dd.is-pending {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	letter-spacing: 0.04em;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+/*
+ * The registered name as the CR certificate writes it, on its own line. No
+ * dir="rtl": the line keeps the page's direction, so it lines up with the
+ * English name above; the Arabic letters still run right to left.
+ */
+.dh-foot-plate__ar {
+	display: block;
 }
 
 .dh-foot-plate a {
