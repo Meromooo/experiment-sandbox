@@ -535,7 +535,15 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   (the supply list; since AMM-178 the certificates belt is a second moving strip, by Ammar's
   exception), no dashes, one middle dot per line, one label per CTA intent ("Request a
   site visit"), the numbers band open on the page (`.dh-band--open`, so the dark canopy card
-  appears once, at the close). The patterns and Page 17 were changed together; when a homepage
+  appears once, at the close). **AMM-179 (2026-10-05):** the numbers band holds two numbers (46
+  years, 15 branches; ~700 products and the ISO count went, as the categories lead and the
+  certificates belt carry them) stacked beside the copy, in an outlined card with the site's
+  concave notch (`.dh-band--notched`, `style.css` after the open band): the notch's socket is a
+  group holding an editable "Est. 1979, Riyadh" paragraph drawn as a canopy tab, and draws the
+  notch's edge as gradient lines (the outline is an inset shadow, so it isn't snapped to device
+  pixels and matches them). On first view the outline draws round from the notch (a conic mask
+  turned by a registered `@property` angle) and the tab presses in; static without JavaScript
+  or with reduced motion. The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and

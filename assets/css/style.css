@@ -2023,6 +2023,213 @@ svg {
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
 }
 
+/*
+ * The homepage numbers as an outlined card with the site's notch (AMM-179):
+ * the card's outline is cut at the top end corner by a socket holding a
+ * canopy tab ("Est. 1979, Riyadh", an editable paragraph in a group):
+ *
+ *   <div class="dh-band dh-band--open dh-band--notched">
+ *     <div class="dh-band__grid">…</div>
+ *     <div class="dh-band__tab"><p>Est. 1979, Riyadh</p></div>
+ *   </div>
+ *
+ * The outline is the band's ::before. The socket is paper, so it covers the
+ * outline's corner, and draws the notch's own edge: a line down its start
+ * side and along its foot, the concave corner between them (a ring in a
+ * corner tile, under the socket's rounded corner), and two convex fillets,
+ * its ::before and ::after, where that edge meets the card's top and end
+ * sides (the same shape as section 5's notch, drawn as a line). The line is
+ * opaque, so where two of its pieces overlap it doesn't darken.
+ *
+ * On first view (the band's rise reveal, .is-in) the outline draws itself
+ * round the card from the notch and back (a conic mask turned by a registered
+ * angle; the 60deg start points about at the top end corner), then the tab
+ * presses into the corner. Without JavaScript,
+ * or with reduced motion, it is all there from the start.
+ */
+@property --dh-draw {
+	syntax: "<angle>";
+	inherits: false;
+	initial-value: 360deg;
+}
+
+.dh-band--open.dh-band--notched {
+	--_w: 1.5px;
+	--_line: color-mix(in srgb, var(--wp--preset--color--ink) 34%, var(--wp--preset--color--paper));
+	--_n: var(--wp--custom--notch);
+	--_tab: 2.25rem;
+	--_pad: var(--wp--preset--spacing--70);
+	position: relative;
+	padding: calc(var(--_tab) + var(--wp--preset--spacing--30) + var(--wp--preset--spacing--50)) var(--_pad) var(--_pad);
+	border: 0;
+}
+
+/* An inset shadow, not a border: a border's width snaps to whole device
+   pixels (1.5px drew as 0.8px at 125% display scaling) while the notch's
+   gradient lines don't, so the two would differ in weight. */
+.dh-band--notched::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--wp--custom--radius--lg);
+	box-shadow: inset 0 0 0 var(--_w) var(--_line);
+	pointer-events: none;
+}
+
+.dh-band--notched .dh-band__grid {
+	grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+
+.dh-band--notched .dh-stats {
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--50);
+}
+
+.dh-band--notched > .dh-band__tab {
+	position: absolute;
+	z-index: 1;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	margin: 0;
+	padding: 0 0 var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
+	border-end-start-radius: var(--_n);
+	/* Past its own edges, in case the outline's corner rounds out a hair
+	   beyond a fractional socket width. */
+	box-shadow: 1px -1px 0 var(--wp--preset--color--paper);
+	background:
+		linear-gradient(var(--_line), var(--_line)) 0 var(--_n) / var(--_w) calc(100% - 2 * var(--_n)) no-repeat,
+		linear-gradient(var(--_line), var(--_line)) var(--_n) 100% / calc(100% - 2 * var(--_n)) var(--_w) no-repeat,
+		radial-gradient(
+			circle at 100% 0,
+			transparent calc(var(--_n) - var(--_w) - 0.3px),
+			var(--_line) calc(var(--_n) - var(--_w) + 0.3px),
+			var(--_line) calc(var(--_n) - 0.3px),
+			transparent calc(var(--_n) + 0.3px)
+		) 0 100% / var(--_n) var(--_n) no-repeat,
+		var(--wp--preset--color--paper);
+}
+
+/* The fillets: one at the start of the socket, along the card's top side,
+   one under it, down the card's end side. Each overlaps the socket by the
+   line's width, so the line runs on without a step. */
+.dh-band--notched > .dh-band__tab::before,
+.dh-band--notched > .dh-band__tab::after {
+	content: "";
+	position: absolute;
+	inline-size: var(--_n);
+	block-size: var(--_n);
+	background: radial-gradient(
+		circle at 0 100%,
+		transparent calc(var(--_n) - var(--_w) - 0.3px),
+		var(--_line) calc(var(--_n) - var(--_w) + 0.3px),
+		var(--_line) calc(var(--_n) - 0.3px),
+		var(--wp--preset--color--paper) calc(var(--_n) + 0.3px)
+	);
+	pointer-events: none;
+}
+
+.dh-band--notched > .dh-band__tab::before {
+	inset-block-start: 0;
+	inset-inline-end: calc(100% - var(--_w));
+}
+
+.dh-band--notched > .dh-band__tab::after {
+	inset-block-start: calc(100% - var(--_w));
+	inset-inline-end: 0;
+}
+
+[dir="rtl"] .dh-band--notched > .dh-band__tab {
+	box-shadow: -1px -1px 0 var(--wp--preset--color--paper);
+	background:
+		linear-gradient(var(--_line), var(--_line)) 100% var(--_n) / var(--_w) calc(100% - 2 * var(--_n)) no-repeat,
+		linear-gradient(var(--_line), var(--_line)) var(--_n) 100% / calc(100% - 2 * var(--_n)) var(--_w) no-repeat,
+		radial-gradient(
+			circle at 0 0,
+			transparent calc(var(--_n) - var(--_w) - 0.3px),
+			var(--_line) calc(var(--_n) - var(--_w) + 0.3px),
+			var(--_line) calc(var(--_n) - 0.3px),
+			transparent calc(var(--_n) + 0.3px)
+		) 100% 100% / var(--_n) var(--_n) no-repeat,
+		var(--wp--preset--color--paper);
+}
+
+[dir="rtl"] .dh-band--notched > .dh-band__tab::before,
+[dir="rtl"] .dh-band--notched > .dh-band__tab::after {
+	transform: scaleX(-1);
+}
+
+.dh-band--notched > .dh-band__tab > p {
+	margin: 0;
+	padding-inline: 1.1em;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	line-height: var(--_tab);
+	white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.js .dh-band--notched::before {
+		-webkit-mask: conic-gradient(from 60deg, #000 var(--dh-draw), transparent 0);
+		mask: conic-gradient(from 60deg, #000 var(--dh-draw), transparent 0);
+	}
+
+	.js .dh-band--notched:not(.is-in)::before {
+		--dh-draw: 0deg;
+	}
+
+	.js .dh-band--notched.is-in::before {
+		animation: dh-draw 1.1s var(--wp--custom--motion--ease) both;
+	}
+
+	.js .dh-band--notched:not(.is-in) > .dh-band__tab {
+		opacity: 0;
+	}
+
+	.js .dh-band--notched.is-in > .dh-band__tab {
+		animation: dh-tab-in var(--wp--custom--motion--fast) linear 1s both;
+	}
+
+	.js .dh-band--notched.is-in > .dh-band__tab > p {
+		transform-origin: 100% 0;
+		animation: dh-tab-press var(--wp--custom--motion--base) cubic-bezier(0.3, 1.45, 0.55, 1) 1s both;
+	}
+}
+
+@keyframes dh-draw {
+	from {
+		--dh-draw: 0deg;
+	}
+
+	to {
+		--dh-draw: 360deg;
+	}
+}
+
+@keyframes dh-tab-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes dh-tab-press {
+	from {
+		transform: scale(1.18);
+	}
+}
+
+@media (max-width: 56rem) {
+	.dh-band--open.dh-band--notched {
+		--_pad: var(--wp--preset--spacing--50);
+	}
+
+	.dh-band--notched .dh-band__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
 /* Category gateway --------------------------------------------------- */
 
 .dh-cats__grid {
