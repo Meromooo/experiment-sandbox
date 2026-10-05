@@ -34,6 +34,7 @@ $demas_theme_includes = array(
 	'inc/structured-data.php',
 	'inc/homepage.php',
 	'inc/contact.php',
+	'inc/cache.php',
 );
 
 foreach ( $demas_theme_includes as $demas_theme_include ) {

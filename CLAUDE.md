@@ -354,6 +354,18 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     clean names, the cleaned description, the category path, brand, sku, and mpn only for
     manufacturer numbers (never DMS-); a zero price is never published. Branch locations in
     the Organization wait for real addresses (AMM-148).
+  - `cache.php` — the page cache's deploy purge (AMM-164, 2026-10-05). The sandbox runs the
+    **LiteSpeed Cache** plugin (installed by Ammar; only its page cache is on, every
+    "optimisation" off, no QUIC.cloud), and the Hostinger CDN now keeps copies of the cached
+    pages too (`x-litespeed-cache: hit`, `x-hcdn-cache-status: HIT`). A cached page links the
+    CSS/JS of the deploy it was made under, so on `wp_loaded` the newest modification time among
+    the theme's files (dot-entries skipped) is compared with the `demas_theme_deploy_stamp`
+    option; when it moved, every page is purged through `do_action( 'litespeed_purge_all' )`.
+    That happens on the first request PHP runs after a deploy (a search, the finder, a 404, the
+    admin), not at the deploy itself. Without the plugin it does nothing. Search results stay
+    uncached (the plugin's default; each query is its own URL and rarely repeats). Nothing in
+    a page may vary by visitor: no cookies, nonces or user data in the HTML, which the theme
+    never had (per-visitor state lives in `localStorage` and the browser).
   - `homepage.php` — the homepage's editable sections (AMM-153, from 2026-09-30). Registers the
     small theme blocks core blocks can't replace — `demas-theme/credentials` + `/credential` (the
     marks under the hero; a mark with a detail gets a keyboard-focusable tooltip), `/stats` +
@@ -530,6 +542,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   **Documented exception:** `hostinger-reach` (a Hostinger subscription/marketing block plugin) is
   active on the sandbox and is intentional, confirmed 2026-07-28 — not a stray default install.
   Don't build anything that depends on it working, but no need to flag or remove it.
+  **Second exception:** the **LiteSpeed Cache** plugin is active on the sandbox (AMM-164,
+  2026-10-05) for its page cache only. `inc/cache.php` calls its documented
+  `litespeed_purge_all` hook and does nothing when the plugin is absent. Nothing else may
+  depend on it.
 - **No copying live-site credentials, database rows, or *design* (Kadence markup, theme options,
   CSS, its palette or typefaces) into this repo or the sandbox.** The live site's visual design is
   being replaced wholesale and nothing from it carries over.
