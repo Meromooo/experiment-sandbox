@@ -9,8 +9,9 @@ import metadata from './block.json';
 
 registerBlockType( metadata.name, {
 	edit: function Edit() {
+		// The editor shows the plates standing still, as a wall.
 		const innerBlocksProps = useInnerBlocksProps(
-			useBlockProps( { className: 'dh-creds__list' } ),
+			useBlockProps( { className: 'dh-belt__wall' } ),
 			{
 				template: [ [ 'demas-theme/credential' ] ],
 				orientation: 'horizontal',
@@ -19,6 +20,6 @@ registerBlockType( metadata.name, {
 
 		return <ul { ...innerBlocksProps } />;
 	},
-	// The list itself comes from render.php; only the credentials are saved.
+	// The belt itself comes from render.php; only the credentials are saved.
 	save: () => <InnerBlocks.Content />,
 } );

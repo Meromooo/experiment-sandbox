@@ -108,7 +108,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
        count (height ÷ line-height), subtext word count (≤ 20), CTA bottom above the fold.
      - *CTA labels on one line at desktop, nav on one line and ≤ 80px:* element heights at 1440.
      - *Eyebrow count ≤ ceil(sections ÷ 3), one marquee per page:* count `.dh-eyebrow` (and
-       other eyebrows) against sections, `.dh-marquee` per page.
+       other eyebrows) against sections, `.dh-marquee` per page. **Exception (Ammar,
+       2026-10-05): the homepage has two moving strips,** the supply-list marquee and the
+       certificates belt (`.dh-belt`, AMM-178), counter-flowing; don't flag it.
      - *Mobile collapse:* no `scrollWidth > innerWidth` at 320; 44px tap targets.
      - *Core Web Vitals:* `chrome-devtools-mcp:debug-optimize-lcp` — a reload trace for LCP and
        CLS (INP needs an interaction trace).
@@ -129,7 +131,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   hand-roll SVG icons" rule is overridden); the theme is light-only until Ammar decides
   otherwise (its mandatory dark mode is not applied); no stock or picsum photography on the
   site (real photos wait on AMM-149); the branch-city marquee is real content, not a "locale
-  strip". Installed as a project skill in the main checkout's `.claude/skills/` (from
+  strip"; the homepage's second moving strip (the certificates belt, AMM-178) is Ammar's
+  standing call, as is the use of the certification bodies' and partners' logos on it (they
+  are on the live site). Installed as a project skill in the main checkout's `.claude/skills/` (from
   github.com/leonxlnx/taste-skill, commit ce26fc2, MIT), kept out of git by
   `.git/info/exclude` so it never deploys into the theme folder.
 - **`name-that-ui`** (added 2026-10-05 at Ammar's request; project skill in this repo's
@@ -169,9 +173,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   No build tooling for these — they are plain files. `editor.js` is editor-only (the Highlight
   format, AMM-153). `style.css` holds the shape grammar
   (cards, pills, the concave notch), marquee, and reveal motion; `main.js` is the small
-  dependency-free script that drives reveals, the marquee loop, counters, the Branch Desk
-  (including `#branch-xxx` deep links), the homepage footer slide-over and the catalogue's
-  Gallery / Sheet switch.
+  dependency-free script that drives reveals, the marquee loop and the certificates belt
+  (AMM-178), counters, the Branch Desk (including `#branch-xxx` deep links), the homepage
+  footer slide-over and the catalogue's Gallery / Sheet switch.
 - `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
   Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
   third-party font CDN. Fetched from the Google Fonts API on 2026-09-14; the fetch script
@@ -196,7 +200,12 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   about `water`, crops the empty left of the frame (keeping the full height), and writes the
   four files the schematic block's film mode uses; re-run it on new clips. It never hides the
   "Vidu AI" mark: clean clips come from a Vidu plan that allows commercial use, which is still
-  open in AMM-175. Nothing here is loaded by `functions.php`, and since AMM-173 none
+  open in AMM-175. `credential-logos.py` (AMM-178, Python 3 with Pillow and NumPy) turns
+  certificate and partner logos as published into the belt's files: background made
+  transparent, any frame round the file or box round the mark dropped, trimmed, sized for equal
+  visual weight (equal area, a little more for sparse marks) and centred on one 336 x 136
+  canvas, so every plate shows its logo at one size; the files are uploaded and picked per
+  credential. Nothing here is loaded by `functions.php`, and since AMM-173 none
   of it is deployed: to run a tool again, upload it (with its CSV) outside the theme folder and
   point `wp eval-file` at that copy.
 - `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
@@ -391,7 +400,15 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     never had (per-visitor state lives in `localStorage` and the browser).
   - `homepage.php` — the homepage's editable sections (AMM-153, from 2026-09-30). Registers the
     small theme blocks core blocks can't replace — `demas-theme/credentials` + `/credential` (the
-    marks under the hero; a mark with a detail gets a keyboard-focusable tooltip), `/stats` +
+    **certificates belt** under the hero, AMM-178, 2026-10-05: each credential is an approval
+    plate with a logo from the Media Library (a file from `tools/credential-logos.py`), drawn in
+    `canopy` at rest as a CSS mask and in its own colours on hover or focus, plus a hang tag:
+    detail, issuer and, with a link, "View certificate"; without a logo the plate shows the
+    name. The belt is full width and loops the other way from the supply strip over three sets
+    (copies, plates, copies; `main.js` adds the copies, `aria-hidden` and `inert`), stamps in
+    the first time it comes into view, eases to a stop under the pointer and, on keyboard
+    focus, stops and glides the focused plate to mid belt; with reduced motion it is a still
+    wall. Only a credential with a tag or a link takes focus), `/stats` +
     `/stat` (the numbers band: a `<dl>`, label as the term and the number shown above it by CSS
     `order`; a whole number counts up via `data-count`) and `/steps` + `/step` (the process: an
     `<ol>` whose numerals are a CSS counter, each step a locked heading + paragraph) and
@@ -471,7 +488,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   Homepage (see `templates/` below), so for the homepage they are starting points, not the
   source; `closing-cta` is still placed by the template. **AMM-170 (2026-10-02):** the homepage
   passes the taste skill's pre-flight — two eyebrows (hero, Product categories), one marquee
-  (the supply list), no dashes, one middle dot per line, one label per CTA intent ("Request a
+  (the supply list; since AMM-178 the certificates belt is a second moving strip, by Ammar's
+  exception), no dashes, one middle dot per line, one label per CTA intent ("Request a
   site visit"), the numbers band open on the page (`.dh-band--open`, so the dark canopy card
   appears once, at the close). The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.

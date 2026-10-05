@@ -7,8 +7,9 @@
  * buttons, groups) plus a few small theme blocks for the parts core blocks
  * cannot express. This file holds what those need:
  *
- *  - the section blocks: demas-theme/credentials and /credential (the marks
- *    under the hero, each with an optional tooltip), /stats and /stat (the
+ *  - the section blocks: demas-theme/credentials and /credential (the
+ *    certificates belt under the hero, a logo plate each with a hang tag,
+ *    AMM-178), /stats and /stat (the
  *    numbers band, counting up), /steps and /step (the numbered process),
  *    /category-cards (the catalogue gateway, with live product counts),
  *    /branch-desk (the branches and who answers at each, from
