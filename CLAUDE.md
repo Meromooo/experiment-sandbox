@@ -702,6 +702,10 @@ branch-routed contact form replaces published email addresses.
 
 ## Working agreement
 
+- **How Ammar works** (plan, say "ready", wait for a scoped go-ahead; a question means stop; the
+  live site is untouchable; server work through him; how to watch a deploy; cloud sessions open
+  pull requests instead of pushing to `main`) is in `.claude/rules/working-with-ammar.md`, which
+  every session loads, cloud sessions included.
 - Keep `functions.php` a pure loader — one `require_once` per concern file in `inc/`, nothing else.
 - Prefer WordPress core / WooCommerce blocks over custom PHP whenever a block can do the job.
 - Every new top-level concern gets its own file in `inc/`, not bolted onto an existing one.
