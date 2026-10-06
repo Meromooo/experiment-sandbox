@@ -498,7 +498,16 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     draws the schematic as before, which is what live shows until the cutover (AMM-158)
     re-uploads the files there) and `/marquee` (the scrolling lines under the hero: the branch
     cities or an editor's list; a focusable `role="region"`, so keyboard focus pauses it and,
-    with reduced motion, scrolls it). Enqueues `assets/js/editor.js`, the **Highlight**
+    with reduced motion, scrolls it) and `/pivot-field` (AMM-177, 2026-10-06: the hero's
+    **background illustration**, decorative and `aria-hidden`: centre-pivot fields seen from
+    above in a staggered grid, the main field planted in sectors with its crop rows and wheel
+    tracks, its arm turning once a minute with the crop it has just wetted behind it. No
+    settings; the last block in the hero head, which `style.css` section 9 makes a card (sand
+    42% into paper, the content width). Two SVGs in units of a field radius, sized and placed
+    by CSS from one `--_r` that shrinks with the card so the main field clears the lead's 36rem
+    measure; below 56rem the field sits in the card's bottom corner. The arm is its own `<svg>`
+    so its turn is a compositor animation; with reduced motion it is parked at the same angle
+    it starts from. A global `max-inline-size: 100%` on SVGs had to be lifted for it). Enqueues `assets/js/editor.js`, the **Highlight**
     rich-text format (`<span class="dh-highlight" data-reveal="wipe">`) for the headline's
     green word — a plain editor script, no build step. Registers
     the pills as **Button block styles** (`is-style-dh-pill-solid`, `-outline`, `-paper`,
@@ -562,7 +571,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   notch's edge as gradient lines (the outline is an inset shadow, so it isn't snapped to device
   pixels and matches them). On first view the outline draws round from the notch (a conic mask
   turned by a registered `@property` angle) and the tab presses in; static without JavaScript
-  or with reduced motion. The patterns and Page 17 were changed together; when a homepage
+  or with reduced motion. **AMM-177 (2026-10-06):** the hero lost its eyebrow ("Since 1979 ·
+  15 branches"), so the homepage has one (Product categories); its head is a card over the
+  pivot field drawing (`demas-theme/pivot-field`, last in the head). The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and

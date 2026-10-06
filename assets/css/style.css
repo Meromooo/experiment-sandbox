@@ -862,6 +862,12 @@ svg {
 	.page-template-designed-page .dh-ct-hero .dh-ct-actions > * + * {
 		--_step: 4;
 	}
+
+	/* The fields come up behind the copy as the buttons arrive (AMM-177). */
+	.home .dh-hero .dh-pivot {
+		animation: dh-hero-fade var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
+			calc(3 * var(--wp--custom--motion--stagger)) backwards;
+	}
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 56.0625rem) {
@@ -1222,20 +1228,37 @@ svg {
 	padding-block-start: var(--wp--preset--spacing--60);
 }
 
+/*
+ * The head is a card (AMM-177): sand washed into paper, lighter than the
+ * Branch Desk below it, as wide as the cards under it, with the Pivot field
+ * drawing (src/pivot-field) behind its right side. The outline pill takes the
+ * card's ground, so the drawing never shows through a label.
+ */
 .dh-hero__head {
-	max-inline-size: 60rem;
+	--_ground: color-mix(in srgb, var(--wp--preset--color--sand) 42%, var(--wp--preset--color--paper));
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	max-inline-size: var(--wp--style--global--content-size);
 	margin-block-end: var(--wp--preset--spacing--60);
+	padding: var(--wp--preset--spacing--70);
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--_ground);
+}
+
+.dh-hero__head .wp-block-button.is-style-dh-pill-outline > .wp-block-button__link {
+	background-color: var(--_ground);
 }
 
 /* One size below the display max: "Water, engineered" must hold on one line. */
 .dh-hero__title {
-	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
+	margin-block: 0 var(--wp--preset--spacing--40);
 	font-size: var(--wp--preset--font-size--xxxl);
 }
 
 .dh-hero__lead {
 	margin: 0 0 var(--wp--preset--spacing--50);
-	max-inline-size: 38rem;
+	max-inline-size: 36rem;
 	font-size: var(--wp--preset--font-size--lg);
 	line-height: 1.5;
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
@@ -1258,6 +1281,111 @@ svg {
 /* Grid cells, not stacked blocks: no block-layout gap above the second. */
 .dh-hero__grid > * {
 	margin-block: 0;
+}
+
+/*
+ * Pivot field drawing (src/pivot-field/render.php). Both SVGs are sized and
+ * placed from one field radius, --_r, around the main field's pivot: --_x in
+ * from the card's end edge, --_y down from its top. The radius shrinks with
+ * the card so the main field always starts past the lead's measure (36rem)
+ * and the card's padding. The fields fade in from the text's side, so the
+ * copy always sits on plain ground. The arm turns once a minute as its own
+ * element (a compositor animation, no repaint), starting where it is parked
+ * for reduced motion.
+ */
+.dh-pivot {
+	--_r: clamp(5rem, (100cqi - 36rem - var(--wp--preset--spacing--70) - var(--wp--preset--spacing--60) - var(--wp--preset--spacing--40)) / 2, 10.5rem);
+	--_x: calc(var(--_r) + var(--wp--preset--spacing--60));
+	--_y: 52%;
+	--_fade: linear-gradient(to right, transparent 46%, black 76%);
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	container-type: inline-size;
+	-webkit-mask-image: var(--_fade);
+	mask-image: var(--_fade);
+}
+
+[dir="rtl"] .dh-pivot {
+	--_fade: linear-gradient(to left, transparent 46%, black 76%);
+}
+
+/* The block layout's gap above it would shrink the box it fills. */
+.dh-hero__head > .dh-pivot {
+	margin: 0;
+}
+
+.dh-pivot > svg {
+	position: absolute;
+	inset-inline-end: calc(var(--_x) - var(--_s) / 2);
+	inset-block-start: calc(var(--_y) - var(--_s) / 2);
+	inline-size: var(--_s);
+	max-inline-size: none;
+	block-size: var(--_s);
+	overflow: visible;
+}
+
+.dh-pivot__fields {
+	--_s: calc(var(--_r) * 6.4);
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-pivot__arm {
+	--_s: calc(var(--_r) * 2.4);
+	transform: rotate(160deg);
+}
+
+.dh-pivot__crop {
+	fill: var(--wp--preset--color--field);
+}
+
+.dh-pivot__wake,
+.dh-pivot__drop,
+.dh-pivot__hub {
+	fill: var(--wp--preset--color--water);
+}
+
+.dh-pivot__span,
+.dh-pivot__towers,
+.dh-pivot__ring {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-linecap: round;
+	stroke-width: 1.6px;
+	vector-effect: non-scaling-stroke;
+}
+
+.dh-pivot__towers {
+	stroke-width: 2.4px;
+}
+
+.dh-pivot__ring {
+	stroke: var(--wp--preset--color--water);
+	stroke-opacity: 0.6;
+	stroke-width: 1.2px;
+}
+
+@keyframes dh-pivot-turn {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	/* -26.67s: a minute's turn, begun at the parked 160 degrees. */
+	.dh-pivot__arm {
+		animation: dh-pivot-turn 60s linear -26.67s infinite;
+	}
+}
+
+/* The block's editor wrapper must not be the drawing's containing block. */
+.block-editor-block-list__block.wp-block-demas-theme-pivot-field {
+	position: static;
 }
 
 /* Branch Desk */
@@ -2477,6 +2605,25 @@ svg {
 	.dh-hero__grid,
 	.dh-band__grid {
 		grid-template-columns: 1fr;
+	}
+
+	.dh-hero__head {
+		padding: var(--wp--preset--spacing--50);
+	}
+
+	/* The main field sits in the card's bottom corner, clear of the copy,
+	   rising under the buttons' side only. */
+	.dh-pivot {
+		--_r: min(34cqi, 8rem);
+		--_x: calc(var(--_r) * 0.72);
+		--_y: calc(100% - var(--_r) * 0.6);
+		--_fade: linear-gradient(to bottom, transparent 52%, black 82%), linear-gradient(to right, transparent 30%, black 72%);
+		-webkit-mask-composite: source-in;
+		mask-composite: intersect;
+	}
+
+	[dir="rtl"] .dh-pivot {
+		--_fade: linear-gradient(to bottom, transparent 52%, black 82%), linear-gradient(to left, transparent 30%, black 72%);
 	}
 
 	.dh-band {
