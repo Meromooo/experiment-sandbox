@@ -19,7 +19,7 @@ GitHub emails the owner. Never push to `deploy` by hand. Results are readable wi
 in through the commit's check runs (`/commits/<sha>/check-runs` in GitHub's API); the PHPCS
 result is posted as its own "PHPCS report" check with one annotation per violation. There is no
 server-side build step — the theme's files in this repo are the files WordPress reads, which is
-why compiled block output is committed (see ADR-001 under Working agreement).
+why compiled block output is committed (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`).
 
 **Only the runtime files deploy (AMM-173, 2026-10-03).** Hostinger serves the theme folder
 as-is, so every file in it can be downloaded — until then that was the whole repo (this file,
@@ -714,11 +714,14 @@ branch-routed contact form replaces published email addresses.
 - Every new top-level concern gets its own file in `inc/`, not bolted onto an existing one.
 - This file should stay current — when the architecture changes, update this file in the same
   commit, not as an afterthought.
-- **Build step (ADR-001):** any custom block using TypeScript/React (`@wordpress/scripts`)
-  must be compiled with `npm run build` before committing. The compiled `build/` output is
-  committed to git alongside source — Hostinger's git auto-deploy has no build step of its
-  own, so a stale or missing `build/` folder means the change isn't actually live. Always
-  run `npm run build` and confirm `build/` is staged before every commit that touches a block.
+- **Build step (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`):** any custom block
+  using TypeScript/React (`@wordpress/scripts`) must be compiled with `npm run build` before
+  committing. The compiled `build/` output is committed to git alongside source — Hostinger's
+  git auto-deploy has no build step of its own, so a stale or missing `build/` folder means
+  the change isn't actually live (CI's `build` check now blocks such a push from deploying).
+  Install with `npm ci`, so the output matches CI's byte for byte. Always run
+  `npm run build` and confirm `build/` is staged before every commit that touches a block.
+  A merge conflict in `build/` is resolved by rebuilding, never by hand.
 - **CSS class names are global — namespace them per component.** A block's stylesheet and
   `assets/css/style.css` all load on the same page, so two components sharing a class name
   style each other. The footer once reused `.dh-plate` (the product page's nameplate) and turned
