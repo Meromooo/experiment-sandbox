@@ -98,8 +98,8 @@ What follows from it:
 It is not used for decoration, headings or generic links (those are `canopy`). A new use must
 fit one of the three.
 
-**Known gaps** (found in source during this rewrite, 2026-10-06; to be measured in DevTools
-and filed before they are fixed):
+**Known gaps, AMM-182** (found in source during this rewrite, 2026-10-06; to be measured in
+DevTools before they are fixed):
 
 - The focus ring is **2.03:1 against `canopy`**, below the 3:1 WCAG 1.4.11 asks of a focus
   indicator, so the paper pills on the closing call to action's canopy card show a weak ring.
