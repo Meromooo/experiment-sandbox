@@ -1,0 +1,1 @@
+Source: https://github.com/JuliusBrussee/caveman (the caveman plugin, v0.1.0, its skills/caveman skill only; the plugin itself and its other skills are not copied), MIT. Committed 2026-10-06 so cloud sessions, which do not install plugins, get it.

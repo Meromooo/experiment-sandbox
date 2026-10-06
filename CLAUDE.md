@@ -59,7 +59,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   descriptions, repo docs (this file, ADRs, READMEs) and Linear issues stay in normal prose;
   security warnings, irreversible actions, step-by-step instructions and explanations of new
   terms drop back to plain language. The caveman plugin's hooks already switch it on each
-  session; this line keeps it on if they ever don't.
+  session; this line keeps it on if they ever don't. **Cloud sessions** don't install plugins,
+  so the plugin and its hooks aren't there: its main skill is committed as the project skill
+  `caveman` (`.claude/skills/caveman/`, MIT, with LICENSE and SOURCE.txt; 2026-10-06), and a
+  cloud session invokes it itself at the start.
 - **`ponytail`** — invoke **only when debugging or fixing code**: a bug, a failing CI check, an
   audit finding, a broken behaviour. Not for new features, plans, docs or Linear. It governs the
   fix: read and trace the real flow first, fix the root cause where every caller routes through
