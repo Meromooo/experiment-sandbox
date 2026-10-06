@@ -19,7 +19,7 @@ GitHub emails the owner. Never push to `deploy` by hand. Results are readable wi
 in through the commit's check runs (`/commits/<sha>/check-runs` in GitHub's API); the PHPCS
 result is posted as its own "PHPCS report" check with one annotation per violation. There is no
 server-side build step — the theme's files in this repo are the files WordPress reads, which is
-why compiled block output is committed (see ADR-001 under Working agreement).
+why compiled block output is committed (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`).
 
 **Only the runtime files deploy (AMM-173, 2026-10-03).** Hostinger serves the theme folder
 as-is, so every file in it can be downloaded — until then that was the whole repo (this file,
@@ -688,10 +688,11 @@ them for any front-end, visual, or content work on this theme.
 **Direction change, 2026-09-14.** The visual direction is now the reference recording analysed
 in `demas-motion-reference.md` (card composition, concave notch, grow-from-seed motion,
 marquee) re-skinned in Demas's own register — *not* the navy/gold/serif system the older docs
-describe. Until `demas-design-direction.md` is rewritten, **`theme.json` is the single source
-of truth for tokens** (palette: paper / sand / field / canopy / ink / water; type: Archivo
-display, IBM Plex Sans + Plex Sans Arabic body, Plex Mono data; radii, notch, motion under
-`settings.custom`). Locked facts: 46 years of operation; 15 branches with named staff; a
+describe. **`theme.json` holds the token values** (palette: paper / sand / field / canopy / ink /
+water; type: Archivo display, IBM Plex Sans + Plex Sans Arabic body, Plex Mono data; radii,
+notch, motion under `settings.custom`); **`demas-design-direction.md` holds the reasons** (why
+each colour exists and the `water` rule, the shape grammar, the numeral device, the motion
+vocabulary). Change a value in `theme.json`; change a reason in the direction doc. Locked facts: 46 years of operation; 15 branches with named staff; a
 branch-routed contact form replaces published email addresses.
 
 - `demas-homepage-brief.md` — homepage content/copy/section brief. **Content and section
@@ -707,9 +708,14 @@ branch-routed contact form replaces published email addresses.
   `demas_theme_get_category_icon()`. **Amended 2026-09-17:** Swimming Pool (59 products, no
   subcategories) is a sixth column by Ammar's decision; the Non-Woven slug is `non-wooven`
   (misspelled on live, matched deliberately). See the amendment note at the top of the spec.
-- `demas-design-direction.md` — **superseded 2026-09-14** (banner at top). Its pattern
-  decisions (sticky condensing header, stat counters, trust-strip hover, no testimonials
-  without real ones) still hold; its visual system does not. Rewrite pending.
+- `demas-design-direction.md` — **the design system's reasoning**, rewritten 2026-10-06
+  (AMM-157) around what was built: the design read, the palette with measured contrast and the
+  `water` rule (quote flow, focus ring, water in drawings), type, the shape grammar (radii,
+  cards, pills, the concave notch, the rule), the zero-padded mono numeral, the motion
+  vocabulary (dot / sliver / bar / seed / rise / wipe), the drawing register, the visible-copy
+  rules, and the status of each pattern decision from the first direction (the sticky
+  condensing header is decided but not built, AMM-160). Read it before any visual change; a
+  new colour use, shape or motion either fits it or changes it in the same commit.
 - `demas-motion-reference.md` — motion mechanics (primitives, durations, easing) analysed from the
   reference recording in `references/`, with an adopt/adapt/skip list. Supplies the "how" behind the
   reveal/counter/sticky-header patterns `demas-design-direction.md` locks in; not a design to copy.
@@ -725,11 +731,14 @@ branch-routed contact form replaces published email addresses.
 - Every new top-level concern gets its own file in `inc/`, not bolted onto an existing one.
 - This file should stay current — when the architecture changes, update this file in the same
   commit, not as an afterthought.
-- **Build step (ADR-001):** any custom block using TypeScript/React (`@wordpress/scripts`)
-  must be compiled with `npm run build` before committing. The compiled `build/` output is
-  committed to git alongside source — Hostinger's git auto-deploy has no build step of its
-  own, so a stale or missing `build/` folder means the change isn't actually live. Always
-  run `npm run build` and confirm `build/` is staged before every commit that touches a block.
+- **Build step (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`):** any custom block
+  using TypeScript/React (`@wordpress/scripts`) must be compiled with `npm run build` before
+  committing. The compiled `build/` output is committed to git alongside source — Hostinger's
+  git auto-deploy has no build step of its own, so a stale or missing `build/` folder means
+  the change isn't actually live (CI's `build` check now blocks such a push from deploying).
+  Install with `npm ci`, so the output matches CI's byte for byte. Always run
+  `npm run build` and confirm `build/` is staged before every commit that touches a block.
+  A merge conflict in `build/` is resolved by rebuilding, never by hand.
 - **CSS class names are global — namespace them per component.** A block's stylesheet and
   `assets/css/style.css` all load on the same page, so two components sharing a class name
   style each other. The footer once reused `.dh-plate` (the product page's nameplate) and turned

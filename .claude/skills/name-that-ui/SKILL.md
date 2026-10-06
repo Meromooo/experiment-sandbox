@@ -40,7 +40,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Form error summary | **Alert / callout** | `/web/alert-callout-banner`, `/vs/toast-vs-alert` | Not a toast: it stays until fixed and takes focus. |
 | Sheet-row − / + quantity | **Number stepper** | `/vs/stepper-vs-slider` | |
 | Empty search / empty listing | **Empty state** | `/web/empty-state`, `/vs/empty-state-vs-skeleton` | |
-| Sticky header | **Sticky header** | `/web/sticky-fixed`, `/web/header-navbar` | |
+| Site header (`parts/header.html`) | **Header / navbar**; a **sticky header** is decided, not built | `/web/header-navbar`, `/web/sticky-fixed` | Scrolls away today (`position: relative`). Sticky and condensing is AMM-160. |
 | Product menu | **Mega menu** | none on the site | |
 | Keyboard focus outline | **Focus ring** | `/web/focus-ring-web` | |
 | Reveal timing | **Easing** | `/web/easing`, `/vs/easing-vs-spring` | |
