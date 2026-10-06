@@ -13,8 +13,10 @@
  *    numbers band, counting up), /steps and /step (the numbered process),
  *    /category-cards (the catalogue gateway, with live product counts),
  *    /branch-desk (the branches and who answers at each, from
- *    inc/branches.php), /schematic (the self-drawing irrigation line) and
- *    /marquee (the scrolling lines under the hero);
+ *    inc/branches.php), /schematic (the self-drawing irrigation line),
+ *    /marquee (the scrolling lines under the hero) and /pivot-field (the
+ *    hero's background illustration: centre-pivot fields seen from above,
+ *    the main field's arm turning, AMM-177);
  *  - the pills as Button block styles, so an editor picks "Pill" in the
  *    block's Styles panel instead of typing class names;
  *  - the "Highlight" text format (assets/js/editor.js) for the headline's
@@ -32,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'init',
 	function () {
-		$blocks = array( 'credentials', 'credential', 'stats', 'stat', 'steps', 'step', 'category-cards', 'branch-desk', 'schematic', 'marquee' );
+		$blocks = array( 'credentials', 'credential', 'stats', 'stat', 'steps', 'step', 'category-cards', 'branch-desk', 'schematic', 'marquee', 'pivot-field' );
 
 		foreach ( $blocks as $block ) {
 			$build_path = DEMAS_THEME_DIR . '/build/' . $block;

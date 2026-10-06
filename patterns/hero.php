@@ -3,7 +3,7 @@
  * Title: Hero — Water, engineered
  * Slug: demas-theme/hero
  * Categories: demas
- * Description: Headline, the Branch Desk, the irrigation schematic card, and the supply marquee.
+ * Description: Headline on a card over centre-pivot fields, the Branch Desk, the irrigation schematic card, and the supply marquee.
  *
  * @package Demas_Theme
  */
@@ -11,14 +11,11 @@
 // The Branch Desk's cities and people come from inc/branches.php; the
 // headline's green word is the Highlight format. One marquee only (AMM-170):
 // the cities are already in the Branch Desk above it and the footer's key plan.
+// No eyebrow (AMM-177): the head is a card, the pivot field drawing behind it.
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-hero"><!-- wp:group {"className":"dh-hero__head dh-reveal-group","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-hero__head dh-reveal-group"><!-- wp:paragraph {"className":"dh-eyebrow dh-reveal--rise"} -->
-<p class="dh-eyebrow dh-reveal--rise">Since 1979 · 15 branches</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":1,"className":"dh-hero__title dh-reveal--rise"} -->
+<div class="wp-block-group dh-hero__head dh-reveal-group"><!-- wp:heading {"level":1,"className":"dh-hero__title dh-reveal--rise"} -->
 <h1 class="wp-block-heading dh-hero__title dh-reveal--rise">Water, <span class="dh-highlight" data-reveal="wipe">engineered</span><br>for the Kingdom.</h1>
 <!-- /wp:heading -->
 
@@ -34,7 +31,9 @@
 <!-- wp:button {"className":"is-style-dh-pill-outline dh-reveal--dot"} -->
 <div class="wp-block-button is-style-dh-pill-outline dh-reveal--dot"><a class="wp-block-button__link wp-element-button" href="/products/">Browse the catalogue</a></div>
 <!-- /wp:button --></div>
-<!-- /wp:buttons --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:demas-theme/pivot-field /--></div>
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"dh-hero__grid dh-reveal-group","layout":{"type":"default"}} -->
