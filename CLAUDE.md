@@ -70,7 +70,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   check" means the CI checks plus a verification on the sandbox, not new test files in the
   theme (they would deploy to the site). Installed 2026-09-29 as the skill file only
   (`~/.claude/skills/ponytail/SKILL.md`, from github.com/DietrichGebert/ponytail, MIT) — not the
-  plugin, whose hooks would switch it on for every session.
+  plugin, whose hooks would switch it on for every session. Since 2026-10-06 the same file is
+  also committed at `.claude/skills/ponytail/` (with its LICENSE and SOURCE.txt) so cloud
+  sessions, which don't see `~/.claude`, get it too.
 - **Chrome DevTools MCP** (added 2026-10-04 at Ammar's request; plugin
   `chrome-devtools-mcp@chrome-devtools-plugins`, user scope, Google's official
   github.com/ChromeDevTools/chrome-devtools-mcp) — **the browser tool for every check on the
@@ -145,8 +147,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   strip"; the homepage's second moving strip (the certificates belt, AMM-178) is Ammar's
   standing call, as is the use of the certification bodies' and partners' logos on it (they
   are on the live site). Installed as a project skill in the main checkout's `.claude/skills/` (from
-  github.com/leonxlnx/taste-skill, commit ce26fc2, MIT), kept out of git by
-  `.git/info/exclude` so it never deploys into the theme folder.
+  github.com/leonxlnx/taste-skill, commit ce26fc2, MIT). **Committed since 2026-10-06** (with
+  ponytail, both with their LICENSE and SOURCE.txt) so cloud sessions get them; neither reaches
+  the server, because only the `RUNTIME` files deploy (AMM-173). `.git/info/exclude` still lists
+  `.claude/skills/` (so the main checkout's other local skills stay untracked): a **new** file
+  there needs `git add -f`; changes to the committed ones are tracked as usual.
 - **`name-that-ui`** (added 2026-10-05 at Ammar's request; project skill in this repo's
   `.claude/skills/name-that-ui/`, from namethatui.com) — the shared vocabulary for UI
   components. **On** whenever a component is named: every front-end plan, Linear issue, commit
