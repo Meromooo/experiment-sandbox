@@ -703,7 +703,7 @@ branch-routed contact form replaces published email addresses.
   cards, pills, the concave notch, the rule), the zero-padded mono numeral, the motion
   vocabulary (dot / sliver / bar / seed / rise / wipe), the drawing register, the visible-copy
   rules, and the status of each pattern decision from the first direction (the sticky
-  condensing header is decided but not built, AMM-181). Read it before any visual change; a
+  condensing header is decided but not built, AMM-160). Read it before any visual change; a
   new colour use, shape or motion either fits it or changes it in the same commit.
 - `demas-motion-reference.md` — motion mechanics (primitives, durations, easing) analysed from the
   reference recording in `references/`, with an adopt/adapt/skip list. Supplies the "how" behind the

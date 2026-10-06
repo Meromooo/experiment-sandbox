@@ -369,7 +369,7 @@ The 2026-09-14 direction's pattern decisions, with where each stands:
 | **Trust strip with hover detail** | Built as the certificates belt (AMM-178): each plate's hang tag gives detail, issuer and a link to the certificate, on hover or keyboard focus. |
 | **No testimonials without real ones** | Holds. None exist; none are invented. |
 | **A call to action at each natural section break**, not after every subsection | Holds: the homepage asks in the hero and at the close (Services adds its own call to action). One label per intent. |
-| **Sticky header that condenses on scroll** | **Decided, not built.** The header scrolls away today (`.dh-header` is `position: relative`). AMM-181. |
+| **Sticky header that condenses on scroll** | **Decided, not built.** The header scrolls away today (`.dh-header` is `position: relative`). AMM-160. |
 | **Photo-overlay captions** (numbered phrases on category photos) | **Open, not built.** Needs real photography (AMM-149); the category cards carry the notched count instead. |
 | **Floating tag clusters** (real taxonomy terms as small pills) | **Open, not built.** Would sit beside a feature blurb as plain styled pills. |
 | **Before/after comparison card** | **Open, not built.** Only with a real number on Demas's side (the quotation turnaround), never an invented competitor figure. |
