@@ -84,6 +84,17 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   checked under. The global rule is `~/.claude/rules/chrome-devtools.md`. Google's usage
   statistics are switched off in `~/.claude/settings.json`; a performance trace still sends the
   traced URL to Google's CrUX API, harmless for the public sandbox and live URLs.
+- **Responsively** (added 2026-10-06 at Ammar's request; desktop app v1.18.0 on Ammar's
+  machine, installed with `winget install Responsively.ResponsivelyApp`, AGPL-3.0,
+  responsively.app) — **Ammar's own review tool, not Claude's.** A browser that shows one page
+  at several widths side by side, repeats a scroll, click or navigation in every view, and
+  screenshots all of them at once. It is how Ammar looks over a change at **320 / 768 / 1024 /
+  1440** in one go (a saved "preview suite" of those four widths) before saying a task is
+  done. Claude doesn't drive it and doesn't treat it as evidence: Claude's checks stay
+  measured in Chrome DevTools. When Claude hands a front-end change to Ammar for review, say
+  which page(s) to open in Responsively and what to look at; when Ammar sends its screenshots
+  back, read them as his review. Its views are Chromium windows at those sizes, not real
+  phones (its own FAQ says so), so touch and real-device quirks still need a phone.
 - **`design-taste-frontend`** (the "taste skill", added 2026-10-02 at Ammar's request) — a
   strict design critic for **marketing surfaces only**: the homepage, Services, Contact, the
   404 and the footer. Not for the catalogue, sheet view, product datasheet, search, finder or
