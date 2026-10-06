@@ -149,9 +149,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   are on the live site). Installed as a project skill in the main checkout's `.claude/skills/` (from
   github.com/leonxlnx/taste-skill, commit ce26fc2, MIT). **Committed since 2026-10-06** (with
   ponytail, both with their LICENSE and SOURCE.txt) so cloud sessions get them; neither reaches
-  the server, because only the `RUNTIME` files deploy (AMM-173). `.git/info/exclude` still lists
-  `.claude/skills/` (so the main checkout's other local skills stay untracked): a **new** file
-  there needs `git add -f`; changes to the committed ones are tracked as usual.
+  the server, because only the `RUNTIME` files deploy (AMM-173). All five project skills are now
+  committed (the three below since 2026-10-05). `.git/info/exclude` still lists `.claude/skills/`,
+  so a **new** file there needs `git add -f`; changes to committed ones are tracked as usual.
 - **`name-that-ui`** (added 2026-10-05 at Ammar's request; project skill in this repo's
   `.claude/skills/name-that-ui/`, from namethatui.com) — the shared vocabulary for UI
   components. **On** whenever a component is named: every front-end plan, Linear issue, commit
