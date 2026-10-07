@@ -153,7 +153,7 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 							<button type="button" class="dh-qty__step" data-wp-on--click="actions.decrement" data-wp-bind--disabled="context.line.atMin" data-wp-bind--aria-label="context.line.decreaseLabel">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 12h12"/></svg>
 							</button>
-							<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" data-wp-bind--value="context.line.qty" data-wp-bind--aria-label="context.line.quantityLabel" data-wp-on--change="actions.setQuantity">
+							<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" name="quantity" data-wp-bind--value="context.line.qty" data-wp-bind--aria-label="context.line.quantityLabel" data-wp-on--change="actions.setQuantity">
 							<button type="button" class="dh-qty__step" data-wp-on--click="actions.increment" data-wp-bind--aria-label="context.line.increaseLabel">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12"/></svg>
 							</button>

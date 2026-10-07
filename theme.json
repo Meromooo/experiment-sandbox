@@ -422,7 +422,7 @@
 				},
 				":hover": {
 					"color": {
-						"text": "var(--wp--preset--color--field)"
+						"text": "var(--wp--preset--color--ink)"
 					}
 				}
 			},
