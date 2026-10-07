@@ -29,6 +29,7 @@ $demas_theme_includes = array(
 	'inc/pages.php',
 	'inc/branches.php',
 	'inc/footer.php',
+	'inc/key-plan-land.php',
 	'inc/search.php',
 	'inc/sheet-view.php',
 	'inc/structured-data.php',

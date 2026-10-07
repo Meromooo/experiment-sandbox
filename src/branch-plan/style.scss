@@ -2,8 +2,12 @@
  * Branches and Key Plan.
  *
  * The key plan is drawn like the locator map in a drawing's title block:
- * hairline graticule, mono tick labels, one dot per branch, the main branch
- * ringed and named. Hovering or focusing a branch in the list lights its dot
+ * the real land (AMM-188; the Kingdom a paper sheet, its neighbours a shade
+ * darker than sand, three water-lines along the coasts, the surroundings
+ * fading at the frame), a hairline graticule, mono tick labels, a north arrow
+ * and a scale bar, one dot per branch, the main branch ringed and named.
+ * Sizes meant in pixels are multiplied by --_u, the plan units in a pixel at
+ * the plan's full width, set on the SVG by render.php. Hovering or focusing a branch in the list lights its dot
  * and names it; the rest dim. The per-branch :has() rules that do that are
  * generated in render.php from the branch list and set --_on to 1.
  *
@@ -62,15 +66,84 @@
 }
 
 .dh-plan__tick {
-	font-size: 10px;
+	font-size: calc(10px * var(--_u, 1));
 	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
 }
 
 .dh-plan__sea {
-	font-size: 9.5px;
+	font-size: calc(9px * var(--_u, 1));
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
+	fill: color-mix(in srgb, var(--wp--preset--color--water) 80%, var(--wp--preset--color--ink));
+}
+
+/* The land. Paint is set on each <use>, which its cloned path inherits. */
+.dh-plan__kingdom,
+.dh-plan__neighbours {
+	stroke-linejoin: round;
+}
+
+.dh-plan__kingdom {
+	fill: var(--wp--preset--color--paper);
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: calc(1.25px * var(--_u, 1));
+}
+
+.dh-plan__neighbours {
+	fill: color-mix(in srgb, var(--wp--preset--color--canopy) 9%, var(--wp--preset--color--sand));
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 22%, transparent);
+	stroke-width: calc(0.75px * var(--_u, 1));
+}
+
+/* The water-lines: bands stroked from the land's outline (widths set in
+   render.php), each a water band with a sand band inside it. The sand must
+   be the footer's own background. */
+.dh-plan__wave,
+.dh-plan__wave-gap {
+	fill: none;
+	stroke-linejoin: round;
+}
+
+.dh-plan__wave--1 {
+	stroke: color-mix(in srgb, var(--wp--preset--color--water) 16%, var(--wp--preset--color--sand));
+}
+
+.dh-plan__wave--2 {
+	stroke: color-mix(in srgb, var(--wp--preset--color--water) 28%, var(--wp--preset--color--sand));
+}
+
+.dh-plan__wave--3 {
+	stroke: color-mix(in srgb, var(--wp--preset--color--water) 46%, var(--wp--preset--color--sand));
+}
+
+.dh-plan__wave-gap {
+	stroke: var(--wp--preset--color--sand);
+}
+
+/* North arrow and scale bar. */
+.dh-plan__scale path,
+.dh-plan__north-half {
+	fill: none;
+	stroke: var(--wp--preset--color--ink);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
+}
+
+.dh-plan__scale,
+.dh-plan__north {
+	opacity: 0.6;
+}
+
+.dh-plan__scale rect,
+.dh-plan__north path:not(.dh-plan__north-half) {
+	fill: var(--wp--preset--color--ink);
+}
+
+.dh-plan__scale text,
+.dh-plan__north text {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: calc(9px * var(--_u, 1));
+	fill: var(--wp--preset--color--ink);
 }
 
 .dh-plan__site {
@@ -100,7 +173,7 @@
 }
 
 .dh-plan__code {
-	font-size: 12.5px;
+	font-size: calc(12.5px * var(--_u, 1));
 	font-weight: 500;
 	letter-spacing: 0.04em;
 	fill: var(--wp--preset--color--ink);

@@ -264,6 +264,12 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   `inc/category-drawings.php`, the homepage category cards' product drawings: change a drawing
   in the script and re-run it, never the PHP by hand. Its scattered parts (fog droplets, turf,
   soil, fibres) come from seeded random numbers, so a re-run gives the same drawings.
+  `make-key-plan.py` (AMM-188, 2026-10-08; Python 3 standard library) writes
+  `inc/key-plan-land.php` from Natural Earth's public-domain 1:50m countries file, which is not
+  in the repo: download `ne_50m_admin_0_countries.geojson` (3.1 MB, from
+  github.com/nvkelso/natural-earth-vector) and run
+  `python tools/make-key-plan.py path/to/that/file`. It projects, clips to the frame and
+  simplifies; change the frame or the detail there.
   `hermes/checks.py` (AMM-183, 2026-10-07; Python 3 standard
   library only) is the scheduled checkups Hermes Agent runs from Ammar's machine: `smoke` (key
   pages, their block markers, every theme stylesheet/script/icon, the finder route, the no-cart
@@ -408,9 +414,16 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     on sand), always with words too.
   - `footer.php` — registers the footer's two server-rendered blocks (AMM-144, 2026-09-28):
     `demas-theme/catalogue-index` (every group and subcategory, from the shared catalogue
-    structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**: one dot
-    per branch at its real latitude/longitude on a graticule, no drawn border; hovering a
-    branch lights its dot via generated `:has()` CSS; the dots reveal outward from Riyadh).
+    structure) and `demas-theme/branch-plan` (the branch links beside a **key plan**, a
+    **locator map**: one dot per branch at its real latitude/longitude; hovering a branch
+    lights its dot via generated `:has()` CSS; the dots reveal outward from Riyadh. **Since
+    AMM-188** it draws the real land from `inc/key-plan-land.php`: the Kingdom as a paper
+    sheet with a canopy outline, the neighbours a shade darker than sand, three water-lines
+    along the coasts (the land's outline stroked in widening bands, water then sand, under the
+    land itself, so the sand band must match the footer's background), the surroundings
+    fading out at the frame's edges; a graticule, a north arrow and a 500 km scale bar. The
+    frame holds the whole Kingdom (34.2-56.0°E, 15.9-32.6°N), so the plan is 288 x 242 at its
+    18rem width; sizes meant in pixels are multiplied by `--_u`, set on the SVG).
   - `search.php` — product search (AMM-143, 2026-09-28). A `request` filter makes **every
     front-end search a product search** (content pages are not searchable), so WooCommerce
     serves `templates/product-search-results.html`. The main search is title/excerpt matches —
@@ -486,6 +499,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     SVG markup (empty when there is none). Read by the category cards block only. Its ids start
     `dh-cd-`, which `render.php` swaps for a unique prefix; its classes start `dh-ca-` (paint
     and motion in `style.css`, "The product drawing").
+  - `key-plan-land.php` — **generated** by `tools/make-key-plan.py` (AMM-188):
+    `demas_theme_get_key_plan_land()`, the footer key plan's frame and its land (the Kingdom
+    and its neighbours) as SVG path data in the plan projection. Read by the branch-plan block
+    only.
   - `homepage.php` — the homepage's editable sections (AMM-153, from 2026-09-30). Registers the
     small theme blocks core blocks can't replace — `demas-theme/credentials` + `/credential` (the
     **certificates belt** under the hero, AMM-178, 2026-10-05: each credential is an approval

@@ -35,6 +35,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Lines under the hero | **Marquee** | `/web/marquee`, `/vs/carousel-vs-marquee` | One per page (taste rule). |
 | Numbers band (`demas-theme/stats` + `/stat`, homepage) | **Stats section**; each number a **stat card** (our riveted plate) | none on the site | A `<dl>`: term = what it counts (visually hidden when a unit word shows), definition = the number; its drawing is `aria-hidden`. |
 | Pivot field drawing (`demas-theme/pivot-field`, homepage hero) | **Background illustration** (decorative image) of the **hero section** | none on the site | `aria-hidden`; its one motion (the arm) is parked under reduced motion. |
+| Key plan (footer, `demas-theme/branch-plan`) | **Locator map** | none on the site | Real land from Natural Earth (AMM-188), north arrow, scale bar; `aria-hidden`, the branch list beside it is the control. |
 | Branch Desk city buttons (homepage) | By job, **tabs**: each city swaps one detail panel | `/vs/tabs-vs-segmented-control` | Built as toggle buttons (`aria-pressed`) plus a live region. Worth a look in the next accessibility pass; not a known bug. |
 | Contact page city list + branch card | **List-detail** (master-detail) | none on the site | In-page links; CSS `:target` shows the card without JavaScript. |
 | Request form | **Form fields**; the "what you need" pills are a **radio group** | `/web/form-field`, `/web/switch-checkbox-radio` | Looks like a segmented control, behaves as radios: keep the radio semantics. |
