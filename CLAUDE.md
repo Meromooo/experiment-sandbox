@@ -265,9 +265,13 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   redirect), `deploy` (the newest `deploy` commit is byte for byte what the sandbox serves and the
   cached homepage links the current `?ver=`), `taste` (the taste rules on home, Services, Contact
   and the 404: dashes in text and `alt`/`aria-label`, middle dots, eyebrows, moving strips, hero
-  subtext words) and `links`. Read-only GETs to public URLs; with `--hermes` it prints only
-  findings, each with a stable `[key]` for deduping Linear issues, then the `wakeAgent` line
-  Hermes reads. When a page's audited eyebrow count, hero class or a smoke marker changes, update
+  subtext words) and `links`. Read-only GETs to public URLs. Hermes runs it as script-only jobs
+  (no model, no ChatGPT allowance) with `--file`: silent when clean, otherwise each finding
+  becomes a Backlog issue labelled `hermes`, or one comment a day on the open issue that already
+  carries its stable `[key]`, and one line per finding goes to Telegram. **The script is the only
+  thing that writes to Linear, and only through `issueCreate` / `commentCreate`:** Linear's
+  "Create issues" key permission also allows editing issues (a test edit went through on
+  2026-10-07), so Hermes's own Linear connection is limited to read tools. When a page's audited eyebrow count, hero class or a smoke marker changes, update
   its tables at the top of the file in the same commit, or the check reports the change as a
   finding. Hermes only runs scripts from `~/.hermes/scripts/`, so copy it there after a change.
   Nothing here is loaded by `functions.php`, and since AMM-173 none

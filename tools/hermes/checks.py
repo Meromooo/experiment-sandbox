@@ -2,29 +2,34 @@
 """Scheduled checkups on the sandbox (AMM-183).
 
 Plain scripts, no AI: each check visits public pages the way a visitor would and
-reports what is wrong. Hermes Agent runs them on a schedule and only asks the
-model to write a Linear issue when a check finds something, so the ChatGPT
-allowance is spent on findings, not on quiet days.
+reports what is wrong. Hermes Agent runs them on a schedule as script-only jobs,
+so they cost no ChatGPT allowance at all.
 
     python3 checks.py smoke      # daily: key pages, markers, theme assets, finder
     python3 checks.py deploy     # every 15 min: the newest deploy is what the sandbox serves
     python3 checks.py taste      # weekly: the taste rules on the marketing pages
     python3 checks.py links      # weekly: every link on the marketing pages
 
-Run by hand, each prints every check with ok / FAIL / WARN. With --hermes it
-prints only the findings, then one last line Hermes reads: {"wakeAgent": false}
-when there is nothing to report (a silent tick), {"wakeAgent": true} otherwise.
-Every finding starts with a key in square brackets, the same for the same
-problem on every run, so the agent can find the Linear issue it filed before
-instead of filing a second one.
+Run by hand, each prints every check with ok / FAIL / WARN. With --file it
+prints nothing on a clean run (Hermes sends nothing) and files each finding in
+Linear instead: a new Backlog issue labelled `hermes`, or, when an open one
+already carries the finding's key, one comment a day on it. It then prints one
+line per finding, which Hermes sends to Telegram. Every finding has a key in
+square brackets, the same for the same problem on every run; it is written into
+the issue, which is how the next run finds it.
+
+Filing uses only Linear's issueCreate and commentCreate. The key it reads
+(LINEAR_API_KEY, from the environment or ~/.hermes/.env) can also edit issues,
+a permission Linear bundles with "Create issues", so the model is never given a
+tool that writes to Linear: this script is the only writer, and it cannot edit.
 
 Exit status is 0 whenever the check ran, findings or not; anything else means
 the script itself broke, which Hermes reports as an error.
 
 Standard library only (Hermes runs cron scripts with its own Python 3.11).
-Read-only: GET requests to public URLs, and `git ls-remote` for the deploy
-branch. It never signs in, submits a form or writes anywhere except its own
-state file (--state, used by `deploy`).
+Read-only towards the sites: GET requests to public URLs, and `git ls-remote`
+for the deploy branch. It never signs in or submits a form. It writes only its
+own state files (--state) and, with --file, Linear issues and comments.
 
 Not deployed: nothing in tools/ reaches the server (AMM-173). Hermes only runs
 scripts from ~/.hermes/scripts/, so copy this file there after changing it.
@@ -48,6 +53,14 @@ THEME_PATH = "/wp-content/themes/demas-theme/"
 USER_AGENT = "demas-checks/1 (AMM-183; read-only)"
 TIMEOUT = 25
 DEPLOY_GRACE_MINUTES = 15
+
+# Where --file puts findings: the Ammar team, the theme project, Backlog, the
+# `hermes` label. IDs, not secrets.
+LINEAR_API = "https://api.linear.app/graphql"
+LINEAR_TEAM = "fd15592d-fc02-4eea-b6bf-dcf59aee8a35"
+LINEAR_PROJECT = "9937a71d-6d98-4a05-ac86-edc435e248ff"
+LINEAR_BACKLOG = "cf728cd4-ce0d-4de6-92e1-5c8fc2a792d2"
+LINEAR_LABEL = "15430d06-4eef-43cb-a045-da63f51e8501"
 
 # The marketing pages the taste rules cover, as they stood after the audits in
 # AMM-170, AMM-171 and AMM-169 step 3. `lead` is the hero subtext's class,
@@ -87,27 +100,107 @@ VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
 
 
 class Report:
-    def __init__(self, hermes):
-        self.hermes = hermes
-        self.findings = 0
+    def __init__(self, quiet):
+        self.quiet = quiet
+        self.findings = []
 
     def ok(self, text):
-        if not self.hermes:
+        if not self.quiet:
             print(f"ok    {text}")
 
     def warn(self, text):
-        if not self.hermes:
+        if not self.quiet:
             print(f"WARN  {text}")
 
     def fail(self, key, text):
-        self.findings += 1
-        print(f"FAIL  [{key}] {text}" if not self.hermes else f"[{key}] {text}")
+        self.findings.append((key, text))
+        if not self.quiet:
+            print(f"FAIL  [{key}] {text}")
 
-    def finish(self, name):
-        if self.hermes:
-            print(json.dumps({"wakeAgent": self.findings > 0}))
-        else:
-            print(f"\n{name}: {self.findings} finding(s)")
+
+# --- Linear (--file) ----------------------------------------------------------
+
+def linear_key():
+    key = os.environ.get("LINEAR_API_KEY", "")
+    env = os.path.expanduser("~/.hermes/.env")
+    if not key and os.path.exists(env):
+        with open(env, encoding="utf-8") as fh:
+            for line in fh:
+                name, _, value = line.strip().partition("=")
+                if name == "LINEAR_API_KEY":
+                    key = value.strip().strip('"').strip("'")
+    if not key:
+        raise RuntimeError("LINEAR_API_KEY is not set (environment or ~/.hermes/.env)")
+    return key
+
+
+def linear(key, query, variables):
+    body = json.dumps({"query": query, "variables": variables}).encode()
+    req = urllib.request.Request(LINEAR_API, data=body, headers={
+        "Authorization": key, "Content-Type": "application/json", "User-Agent": USER_AGENT,
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+            data = json.load(resp)
+    except urllib.error.HTTPError as err:
+        data = json.load(err)
+    if data.get("errors"):
+        raise RuntimeError(data["errors"][0].get("message", "Linear error"))
+    return data["data"]
+
+
+FIND_OPEN = """query($team: ID!, $label: ID!, $key: String!) {
+  issues(first: 1, filter: {
+    team: { id: { eq: $team } }, labels: { id: { eq: $label } },
+    state: { type: { nin: ["completed", "canceled"] } },
+    description: { contains: $key }
+  }) { nodes { id identifier } }
+}"""
+CREATE_ISSUE = """mutation($input: IssueCreateInput!) {
+  issueCreate(input: $input) { issue { identifier } }
+}"""
+CREATE_COMMENT = """mutation($input: CommentCreateInput!) {
+  commentCreate(input: $input) { success }
+}"""
+
+
+def file_findings(check, findings, state_path):
+    """One line per finding, for Telegram. Comments at most once a day per finding."""
+    key = linear_key()
+    today = time.strftime("%Y-%m-%d")
+    state = {}
+    if os.path.exists(state_path):
+        with open(state_path, encoding="utf-8") as fh:
+            state = json.load(fh)
+    lines = []
+    for fkey, text in findings:
+        tag = f"[{fkey}]"
+        try:
+            found = linear(key, FIND_OPEN, {"team": LINEAR_TEAM, "label": LINEAR_LABEL, "key": tag})["issues"]["nodes"]
+            if found:
+                issue = found[0]
+                if state.get(fkey) != today:
+                    linear(key, CREATE_COMMENT, {"input": {"issueId": issue["id"], "body": f"Seen again {today}:\n\n{text}"}})
+                    state[fkey] = today
+                lines.append(f"{issue['identifier']} again: {text}")
+            else:
+                issue = linear(key, CREATE_ISSUE, {"input": {
+                    "teamId": LINEAR_TEAM, "projectId": LINEAR_PROJECT, "stateId": LINEAR_BACKLOG,
+                    "labelIds": [LINEAR_LABEL],
+                    "title": f"Hermes {check}: {text[:90]}",
+                    "description": (
+                        f"Found by the `{check}` check on {today} (AMM-183).\n\n{text}\n\n"
+                        f"Check key: `{tag}`\n\nRe-run: `python3 tools/hermes/checks.py {check}`"
+                    ),
+                }})["issueCreate"]["issue"]
+                state[fkey] = today
+                lines.append(f"New {issue['identifier']}: {text}")
+        except (RuntimeError, OSError, KeyError, ValueError) as err:
+            lines.append(f"Not filed ({err}): {tag} {text}")
+    os.makedirs(os.path.dirname(state_path) or ".", exist_ok=True)
+    with open(state_path, "w", encoding="utf-8") as fh:
+        json.dump(state, fh)
+    return lines
 
 
 def fetch(url, method="GET"):
@@ -452,22 +545,26 @@ def check_links(rep):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("check", choices=["smoke", "deploy", "taste", "links"])
-    parser.add_argument("--hermes", action="store_true", help="print findings only, then the wakeAgent line")
-    parser.add_argument("--state", default=os.path.expanduser("~/.local/state/demas-checks/deploy.json"),
-                        help="where `deploy` remembers the last deploy it saw")
+    parser.add_argument("--file", action="store_true",
+                        help="file findings in Linear and print one line each; print nothing when clean")
+    parser.add_argument("--state", default=os.path.expanduser("~/.local/state/demas-checks"),
+                        help="folder for the deploy and Linear state files")
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
 
-    rep = Report(args.hermes)
+    rep = Report(args.file)
     if args.check == "smoke":
         check_smoke(rep)
     elif args.check == "deploy":
-        check_deploy(rep, args.state)
+        check_deploy(rep, os.path.join(args.state, "deploy.json"))
     elif args.check == "taste":
         check_taste(rep)
     else:
         check_links(rep)
-    rep.finish(args.check)
+    if not args.file:
+        print(f"\n{args.check}: {len(rep.findings)} finding(s)")
+    elif rep.findings:
+        print("\n".join(file_findings(args.check, rep.findings, os.path.join(args.state, "linear.json"))))
 
 
 if __name__ == "__main__":
