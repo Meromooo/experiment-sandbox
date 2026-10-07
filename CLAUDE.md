@@ -259,7 +259,18 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   canvas, so every plate shows its logo at one size; the files are uploaded and picked per
   credential. `make-icons.py` (2026-10-05, Python 3 with Pillow; run locally as
   `python tools/make-icons.py assets/images`) writes the whole icon set from its two rectangle
-  masters (see `assets/images/`). Nothing here is loaded by `functions.php`, and since AMM-173 none
+  masters (see `assets/images/`). `hermes/checks.py` (AMM-183, 2026-10-07; Python 3 standard
+  library only) is the scheduled checkups Hermes Agent runs from Ammar's machine: `smoke` (key
+  pages, their block markers, every theme stylesheet/script/icon, the finder route, the no-cart
+  redirect), `deploy` (the newest `deploy` commit is byte for byte what the sandbox serves and the
+  cached homepage links the current `?ver=`), `taste` (the taste rules on home, Services, Contact
+  and the 404: dashes in text and `alt`/`aria-label`, middle dots, eyebrows, moving strips, hero
+  subtext words) and `links`. Read-only GETs to public URLs; with `--hermes` it prints only
+  findings, each with a stable `[key]` for deduping Linear issues, then the `wakeAgent` line
+  Hermes reads. When a page's audited eyebrow count, hero class or a smoke marker changes, update
+  its tables at the top of the file in the same commit, or the check reports the change as a
+  finding. Hermes only runs scripts from `~/.hermes/scripts/`, so copy it there after a change.
+  Nothing here is loaded by `functions.php`, and since AMM-173 none
   of it is deployed: to run a tool again, upload it (with its CSV) outside the theme folder and
   point `wp eval-file` at that copy.
 - `docs/adr/` — architecture decision records: why a hard-to-reverse choice was made, what was
