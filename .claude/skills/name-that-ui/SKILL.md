@@ -27,7 +27,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | "Exact match" tag (search results) | **Badge** | `/web/badge-chip-pill` | Badge = status label; chip = something you act on. |
 | Pills (Button block styles) | **Pill buttons** | `/web/badge-chip-pill` | "Pill" names the shape; ours are buttons. |
 | Parts sheet (Sheet view) | **Data table** | `/web/data-table` | Columns and numbered lines reflowed by CSS. |
-| Category cards | **Card** | `/web/card` | |
+| Category cards | **Card**, each with a **spot illustration** (its product drawing, AMM-186) | `/web/card` | The drawing is decorative (`aria-hidden`); it moves on hover and on keyboard focus alike. |
 | Breadcrumb trail | **Breadcrumbs** | `/web/breadcrumbs` | |
 | Catalogue page links | **Pagination** | `/web/pagination` | |
 | Credential marks with a detail | **Tooltip** | `/web/popover-dropdown-tooltip`, `/vs/tooltip-vs-hover-card` | If it ever holds links or rich content it becomes a hover card or popover. |

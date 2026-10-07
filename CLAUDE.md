@@ -259,7 +259,12 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   canvas, so every plate shows its logo at one size; the files are uploaded and picked per
   credential. `make-icons.py` (2026-10-05, Python 3 with Pillow; run locally as
   `python tools/make-icons.py assets/images`) writes the whole icon set from its two rectangle
-  masters (see `assets/images/`). `hermes/checks.py` (AMM-183, 2026-10-07; Python 3 standard
+  masters (see `assets/images/`). `make-category-drawings.py` (AMM-186, 2026-10-07; Python 3
+  standard library; run locally as `python tools/make-category-drawings.py`) writes
+  `inc/category-drawings.php`, the homepage category cards' product drawings: change a drawing
+  in the script and re-run it, never the PHP by hand. Its scattered parts (fog droplets, turf,
+  soil, fibres) come from seeded random numbers, so a re-run gives the same drawings.
+  `hermes/checks.py` (AMM-183, 2026-10-07; Python 3 standard
   library only) is the scheduled checkups Hermes Agent runs from Ammar's machine: `smoke` (key
   pages, their block markers, every theme stylesheet/script/icon, the finder route, the no-cart
   redirect), `deploy` (the newest `deploy` commit is byte for byte what the sandbox serves and the
@@ -476,6 +481,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     setting stays for the admin and login screens. No `/favicon.ico` at the domain root yet:
     that would be server work for Ammar, and browsers follow the link tags. Rules:
     `.claude/skills/favicon-cheat-sheet`.
+  - `category-drawings.php` — **generated** by `tools/make-category-drawings.py` (AMM-186):
+    `demas_theme_get_category_drawing( $slug )`, the product drawing for a product_cat slug as
+    SVG markup (empty when there is none). Read by the category cards block only. Its ids start
+    `dh-cd-`, which `render.php` swaps for a unique prefix; its classes start `dh-ca-` (paint
+    and motion in `style.css`, "The product drawing").
   - `homepage.php` — the homepage's editable sections (AMM-153, from 2026-09-30). Registers the
     small theme blocks core blocks can't replace — `demas-theme/credentials` + `/credential` (the
     **certificates belt** under the hero, AMM-178, 2026-10-05: each credential is an approval
@@ -502,7 +512,15 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     sidebar; link and **live** product count come from `demas_theme_get_catalogue_columns()`
     and `demas_theme_term_product_count()`, and a slug with an outbound link in
     `demas_theme_get_catalogue_external_links()` — Non-Woven — becomes the sister-site card;
-    the editor canvas shows it through ServerSideRender), `/branch-desk` (every branch as
+    the editor canvas shows it through ServerSideRender. **Since AMM-186** a card whose slug
+    has a drawing in `inc/category-drawings.php` shows that **spot illustration** in place of
+    its icon (`dh-cat--drawn`, `.dh-cat__art`, `aria-hidden`): the category's signature product
+    drawn whole on one 260 x 144 sheet, the same scale on every card (sized from a third of the
+    grid, a container query on `.dh-cats__grid`), its supply line running off the card edge;
+    the product starts up once as the card comes into view and keeps working while the card is
+    hovered or focused (loops only switch between paused and running, so nothing jumps).
+    Finished and still without JavaScript or with reduced motion. A slug without a drawing keeps
+    the icon; the "List" style never shows drawings), `/branch-desk` (every branch as
     a button with who answers there, all from `demas_theme_get_branches()`; eyebrow and title
     edited in the sidebar), `/schematic` (the self-drawing irrigation line; its corner note
     edited in the sidebar; **film mode, AMM-175:** with a film chosen in its "Film" panel it
@@ -600,7 +618,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   numbers band is in the film card's frame (canopy card, a `spacing-50` frame round a sand
   sheet, the tab's socket cut into the frame), its two numbers on riveted paper plates edged in
   2px field green, each with a canopy unit word and its drawing (46: the scale from 1979; 15:
-  the network), and "irrigation" in its heading highlighted. The patterns and Page 17 were changed together; when a homepage
+  the network), and "irrigation" in its heading highlighted. **AMM-186 (2026-10-07):** each
+  category card shows its product drawing in place of the icon (fog line and gauge, pop-up
+  rotor, pipe with tee and valve, drill in a plate, fabric roll with a loupe); the cards are
+  ~57px taller at desktop. Nothing in Page 17 changed: the drawings follow the cards' slugs.
+  The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and
