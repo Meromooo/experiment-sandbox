@@ -12,9 +12,10 @@
  *    are one <g>, drawn once and placed with <use>. Some fields lie fallow.
  *  - the main field's arm: the span, a tower on each wheel track, the end
  *    gun's throw past the tip, the crop it has just wetted behind it, and
- *    the pivot at the centre. It is its own element so its turn (once a
- *    minute) runs on the compositor and never repaints the fields. With
- *    reduced motion it is parked.
+ *    the pivot at the centre. It sits in its own <span>, which turns once a
+ *    minute: an HTML box, so the turn runs on the compositor (Chrome won't
+ *    for an <svg>) and never repaints the fields. With reduced motion it is
+ *    parked.
  *
  * A field's radius is 100 units. CSS sizes and places both SVGs from one
  * radius (--_r), so the drawing keeps its shape at every width. Lines don't
@@ -79,7 +80,7 @@ foreach ( $demas_fields as $demas_field ) {
 $demas_svg .= '</svg>';
 
 // The arm points along 0 degrees and turns clockwise: the wet crop trails it.
-$demas_arm = '<svg class="dh-pivot__arm" viewBox="-120 -120 240 240" focusable="false">';
+$demas_arm = '<span class="dh-pivot__arm"><svg viewBox="-120 -120 240 240" focusable="false">';
 for ( $demas_i = 0; $demas_i < 14; $demas_i++ ) {
 	$demas_t    = ( $demas_i + 1 ) / 14;
 	$demas_arm .= sprintf( '<path class="dh-pivot__wake" d="%s" fill-opacity="%.3F"/>', $demas_sector( -70 + $demas_i * 5, -64.6 + $demas_i * 5 ), 0.13 * $demas_t * $demas_t );
@@ -90,7 +91,7 @@ $demas_arm .= '<path class="dh-pivot__towers" d="M22.7 -2.4V2.4M45.5 -2.4V2.4M68
 for ( $demas_j = 0; $demas_j < 5; $demas_j++ ) {
 	$demas_arm .= sprintf( '<circle class="dh-pivot__drop" cx="%.1F" cy="%.2F" r="%.2F" fill-opacity="%.2F"/>', 101.8 + $demas_j * 2, 0.6 + $demas_j * 0.54, 0.77 - $demas_j * 0.09, 0.7 - $demas_j * 0.12 );
 }
-$demas_arm .= '<circle class="dh-pivot__hub" r="2.1"/><circle class="dh-pivot__ring" r="5.4"/></svg>';
+$demas_arm .= '<circle class="dh-pivot__hub" r="2.1"/><circle class="dh-pivot__ring" r="5.4"/></svg></span>';
 
 $demas_wrapper = get_block_wrapper_attributes(
 	array(

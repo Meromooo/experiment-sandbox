@@ -505,8 +505,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     settings; the last block in the hero head, which `style.css` section 9 makes a card (sand
     42% into paper, the content width). Two SVGs in units of a field radius, sized and placed
     by CSS from one `--_r` that shrinks with the card so the main field clears the lead's 36rem
-    measure; below 56rem the field sits in the card's bottom corner. The arm is its own `<svg>`
-    so its turn is a compositor animation; with reduced motion it is parked at the same angle
+    measure; below 56rem the field sits in the card's bottom corner. The arm's `<svg>` sits in a
+    `<span>` that turns, because Chrome won't run a transform animation on an `<svg>` on the
+    compositor (a trace showed `compositeFailed`); with reduced motion it is parked at the same angle
     it starts from. A global `max-inline-size: 100%` on SVGs had to be lifted for it). Enqueues `assets/js/editor.js`, the **Highlight**
     rich-text format (`<span class="dh-highlight" data-reveal="wipe">`) for the headline's
     green word — a plain editor script, no build step. Registers
