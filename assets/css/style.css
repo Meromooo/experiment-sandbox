@@ -1316,7 +1316,7 @@ svg {
 	margin: 0;
 }
 
-.dh-pivot > svg {
+.dh-pivot > * {
 	position: absolute;
 	inset-inline-end: calc(var(--_x) - var(--_s) / 2);
 	inset-block-start: calc(var(--_y) - var(--_s) / 2);
@@ -1331,9 +1331,18 @@ svg {
 	color: var(--wp--preset--color--canopy);
 }
 
+/* An HTML box round the arm's SVG: Chrome won't run a transform animation on
+   an <svg> on the compositor, so it would repaint every frame. */
 .dh-pivot__arm {
 	--_s: calc(var(--_r) * 2.4);
 	transform: rotate(160deg);
+}
+
+.dh-pivot__arm > svg {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	overflow: visible;
 }
 
 .dh-pivot__crop {
