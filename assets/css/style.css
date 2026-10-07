@@ -2599,6 +2599,8 @@ svg {
 /* Category gateway --------------------------------------------------- */
 
 .dh-cats__grid {
+	/* The product drawings size themselves from its width (below). */
+	container-type: inline-size;
 	display: grid;
 	grid-template-columns: repeat(6, minmax(0, 1fr));
 	gap: var(--wp--preset--spacing--40);
@@ -2710,6 +2712,526 @@ svg {
 	font-size: var(--wp--preset--font-size--lg);
 	font-weight: 500;
 	color: var(--wp--preset--color--ink);
+}
+
+/*
+ * The product drawing (AMM-186). A card whose category has one
+ * (inc/category-drawings.php, made by tools/make-category-drawings.py) shows
+ * it in place of the icon: a 260 x 144 sheet in its own row above the name,
+ * pinned to the card's top-right corner, at one scale on every card (sized
+ * from a small card's width, a third of the grid; 11.5rem tall at most). Each
+ * product's supply line runs off the card edge.
+ *
+ * Motion: once, as the card comes into view, the product starts up
+ * (transitions on .is-in, after the card's sliver reveal). While the card is
+ * hovered or focused it keeps working: every loop is always declared and only
+ * switches between paused and running, so nothing jumps when the pointer
+ * leaves. Rotation centres are in viewBox units (the SVG default
+ * transform-box); an element with both a start-up and a loop is two nested
+ * groups. Without JavaScript, or with reduced motion, the finished drawing
+ * stands still.
+ */
+.dh-cat--drawn .dh-cat__link {
+	padding-block-start: 0;
+}
+
+.dh-cat__art {
+	display: block;
+	flex: none;
+	block-size: min(11.5rem, ((100cqi - 2 * var(--wp--preset--spacing--40)) / 3 - var(--wp--preset--spacing--50)) * 144 / 260);
+	margin-block-end: auto;
+	margin-inline-end: calc(-1 * var(--wp--preset--spacing--50));
+	overflow: hidden;
+	border-start-end-radius: var(--_r);
+	pointer-events: none;
+}
+
+/* One card a row: the card's own width. */
+@media (max-width: 56rem) {
+	.dh-cat__art {
+		block-size: min(11.5rem, (100cqi - var(--wp--preset--spacing--50)) * 144 / 260);
+	}
+}
+
+.dh-cat__art > svg {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	max-inline-size: none;
+}
+
+[dir="rtl"] .dh-cat__art > svg {
+	transform: scaleX(-1);
+}
+
+/* Mask paths keep scaling strokes: their pathLength reveal breaks under
+   non-scaling-stroke. */
+.dh-cat__art :is(path, rect, circle, ellipse):not(.dh-ca-draw) {
+	vector-effect: non-scaling-stroke;
+}
+
+.dh-ca-line,
+.dh-ca-body,
+.dh-ca-green {
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.75;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.dh-ca-line {
+	fill: none;
+}
+
+.dh-ca-body {
+	fill: var(--wp--preset--color--paper);
+}
+
+.dh-ca-green {
+	fill: var(--wp--preset--color--field);
+}
+
+.dh-ca-dark,
+.dh-ca-pe {
+	fill: var(--wp--preset--color--canopy);
+}
+
+.dh-ca-thin {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 60%, transparent);
+	stroke-width: 1;
+}
+
+.dh-ca-rib {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.1;
+	opacity: 0.5;
+}
+
+.dh-ca-hi {
+	fill: none;
+	stroke: var(--wp--preset--color--paper);
+	stroke-width: 1.2;
+	stroke-linecap: round;
+	opacity: 0.45;
+}
+
+.dh-ca-hi--dark {
+	stroke: var(--wp--preset--color--canopy);
+	opacity: 0.25;
+}
+
+.dh-ca-ground {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.5;
+}
+
+.dh-ca-stop-water {
+	stop-color: var(--wp--preset--color--water);
+}
+
+.dh-ca-stop-canopy {
+	stop-color: var(--wp--preset--color--canopy);
+}
+
+/* Fog Systems */
+.dh-ca-tick {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1;
+}
+
+.dh-ca-needle {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	transform: rotate(48deg);
+	transform-origin: 186.5px 12px;
+}
+
+.dh-ca-mist {
+	fill: var(--wp--preset--color--water);
+	animation: dh-ca-mist 2.4s cubic-bezier(0.12, 0.62, 0.3, 1) infinite;
+}
+
+.dh-ca-plume {
+	transform-box: fill-box;
+	transform-origin: 50% 20%;
+	animation: dh-ca-breathe 3.9s ease-in-out var(--t) infinite alternate;
+}
+
+/* Landscape */
+.dh-ca-grain {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 28%, transparent);
+	stroke-width: 1.9;
+	stroke-linecap: round;
+}
+
+.dh-ca-blade {
+	fill: none;
+	stroke: var(--wp--preset--color--field);
+	stroke-width: 1.4;
+	stroke-linecap: round;
+}
+
+.dh-ca-blade--dark {
+	stroke: color-mix(in srgb, var(--wp--preset--color--field) 55%, var(--wp--preset--color--canopy));
+}
+
+.dh-ca-sweep {
+	transform-origin: 222px 61px;
+	animation: dh-ca-sweep 2.8s ease-in-out infinite alternate;
+}
+
+.dh-ca-jet,
+.dh-ca-spray,
+.dh-ca-splash {
+	fill: none;
+	stroke: var(--wp--preset--color--water);
+	stroke-linecap: round;
+}
+
+.dh-ca-jet {
+	stroke-width: 2.4;
+	stroke-dasharray: 9 5;
+	animation: dh-ca-dash-14 600ms linear infinite;
+}
+
+.dh-ca-spray {
+	stroke-width: 1.7;
+	stroke-dasharray: 0.1 6.4;
+	opacity: 0.7;
+	animation: dh-ca-dash-6 520ms linear infinite;
+}
+
+.dh-ca-splash {
+	stroke-width: 1.4;
+}
+
+/* Irrigation Products */
+.dh-ca-channel {
+	fill: color-mix(in srgb, var(--wp--preset--color--water) 26%, var(--wp--preset--color--paper));
+}
+
+.dh-ca-flow {
+	fill: none;
+	stroke: var(--wp--preset--color--water);
+	stroke-width: 2.6;
+	stroke-linecap: round;
+	stroke-dasharray: 6 8;
+	animation: dh-ca-dash-14 560ms linear infinite;
+}
+
+/* Industrial Tool Services */
+.dh-ca-plate {
+	fill: color-mix(in srgb, var(--wp--preset--color--canopy) 9%, var(--wp--preset--color--paper));
+}
+
+.dh-ca-hatch {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 38%, transparent);
+	stroke-width: 1;
+}
+
+.dh-ca-chuck {
+	fill: color-mix(in srgb, var(--wp--preset--color--canopy) 72%, var(--wp--preset--color--paper));
+}
+
+.dh-ca-flutes {
+	fill: color-mix(in srgb, var(--wp--preset--color--canopy) 82%, transparent);
+	animation: dh-ca-climb 380ms linear infinite;
+}
+
+.dh-ca-chip {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--field) 55%, var(--wp--preset--color--canopy));
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: dh-ca-chip 1.1s ease-out infinite;
+}
+
+.dh-ca-centre {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 50%, transparent);
+	stroke-width: 1;
+	stroke-dasharray: 14 3 2 3;
+}
+
+/* Non-Woven */
+.dh-ca-tex {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 60%, transparent);
+	stroke-width: 1.3;
+	stroke-dasharray: 4 2 1 2 6 3;
+	animation: dh-ca-dash-18 900ms linear infinite;
+}
+
+.dh-ca-spiral {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 45%, transparent);
+	stroke-width: 1;
+}
+
+.dh-ca-hole {
+	fill: var(--wp--preset--color--sand);
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.4;
+}
+
+.dh-ca-turn,
+.dh-ca-unroll {
+	transform-origin: 150px 91px;
+}
+
+.dh-ca-turn {
+	animation: dh-ca-turn 7s linear infinite;
+}
+
+.dh-ca-mark {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.2;
+	stroke-dasharray: 2 2;
+}
+
+.dh-ca-ring {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 2;
+}
+
+.dh-ca-bond {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 16%, transparent);
+	stroke-width: 4;
+	stroke-linecap: round;
+}
+
+.dh-ca-fib {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 62%, transparent);
+	stroke-width: 1.2;
+	stroke-linecap: round;
+}
+
+.dh-ca-fib--light {
+	stroke: color-mix(in srgb, var(--wp--preset--color--canopy) 32%, transparent);
+}
+
+.dh-ca-fib--green {
+	stroke: var(--wp--preset--color--field);
+	stroke-width: 1.5;
+}
+
+.dh-ca-web {
+	animation: dh-ca-slide 3.6s linear infinite;
+}
+
+.dh-ca-pop {
+	transform-origin: 260px 54px;
+}
+
+/* Every loop waits, paused on its first frame, for a hover or focus. */
+.dh-cat__art .dh-ca-run {
+	animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.dh-cat:focus-within .dh-cat__art .dh-ca-run {
+		animation-play-state: running;
+	}
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+	.dh-cat:hover .dh-cat__art .dh-ca-run {
+		animation-play-state: running;
+	}
+}
+
+/* The start-up, once the card's sliver reveal has opened. */
+@media (prefers-reduced-motion: no-preference) {
+	.dh-cat__art {
+		--_t: calc(var(--i, 0) * var(--wp--custom--motion--stagger) + 600ms);
+	}
+
+	/* Fog: the gauge comes up to pressure, then the fog appears. */
+	.dh-ca-needle {
+		transition: transform 1s cubic-bezier(0.3, 1.5, 0.5, 1) var(--_t);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-needle {
+		transform: rotate(-120deg);
+	}
+
+	.dh-ca-fog {
+		transition: opacity 900ms ease calc(var(--_t) + 500ms);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-fog {
+		opacity: 0;
+	}
+
+	/* Landscape: the riser pops up and the stream draws out to the turf. */
+	.dh-ca-riser {
+		transition: transform 600ms cubic-bezier(0.3, 1.3, 0.5, 1) var(--_t);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-riser {
+		transform: translateY(46px);
+	}
+
+	.dh-ca-splash {
+		transition: opacity 300ms ease calc(var(--_t) + 1250ms);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-splash {
+		opacity: 0;
+	}
+
+	/* The masks that draw a stream, the water in a pipe or the sheet out. */
+	.dh-ca-draw {
+		stroke-dasharray: 1 1;
+		transition: stroke-dashoffset 900ms cubic-bezier(0.4, 0, 0.6, 1) calc(var(--_t) + 450ms);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-draw {
+		stroke-dashoffset: 1;
+	}
+
+	/* Irrigation: water in from the edge, up the branch and on past the tee. */
+	.dh-ca-draw--first,
+	.dh-ca-draw--second {
+		transition-duration: 1s;
+		transition-timing-function: linear;
+		transition-delay: var(--_t);
+	}
+
+	.dh-ca-draw--second {
+		transition-delay: calc(var(--_t) + 520ms);
+	}
+
+	/* Industrial tools: the drill comes down into the plate. */
+	.dh-ca-bit {
+		transition: transform 900ms var(--wp--custom--motion--ease) var(--_t);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-bit {
+		transform: translateY(-20px);
+	}
+
+	/* Non-Woven: the sheet unrolls, then the detail opens. */
+	.dh-ca-draw--now {
+		transition-delay: var(--_t);
+	}
+
+	.dh-ca-unroll {
+		transition: transform 900ms cubic-bezier(0.4, 0, 0.6, 1) var(--_t);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-unroll {
+		transform: rotate(220deg);
+	}
+
+	.dh-ca-pop {
+		transition:
+			opacity 400ms ease calc(var(--_t) + 800ms),
+			transform 500ms cubic-bezier(0.3, 1.4, 0.5, 1) calc(var(--_t) + 800ms);
+	}
+
+	.js .dh-cat:not(.is-in) .dh-ca-pop {
+		opacity: 0;
+		transform: scale(0.6);
+	}
+}
+
+@keyframes dh-ca-mist {
+	0% {
+		transform: translate(0, 0);
+		opacity: 0;
+	}
+
+	8% {
+		opacity: 0.95;
+	}
+
+	65% {
+		opacity: 0.55;
+	}
+
+	100% {
+		transform: translate(var(--x), var(--y));
+		opacity: 0;
+	}
+}
+
+@keyframes dh-ca-breathe {
+	to {
+		transform: translate(4px, 3px) scale(1.08);
+	}
+}
+
+@keyframes dh-ca-sweep {
+	to {
+		transform: scaleX(0.4);
+	}
+}
+
+@keyframes dh-ca-dash-6 {
+	to {
+		stroke-dashoffset: -6.5px;
+	}
+}
+
+@keyframes dh-ca-dash-14 {
+	to {
+		stroke-dashoffset: -14px;
+	}
+}
+
+@keyframes dh-ca-dash-18 {
+	to {
+		stroke-dashoffset: -18px;
+	}
+}
+
+@keyframes dh-ca-climb {
+	to {
+		transform: translateY(-16px);
+	}
+}
+
+@keyframes dh-ca-chip {
+	0% {
+		transform: translate(0, 5px) rotate(0) scale(0.3);
+		opacity: 0;
+	}
+
+	25% {
+		opacity: 1;
+	}
+
+	100% {
+		transform: translate(var(--x), -20px) rotate(var(--r)) scale(1);
+		opacity: 0;
+	}
+}
+
+@keyframes dh-ca-turn {
+	to {
+		transform: rotate(-360deg);
+	}
+}
+
+@keyframes dh-ca-slide {
+	to {
+		transform: translateX(72px);
+	}
 }
 
 /* Process ----------------------------------------------------------- */

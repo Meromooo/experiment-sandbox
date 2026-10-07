@@ -33,6 +33,7 @@ $demas_theme_includes = array(
 	'inc/sheet-view.php',
 	'inc/structured-data.php',
 	'inc/homepage.php',
+	'inc/category-drawings.php',
 	'inc/contact.php',
 	'inc/cache.php',
 	'inc/site-icons.php',
