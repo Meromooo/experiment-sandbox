@@ -2369,6 +2369,7 @@ svg {
 .dh-stat__draw {
 	display: block;
 	inline-size: 100%;
+	max-inline-size: 30rem;
 	block-size: auto;
 	margin-block-start: var(--wp--preset--spacing--40);
 	overflow: visible;
@@ -2557,6 +2558,14 @@ svg {
 
 	.dh-band--notched .dh-band__grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* Under the heading and lead, the plates side by side where the sheet is
+   wide enough for both. */
+@media (min-width: 45em) and (max-width: 56rem) {
+	.dh-band--notched .dh-stats {
+		grid-template-columns: 1fr 1fr;
 	}
 }
 
