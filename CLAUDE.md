@@ -218,7 +218,7 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   format, AMM-153). `style.css` holds the shape grammar
   (cards, pills, the concave notch), marquee, and reveal motion; `main.js` is the small
   dependency-free script that drives reveals, the marquee loop and the certificates belt
-  (AMM-178), counters, the Branch Desk (including `#branch-xxx` deep links), the homepage
+  (AMM-178), counters (which mark their stat `.is-counted` so its drawing runs, AMM-184), the Branch Desk (including `#branch-xxx` deep links), the homepage
   footer slide-over and the catalogue's Gallery / Sheet switch.
 - `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
   Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
@@ -484,7 +484,14 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     focus, stops and glides the focused plate to mid belt; with reduced motion it is a still
     wall. Only a credential with a tag or a link takes focus), `/stats` +
     `/stat` (the numbers band: a `<dl>`, label as the term and the number shown above it by CSS
-    `order`; a whole number counts up via `data-count`) and `/steps` + `/step` (the process: an
+    `order`; a whole number counts up via `data-count`. Since AMM-184 a stat can carry a **unit**
+    word beside the number ("Years"; on the homepage band it replaces the visible label, which
+    stays in the `<dl>` visually hidden, via `:has(.dh-stat__unit)`) and a **drawing** under it,
+    server-rendered and `aria-hidden`: `scale` (a drafting scale, a tick a year from `since` to
+    today) or `network` (the branch network: head office from `demas_theme_get_branches()` as the
+    pump, a sprinkler head per other branch). `main.js`'s count-up marks the stat `.is-counted`
+    and CSS runs the drawing in step with it (900ms, ease-out; each head's moment is `--d`,
+    computed in `render.php`); finished without JavaScript or with reduced motion) and `/steps` + `/step` (the process: an
     `<ol>` whose numerals are a CSS counter, each step a locked heading + paragraph) and
     `/category-cards` (the catalogue gateway: one server-rendered block whose `cards`
     attribute lists product_cat slugs with the editor's name and description, edited in the
@@ -585,7 +592,11 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   turned by a registered `@property` angle) and the tab presses in; static without JavaScript
   or with reduced motion. **AMM-177 (2026-10-06):** the hero lost its eyebrow ("Since 1979 ·
   15 branches"), so the homepage has one (Product categories); its head is a card over the
-  pivot field drawing (`demas-theme/pivot-field`, last in the head). The patterns and Page 17 were changed together; when a homepage
+  pivot field drawing (`demas-theme/pivot-field`, last in the head). **AMM-184 (2026-10-07):** the
+  numbers band is in the film card's frame (canopy card, a `spacing-50` frame round a sand
+  sheet, the tab's socket cut into the frame), its two numbers on riveted paper plates edged in
+  2px field green, each with a canopy unit word and its drawing (46: the scale from 1979; 15:
+  the network), and "irrigation" in its heading highlighted. The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
   title, the mega-menu block, the navigation block, the finder block (the header search) and

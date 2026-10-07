@@ -33,6 +33,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Credential marks with a detail | **Tooltip** | `/web/popover-dropdown-tooltip`, `/vs/tooltip-vs-hover-card` | If it ever holds links or rich content it becomes a hover card or popover. |
 | Process (`demas-theme/steps`) | **Steps** | `/web/steps` | Static ordered steps, not a stepper (wizard) control. |
 | Lines under the hero | **Marquee** | `/web/marquee`, `/vs/carousel-vs-marquee` | One per page (taste rule). |
+| Numbers band (`demas-theme/stats` + `/stat`, homepage) | **Stats section**; each number a **stat card** (our riveted plate) | none on the site | A `<dl>`: term = what it counts (visually hidden when a unit word shows), definition = the number; its drawing is `aria-hidden`. |
 | Pivot field drawing (`demas-theme/pivot-field`, homepage hero) | **Background illustration** (decorative image) of the **hero section** | none on the site | `aria-hidden`; its one motion (the arm) is parked under reduced motion. |
 | Branch Desk city buttons (homepage) | By job, **tabs**: each city swaps one detail panel | `/vs/tabs-vs-segmented-control` | Built as toggle buttons (`aria-pressed`) plus a live region. Worth a look in the next accessibility pass; not a known bug. |
 | Contact page city list + branch card | **List-detail** (master-detail) | none on the site | In-page links; CSS `:target` shows the card without JavaScript. |
