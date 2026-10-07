@@ -3251,10 +3251,11 @@ svg {
  * or in a browser without scroll timelines, the finished row shows.
  */
 
-/* The head spans the content column so the title starts on the steps' edge:
-   the constrained group centres a head narrower than the column. */
+/* The head is as wide as the content column, as the steps are, so the title
+   starts on the steps' edge: the constrained group centres its children, and
+   .dh-section__head is narrower than the column. */
 .dh-process .dh-section__head {
-	max-inline-size: none;
+	max-inline-size: var(--wp--style--global--content-size);
 }
 
 .dh-process .dh-section__title {
