@@ -246,6 +246,15 @@ svg {
 	box-shadow: none;
 }
 
+/*
+ * The focus ring stays water everywhere, but water on canopy is 2.03:1. A
+ * paper band fills the ring's 3px offset, so on canopy the ring reads as
+ * paper then water: the paper edge is 9.16:1 against the card (AMM-182).
+ */
+.dh-card--canopy :focus-visible {
+	box-shadow: 0 0 0 3px var(--wp--preset--color--paper);
+}
+
 .dh-card--flush {
 	box-shadow: none;
 }
@@ -3350,11 +3359,6 @@ svg {
 	border-color: var(--wp--preset--color--ink);
 	background: transparent;
 	color: var(--wp--preset--color--ink);
-}
-
-.dh-404__actions .wp-block-button__link:focus-visible {
-	outline: 2px solid var(--wp--preset--color--field);
-	outline-offset: 2px;
 }
 
 /*

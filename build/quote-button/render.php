@@ -82,7 +82,7 @@ $demas_whose = 'compact' === $demas_variant
 			<button type="button" class="dh-qty__step" data-wp-on--click="actions.rowDecrement" data-wp-bind--disabled="state.rowAtMin" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'One fewer %s', 'demas-theme' ), $demas_name ) ); ?>">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 12h12"/></svg>
 			</button>
-			<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" data-wp-bind--value="state.rowQty" data-wp-on--change="actions.rowSetQuantity" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'Quantity of %s', 'demas-theme' ), $demas_name ) ); ?>">
+			<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" name="qty-<?php echo (int) $demas_id; ?>" data-wp-bind--value="state.rowQty" data-wp-on--change="actions.rowSetQuantity" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'Quantity of %s', 'demas-theme' ), $demas_name ) ); ?>">
 			<button type="button" class="dh-qty__step" data-wp-on--click="actions.rowIncrement" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name. */ __( 'One more %s', 'demas-theme' ), $demas_name ) ); ?>">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12"/></svg>
 			</button>
