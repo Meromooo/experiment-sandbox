@@ -4019,10 +4019,10 @@ svg {
 }
 
 /*
- * The system lines (src/system-index) are the page's way back in, not a
- * catalogue section: here each is headed by its system's name alone, in
- * sentence case, without the "Browse by stage" kicker the catalogue shows
- * (AMM-171, one eyebrow on the page). The nav's label still says it.
+ * The category index (src/system-index) is the page's way back in, not a
+ * catalogue section: here each top-level category heads its own list in the
+ * display face, without the eyebrow's dot and capitals the catalogue shows
+ * (AMM-171, one eyebrow on the page).
  */
 .dh-404 .dh-line__eyebrow {
 	font-family: var(--wp--preset--font-family--display);
@@ -4035,13 +4035,11 @@ svg {
 	color: var(--wp--preset--color--ink);
 }
 
-.dh-404 .dh-line__eyebrow::before,
-.dh-404 .dh-line__eyebrow > :not(.dh-line__system),
-.dh-404 .dh-line__system::before {
+.dh-404 .dh-line__eyebrow::before {
 	display: none;
 }
 
-.dh-404 .dh-line__system {
+.dh-404 .dh-line__top {
 	color: inherit;
 }
 

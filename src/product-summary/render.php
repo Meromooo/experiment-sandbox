@@ -7,8 +7,7 @@
  *  - the part's own category as an eyebrow, and its name;
  *  - a lede from the short description, when it says something the full
  *    description does not (124 products store the same text in both);
- *  - the nameplate: SKU, brand and series when the category tree knows them,
- *    and the stage this part sits at on its system line;
+ *  - the nameplate: SKU, brand and series when the category tree knows them;
  *  - the quote action;
  *  - the specification — the description, cleaned by
  *    demas_theme_clean_description() — or a direction when there is none
@@ -41,9 +40,7 @@ if ( ! $demas_product ) {
 $demas_title = get_the_title( $demas_id );
 $demas_chain = demas_theme_get_product_term_chain( $demas_id );
 $demas_leaf  = $demas_chain[0] ?? null;
-$demas_top   = $demas_chain ? end( $demas_chain ) : null;
 $demas_make  = demas_theme_get_product_make( $demas_chain );
-$demas_stage = demas_theme_get_product_stage( $demas_chain );
 $demas_sku   = trim( (string) $demas_product->get_sku() );
 
 /* Description and lede ---------------------------------------------------- */
@@ -113,7 +110,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 		<?php endif; ?>
 	</header>
 
-	<?php if ( $demas_rows || $demas_stage ) : ?>
+	<?php if ( $demas_rows ) : ?>
 		<section class="dh-plate" aria-label="<?php esc_attr_e( 'Part identification', 'demas-theme' ); ?>">
 			<?php if ( $demas_rows ) : ?>
 				<dl class="dh-plate__rows">
@@ -126,32 +123,6 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 				</dl>
 			<?php endif; ?>
 
-			<?php if ( $demas_stage ) : ?>
-				<?php
-				$demas_stages  = $demas_stage['system']['stages'];
-				$demas_current = $demas_stage['index'];
-				?>
-				<div class="dh-plate__line" style="--_n: <?php echo (int) count( $demas_stages ); ?>" data-reveal="line">
-					<p class="dh-plate__system">
-						<span class="dh-plate__label"><?php echo esc_html( $demas_stage['system']['label'] ); ?></span>
-						<?php if ( $demas_top instanceof WP_Term ) : ?>
-							<a class="dh-plate__more" href="<?php echo esc_url( get_term_link( $demas_top ) ); ?>"><?php esc_html_e( 'See the whole line', 'demas-theme' ); ?></a>
-						<?php endif; ?>
-					</p>
-					<ol class="dh-plate__stages">
-						<?php foreach ( $demas_stages as $demas_i => $demas_s ) : ?>
-							<li
-								class="dh-plate__stage<?php echo $demas_i === $demas_current ? ' is-current' : ''; ?>"
-								style="--i: <?php echo (int) $demas_i; ?>"
-								<?php echo $demas_i === $demas_current ? 'aria-current="step"' : ''; ?>
-							>
-								<span class="dh-plate__node" aria-hidden="true"></span>
-								<span class="dh-plate__stage-name"><?php echo esc_html( $demas_s['label'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ol>
-				</div>
-			<?php endif; ?>
 		</section>
 	<?php endif; ?>
 

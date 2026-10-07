@@ -1,11 +1,10 @@
 /*
- * Browse by System — the catalogue section drawn as a line of stages.
+ * Category index — the catalogue's own tree above a listing.
  *
- * One horizontal line runs node to node across the stages; each stage is a
- * column of category links beneath its node. The line draws itself stage by
- * stage once the block lands (same device as the hero schematic), then the
- * columns rise in behind it. Without JavaScript the .js gate never matches
- * and everything renders in its final state.
+ * An eyebrow with the top-level category, then one column per
+ * sub-category: its name as the column's head, its own sub-categories
+ * listed beneath. Columns fill the row and wrap, so three groups
+ * (Landscape) and eleven (Fog Systems) both lay out without a breakpoint.
  *
  * Every value resolves from theme.json. Logical properties so it mirrors
  * under dir="rtl".
@@ -24,83 +23,44 @@
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
 }
 
-.dh-line__system {
+.dh-line__top {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.6em;
 	color: var(--wp--preset--color--canopy);
+	text-decoration: none;
 }
 
-.dh-line__system::before {
-	content: "·";
-	margin-inline-end: 0.6em;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 40%, transparent);
+.dh-line__top:hover,
+.dh-line__top:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
 }
 
-/* Stages ------------------------------------------------------------- */
+.dh-line__top:focus-visible {
+	outline: 2px solid var(--wp--preset--color--field);
+	outline-offset: 2px;
+}
 
-.dh-line__stages {
-	--_node: 0.75rem;
-	--_track: color-mix(in srgb, var(--wp--preset--color--ink) 18%, transparent);
+/* Groups ------------------------------------------------------------- */
 
+.dh-line__groups {
 	display: grid;
-	grid-template-columns: repeat(var(--_n, 5), minmax(0, 1fr));
-	gap: 0 var(--wp--preset--spacing--40);
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+	gap: var(--wp--preset--spacing--40);
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.dh-line__stage {
-	position: relative;
-	padding-block-start: calc(var(--_node) + var(--wp--preset--spacing--30));
+.dh-line__group {
 	min-inline-size: 0;
 }
 
-/* The track: from this node's centre to the start of the next. */
-.dh-line__stage::before {
-	content: "";
-	position: absolute;
-	inset-block-start: calc(var(--_node) / 2);
-	inset-inline-start: calc(var(--_node) / 2);
-	inset-inline-end: calc(-1 * var(--wp--preset--spacing--40));
-	block-size: 1px;
-	background: var(--_track);
-	transform-origin: 0 50%;
-}
-
-[dir="rtl"] .dh-line__stage::before {
-	transform-origin: 100% 50%;
-}
-
-.dh-line__stage:last-child::before {
-	display: none;
-}
-
-.dh-line__node {
-	position: absolute;
-	inset-block-start: 0;
-	inset-inline-start: 0;
-	inline-size: var(--_node);
-	block-size: var(--_node);
-	border: 1.5px solid var(--wp--preset--color--ink);
-	border-radius: 50%;
-	background: var(--wp--preset--color--paper);
-	box-sizing: border-box;
-}
-
-/* Where the buyer is: the node fills field-green. */
-.dh-line__stage.is-current .dh-line__node {
-	border-color: var(--wp--preset--color--field);
-	background: var(--wp--preset--color--field);
-}
-
-.dh-line__stage-name {
-	margin: 0 0 var(--wp--preset--spacing--30);
-	font-family: var(--wp--preset--font-family--display);
-	font-size: var(--wp--preset--font-size--md);
-	font-weight: 600;
-	font-stretch: var(--wp--custom--display--stretch);
-	letter-spacing: var(--wp--custom--display--tracking);
+.dh-line__head {
+	margin: 0 0 var(--wp--preset--spacing--20);
+	font-size: inherit;
 	line-height: 1;
-	color: var(--wp--preset--color--ink);
 }
 
 /* Terms -------------------------------------------------------------- */
@@ -115,18 +75,7 @@
 }
 
 .dh-line__item {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: 0.35rem 0.5rem;
 	min-inline-size: 0;
-}
-
-/* A child sits under its parent behind a hairline, like a sub-line on a sheet. */
-.dh-line__item--child {
-	margin-inline-start: 0.5rem;
-	padding-inline-start: 0.6rem;
-	border-inline-start: 1px solid var(--_track);
 }
 
 .dh-line__term {
@@ -137,9 +86,9 @@
 	padding: 0.2rem 0.55rem;
 	margin-inline-start: -0.55rem;
 	border-radius: var(--wp--custom--radius--pill);
-	color: var(--wp--preset--color--ink);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
 	font-size: var(--wp--preset--font-size--sm);
-	font-weight: 500;
+	font-weight: 400;
 	line-height: 1.25;
 	text-decoration: none;
 	transition:
@@ -147,9 +96,14 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-line__item--child .dh-line__term {
-	font-weight: 400;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+/* The column's head: the sub-category itself, in the display face. */
+.dh-line__term--head {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 600;
+	font-stretch: var(--wp--custom--display--stretch);
+	letter-spacing: var(--wp--custom--display--tracking);
+	color: var(--wp--preset--color--ink);
 }
 
 .dh-line__term:hover,
@@ -166,6 +120,7 @@
 /* On the path to here: ink text. The page itself: ink pill. */
 .dh-line__term[aria-current="true"] {
 	font-weight: 600;
+	color: var(--wp--preset--color--ink);
 }
 
 .dh-line__term[aria-current="page"] {
@@ -181,62 +136,38 @@
 // Muted, but at 4.5:1 on paper: 60% opacity and 52% ink measured 3.0 and
 // 3.5 (axe, AMM-141 audit). 70% ink is the catalogue sheet's muted value too.
 .dh-line__count {
+	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 400;
+	letter-spacing: 0;
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
 }
 
 .dh-line__term[aria-current="page"] .dh-line__count {
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 85%, transparent);
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 85%, transparent);
 }
 
-.dh-line__kids {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	letter-spacing: 0.02em;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
-	white-space: nowrap;
+/* Touch: every link a 44px target (AMM-172). */
+@media (pointer: coarse) {
+	.dh-line__top,
+	.dh-line__term {
+		align-items: center;
+		min-block-size: 44px;
+		padding-block: 0;
+	}
+
+	.dh-line__terms {
+		gap: 0;
+	}
 }
 
-/* Motion: the line draws, nodes land, columns rise --------------------- */
-
-.js .dh-line .dh-line__stage::before {
-	transform: scaleX(0);
-	transition: transform var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
-		calc(var(--wp--custom--motion--base) + var(--i, 0) * 140ms);
+@media (prefers-reduced-motion: reduce) {
+	.dh-line__term {
+		transition: none;
+	}
 }
 
-.js .dh-line .dh-line__node {
-	transform: scale(0);
-	transition: transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease)
-		calc(var(--wp--custom--motion--base) + var(--i, 0) * 140ms);
-}
-
-.js .dh-line .dh-line__stage-name,
-.js .dh-line .dh-line__terms {
-	opacity: 0;
-	transform: translateY(8px);
-	transition:
-		opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
-			calc(var(--wp--custom--motion--base) + 120ms + var(--i, 0) * 140ms),
-		transform var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
-			calc(var(--wp--custom--motion--base) + 120ms + var(--i, 0) * 140ms);
-}
-
-.js .dh-line.is-in .dh-line__stage::before {
-	transform: scaleX(1);
-}
-
-.js .dh-line.is-in .dh-line__node {
-	transform: scale(1);
-}
-
-.js .dh-line.is-in .dh-line__stage-name,
-.js .dh-line.is-in .dh-line__terms {
-	opacity: 1;
-	transform: none;
-}
-
-/* Editor placeholder --------------------------------------------------- */
+/* Editor placeholder (shared by the theme's server-rendered blocks) ---- */
 
 .dh-line-editor {
 	padding: var(--wp--preset--spacing--40);
@@ -244,63 +175,4 @@
 	border-radius: var(--wp--custom--radius--md);
 	background: var(--wp--preset--color--paper);
 	font-size: var(--wp--preset--font-size--sm);
-}
-
-/* Narrow screens: the line turns vertical and the stages stack ---------- */
-
-/*
- * A sideways rail would give every stage the height of the tallest one —
- * Join lists nine fittings types, Source lists one — and leave a screen of
- * empty paper under the short columns. Stacked, the same line simply runs
- * down the inline-start edge, node to node, and nothing is hidden off-screen.
- */
-@media (max-width: 56rem) {
-	.dh-line__stages {
-		display: flex;
-		flex-direction: column;
-		gap: var(--wp--preset--spacing--40);
-	}
-
-	.dh-line__stage {
-		padding-block-start: 0;
-		padding-inline-start: calc(var(--_node) + var(--wp--preset--spacing--30));
-	}
-
-	/* The track now runs from this node's centre down to the next stage's node. */
-	.dh-line__stage::before {
-		inset-block-start: calc(var(--_node) / 2 + 0.2rem);
-		inset-block-end: calc(-1 * var(--wp--preset--spacing--40) - 0.2rem);
-		inset-inline-start: calc(var(--_node) / 2 - 0.5px);
-		inset-inline-end: auto;
-		inline-size: 1px;
-		block-size: auto;
-		transform-origin: 50% 0;
-	}
-
-	.dh-line__node {
-		inset-block-start: 0.2rem;
-	}
-
-	.js .dh-line .dh-line__stage::before {
-		transform: scaleY(0);
-	}
-
-	.js .dh-line.is-in .dh-line__stage::before {
-		transform: scaleY(1);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.js .dh-line .dh-line__stage::before,
-	.js .dh-line .dh-line__node,
-	.js .dh-line .dh-line__stage-name,
-	.js .dh-line .dh-line__terms {
-		transition: none;
-		transform: none;
-		opacity: 1;
-	}
-
-	.dh-line__term {
-		transition: none;
-	}
 }

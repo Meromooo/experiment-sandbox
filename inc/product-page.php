@@ -2,8 +2,7 @@
 /**
  * The single product page: the product-summary block, and the helpers it
  * needs to describe one part — its deepest category, its brand and series,
- * the stage it sits at on its system line, and a cleaned copy of its
- * description.
+ * and a cleaned copy of its description.
  *
  * The page is a datasheet, not a shop page. Every price in the catalogue is
  * zero, so there is no price, no cart and no tabs: the buyer arrives to
@@ -97,44 +96,6 @@ function demas_theme_get_product_make( array $chain ): array {
 	}
 
 	return $make;
-}
-
-/**
- * Where a part sits on its system line.
- *
- * Walks the chain from the leaf upward and takes the first stage that lists
- * any of those terms. The leaf wins over its ancestors on purpose: a bubbler
- * is filed under Fittings, but it sits at Deliver, and saying so is the whole
- * reason the system map exists.
- *
- * @param WP_Term[] $chain From demas_theme_get_product_term_chain().
- * @return array{system:array, index:int}|null Null for parts on no line (Swimming Pool).
- */
-function demas_theme_get_product_stage( array $chain ): ?array {
-	if ( ! $chain || ! function_exists( 'demas_theme_get_systems_for_term' ) ) {
-		return null;
-	}
-
-	$systems = demas_theme_get_systems_for_term( $chain[0] );
-
-	if ( ! $systems ) {
-		return null;
-	}
-
-	$system = reset( $systems );
-
-	foreach ( $chain as $term ) {
-		foreach ( $system['stages'] as $i => $stage ) {
-			if ( in_array( $term->slug, $stage['terms'], true ) ) {
-				return array(
-					'system' => $system,
-					'index'  => $i,
-				);
-			}
-		}
-	}
-
-	return null;
 }
 
 /**

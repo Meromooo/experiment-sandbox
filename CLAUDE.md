@@ -313,19 +313,30 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     (resolved to terms, one query)
   - `patterns.php` — block pattern category registration only
   - `woocommerce.php` — WooCommerce compatibility declarations and any theme-side WC integration
-  - `system-map.php` — the catalogue read as physical systems: `demas_theme_get_system_map()`
-    lists the stages of the irrigation, fog and workshop lines and which existing `product_cat`
-    slugs sit at each; `demas_theme_get_term_kind()` says whether a term is a part type, a
-    brand or a model series. Pure data + helpers, filterable, **re-parents nothing** — the tree is
-    locked; this only decides where a term is shown. Swimming Pool has no children and no entry.
+  - `system-map.php` — how the catalogue's categories are read (the file keeps its old name):
+    `demas_theme_term_product_count()` (inclusive counts), `demas_theme_get_term_kind()`
+    (a part type, a brand or a model series) and the brand lists behind it.
     `demas_theme_get_product_cat_index()` reads every product category once per request (by
-    slug, and children by parent, with their term meta): look terms up there rather than with
-    `get_term_by()` or a `get_terms( parent )` per term — one query each, which made the Browse
-    by System index ~105 queries a page until AMM-164.
+    slug, and children by parent in the store's category order, with their term meta): look
+    terms up there rather than with `get_term_by()` or a `get_terms( parent )` per term — one
+    query each, which made the category index ~105 queries a page until AMM-164.
+    **Category names are shown exactly as the store (and the live site) has them, under their
+    own parents.** Until 2026-10-08 this file drew the catalogue as the stages of physical
+    systems ("Source, Carry, Join, Control, Deliver"; fog "Treat, Pump… Move air"; workshop
+    "Cut, Drill, Saw, Weld"), which put invented names over the real ones and showed
+    Irrigation's pipes and fittings on the Landscape page. Ammar found the names meaningless;
+    the map is gone. Don't regroup or relabel categories in the theme again: a different
+    grouping is a change to the category tree, made in the store (and on live at cutover).
   - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count, child-category
     rail with a "By brand / By type / By series" label, sort links; server-rendered, no JS) and
-    the `demas-theme/system-index` block (the stage line rendered from `system-map.php`), and
-    adds SKU ordering via a `posts_clauses` join. The toolbar also carries the search field;
+    the `demas-theme/system-index` block — the **category index** (block title "Category
+    Index"; the old block name stays because templates place it): an eyebrow with the
+    top-level category, then one column per sub-category, each with its own sub-categories
+    beneath, names and order as the store has them, the buyer's position marked with
+    `aria-current`. A category page shows its own top-level category (Landscape: Controllers,
+    Valves, Rotors); the shop root, the 404 and an empty search show every top-level category
+    with sub-categories (not Swimming Pool). Empty categories are left out. It
+    also adds SKU ordering via a `posts_clauses` join. The toolbar also carries the search field;
     on a search its rail lists categories whose names match and its default sort is "Best
     match". There are no product attributes in the
     catalogue — specs live in description HTML — so there is nothing to facet by; category,
@@ -333,7 +344,7 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   - `product-page.php` — registers the `demas-theme/product-summary` block (the single
     product page's datasheet: category, name, nameplate, quote action, specification) and its
     helpers: the product's deepest-first category chain, brand and series read from that
-    chain, the stage it sits at on its system line, a title-length tier, and
+    chain, a title-length tier, and
     `demas_theme_clean_description()`. That last one matters: the imported descriptions carry
     the old site's CSS pasted in as visible text (53 products), ~3,500 inline style attributes
     and Elementor/chat-tool wrapper markup. It is cleaned **at render only** — the database is
@@ -494,6 +505,13 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     setting stays for the admin and login screens. No `/favicon.ico` at the domain root yet:
     that would be server work for Ammar, and browsers follow the link tags. Rules:
     `.claude/skills/favicon-cheat-sheet`.
+  - `typography.php` — hyphens stay hyphens (2026-10-08). WordPress runs `wptexturize()` over
+    every block template, which turned the spaced hyphen in "Clamp Saddle - PN6, PN16" (stored
+    and shown on live with a hyphen) into an en dash in its heading, breadcrumbs, the category
+    index, the toolbar and every card's path, and gave 22 product names dashes nobody typed.
+    `wptexturize()` takes those dashes from WordPress's translations ("en dash", "em dash"),
+    so a `gettext_with_context_default` filter answers both with `-`: only the inserted dashes
+    go; curly quotes, ellipses and inch marks stay, and a dash someone typed stays as typed.
   - `category-drawings.php` — **generated** by `tools/make-category-drawings.py` (AMM-186):
     `demas_theme_get_category_drawing( $slug )`, the product drawing for a product_cat slug as
     SVG markup (empty when there is none). Read by the category cards block only. Its ids start
@@ -696,9 +714,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   phone); one label per intent ("Request a site visit"). The record's overhang below its photo
   needs a two-class selector: WordPress zeroes a flow layout's last child's end margin with
   `:root :where(.is-layout-flow) > :last-child`, which outweighs one class. The 404 got the
-  same audit: a 19-word lead, a title that takes two lines on a phone, and its system lines
-  headed by the system's name alone (no "Browse by stage" kicker; `.dh-404 .dh-line__eyebrow`
-  in `style.css` section 12; the catalogue and an empty search keep the kicker). The
+  same audit: a 19-word lead, a title that takes two lines on a phone, and its category index
+  headed by each top-level category's name in the display face (no eyebrow dot or capitals;
+  `.dh-404 .dh-line__eyebrow` in `style.css` section 12; the catalogue and an empty search keep
+  the eyebrow). The
   Contact Us page uses it with the `contact` pattern (`patterns/contact.php`, AMM-169: the
   intro and the Branch Finder as the hero, then the request section; `dh-ct-` classes), its
   hero opening the same way at 56rem and up. Version 0.5.0 for that pattern file. It passed the

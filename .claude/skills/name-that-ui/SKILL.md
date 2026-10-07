@@ -28,6 +28,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Pills (Button block styles) | **Pill buttons** | `/web/badge-chip-pill` | "Pill" names the shape; ours are buttons. |
 | Parts sheet (Sheet view) | **Data table** | `/web/data-table` | Columns and numbered lines reflowed by CSS. |
 | Category cards | **Card**, each with a **spot illustration** (its product drawing, AMM-186) | `/web/card` | The drawing is decorative (`aria-hidden`); it moves on hover and on keyboard focus alike. |
+| Category index (`demas-theme/system-index`, above every listing) | **Nested link list** in a `nav` landmark, sitemap style | none on the site | Not a tree view: nothing expands or collapses. Names and parents exactly as the store has them; position marked with `aria-current`. |
 | Breadcrumb trail | **Breadcrumbs** | `/web/breadcrumbs` | |
 | Catalogue page links | **Pagination** | `/web/pagination` | |
 | Credential marks with a detail | **Tooltip** | `/web/popover-dropdown-tooltip`, `/vs/tooltip-vs-hover-card` | If it ever holds links or rich content it becomes a hover card or popover. |

@@ -8,7 +8,7 @@ export default function Edit() {
 		<div { ...blockProps }>
 			<p>
 				{ __(
-					'Browse by System — rendered on the front end by render.php: the stages of the irrigation, fog or workshop system for the current archive, each linking to its existing categories. The map lives in inc/system-map.php.',
+					'Category index: rendered on the front end by render.php. The category tree of the current archive, under the categories’ own names.',
 					'demas-theme'
 				) }
 			</p>
