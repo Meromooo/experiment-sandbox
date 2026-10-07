@@ -3256,6 +3256,7 @@ svg {
    .dh-section__head is narrower than the column. */
 .dh-process .dh-section__head {
 	max-inline-size: var(--wp--style--global--content-size);
+	margin-block-end: var(--wp--preset--spacing--70);
 }
 
 .dh-process .dh-section__title {
