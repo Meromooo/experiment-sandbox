@@ -466,6 +466,9 @@ def check_taste(rep):
         if status != rule.get("status", 200):
             rep.fail(f"taste:{path}:status", f"{path} answered {status or 'no response'}; taste checks skipped")
             continue
+        # Catalogue names (the system index's category names) are product data, not
+        # copy: "Clamp Saddle – PN6, PN16" keeps its dash (Ammar, 2026-10-07).
+        html = re.sub(r'<span class="dh-line__name">.*?</span>', "", html, flags=re.S)
         page = read_page(html, leads=[rule["lead"]])
 
         dashes = []
