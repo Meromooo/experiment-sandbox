@@ -3236,78 +3236,219 @@ svg {
 
 /* Process ----------------------------------------------------------- */
 
+/*
+ * The process (AMM-187): the section's title, then its steps read left to
+ * right. Each step is a canopy rule ending in an arrowhead that points on to
+ * the next step (.dh-process__rule, from src/step/render.php), its number in
+ * the site's canopy tab, and its name in canopy with the field highlight
+ * behind it (as .dh-highlight). The numbers are a CSS counter, so adding,
+ * removing or reordering a step renumbers the rest.
+ *
+ * As the row comes up the screen, step after step its rule draws, its
+ * arrowhead lands, its tab presses in and its highlight sweeps in behind the
+ * name; scrolling back rewinds it. That is a CSS scroll-driven animation on
+ * the list's own view timeline: no pinning, no script. With reduced motion,
+ * or in a browser without scroll timelines, the finished row shows.
+ */
+
+/* The head spans the content column so the title starts on the steps' edge:
+   the constrained group centres a head narrower than the column. */
+.dh-process .dh-section__head {
+	max-inline-size: none;
+}
+
+.dh-process .dh-section__title {
+	max-inline-size: 42rem;
+}
+
 .dh-process__steps {
-	position: relative;
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: var(--wp--preset--spacing--50);
+	gap: var(--wp--preset--spacing--60);
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	counter-reset: dh-step;
-}
-
-/* The pipeline: one field-green line running through all four numerals. */
-.dh-process__steps::before {
-	content: "";
-	position: absolute;
-	inset-inline: 1.25rem;
-	inset-block-start: 1.25rem;
-	border-block-start: 2px solid var(--wp--preset--color--field);
-	pointer-events: none;
+	view-timeline: --dh-process block;
 }
 
 .dh-process__step {
 	position: relative;
 	margin: 0;
+	padding-block-start: var(--wp--preset--spacing--50);
 	counter-increment: dh-step;
+	view-timeline: --dh-step block;
+}
+
+.dh-process__rule {
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline: 0;
+	block-size: 4px;
+	border-radius: 2px;
+	background: var(--wp--preset--color--canopy);
+	transform-origin: left center;
+}
+
+.dh-process__arrow {
+	position: absolute;
+	inset-block-start: -6px;
+	inset-inline-end: -2px;
+	inline-size: 16px;
+	block-size: 16px;
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+[dir="rtl"] .dh-process__rule {
+	transform-origin: right center;
+}
+
+[dir="rtl"] .dh-process__arrow {
+	scale: -1 1;
 }
 
 /*
- * The numeral is counted, not typed (AMM-153): add, remove or reorder a step
- * and the rest renumber. The list already tells a screen reader "1 of 4", so
- * the numeral is hidden from it (the empty alternative text after "/"; a
- * browser that doesn't know that syntax keeps the first declaration).
+ * The number, in the site's tab. The list already tells a screen reader
+ * "1 of 4", so the numeral is hidden from it (the empty alternative text
+ * after "/"; a browser that doesn't know that syntax keeps the first
+ * declaration).
  */
 .dh-process__step::before {
 	content: counter(dh-step, decimal-leading-zero);
 	content: counter(dh-step, decimal-leading-zero) / "";
-	position: relative;
-	z-index: 1;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	inline-size: 2.5rem;
-	block-size: 2.5rem;
-	border: 2px solid var(--wp--preset--color--field);
-	border-radius: 50%;
-	background: var(--wp--preset--color--paper);
+	display: block;
+	inline-size: fit-content;
+	margin-block-end: var(--wp--preset--spacing--50);
+	padding: 0.35rem 0.7rem;
+	border-radius: var(--wp--custom--radius--md);
+	background: var(--wp--preset--color--canopy);
 	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--sm);
 	font-variant-numeric: tabular-nums;
 	font-weight: 500;
-	letter-spacing: 0.02em;
-	color: var(--wp--preset--color--canopy);
+	line-height: 1;
+	color: var(--wp--preset--color--paper);
+	transform-origin: left top;
 }
 
 .dh-process__title {
-	margin-block: var(--wp--preset--spacing--40) var(--wp--preset--spacing--20);
-	font-size: var(--wp--preset--font-size--xl);
+	inline-size: fit-content;
+	margin-block: 0;
+	margin-inline: -0.18em;
+	padding-inline: 0.18em;
+	border-radius: var(--wp--custom--radius--md);
+	background-image: linear-gradient(
+		color-mix(in srgb, var(--wp--preset--color--field) 38%, var(--wp--preset--color--paper)),
+		color-mix(in srgb, var(--wp--preset--color--field) 38%, var(--wp--preset--color--paper))
+	);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	font-size: var(--wp--preset--font-size--xxl);
+	color: var(--wp--preset--color--canopy);
 }
 
-.dh-process__copy {
-	margin: 0;
-	font-size: var(--wp--preset--font-size--sm);
-	line-height: 1.5;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		/* Each step starts a little after the one before it. */
+		.dh-process__step:nth-child(2) {
+			--_i: 1;
+		}
+
+		.dh-process__step:nth-child(3) {
+			--_i: 2;
+		}
+
+		.dh-process__step:nth-child(4) {
+			--_i: 3;
+		}
+
+		.dh-process__step:nth-child(n + 5) {
+			--_i: 4;
+		}
+
+		.dh-process__rule,
+		.dh-process__arrow,
+		.dh-process__step::before,
+		.dh-process__title {
+			animation-duration: auto;
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: --dh-process;
+		}
+
+		.dh-process__rule {
+			animation-name: dh-process-draw;
+			animation-range: cover calc(14% + var(--_i, 0) * 7%) cover calc(21% + var(--_i, 0) * 7%);
+		}
+
+		.dh-process__arrow {
+			animation-name: dh-process-land;
+			animation-range: cover calc(20% + var(--_i, 0) * 7%) cover calc(23% + var(--_i, 0) * 7%);
+		}
+
+		.dh-process__step::before {
+			animation-name: dh-process-press;
+			animation-range: cover calc(16% + var(--_i, 0) * 7%) cover calc(20% + var(--_i, 0) * 7%);
+		}
+
+		.dh-process__title {
+			animation-name: dh-process-wipe;
+			animation-range: cover calc(17% + var(--_i, 0) * 7%) cover calc(23% + var(--_i, 0) * 7%);
+		}
+	}
 }
 
-.dh-process__close {
-	margin: var(--wp--preset--spacing--60) 0 0;
-	font-family: var(--wp--preset--font-family--display);
-	font-size: var(--wp--preset--font-size--lg);
-	font-weight: 500;
-	font-stretch: var(--wp--custom--display--stretch);
+@keyframes dh-process-draw {
+	from {
+		transform: scaleX(0);
+	}
+
+	to {
+		transform: scaleX(1);
+	}
+}
+
+@keyframes dh-process-land {
+	from {
+		opacity: 0;
+		translate: -10px 0;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes dh-process-press {
+	0% {
+		opacity: 0;
+		transform: translateY(-8px) scale(0.85);
+	}
+
+	70% {
+		opacity: 1;
+		transform: translateY(1px) scale(1.04);
+	}
+
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes dh-process-wipe {
+	from {
+		background-size: 0% 100%;
+	}
+
+	to {
+		background-size: 100% 100%;
+	}
 }
 
 /* Closing CTA -------------------------------------------------------- */
@@ -3410,34 +3551,20 @@ svg {
 		min-block-size: 12rem;
 	}
 
-	/*
-	 * The numeral is 2.5rem wide; the steps are indented by that plus a gap,
-	 * so it sits beside the heading, not on it (it covered the first 1rem of
-	 * every heading at 1.5rem, AMM-187).
-	 */
+	/* The steps stack; each plays as it comes up the screen itself. */
 	.dh-process__steps {
-		--_numeral-room: calc(2.5rem + var(--wp--preset--spacing--30));
 		grid-template-columns: 1fr;
-		padding-inline-start: var(--_numeral-room);
 	}
 
-	/* Pipeline runs vertically down the left on small screens. */
-	.dh-process__steps::before {
-		inset-inline: auto;
-		inset-inline-start: 1.25rem;
-		inset-block: 1.25rem;
-		border-block-start: 0;
-		border-inline-start: 2px solid var(--wp--preset--color--field);
+	.dh-process__arrow {
+		display: none;
 	}
 
-	.dh-process__step::before {
-		position: absolute;
-		inset-inline-start: calc(-1 * var(--_numeral-room));
-		inset-block-start: 0;
-	}
-
+	.dh-process__rule,
+	.dh-process__step::before,
 	.dh-process__title {
-		margin-block-start: 0;
+		--_i: 0;
+		animation-timeline: --dh-step;
 	}
 }
 
