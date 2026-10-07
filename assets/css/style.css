@@ -3410,9 +3410,15 @@ svg {
 		min-block-size: 12rem;
 	}
 
+	/*
+	 * The numeral is 2.5rem wide; the steps are indented by that plus a gap,
+	 * so it sits beside the heading, not on it (it covered the first 1rem of
+	 * every heading at 1.5rem, AMM-187).
+	 */
 	.dh-process__steps {
+		--_numeral-room: calc(2.5rem + var(--wp--preset--spacing--30));
 		grid-template-columns: 1fr;
-		padding-inline-start: var(--wp--preset--spacing--50);
+		padding-inline-start: var(--_numeral-room);
 	}
 
 	/* Pipeline runs vertically down the left on small screens. */
@@ -3426,7 +3432,7 @@ svg {
 
 	.dh-process__step::before {
 		position: absolute;
-		inset-inline-start: calc(-1 * var(--wp--preset--spacing--50));
+		inset-inline-start: calc(-1 * var(--_numeral-room));
 		inset-block-start: 0;
 	}
 
