@@ -5,7 +5,7 @@
 	"title": "Process Steps",
 	"category": "design",
 	"icon": "editor-ol",
-	"description": "A numbered sequence joined by a pipeline line. The numbers are automatic: add, remove or reorder steps and the rest renumber.",
+	"description": "A numbered sequence read left to right, each step a rule, a number and a name. The numbers are automatic: add, remove or reorder steps and the rest renumber.",
 	"textdomain": "demas-theme",
 	"allowedBlocks": [ "demas-theme/step" ],
 	"editorScript": "file:./index.tsx",

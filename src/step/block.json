@@ -5,7 +5,7 @@
 	"title": "Process Step",
 	"category": "design",
 	"icon": "marker",
-	"description": "One step of the process: a short title and what happens at it.",
+	"description": "One step of the process: its name.",
 	"textdomain": "demas-theme",
 	"parent": [ "demas-theme/steps" ],
 	"editorScript": "file:./index.tsx",

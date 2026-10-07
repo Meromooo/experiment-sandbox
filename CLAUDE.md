@@ -506,7 +506,13 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
     pump, a sprinkler head per other branch). `main.js`'s count-up marks the stat `.is-counted`
     and CSS runs the drawing in step with it (900ms, ease-out; each head's moment is `--d`,
     computed in `render.php`); finished without JavaScript or with reduced motion) and `/steps` + `/step` (the process: an
-    `<ol>` whose numerals are a CSS counter, each step a locked heading + paragraph) and
+    `<ol>` whose numerals are a CSS counter in a canopy tab, each step a locked heading only, its
+    name, under a canopy rule with an arrowhead that `step/render.php` adds; since AMM-187 the row
+    plays left to right as it comes up the screen, rule, tab and the field highlight behind each
+    name in turn, as a CSS scroll-driven animation on the list's own `view-timeline`, no pinning,
+    no script, rewinding on scroll back; with reduced motion or no scroll-timeline support it is
+    finished from the start; the section is its title and the steps, no lead, copy or closing
+    line) and
     `/category-cards` (the catalogue gateway: one server-rendered block whose `cards`
     attribute lists product_cat slugs with the editor's name and description, edited in the
     sidebar; link and **live** product count come from `demas_theme_get_catalogue_columns()`
