@@ -120,7 +120,7 @@ $demas_wrapper = get_block_wrapper_attributes(
 		<nav
 			class="dh-line dh-line--<?php echo esc_attr( $demas_key ); ?>"
 			style="--_n: <?php echo (int) count( $demas_system['stages'] ); ?>"
-			aria-label="<?php echo esc_attr( sprintf( '%s — %s', $demas_eyebrow, $demas_system['label'] ) ); ?>"
+			aria-label="<?php echo esc_attr( sprintf( '%s: %s', $demas_eyebrow, $demas_system['label'] ) ); ?>"
 			data-reveal="rise"
 		>
 			<?php // An h2 styled as an eyebrow: the stage names below are h3s, and the page's h1 is above. ?>
