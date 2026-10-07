@@ -10,7 +10,8 @@
  *     children once so the CSS translate(-50%) loop is seamless; then drive
  *     the certificates belt (stamp-in, ease to a stop, stop on focus).
  *  3. Counters: [data-count] numbers count up from zero when they scroll
- *     into view. The markup already holds the final value, so without this
+ *     into view, and mark their stat .is-counted so its drawing runs with
+ *     them. The markup already holds the final value, so without this
  *     script — or with reduced motion — the number is simply there.
  *  4. Branch Desk: [data-branch-desk] pairs city buttons with detail panels.
  *     Without this script the first branch (Riyadh) stays visible. A
@@ -301,6 +302,12 @@
 		}
 		var duration = 900;
 		var start = null;
+		var stat = el.closest('.dh-stat');
+
+		// Its drawing (src/stat/render.php) runs in step with the count, on CSS.
+		if (stat) {
+			stat.classList.add('is-counted');
+		}
 
 		function frame(now) {
 			if (start === null) {

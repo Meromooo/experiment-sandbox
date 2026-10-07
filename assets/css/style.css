@@ -2161,28 +2161,31 @@ svg {
 }
 
 /*
- * The homepage numbers as an outlined card with the site's notch (AMM-179):
- * the card's outline is cut at the top end corner by a socket holding a
- * canopy tab ("Est. 1979, Riyadh", an editable paragraph in a group):
+ * The homepage numbers in the film card's frame (AMM-179, reframed in
+ * AMM-184), with a canopy tab ("Est. 1979, Riyadh", an editable paragraph in
+ * a group) in a socket at the top end corner:
  *
  *   <div class="dh-band dh-band--open dh-band--notched">
  *     <div class="dh-band__grid">…</div>
  *     <div class="dh-band__tab"><p>Est. 1979, Riyadh</p></div>
  *   </div>
  *
- * The outline is the band's ::before. The socket is paper, so it covers the
- * outline's corner, and draws the notch's own edge: a line down its start
- * side and along its foot, the concave corner between them (a ring in a
- * corner tile, under the socket's rounded corner), and two convex fillets,
- * its ::before and ::after, where that edge meets the card's top and end
- * sides (the same shape as section 5's notch, drawn as a line). The line is
- * opaque, so where two of its pieces overlap it doesn't darken.
+ * The card is canopy (its ::before) with a frame of it round a sand sheet
+ * (its ::after, inset by the frame): the film card's proportions
+ * (.dh-schem--film: canopy, spacing-50 round a radius-md sheet). The socket
+ * is paper, cut into the frame the way section 5's notch is: the frame runs
+ * round its start side and foot (offset shadows of its own shape, so the
+ * frame follows its rounded corner), and two fillets, its ::before and
+ * ::after, round the card where its top and end sides meet the socket. The
+ * socket reaches a pixel past the card's top and end, so no anti-aliased
+ * canopy shows along those edges; the shadows are offset so none reaches
+ * past them.
  *
- * On first view (the band's rise reveal, .is-in) the outline draws itself
- * round the card from the notch and back (a conic mask turned by a registered
- * angle; the 60deg start points about at the top end corner), then the tab
- * presses into the corner. Without JavaScript,
- * or with reduced motion, it is all there from the start.
+ * On first view (the band's rise reveal, .is-in) the frame draws itself
+ * round the card from the notch (a conic mask turned by a registered angle;
+ * the 60deg start points about at the top end corner), then the tab presses
+ * into the corner. Without JavaScript, or with reduced motion, it is all
+ * there from the start.
  */
 @property --dh-draw {
 	syntax: "<angle>";
@@ -2191,64 +2194,65 @@ svg {
 }
 
 .dh-band--open.dh-band--notched {
-	--_w: 1.5px;
-	--_line: color-mix(in srgb, var(--wp--preset--color--ink) 34%, var(--wp--preset--color--paper));
+	--_f: var(--wp--preset--spacing--50);
 	--_n: var(--wp--custom--notch);
 	--_tab: 2.25rem;
 	--_pad: var(--wp--preset--spacing--70);
 	position: relative;
-	padding: calc(var(--_tab) + var(--wp--preset--spacing--30) + var(--wp--preset--spacing--50)) var(--_pad) var(--_pad);
+	isolation: isolate;
+	padding: calc(var(--_tab) + var(--wp--preset--spacing--30) + var(--_f) + var(--wp--preset--spacing--50)) var(--_pad) var(--_pad);
 	border: 0;
 }
 
-/* An inset shadow, not a border: a border's width snaps to whole device
-   pixels (1.5px drew as 0.8px at 125% display scaling) while the notch's
-   gradient lines don't, so the two would differ in weight. */
-.dh-band--notched::before {
+.dh-band--notched::before,
+.dh-band--notched::after {
 	content: "";
 	position: absolute;
+	pointer-events: none;
+}
+
+.dh-band--notched::before {
+	z-index: -2;
 	inset: 0;
 	border-radius: var(--wp--custom--radius--lg);
-	box-shadow: inset 0 0 0 var(--_w) var(--_line);
-	pointer-events: none;
+	background: var(--wp--preset--color--canopy);
+}
+
+.dh-band--notched::after {
+	z-index: -1;
+	inset: var(--_f);
+	border-radius: var(--wp--custom--radius--md);
+	background: color-mix(in srgb, var(--wp--preset--color--sand) 42%, var(--wp--preset--color--paper));
 }
 
 .dh-band--notched .dh-band__grid {
 	grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	align-items: center;
 }
 
 .dh-band--notched .dh-stats {
 	grid-template-columns: 1fr;
-	gap: var(--wp--preset--spacing--50);
+	gap: var(--wp--preset--spacing--40);
 }
 
 .dh-band--notched > .dh-band__tab {
 	position: absolute;
 	z-index: 1;
-	inset-block-start: 0;
-	inset-inline-end: 0;
+	inset-block-start: -1px;
+	inset-inline-end: -1px;
 	margin: 0;
 	padding: 0 0 var(--wp--preset--spacing--30) var(--wp--preset--spacing--30);
 	border-end-start-radius: var(--_n);
-	/* Past its own edges, in case the outline's corner rounds out a hair
-	   beyond a fractional socket width. */
-	box-shadow: 1px -1px 0 var(--wp--preset--color--paper);
-	background:
-		linear-gradient(var(--_line), var(--_line)) 0 var(--_n) / var(--_w) calc(100% - 2 * var(--_n)) no-repeat,
-		linear-gradient(var(--_line), var(--_line)) var(--_n) 100% / calc(100% - 2 * var(--_n)) var(--_w) no-repeat,
-		radial-gradient(
-			circle at 100% 0,
-			transparent calc(var(--_n) - var(--_w) - 0.3px),
-			var(--_line) calc(var(--_n) - var(--_w) + 0.3px),
-			var(--_line) calc(var(--_n) - 0.3px),
-			transparent calc(var(--_n) + 0.3px)
-		) 0 100% / var(--_n) var(--_n) no-repeat,
-		var(--wp--preset--color--paper);
+	background: var(--wp--preset--color--paper);
+	box-shadow:
+		calc(-1 * var(--_f)) 1px 0 var(--wp--preset--color--canopy),
+		-1px var(--_f) 0 var(--wp--preset--color--canopy),
+		calc(-1 * var(--_f)) var(--_f) 0 var(--wp--preset--color--canopy);
 }
 
 /* The fillets: one at the start of the socket, along the card's top side,
-   one under it, down the card's end side. Each overlaps the socket by the
-   line's width, so the line runs on without a step. */
+   one under it, down the card's end side. Each overlaps the socket by a
+   pixel, so no seam shows between them. */
 .dh-band--notched > .dh-band__tab::before,
 .dh-band--notched > .dh-band__tab::after {
 	content: "";
@@ -2257,37 +2261,27 @@ svg {
 	block-size: var(--_n);
 	background: radial-gradient(
 		circle at 0 100%,
-		transparent calc(var(--_n) - var(--_w) - 0.3px),
-		var(--_line) calc(var(--_n) - var(--_w) + 0.3px),
-		var(--_line) calc(var(--_n) - 0.3px),
-		var(--wp--preset--color--paper) calc(var(--_n) + 0.3px)
+		transparent calc(var(--_n) - 0.4px),
+		var(--wp--preset--color--paper) var(--_n)
 	);
 	pointer-events: none;
 }
 
 .dh-band--notched > .dh-band__tab::before {
 	inset-block-start: 0;
-	inset-inline-end: calc(100% - var(--_w));
+	inset-inline-end: calc(100% - 1px);
 }
 
 .dh-band--notched > .dh-band__tab::after {
-	inset-block-start: calc(100% - var(--_w));
+	inset-block-start: calc(100% - 1px);
 	inset-inline-end: 0;
 }
 
 [dir="rtl"] .dh-band--notched > .dh-band__tab {
-	box-shadow: -1px -1px 0 var(--wp--preset--color--paper);
-	background:
-		linear-gradient(var(--_line), var(--_line)) 100% var(--_n) / var(--_w) calc(100% - 2 * var(--_n)) no-repeat,
-		linear-gradient(var(--_line), var(--_line)) var(--_n) 100% / calc(100% - 2 * var(--_n)) var(--_w) no-repeat,
-		radial-gradient(
-			circle at 0 0,
-			transparent calc(var(--_n) - var(--_w) - 0.3px),
-			var(--_line) calc(var(--_n) - var(--_w) + 0.3px),
-			var(--_line) calc(var(--_n) - 0.3px),
-			transparent calc(var(--_n) + 0.3px)
-		) 100% 100% / var(--_n) var(--_n) no-repeat,
-		var(--wp--preset--color--paper);
+	box-shadow:
+		var(--_f) 1px 0 var(--wp--preset--color--canopy),
+		1px var(--_f) 0 var(--wp--preset--color--canopy),
+		var(--_f) var(--_f) 0 var(--wp--preset--color--canopy);
 }
 
 [dir="rtl"] .dh-band--notched > .dh-band__tab::before,
@@ -2305,6 +2299,205 @@ svg {
 	font-size: var(--wp--preset--font-size--xs);
 	line-height: var(--_tab);
 	white-space: nowrap;
+}
+
+/*
+ * Each number on a paper plate riveted at its top corners, the certificates
+ * belt's approval plates, edged in the process line's 2px field green. A
+ * number with a unit word shows it in place of what it counts; the term stays
+ * in the list for screen readers (and shows in the editor, where it is
+ * edited). The number and word are sized to share one line in the plate.
+ */
+.dh-band--notched .dh-stat {
+	gap: var(--wp--preset--spacing--30);
+	padding: var(--wp--preset--spacing--50);
+	border: 0;
+	border-radius: var(--wp--custom--radius--md);
+	background:
+		radial-gradient(circle at 13px 13px, var(--wp--preset--color--field) 2.2px, transparent 2.8px),
+		radial-gradient(circle at calc(100% - 13px) 13px, var(--wp--preset--color--field) 2.2px, transparent 2.8px),
+		var(--wp--preset--color--paper);
+	box-shadow:
+		inset 0 0 0 2px var(--wp--preset--color--field),
+		0 8px 18px -12px color-mix(in srgb, var(--wp--preset--color--canopy) 45%, transparent);
+}
+
+.dh-band--notched .dh-stat:has(.dh-stat__unit) .dh-stat__label {
+	position: absolute;
+	inline-size: 1px;
+	block-size: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.block-editor-block-list__block.dh-stat .dh-stat__label {
+	position: static;
+	inline-size: auto;
+	block-size: auto;
+	clip-path: none;
+	white-space: normal;
+}
+
+.dh-band--notched .dh-stat__value {
+	color: var(--wp--preset--color--canopy);
+	font-size: clamp(3.5rem, 6.1vw, 5.5rem);
+	line-height: 0.9;
+	letter-spacing: -0.035em;
+}
+
+.dh-stat__figure {
+	display: flex;
+	align-items: baseline;
+	gap: 0.18em;
+}
+
+.dh-stat__unit {
+	font-size: clamp(1.25rem, 1.95vw, 1.75rem);
+	letter-spacing: -0.015em;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+/*
+ * A number's drawing (src/stat/render.php): a drafting scale, a tick a year,
+ * or the branch network, head office as the pump. Each runs along its rail as
+ * the number counts (main.js: 900ms, easing out), and the network's heads take
+ * water as the count reaches them (--d). With reduced motion, or without
+ * JavaScript, it is drawn finished.
+ */
+.dh-stat__draw {
+	display: block;
+	inline-size: 100%;
+	block-size: auto;
+	margin-block-start: var(--wp--preset--spacing--40);
+	overflow: visible;
+}
+
+.dh-stat__draw text {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: 10.5px;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	fill: color-mix(in srgb, var(--wp--preset--color--ink) 62%, transparent);
+}
+
+.dh-stat__rail,
+.dh-stat__run {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+	stroke-width: 3;
+	stroke-linecap: round;
+}
+
+.dh-stat__run {
+	stroke: var(--wp--preset--color--canopy);
+	transform-box: fill-box;
+	transform-origin: 0 50%;
+}
+
+.dh-net__run {
+	stroke: var(--wp--preset--color--water);
+}
+
+.dh-scale__tick {
+	stroke: color-mix(in srgb, var(--wp--preset--color--ink) 30%, transparent);
+	stroke-width: 1;
+}
+
+.dh-scale__tick--major {
+	stroke: color-mix(in srgb, var(--wp--preset--color--ink) 55%, transparent);
+}
+
+.dh-scale__now {
+	fill: var(--wp--preset--color--water);
+}
+
+.dh-net__lateral {
+	stroke: var(--wp--preset--color--water);
+	stroke-width: 1.6;
+	stroke-linecap: round;
+}
+
+.dh-net__head {
+	fill: var(--wp--preset--color--field);
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.4;
+}
+
+.dh-net__spray {
+	fill: none;
+	stroke: var(--wp--preset--color--water);
+	stroke-width: 1.2;
+	stroke-linecap: round;
+	opacity: 0.55;
+	transform-box: fill-box;
+	transform-origin: 50% 100%;
+}
+
+.dh-net__spray--down {
+	transform-origin: 50% 0;
+}
+
+.dh-net__pump {
+	fill: var(--wp--preset--color--canopy);
+}
+
+.dh-net__ring {
+	fill: none;
+	stroke: var(--wp--preset--color--canopy);
+	stroke-width: 1.2;
+	opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.js .dh-stat:not(.is-counted) .dh-stat__run {
+		transform: scaleX(0);
+	}
+
+	.js .dh-stat.is-counted .dh-stat__run {
+		transition: transform 900ms cubic-bezier(0.33, 1, 0.68, 1);
+	}
+
+	.js .dh-stat:not(.is-counted) .dh-scale__now,
+	.js .dh-stat:not(.is-counted) .dh-net__spray {
+		opacity: 0;
+	}
+
+	.js .dh-stat.is-counted .dh-scale__now {
+		transition: opacity var(--wp--custom--motion--fast) 900ms;
+	}
+
+	.js .dh-stat:not(.is-counted) .dh-net__lateral {
+		stroke: color-mix(in srgb, var(--wp--preset--color--ink) 26%, transparent);
+	}
+
+	.js .dh-stat:not(.is-counted) .dh-net__head {
+		fill: var(--wp--preset--color--paper);
+		stroke: color-mix(in srgb, var(--wp--preset--color--ink) 34%, transparent);
+	}
+
+	.js .dh-stat.is-counted :is(.dh-net__lateral, .dh-net__head) {
+		transition:
+			stroke 200ms var(--d, 0ms),
+			fill 200ms var(--d, 0ms);
+	}
+
+	.js .dh-stat.is-counted .dh-net__spray {
+		animation: dh-net-spray 900ms var(--wp--custom--motion--ease) var(--d, 0ms) both;
+	}
+}
+
+@keyframes dh-net-spray {
+	from {
+		opacity: 0;
+		transform: scale(0.4);
+	}
+
+	35% {
+		opacity: 1;
+	}
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -2359,11 +2552,29 @@ svg {
 
 @media (max-width: 56rem) {
 	.dh-band--open.dh-band--notched {
-		--_pad: var(--wp--preset--spacing--50);
+		--_pad: calc(var(--_f) + var(--wp--preset--spacing--40));
 	}
 
 	.dh-band--notched .dh-band__grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* A thinner frame and a smaller heading on a phone, so the heading's longest
+   word fits the sheet; each word under its number, on both plates. */
+@media (max-width: 40em) {
+	.dh-band--open.dh-band--notched {
+		--_f: var(--wp--preset--spacing--40);
+	}
+
+	.dh-band--notched .dh-band__title {
+		font-size: var(--wp--preset--font-size--xl);
+	}
+
+	.dh-stat__figure {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--wp--preset--spacing--20);
 	}
 }
 

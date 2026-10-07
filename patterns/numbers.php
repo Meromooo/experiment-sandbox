@@ -3,7 +3,7 @@
  * Title: Who we are — the numbers band
  * Slug: demas-theme/numbers
  * Categories: demas
- * Description: Positioning statement beside two hard numbers, in an outlined card with the site's notch and its "Est. 1979, Riyadh" tab.
+ * Description: Positioning statement beside two hard numbers on riveted plates, each with its drawing, in the film card's canopy frame with the "Est. 1979, Riyadh" tab.
  *
  * @package Demas_Theme
  */
@@ -14,7 +14,7 @@
 <div class="wp-block-group dh-band dh-band--open dh-band--notched dh-reveal--rise"><!-- wp:group {"className":"dh-band__grid","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-band__grid"><!-- wp:group {"className":"dh-band__copy","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-band__copy"><!-- wp:heading {"className":"dh-band__title"} -->
-<h2 class="wp-block-heading dh-band__title">The Kingdom's irrigation infrastructure partner.</h2>
+<h2 class="wp-block-heading dh-band__title">The Kingdom's <span class="dh-highlight" data-reveal="wipe">irrigation</span> infrastructure partner.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-band__lead"} -->
@@ -23,9 +23,9 @@
 <!-- /wp:group -->
 
 <!-- wp:demas-theme/stats -->
-<!-- wp:demas-theme/stat {"value":"46","label":"years in irrigation and landscape engineering"} /-->
+<!-- wp:demas-theme/stat {"value":"46","label":"years in irrigation and landscape engineering","unit":"Years","drawing":"scale","since":"1979"} /-->
 
-<!-- wp:demas-theme/stat {"value":"15","label":"branches, Kingdom-wide supply and support from Riyadh"} /-->
+<!-- wp:demas-theme/stat {"value":"15","label":"branches, Kingdom-wide supply and support from Riyadh","unit":"Branches","drawing":"network"} /-->
 <!-- /wp:demas-theme/stats --></div>
 <!-- /wp:group -->
 
