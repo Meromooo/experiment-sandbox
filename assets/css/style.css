@@ -5269,19 +5269,59 @@ footer.wp-block-template-part {
 	outline: none;
 }
 
+/*
+ * One canopy frame round the copy and the form (AMM-191), the form on its
+ * sand sheet inside it. Above 56rem the copy rides beside the form (sticky)
+ * while the form is filled in.
+ */
 .dh-ct-request__grid {
 	display: grid;
 	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
 	gap: var(--wp--preset--spacing--70);
 	align-items: start;
+	padding: var(--wp--preset--spacing--60);
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--canopy);
 }
 
 .dh-ct-request__grid > * {
 	margin-block: 0;
 }
 
+.dh-ct-request .dh-ct-form {
+	box-shadow: none;
+}
+
+/* Paper on the canopy, for the copy only: the form keeps its own ink. */
+.dh-ct-request__copy,
+.dh-ct-request__copy :is(.dh-ct-title, .dh-ct-label) {
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-ct-request__copy .dh-ct-text {
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 82%, transparent);
+}
+
+/* The highlight on canopy: field green with ink on it, as the chosen branch's
+   area on the map above. Its ink comes in with the sweep, or the word would
+   show dark on the canopy before the green is behind it. */
+.dh-ct-request .dh-highlight {
+	background-image: linear-gradient(var(--wp--preset--color--field), var(--wp--preset--color--field));
+	color: var(--wp--preset--color--ink);
+}
+
+.js .dh-ct-request .dh-highlight[data-reveal]:not(.is-settled) {
+	transition:
+		background-size var(--_d) var(--_e) var(--_delay),
+		color var(--_d) var(--_e) var(--_delay);
+}
+
+.js .dh-ct-request .dh-highlight[data-reveal]:not(.is-in) {
+	color: var(--wp--preset--color--paper);
+}
+
 .dh-ct-request__copy > .dh-ct-label {
-	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
+	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--40);
 	font-family: var(--wp--preset--font-family--body);
 	font-size: var(--wp--preset--font-size--md);
 	font-weight: 600;
@@ -5289,32 +5329,140 @@ footer.wp-block-template-part {
 	line-height: 1.3;
 }
 
-/* "What happens next": a real sequence, so numbered. */
+@media (min-width: 56.0625rem) {
+	.dh-ct-request__copy {
+		position: sticky;
+		inset-block-start: var(--wp--preset--spacing--50);
+	}
+}
+
+/*
+ * "What happens next": a real sequence, so numbered, and drawn as a route
+ * (AMM-191). Each number sits in a paper tab exactly one text line tall, so
+ * it is level with its step's first line, and one line joins the tabs: a
+ * faint track with field green drawn along it. The numbers are a CSS
+ * counter, hidden from screen readers (the empty alternative after "/"),
+ * since the list already says "1 of 3".
+ *
+ * As the steps come up the screen, each tab lights up (outline to filled
+ * paper) and the green runs down to the next, on the list's own view
+ * timeline: no pinning, no script, rewinding on scroll back. With reduced
+ * motion, or without scroll timelines, the finished route shows. The ranges
+ * end by 40% of the list's travel, before the sticky copy stops it moving.
+ */
 .dh-ct-next {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	counter-reset: dh-ct-next;
-	border-block-start: var(--wp--custom--rule);
+	view-timeline: --dh-ct-route block;
 }
 
 .dh-ct-next li {
+	--_line: calc(1.4 * var(--wp--preset--font-size--lg));
+	position: relative;
 	display: grid;
-	grid-template-columns: 2.25rem minmax(0, 1fr);
-	gap: var(--wp--preset--spacing--30);
+	grid-template-columns: 2.5rem minmax(0, 1fr);
+	gap: 0 var(--wp--preset--spacing--40);
 	margin: 0;
-	padding-block: var(--wp--preset--spacing--30);
-	border-block-end: var(--wp--custom--rule);
+	padding-block: 0 var(--wp--preset--spacing--50);
+	font-size: var(--wp--preset--font-size--lg);
+	line-height: 1.4;
 	counter-increment: dh-ct-next;
+}
+
+.dh-ct-next li:last-child {
+	padding-block-end: 0;
 }
 
 .dh-ct-next li::before {
 	content: counter(dh-ct-next, decimal-leading-zero);
+	content: counter(dh-ct-next, decimal-leading-zero) / "";
+	display: grid;
+	place-items: center;
+	align-self: start;
+	block-size: var(--_line);
+	border-radius: var(--wp--custom--radius--md);
+	background-color: var(--wp--preset--color--paper);
+	box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--wp--preset--color--paper) 55%, transparent);
 	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
+	font-size: var(--wp--preset--font-size--sm);
+	font-variant-numeric: tabular-nums;
 	font-weight: 500;
-	line-height: 2;
+	line-height: 1;
 	color: var(--wp--preset--color--canopy);
+}
+
+/* The track, from under this tab to the next one; the green drawn on it. */
+.dh-ct-next li:not(:last-child) {
+	background: linear-gradient(color-mix(in srgb, var(--wp--preset--color--paper) 22%, transparent) 0 0) no-repeat left calc(1.25rem - 1px) top var(--_line) / 2px calc(100% - var(--_line));
+}
+
+[dir="rtl"] .dh-ct-next li:not(:last-child) {
+	background-position: right calc(1.25rem - 1px) top var(--_line);
+}
+
+.dh-ct-next li:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	inset-block: var(--_line) 0;
+	inset-inline-start: calc(1.25rem - 1px);
+	inline-size: 2px;
+	background: var(--wp--preset--color--field);
+	transform-origin: center top;
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.dh-ct-next li:nth-child(2) {
+			--_i: 1;
+		}
+
+		.dh-ct-next li:nth-child(3) {
+			--_i: 2;
+		}
+
+		.dh-ct-next li:nth-child(n + 4) {
+			--_i: 3;
+		}
+
+		.dh-ct-next li::before,
+		.dh-ct-next li::after {
+			animation-duration: auto;
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: --dh-ct-route;
+		}
+
+		.dh-ct-next li::before {
+			animation-name: dh-ct-route-light;
+			animation-range: cover calc(5% + var(--_i, 0) * 11%) cover calc(9% + var(--_i, 0) * 11%);
+		}
+
+		.dh-ct-next li::after {
+			animation-name: dh-ct-route-draw;
+			animation-range: cover calc(9% + var(--_i, 0) * 11%) cover calc(18% + var(--_i, 0) * 11%);
+		}
+	}
+}
+
+@keyframes dh-ct-route-light {
+	from {
+		background-color: transparent;
+		color: var(--wp--preset--color--paper);
+	}
+}
+
+@keyframes dh-ct-route-draw {
+	from {
+		transform: scaleY(0);
+	}
+}
+
+@media (max-width: 40rem) {
+	.dh-ct-request__grid {
+		padding: var(--wp--preset--spacing--40);
+	}
 }
 
 @media (max-width: 56rem) {

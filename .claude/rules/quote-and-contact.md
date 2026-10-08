@@ -84,3 +84,15 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   (`?need=survey`), the 404, an empty search and the header finder (`?need=parts`), the quote
   sheet's contact line. Content already saved in pages keeps its links until edited: the
   homepage hero (page 17) and Services (page 822) buttons were re-pointed in the editor.
+
+  **The request section (AMM-191, 2026-10-08)** is one canopy frame round the copy and the
+  form (`.dh-ct-request__grid`, `style.css` section 15), the form on its sand sheet inside it.
+  The copy is in paper; **only the copy** takes the paper colour, because the form's unchosen
+  choice labels inherit their colour and went paper on paper when the frame set it. "need" in
+  its heading carries the Highlight format, drawn on canopy as field green with ink on it (the
+  ink comes in with the sweep). Above 56rem the copy is sticky beside the form. "What happens
+  next" (`.dh-ct-next`) is drawn as a route: CSS-counter numbers in paper tabs one text line
+  tall, one track joining them, and field green drawn down it as the list scrolls up (the
+  list's own `view-timeline`; ranges end by 40% so the sticky copy can't freeze it half
+  drawn); finished with reduced motion. CSS only on the saved markup, apart from the
+  highlight span (in the pattern, and added in the editor on the sandbox).

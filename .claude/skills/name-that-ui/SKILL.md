@@ -33,6 +33,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Catalogue page links | **Pagination** | `/web/pagination` | |
 | Credential marks with a detail | **Tooltip** | `/web/popover-dropdown-tooltip`, `/vs/tooltip-vs-hover-card` | If it ever holds links or rich content it becomes a hover card or popover. |
 | Process (`demas-theme/steps`) | **Steps** | `/web/steps` | Static ordered steps, not a stepper (wizard) control. |
+| Contact page "What happens next" (`.dh-ct-next`) | **Steps**, drawn as a vertical **timeline** | `/web/steps` | AMM-191. An ordered list; number tabs on one track that fills as it scrolls in; decorative numbers hidden from screen readers. |
 | Lines under the hero | **Marquee** | `/web/marquee`, `/vs/carousel-vs-marquee` | One per page (taste rule). |
 | Numbers band (`demas-theme/stats` + `/stat`, homepage) | **Stats section**; each number a **stat card** (our riveted plate) | none on the site | A `<dl>`: term = what it counts (visually hidden when a unit word shows), definition = the number; its drawing is `aria-hidden`. |
 | Pivot field drawing (`demas-theme/pivot-field`, homepage hero) | **Background illustration** (decorative image) of the **hero section** | none on the site | `aria-hidden`; its one motion (the arm) is parked under reduced motion. |
