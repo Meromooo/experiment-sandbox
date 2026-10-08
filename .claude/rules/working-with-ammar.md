@@ -2,7 +2,7 @@
 
 Standing rules for every session on this repo, local or cloud. They were kept in one local
 machine's memory until 2026-10-06; this file carries them to cloud sessions, which read the
-repo's `.claude/rules/`. CLAUDE.md holds the architecture and project rules; this file holds how
+repo's `.claude/rules/`. CLAUDE.md (and the topic files beside this one, AMM-190) holds the architecture and project rules; this file holds how
 Ammar works.
 
 Ammar owns this project and directs it for a real client (Demas Group, a Saudi irrigation and
