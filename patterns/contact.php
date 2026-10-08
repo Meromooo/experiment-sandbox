@@ -5,7 +5,7 @@
  * Categories: demas
  * Keywords: contact, branches, request, directions, opening hours
  * Post Types: page
- * Description: The Contact page: the fifteen branches as an irrigation layout plan with each branch's card, and the request section. Use it on the Contact Us page, set to the "Designed page" template.
+ * Description: The Contact page: the fifteen branches on a map of the Kingdom, each with its area and its card, and the request section. Use it on the Contact Us page, set to the "Designed page" template.
  *
  * @package Demas_Theme
  */

@@ -7,8 +7,8 @@
  * theme blocks:
  *
  *  - demas-theme/branch-finder — the fifteen branches as a list, the chosen
- *    one's card (who answers there, address, hours, directions) and the
- *    branches drawn as an irrigation layout plan. All of it comes from the
+ *    one's card (who answers there, address, hours, directions) and a map of
+ *    the Kingdom with each branch's area (AMM-189). All of it comes from the
  *    branch list in inc/branches.php; a photo per branch is the block's one
  *    setting, chosen in its sidebar;
  *  - demas-theme/request-form — the request: what the buyer needs, the
