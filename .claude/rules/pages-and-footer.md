@@ -52,7 +52,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   - `key-plan-land.php` — **generated** by `tools/make-key-plan.py` (AMM-188):
     `demas_theme_get_key_plan_land()`, the footer key plan's frame and its land (the Kingdom
     and its neighbours) as SVG path data in the plan projection. Read by the branch-plan block
-    only.
+    and, since AMM-189, the Contact page's map (`src/branch-finder/render.php`).
 
 ## `patterns/` — the set, the footer and the 404
 

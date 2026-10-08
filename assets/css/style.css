@@ -907,9 +907,9 @@ svg {
 			calc(var(--_at) + var(--wp--custom--motion--base) + 7 * 120ms) backwards;
 	}
 
-	/* Contact: the plan grows beside the head, its pipes draw outward from the
-	   pump in --i order (src/branch-finder), the heads come on, then the list
-	   and the card. */
+	/* Contact: the map grows beside the head, its areas and dots come on
+	   outward from the main branch in --i order (src/branch-finder), then the
+	   names, the list and the card. */
 	.page-template-designed-page .dh-ct-hero :is(.dh-ct-pick, .dh-ct-cards, .dh-ct-plan) {
 		--_at: calc(var(--_step, 0) * var(--wp--custom--motion--stagger));
 		animation: var(--wp--custom--motion--base) var(--wp--custom--motion--ease) var(--_at) backwards;
@@ -930,15 +930,14 @@ svg {
 		animation-name: dh-hero-rise;
 	}
 
-	.page-template-designed-page .dh-ct-hero :is(.dh-ct-plan__main, .dh-ct-plan__lateral) {
-		stroke-dasharray: 1;
-		animation: dh-hero-draw var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
+	.page-template-designed-page .dh-ct-hero :is(.dh-ct-plan__zone, .dh-ct-plan__site) {
+		animation: dh-hero-fade var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
 			calc(var(--_at) + var(--wp--custom--motion--base) + var(--i, 0) * 60ms) backwards;
 	}
 
-	.page-template-designed-page .dh-ct-hero :is(.dh-ct-plan__heads, .dh-ct-plan__valves, .dh-ct-plan__labels) {
+	.page-template-designed-page .dh-ct-hero .dh-ct-plan__labels {
 		animation: dh-hero-fade var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
-			calc(var(--_at) + var(--wp--custom--motion--base) + 700ms) backwards;
+			calc(var(--_at) + var(--wp--custom--motion--base) + 900ms) backwards;
 	}
 }
 
@@ -5208,18 +5207,18 @@ footer.wp-block-template-part {
 /*
  * The Contact page (AMM-169, patterns/contact.php). The hero is the intro
  * beside the Branch Finder (src/branch-finder), whose wrapper steps out of
- * the layout so its list and its stage — the chosen branch's card over the
- * layout plan — take their places in this grid. Narrower, everything stacks:
- * intro, plan, list, then the card right under the list it answers.
+ * the layout so its list and its stage — the map with the chosen branch's
+ * card under it (AMM-189) — take their places in this grid. Narrower,
+ * everything stacks: intro, map, list, then the card right under the list
+ * it answers.
  */
 .dh-ct-hero__grid {
 	display: grid;
 	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-	grid-template-rows: auto auto 1fr;
+	grid-template-rows: auto 1fr;
 	grid-template-areas:
 		"intro stage"
-		"pick stage"
-		". stage";
+		"pick stage";
 	gap: var(--wp--preset--spacing--60);
 	align-items: start;
 }
@@ -5239,6 +5238,15 @@ footer.wp-block-template-part {
 
 .dh-ct-hero__grid .dh-ct-stage {
 	grid-area: stage;
+}
+
+/* Beside the map and the card under it, the list stays in view while they
+   scroll past, so the branch can be changed while its card is read. */
+@media (min-width: 56.0625rem) {
+	.dh-ct-hero__grid .dh-ct-pick {
+		position: sticky;
+		inset-block-start: var(--wp--preset--spacing--50);
+	}
 }
 
 /* Two lines from 1024px up (the taste skill's limit): the size follows the

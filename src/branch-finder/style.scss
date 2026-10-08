@@ -1,20 +1,19 @@
 /*
- * Branch Finder (AMM-169): the list, the card, the layout plan.
+ * Branch Finder (AMM-169; the map since AMM-189): the list, the map, the card.
  *
  * The block's wrapper steps out of the layout (display: contents), so the
  * page section around it — the Contact page's hero (style.css, section 15)
- * — places its three parts beside the intro: the list (.dh-ct-pick) and the
- * stage (.dh-ct-stage: the card laid over the plan). Anywhere else they
- * simply stack.
+ * — places its parts beside the intro: the list (.dh-ct-pick) and the stage
+ * (.dh-ct-stage: the map with the card under it). Anywhere else they simply
+ * stack.
  *
- * On a wide stage the card sits over the plan's south-east, the Empty
- * Quarter, where no branch is; narrower, it goes under the plan.
+ * On a wide stage the card lies on its side, the photo beside the details.
  *
  * Which card shows: without JavaScript, the one a link targets (:target),
  * else the default branch's; with it (view.ts sets data-current), the
  * current one.
  *
- * The plan never mirrors: geography does not flip in Arabic.
+ * The map never mirrors: geography does not flip in Arabic.
  */
 
 .dh-ct-finder {
@@ -101,30 +100,12 @@
 	text-transform: uppercase;
 }
 
-/* The stage: the card over the plan ----------------------------------- */
+/* The stage: the map, the card under it -------------------------------- */
 
 .dh-ct-stage {
 	container: dh-ct-stage / inline-size;
 	display: grid;
 	gap: var(--wp--preset--spacing--40);
-}
-
-@container dh-ct-stage (min-width: 36rem) {
-	.dh-ct-stage > * {
-		grid-area: 1 / 1;
-	}
-
-	.dh-ct-cards {
-		z-index: 1;
-		justify-self: end;
-		inline-size: 54%;
-		margin-block-start: 50cqi;
-		margin-inline-end: calc(-1 * var(--wp--preset--spacing--30));
-	}
-
-	.dh-ct-card {
-		box-shadow: var(--wp--preset--shadow--raised);
-	}
 }
 
 /* The card ------------------------------------------------------------- */
@@ -138,7 +119,7 @@
 .dh-ct-finder:not([data-current]) .dh-ct-card:target,
 .dh-ct-finder:not([data-current]) .dh-ct-cards:not(:has(.dh-ct-card:target)) .dh-ct-card.is-default,
 .dh-ct-finder[data-current] .dh-ct-card.is-current {
-	display: block;
+	display: grid;
 }
 
 .dh-ct-card__photo img {
@@ -158,6 +139,23 @@
 
 .dh-ct-card .dh-svc-placeholder__label {
 	display: block;
+}
+
+/* On its side: the photo beside the details, as tall as they are. */
+@container dh-ct-stage (min-width: 36rem) {
+	.dh-ct-card {
+		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+	}
+
+	.dh-ct-card__photo {
+		display: grid;
+	}
+
+	.dh-ct-card__photo img,
+	.dh-ct-card .dh-ct-card__placeholder {
+		block-size: 100%;
+		aspect-ratio: auto;
+	}
 }
 
 .dh-ct-card__body {
@@ -296,23 +294,21 @@
 	transform: scaleX(-1);
 }
 
-/* The layout plan ------------------------------------------------------ */
+/* The map --------------------------------------------------------------- */
 
 .dh-ct-plan {
-	--_pipe: color-mix(in srgb, var(--wp--preset--color--paper) 42%, var(--wp--preset--color--canopy));
-	--_main: color-mix(in srgb, var(--wp--preset--color--paper) 72%, var(--wp--preset--color--canopy));
-	--_water: color-mix(in srgb, var(--wp--preset--color--water) 50%, var(--wp--preset--color--white));
-	container-type: inline-size; /* the legend's scale bar is measured against the drawing */
-	align-self: start;
+	--_water: color-mix(in srgb, var(--wp--preset--color--water) 55%, var(--wp--preset--color--paper));
 	margin: 0;
 	padding: var(--wp--preset--spacing--40);
-	direction: ltr;
 }
 
 .dh-ct-plan__draw {
 	position: relative;
+	direction: ltr;
 }
 
+/* Sizes meant in pixels are multiplied by --_u (render.php), the plan units
+   in a pixel where the map is widest. */
 .dh-ct-plan__svg {
 	display: block;
 	inline-size: 100%;
@@ -320,137 +316,155 @@
 	overflow: visible;
 }
 
-.dh-ct-plan__sea {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: 5.2px;
-	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	fill: color-mix(in srgb, var(--wp--preset--color--paper) 45%, var(--wp--preset--color--canopy));
-}
-
-.dh-ct-plan__pipes path,
-.dh-ct-plan__flow {
+/* The land, drawn as on the footer's key plan in the canopy's own shades:
+   water-lines along the coasts (the outline stroked in bands, water then
+   canopy, under the land; the gap must be the card's own background), the
+   neighbours barely lighter than the sea, the Kingdom a shade lighter. */
+.dh-ct-plan__wave,
+.dh-ct-plan__wave-gap {
 	fill: none;
-	stroke-linecap: round;
-}
-
-.dh-ct-plan__main {
-	stroke: var(--_main);
-	stroke-width: 2.6;
-}
-
-.dh-ct-plan__lateral {
-	stroke: var(--_pipe);
-	stroke-width: 1.1;
-}
-
-.dh-ct-plan__valve {
-	fill: var(--wp--preset--color--canopy);
-	stroke: var(--_main);
-	stroke-width: 0.8;
 	stroke-linejoin: round;
 }
 
-/* The water: drawn from the pump to the chosen head (view.ts sets the route). */
-.dh-ct-plan__flow {
-	stroke: var(--_water);
-	stroke-width: 2.6;
+.dh-ct-plan__wave--1 {
+	stroke: color-mix(in srgb, var(--_water) 18%, var(--wp--preset--color--canopy));
+}
+
+.dh-ct-plan__wave--2 {
+	stroke: color-mix(in srgb, var(--_water) 30%, var(--wp--preset--color--canopy));
+}
+
+.dh-ct-plan__wave--3 {
+	stroke: color-mix(in srgb, var(--_water) 48%, var(--wp--preset--color--canopy));
+}
+
+.dh-ct-plan__wave-gap {
+	stroke: var(--wp--preset--color--canopy);
+}
+
+.dh-ct-plan__neighbours {
+	fill: color-mix(in srgb, var(--wp--preset--color--paper) 7%, var(--wp--preset--color--canopy));
+	stroke: color-mix(in srgb, var(--wp--preset--color--paper) 16%, transparent);
+	stroke-width: calc(0.75px * var(--_u, 1));
 	stroke-linejoin: round;
-	stroke-dasharray: 1;
-	stroke-dashoffset: 1;
 }
 
-.dh-ct-plan__flow.is-running {
-	stroke-dashoffset: 0;
-	transition: stroke-dashoffset 700ms cubic-bezier(0.45, 0, 0.3, 1);
+.dh-ct-plan__kingdom {
+	fill: color-mix(in srgb, var(--wp--preset--color--paper) 13%, var(--wp--preset--color--canopy));
 }
 
-.dh-ct-plan__flow.is-instant {
-	transition: none;
+.dh-ct-plan__outline {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--paper) 80%, transparent);
+	stroke-width: calc(1.3px * var(--_u, 1));
+	stroke-linejoin: round;
 }
 
+/* The areas: lit while pointed at (--_on, from the inline :has() rules),
+   filled field green when chosen. */
 .dh-ct-plan__head {
 	cursor: pointer;
+	text-decoration: none;
 }
 
-.dh-ct-plan__hit {
-	fill: transparent;
+.dh-ct-plan__zone path {
+	fill: color-mix(in srgb, var(--wp--preset--color--paper) calc(var(--_on, 0) * 14%), transparent);
+	transition: fill var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-plan__dot,
-.dh-ct-plan__ring,
-.dh-ct-plan__pump {
+.dh-ct-plan__zone.is-current path {
+	fill: color-mix(in srgb, var(--wp--preset--color--field) 62%, transparent);
+}
+
+.dh-ct-plan__borders path {
+	fill: none;
+	stroke: color-mix(in srgb, var(--wp--preset--color--paper) 38%, transparent);
+	stroke-width: 1;
+	stroke-linejoin: round;
+	vector-effect: non-scaling-stroke;
+}
+
+.dh-ct-plan__borders,
+.dh-ct-plan__outline,
+.dh-ct-plan__sea,
+.dh-ct-plan__scale,
+.dh-ct-plan__north {
+	pointer-events: none;
+}
+
+/* The branches: a dot each, with its code. The chosen one is ringed, and
+   its code gives way to its name (the labels below), as does the one
+   pointed at. */
+.dh-ct-plan__dot {
+	fill: var(--wp--preset--color--paper);
 	transform-box: fill-box;
 	transform-origin: center;
-	transition:
-		fill var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
-}
-
-.dh-ct-plan__dot {
-	fill: var(--wp--preset--color--canopy);
-	stroke: var(--wp--preset--color--paper);
-	stroke-width: 1.2;
-	transform: scale(calc(1 + var(--_on, 0) * 0.45));
-}
-
-.dh-ct-plan__head.is-current .dh-ct-plan__dot {
-	fill: var(--_water);
-	stroke: var(--_water);
-	transform: scale(1.45);
-}
-
-.dh-ct-plan__pump {
-	fill: var(--wp--preset--color--field);
+	transform: scale(calc(1 + var(--_on, 0) * 0.4));
+	transition: transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
 .dh-ct-plan__ring {
 	fill: none;
-	stroke: var(--wp--preset--color--field);
-	stroke-width: 0.9;
-	stroke-dasharray: 2 1.6;
+	stroke: var(--wp--preset--color--paper);
+	stroke-width: 1.25;
+	opacity: 0;
+	vector-effect: non-scaling-stroke;
+	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-plan__head.is-main.is-current .dh-ct-plan__ring {
-	stroke: var(--_water);
+.dh-ct-plan__site.is-current .dh-ct-plan__ring {
+	opacity: 1;
 }
 
-/* The spray: three rings of droplets, after the water arrives, twice. */
-.dh-ct-plan__spray circle {
-	fill: none;
-	stroke: var(--_water);
-	stroke-width: 0.9;
-	stroke-dasharray: 1.4 2.2;
+.dh-ct-plan__site text {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: calc(10.5px * var(--_u, 1));
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	fill: color-mix(in srgb, var(--wp--preset--color--paper) 72%, transparent);
+	opacity: calc(1 - var(--_on, 0));
+	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+.dh-ct-plan__site.is-current text {
 	opacity: 0;
 }
 
-.dh-ct-plan__spray.is-spraying circle {
-	animation: dh-ct-spray 1.1s ease-out 2 backwards;
+/* The seas, the scale bar and the north arrow. */
+.dh-ct-plan__sea {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: calc(9px * var(--_u, 1));
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	fill: color-mix(in srgb, var(--_water) 75%, transparent);
 }
 
-.dh-ct-plan__spray.is-spraying circle:nth-child(2) {
-	animation-delay: 150ms;
+.dh-ct-plan__scale path,
+.dh-ct-plan__north-half {
+	fill: none;
+	stroke: var(--wp--preset--color--paper);
+	stroke-width: 1;
+	vector-effect: non-scaling-stroke;
 }
 
-.dh-ct-plan__spray.is-spraying circle:nth-child(3) {
-	animation-delay: 300ms;
+.dh-ct-plan__scale,
+.dh-ct-plan__north {
+	opacity: 0.65;
 }
 
-@keyframes dh-ct-spray {
-	0% {
-		opacity: 0;
-	}
-
-	35% {
-		opacity: 1;
-	}
-
-	100% {
-		opacity: 0;
-	}
+.dh-ct-plan__scale rect,
+.dh-ct-plan__north path:not(.dh-ct-plan__north-half) {
+	fill: var(--wp--preset--color--paper);
 }
 
-/* Names on the plan: the head office always, the chosen branch, and the one pointed at. */
+.dh-ct-plan__scale text,
+.dh-ct-plan__north text {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: calc(9px * var(--_u, 1));
+	fill: var(--wp--preset--color--paper);
+}
+
+/* Names on the map: the chosen branch, and the one pointed at. */
 .dh-ct-plan__labels {
 	position: absolute;
 	inset: 0;
@@ -471,22 +485,21 @@
 	line-height: 1.3;
 	white-space: nowrap;
 	opacity: var(--_on, 0);
-	translate: 0.6rem -50%;
+	translate: 0.7rem -50%;
 	transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-/* At the end of the pipe (render.php picks the side): above a northern head,
-   below a southern one, or to the left where another head is in the way. */
+/* Beside the dot, on the side render.php picks for its code. */
+.dh-ct-plan__label.is-left {
+	translate: calc(-100% - 0.7rem) -50%;
+}
+
 .dh-ct-plan__label.is-above {
-	translate: -50% calc(-100% - 0.55rem);
+	translate: -50% calc(-100% - 0.7rem);
 }
 
 .dh-ct-plan__label.is-below {
-	translate: -50% 0.55rem;
-}
-
-.dh-ct-plan__label.is-left {
-	translate: calc(-100% - 0.6rem) -50%;
+	translate: -50% 0.7rem;
 }
 
 .dh-ct-plan__label b {
@@ -495,76 +508,15 @@
 	color: var(--_water);
 }
 
-.dh-ct-plan__label.is-main,
 .dh-ct-plan__label.is-current {
 	opacity: 1;
 }
 
-/* The legend, as a drawing's: what the lines mean, and the scale. */
-.dh-ct-plan__legend {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--wp--preset--spacing--20) var(--wp--preset--spacing--40);
+.dh-ct-plan__caption {
 	margin-block-start: var(--wp--preset--spacing--30);
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: 0.6875rem;
-	letter-spacing: 0.06em;
-	line-height: 1.3;
-	color: color-mix(in srgb, var(--wp--preset--color--paper) 78%, transparent);
-}
-
-.dh-ct-plan__title {
-	flex-basis: 100%;
-	font-family: var(--wp--preset--font-family--display);
 	font-size: var(--wp--preset--font-size--sm);
-	font-weight: 600;
-	font-stretch: var(--wp--custom--display--stretch);
-	letter-spacing: 0;
-	color: var(--wp--preset--color--paper);
-}
-
-.dh-ct-plan__key,
-.dh-ct-plan__scale {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5em;
-	white-space: nowrap;
-}
-
-.dh-ct-plan__key::before {
-	content: "";
-	flex: none;
-}
-
-.dh-ct-plan__key--main::before {
-	inline-size: 1.4rem;
-	block-size: 3px;
-	border-radius: 2px;
-	background: var(--_main);
-}
-
-.dh-ct-plan__key--head::before {
-	inline-size: 0.5rem;
-	block-size: 0.5rem;
-	border: 1.5px solid var(--wp--preset--color--paper);
-	border-radius: 50%;
-}
-
-.dh-ct-plan__scale::before {
-	content: "";
-	flex: none;
-	inline-size: calc(var(--km) * 1cqi); /* 200 km, as a share of the drawing's width */
-	block-size: 0.35rem;
-	border: 1.5px solid var(--_main);
-	border-block-start: 0;
-}
-
-@container dh-ct-stage (min-width: 36rem) {
-	/* Beside the card, which covers the plan's south-east. */
-	.dh-ct-plan__legend {
-		max-inline-size: 44%;
-	}
+	line-height: 1.4;
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 80%, transparent);
 }
 
 @media (max-width: 40rem) {
@@ -574,6 +526,11 @@
 
 	.dh-ct-plan__sea {
 		display: none;
+	}
+
+	/* A phone draws the map at under half its widest: the codes grow back. */
+	.dh-ct-plan__site text {
+		font-size: calc(17px * var(--_u, 1));
 	}
 
 	.dh-ct-plan__label {
@@ -590,49 +547,32 @@
 	}
 }
 
-/* First view, as a scroll reveal: the pipes draw outward from the pump,
-   then the heads come on. The Contact page's hero plays the same as the
-   page opens instead (style.css, section 7). */
-.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__main, .dh-ct-plan__lateral) {
-	stroke-dasharray: 1;
-	stroke-dashoffset: 1;
-	transition: stroke-dashoffset var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
-		calc(var(--wp--custom--motion--base) + var(--i, 0) * 60ms);
-}
+/* First view, as a scroll reveal: the areas and their dots come on outward
+   from the main branch (--i), then the names. The Contact page's hero
+   plays the same as the page opens instead (style.css, section 7). */
+@media (prefers-reduced-motion: no-preference) {
+	.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__zone, .dh-ct-plan__site) {
+		transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+			calc(var(--wp--custom--motion--base) + var(--i, 0) * 60ms);
+	}
 
-.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__heads, .dh-ct-plan__valves, .dh-ct-plan__labels) {
-	opacity: 0;
-	transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease) 1.1s;
-}
+	.js .dh-ct-plan[data-reveal] .dh-ct-plan__labels {
+		transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+			calc(var(--wp--custom--motion--base) + 900ms);
+	}
 
-.js .dh-ct-plan[data-reveal].is-in :is(.dh-ct-plan__main, .dh-ct-plan__lateral) {
-	stroke-dashoffset: 0;
-}
-
-.js .dh-ct-plan[data-reveal].is-in :is(.dh-ct-plan__heads, .dh-ct-plan__valves, .dh-ct-plan__labels) {
-	opacity: 1;
+	.js .dh-ct-plan[data-reveal]:not(.is-in) :is(.dh-ct-plan__zone, .dh-ct-plan__site, .dh-ct-plan__labels) {
+		opacity: 0;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	.dh-ct-city,
+	.dh-ct-plan__zone path,
 	.dh-ct-plan__dot,
 	.dh-ct-plan__ring,
-	.dh-ct-plan__pump,
-	.dh-ct-plan__label,
-	.dh-ct-plan__flow.is-running,
-	.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__main, .dh-ct-plan__lateral, .dh-ct-plan__heads, .dh-ct-plan__valves, .dh-ct-plan__labels) {
+	.dh-ct-plan__site text,
+	.dh-ct-plan__label {
 		transition: none;
-	}
-
-	.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__main, .dh-ct-plan__lateral) {
-		stroke-dashoffset: 0;
-	}
-
-	.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__heads, .dh-ct-plan__valves, .dh-ct-plan__labels) {
-		opacity: 1;
-	}
-
-	.dh-ct-plan__spray {
-		display: none;
 	}
 }

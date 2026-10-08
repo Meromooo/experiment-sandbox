@@ -40,19 +40,24 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     (`Sat-Thu 08:00-12:00 16:00-20:00; Fri closed`; empty = not listed) and parsed by
     `demas_theme_branch_hours()` into display lines and a week of minutes.
     `demas_theme_branch_plan_point()` is the one lat/lon → plan projection, used by the
-    footer's key plan and the Contact page's layout plan.
+    footer's key plan and the Contact page's map.
   - `contact.php` — the Contact page (AMM-169): registers `demas-theme/branch-finder` (the
     branches as a list of in-page links, the chosen branch's card — photo, who answers there,
     address, hours with an "Open now" status worked out in Riyadh time in the browser,
-    directions — and the branches drawn as an **irrigation layout plan**: Riyadh head office
-    as the pump, a mainline along its latitude, a lateral to each branch's real position;
-    choosing a branch runs water to it and the head sprays). Works without JavaScript: every
-    city and plan head links to its card (`#branch-jed`) and CSS shows the `:target` one; the
+    directions — and, since AMM-189, a **store locator map with service areas**: the
+    footer key plan's real land drawn on the dark green, divided into one area per branch,
+    each the part of the Kingdom nearer to that branch than to any other (a Voronoi diagram,
+    computed in `render.php` from the branch list, so a new branch redraws them); the chosen
+    branch's area filled field green, its dot ringed and named, and pointing at an area, a
+    dot or a city lights that area). Works without JavaScript: every city, area and dot
+    links to its card (`#branch-jed`) and CSS shows the `:target` one; the
     view module (`src/branch-finder/view.ts`) swaps cards in place and announces choices as a
     `demas-theme:branch` event for the request form. A photo per branch is the block's only
     setting (its sidebar; the drawn placeholder until then), so the editor gets the branch
     list as `window.demasThemeBranches`. The block's wrapper is `display: contents`; the
-    page's hero grid (`style.css` section 15) places its list and its stage (card over plan).
+    page's hero grid (`style.css` section 15) places its list and its stage (the map, the
+    card under it, on its side where the stage is 36rem or wider); above 56rem the list
+    stays in view (sticky) while the map and card scroll past.
     Also registers `demas-theme/request-form` (AMM-169 step 2): what the buyer needs (pill
     radios; `?need=parts|survey|repair|other` preselects), the branch (`?branch=`; kept in step
     with the finder both ways through the `demas-theme:branch` event), name, phone, email,

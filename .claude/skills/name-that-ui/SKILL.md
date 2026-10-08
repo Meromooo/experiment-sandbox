@@ -39,6 +39,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Key plan (footer, `demas-theme/branch-plan`) | **Locator map** | none on the site | Real land from Natural Earth (AMM-188), north arrow, scale bar; `aria-hidden`, the branch list beside it is the control. |
 | Branch Desk city buttons (homepage) | By job, **tabs**: each city swaps one detail panel | `/vs/tabs-vs-segmented-control` | Built as toggle buttons (`aria-pressed`) plus a live region. Worth a look in the next accessibility pass; not a known bug. |
 | Contact page city list + branch card | **List-detail** (master-detail) | none on the site | In-page links; CSS `:target` shows the card without JavaScript. |
+| Contact page map (`demas-theme/branch-finder`) | **Store locator map** with **service areas** (a Voronoi diagram) | none on the site | AMM-189. Each area is the part of the Kingdom nearest its branch; `aria-hidden`, a pointer twin of the city list, which is the control. |
 | Request form | **Form fields**; the "what you need" pills are a **radio group** | `/web/form-field`, `/web/switch-checkbox-radio` | Looks like a segmented control, behaves as radios: keep the radio semantics. |
 | Form error summary | **Alert / callout** | `/web/alert-callout-banner`, `/vs/toast-vs-alert` | Not a toast: it stays until fixed and takes focus. |
 | Sheet-row − / + quantity | **Number stepper** | `/vs/stepper-vs-slider` | |

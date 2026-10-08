@@ -48,7 +48,7 @@ if ( ! $demas_branches ) {
 
 /*
  * Projection: demas_theme_branch_plan_point() (inc/branches.php), shared with
- * the Contact page's layout plan. The frame, the whole Kingdom with a margin,
+ * the Contact page's map. The frame, the whole Kingdom with a margin,
  * comes with the land (inc/key-plan-land.php). Sizes meant in pixels are
  * multiplied by $demas_u, the plan units in a pixel at the plan's full width
  * (18rem); CSS gets the same number as --_u.

@@ -1,23 +1,26 @@
 <?php
 /**
  * Server-rendered markup for the Branch Finder (AMM-169): the Contact page's
- * fifteen branches as a list, a card for the chosen one, and a layout plan.
+ * fifteen branches as a list, a map, and a card for the chosen one.
  *
- * The layout plan draws the Kingdom the way an irrigation drawing draws a
- * site: Riyadh head office is the pump, a mainline runs along its latitude,
- * and a lateral runs up or down from it to each branch, a sprinkler head at
- * the city's real latitude and longitude (the projection the footer's key
- * plan uses, demas_theme_branch_plan_point()). Laterals that would sit
- * within two units of each other on the same side share one pipe (Buraidah
- * and Unaizah). The plan is a pointer-only twin of the list, hidden from
- * assistive technology like the footer plan: the list is the control.
+ * The map (AMM-189) is a store locator with service areas: the Kingdom on
+ * its real outline, divided into one area per branch, each area the part of
+ * the Kingdom nearer to that branch than to any other (a Voronoi diagram),
+ * so a visitor finds their branch by finding where they are. The land is the
+ * footer key plan's (inc/key-plan-land.php, Natural Earth, in the projection
+ * of demas_theme_branch_plan_point()), drawn the same way on the dark green:
+ * water-lines along the coasts, the neighbours a shade off the background,
+ * a north arrow and a 500 km scale bar. The chosen branch's area is filled
+ * and its dot ringed and named; pointing at an area, a dot or a city in the
+ * list lights that area and names it. The map is a pointer-only twin of the
+ * list, hidden from assistive technology like the footer plan: the list is
+ * the control.
  *
- * Every city is a link to its card (#branch-jed), and so is every head on
- * the plan. That is the whole mechanism without JavaScript — the card a link
- * targets is the one shown (:target), the default branch's otherwise — so
- * the page works, and deep links work, before or without view.ts. With it,
- * choosing a branch runs water from the pump along the pipes to that head,
- * the head sprays, the card changes in place and the URL follows.
+ * Every city is a link to its card (#branch-jed), and so is every area and
+ * dot on the map. That is the whole mechanism without JavaScript — the card a
+ * link targets is the one shown (:target), the default branch's otherwise —
+ * so the page works, and deep links work, before or without view.ts. With
+ * it, the card changes in place and the URL follows.
  *
  * The default branch is the main one, or the one named by ?branch= (the
  * homepage Branch Desk and the cards' "Send a request" link carry it).
@@ -40,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! function_exists( 'demas_theme_get_branches' ) || ! function_exists( 'demas_theme_branch_plan_point' ) ) {
+if ( ! function_exists( 'demas_theme_get_branches' ) || ! function_exists( 'demas_theme_branch_plan_point' ) || ! function_exists( 'demas_theme_get_key_plan_land' ) ) {
 	return;
 }
 
@@ -62,42 +65,150 @@ $demas_chosen = isset( $demas_branches[ $demas_asked ] ) ? $demas_asked : $demas
 $demas_photos = (array) ( $attributes['photos'] ?? array() );
 
 /*
- * The drawing. The view box runs 36.4–55°E × 15.6–31.6°N: east past the
- * last branch, over the Empty Quarter, where the chosen branch's card sits
- * on wide screens.
+ * The map's frame and land are the footer key plan's. Sizes meant in pixels
+ * are multiplied by $demas_u, the plan units in a pixel where the map is
+ * widest (598px, beside the intro at 1440); CSS gets the same number as --_u.
  */
-list( $demas_vx, $demas_vy ) = demas_theme_branch_plan_point( 31.6, 36.4 );
-list( $demas_vr, $demas_vb ) = demas_theme_branch_plan_point( 15.6, 55 );
-$demas_vw                    = $demas_vr - $demas_vx;
-$demas_vh                    = $demas_vb - $demas_vy;
+$demas_land   = demas_theme_get_key_plan_land();
+$demas_frame  = $demas_land['frame'];
+$demas_nw     = demas_theme_branch_plan_point( $demas_frame[3], $demas_frame[0] );
+$demas_se     = demas_theme_branch_plan_point( $demas_frame[2], $demas_frame[1] );
+$demas_x0     = $demas_nw[0];
+$demas_y0     = $demas_nw[1];
+$demas_x1     = $demas_se[0];
+$demas_y1     = $demas_se[1];
+$demas_width  = $demas_x1 - $demas_x0;
+$demas_height = $demas_y1 - $demas_y0;
+$demas_u      = $demas_width / 598;
 
-list( $demas_hx, $demas_hy ) = demas_theme_branch_plan_point( (float) $demas_branches[ $demas_main ]['lat'], (float) $demas_branches[ $demas_main ]['lon'] );
+$demas_x = static function ( float $lon ): float {
+	return demas_theme_branch_plan_point( 32, $lon )[0];
+};
+$demas_y = static function ( float $lat ): float {
+	return demas_theme_branch_plan_point( $lat, 36 )[1];
+};
+$demas_n = static function ( float $value ): string {
+	return number_format( $value, 1, '.', '' );
+};
+
+// Ids for the land, the Kingdom's clip, the edge fades and the frame.
+$demas_id = wp_unique_id( 'dh-ct-map-' );
 
 $demas_points = array();
 foreach ( $demas_branches as $demas_code => $demas_branch ) {
 	$demas_points[ $demas_code ] = demas_theme_branch_plan_point( (float) $demas_branch['lat'], (float) $demas_branch['lon'] );
 }
 
-// Laterals within two units of a neighbour, on the same side of the mainline, share its pipe.
-uasort( $demas_points, static fn( $a, $b ) => $a[0] <=> $b[0] );
-$demas_last = null;
-foreach ( $demas_points as $demas_code => $demas_point ) {
-	if ( $demas_last && abs( $demas_point[0] - $demas_last[0] ) < 2 && ( $demas_point[1] < $demas_hy ) === ( $demas_last[1] < $demas_hy ) ) {
-		$demas_points[ $demas_code ][0] = $demas_last[0];
+/*
+ * Each branch's area: start from the frame and, for every other branch, keep
+ * only the half nearer to this one — the side of the line halfway between
+ * the two where a x + b y <= c. What is left is convex, so cutting it is one
+ * pass round its corners. The Kingdom's outline clips the areas when drawn.
+ */
+$demas_keep = static function ( array $poly, float $a, float $b, float $c ): array {
+	$kept = array();
+	$last = end( $poly );
+	foreach ( $poly as $point ) {
+		$in      = $a * $point[0] + $b * $point[1] - $c;
+		$was     = $a * $last[0] + $b * $last[1] - $c;
+		$crosses = ( $in <= 0 ) !== ( $was <= 0 );
+		if ( $crosses ) {
+			$t      = $was / ( $was - $in );
+			$kept[] = array( $last[0] + ( $point[0] - $last[0] ) * $t, $last[1] + ( $point[1] - $last[1] ) * $t );
+		}
+		if ( $in <= 0 ) {
+			$kept[] = $point;
+		}
+		$last = $point;
 	}
-	$demas_last = $demas_points[ $demas_code ];
+	return $kept;
+};
+
+$demas_zones = array();
+foreach ( $demas_points as $demas_code => $demas_site ) {
+	$demas_poly = array( array( $demas_x0, $demas_y0 ), array( $demas_x1, $demas_y0 ), array( $demas_x1, $demas_y1 ), array( $demas_x0, $demas_y1 ) );
+	foreach ( $demas_points as $demas_other => $demas_near ) {
+		if ( $demas_other !== $demas_code ) {
+			$demas_poly = $demas_keep(
+				$demas_poly,
+				$demas_near[0] - $demas_site[0],
+				$demas_near[1] - $demas_site[1],
+				( $demas_near[0] ** 2 + $demas_near[1] ** 2 - $demas_site[0] ** 2 - $demas_site[1] ** 2 ) / 2
+			);
+		}
+	}
+	$demas_zones[ $demas_code ] = 'M' . implode( 'L', array_map( static fn( $p ) => $demas_n( $p[0] ) . ' ' . $demas_n( $p[1] ), $demas_poly ) ) . 'Z';
 }
 
-// Drawn outward from the pump: nearest lateral first.
-uasort( $demas_points, static fn( $a, $b ) => abs( $a[0] - $demas_hx ) <=> abs( $b[0] - $demas_hx ) );
-$demas_xs = array_column( $demas_points, 0 );
+// The areas and dots come on outward from the main branch: nearest first.
+$demas_hub  = $demas_points[ $demas_main ];
+$demas_dist = array();
+foreach ( $demas_points as $demas_code => $demas_point ) {
+	$demas_dist[ $demas_code ] = hypot( $demas_point[0] - $demas_hub[0], $demas_point[1] - $demas_hub[1] );
+}
+asort( $demas_dist );
+$demas_order = array_flip( array_keys( $demas_dist ) );
 
-// Where a point sits in the drawing, as a percentage, for the HTML labels.
+/*
+ * Where a branch's code and name sit beside its dot: to the right, unless
+ * placed here so none collide: Buraidah and Unaizah are 28 km apart, and
+ * the Gulf's name is to Dammam's right, Taif to Jeddah's. A new branch
+ * starts on the right.
+ */
+$demas_sides = array(
+	'dam' => 'left',
+	'jed' => 'left',
+	'bur' => 'above',
+	'una' => 'below',
+	'saj' => 'below',
+	'alk' => 'below',
+);
+
+// The scale bar, bottom right: 500 km where the projection is true (24°N).
+$demas_bar   = 500 * 20 / 111.32;
+$demas_bx    = $demas_x( 51.0 );
+$demas_by    = $demas_y( 17.15 );
+$demas_scale = sprintf(
+	'M%1$s %2$sh%3$sM%1$s %4$sv%5$sM%6$s %7$sv%8$sM%9$s %4$sv%5$s',
+	$demas_n( $demas_bx ),
+	$demas_n( $demas_by ),
+	$demas_n( $demas_bar ),
+	$demas_n( $demas_by - 3 * $demas_u ),
+	$demas_n( 6 * $demas_u ),
+	$demas_n( $demas_bx + $demas_bar / 2 ),
+	$demas_n( $demas_by - 2 * $demas_u ),
+	$demas_n( 4 * $demas_u ),
+	$demas_n( $demas_bx + $demas_bar )
+);
+
+// The north arrow, top right: a needle, its west half outlined.
+$demas_ax    = $demas_x( 55.0 );
+$demas_ay    = $demas_y( 30.9 );
+$demas_arrow = static function ( float $side ) use ( $demas_n, $demas_ax, $demas_ay, $demas_u ): string {
+	return sprintf(
+		'M%1$s %2$sL%3$s %4$sL%1$s %5$sZ',
+		$demas_n( $demas_ax ),
+		$demas_n( $demas_ay - 13 * $demas_u ),
+		$demas_n( $demas_ax + $side * 4.5 * $demas_u ),
+		$demas_n( $demas_ay + 6 * $demas_u ),
+		$demas_n( $demas_ay + 2.5 * $demas_u )
+	);
+};
+
+// The water-lines, as on the key plan: the band's number and its distance
+// from the coast, in plan units.
+$demas_waves = array(
+	1 => 14,
+	2 => 8.5,
+	3 => 4,
+);
+
+// Where a point sits in the drawing, as a percentage, for the HTML names.
 $demas_pct = static function ( float $value, float $origin, float $size ): string {
 	return round( ( $value - $origin ) / $size * 100, 2 ) . '%';
 };
 
-// Hovering a city in the list, or a head on the plan, lights that head and names it.
+// Hovering a city in the list, or an area or dot on the map, lights that area and names it.
 $demas_css = '';
 foreach ( array_keys( $demas_branches ) as $demas_code ) {
 	$demas_code = sanitize_key( $demas_code );
@@ -152,6 +263,106 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 	</nav>
 
 	<div class="dh-ct-stage">
+		<figure class="dh-ct-plan dh-card dh-card--canopy" data-reveal="seed" aria-hidden="true">
+			<div class="dh-ct-plan__draw">
+				<svg class="dh-ct-plan__svg" xmlns="http://www.w3.org/2000/svg" viewBox="<?php echo esc_attr( $demas_n( $demas_x0 ) . ' ' . $demas_n( $demas_y0 ) . ' ' . $demas_n( $demas_width ) . ' ' . $demas_n( $demas_height ) ); ?>" style="--_u:<?php echo esc_attr( number_format( $demas_u, 3, '.', '' ) ); ?>" focusable="false">
+					<defs>
+						<path id="<?php echo esc_attr( $demas_id ); ?>-kingdom" d="<?php echo esc_attr( $demas_land['kingdom'] ); ?>" />
+						<path id="<?php echo esc_attr( $demas_id ); ?>-neighbours" d="<?php echo esc_attr( $demas_land['neighbours'] ); ?>" />
+						<clipPath id="<?php echo esc_attr( $demas_id ); ?>-inside">
+							<use href="#<?php echo esc_attr( $demas_id ); ?>-kingdom" />
+						</clipPath>
+						<clipPath id="<?php echo esc_attr( $demas_id ); ?>-frame">
+							<rect x="<?php echo esc_attr( $demas_n( $demas_x0 ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_y0 ) ); ?>" width="<?php echo esc_attr( $demas_n( $demas_width ) ); ?>" height="<?php echo esc_attr( $demas_n( $demas_height ) ); ?>" />
+						</clipPath>
+						<linearGradient id="<?php echo esc_attr( $demas_id ); ?>-fx" gradientUnits="userSpaceOnUse" x1="<?php echo esc_attr( $demas_n( $demas_x0 ) ); ?>" x2="<?php echo esc_attr( $demas_n( $demas_x1 ) ); ?>" y1="0" y2="0">
+							<stop offset="0" stop-color="#000" /><stop offset=".08" stop-color="#fff" /><stop offset=".92" stop-color="#fff" /><stop offset="1" stop-color="#000" />
+						</linearGradient>
+						<linearGradient id="<?php echo esc_attr( $demas_id ); ?>-fy" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="<?php echo esc_attr( $demas_n( $demas_y0 ) ); ?>" y2="<?php echo esc_attr( $demas_n( $demas_y1 ) ); ?>">
+							<stop offset="0" stop-color="#000" /><stop offset=".08" stop-color="#fff" /><stop offset=".92" stop-color="#fff" /><stop offset="1" stop-color="#000" />
+						</linearGradient>
+						<?php foreach ( array( 'x', 'y' ) as $demas_axis ) : ?>
+							<mask id="<?php echo esc_attr( $demas_id . '-m' . $demas_axis ); ?>" maskUnits="userSpaceOnUse" x="<?php echo esc_attr( $demas_n( $demas_x0 ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_y0 ) ); ?>" width="<?php echo esc_attr( $demas_n( $demas_width ) ); ?>" height="<?php echo esc_attr( $demas_n( $demas_height ) ); ?>">
+								<rect x="<?php echo esc_attr( $demas_n( $demas_x0 ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_y0 ) ); ?>" width="<?php echo esc_attr( $demas_n( $demas_width ) ); ?>" height="<?php echo esc_attr( $demas_n( $demas_height ) ); ?>" fill="url(#<?php echo esc_attr( $demas_id . '-f' . $demas_axis ); ?>)" />
+							</mask>
+						<?php endforeach; ?>
+					</defs>
+
+					<g clip-path="url(#<?php echo esc_attr( $demas_id ); ?>-frame)">
+						<g mask="url(#<?php echo esc_attr( $demas_id ); ?>-mx)">
+							<g mask="url(#<?php echo esc_attr( $demas_id ); ?>-my)">
+								<?php foreach ( $demas_waves as $demas_wave => $demas_far ) : ?>
+									<g class="dh-ct-plan__wave dh-ct-plan__wave--<?php echo (int) $demas_wave; ?>" stroke-width="<?php echo esc_attr( $demas_n( 2 * $demas_far + 1.15 * $demas_u ) ); ?>"><use href="#<?php echo esc_attr( $demas_id ); ?>-kingdom" /><use href="#<?php echo esc_attr( $demas_id ); ?>-neighbours" /></g>
+									<g class="dh-ct-plan__wave-gap" stroke-width="<?php echo esc_attr( $demas_n( 2 * $demas_far - 1.15 * $demas_u ) ); ?>"><use href="#<?php echo esc_attr( $demas_id ); ?>-kingdom" /><use href="#<?php echo esc_attr( $demas_id ); ?>-neighbours" /></g>
+								<?php endforeach; ?>
+								<use class="dh-ct-plan__neighbours" href="#<?php echo esc_attr( $demas_id ); ?>-neighbours" />
+							</g>
+						</g>
+						<use class="dh-ct-plan__kingdom" href="#<?php echo esc_attr( $demas_id ); ?>-kingdom" />
+
+						<g class="dh-ct-plan__zones" clip-path="url(#<?php echo esc_attr( $demas_id ); ?>-inside)">
+							<?php foreach ( $demas_zones as $demas_code => $demas_zone ) : ?>
+								<a class="dh-ct-plan__head dh-ct-plan__zone<?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" href="#branch-<?php echo esc_attr( $demas_code ); ?>" tabindex="-1" data-code="<?php echo esc_attr( $demas_code ); ?>" style="--i:<?php echo (int) $demas_order[ $demas_code ]; ?>"><path d="<?php echo esc_attr( $demas_zone ); ?>" /></a>
+							<?php endforeach; ?>
+						</g>
+						<g class="dh-ct-plan__borders" clip-path="url(#<?php echo esc_attr( $demas_id ); ?>-inside)">
+							<?php foreach ( $demas_zones as $demas_zone ) : ?>
+								<path d="<?php echo esc_attr( $demas_zone ); ?>" />
+							<?php endforeach; ?>
+						</g>
+						<use class="dh-ct-plan__outline" href="#<?php echo esc_attr( $demas_id ); ?>-kingdom" />
+					</g>
+
+					<text class="dh-ct-plan__sea" text-anchor="middle" transform="translate(<?php echo esc_attr( $demas_n( $demas_x( 38.15 ) ) . ' ' . $demas_n( $demas_y( 20.6 ) ) ); ?>) rotate(60)"><?php esc_html_e( 'Red Sea', 'demas-theme' ); ?></text>
+					<text class="dh-ct-plan__sea" text-anchor="middle" transform="translate(<?php echo esc_attr( $demas_n( $demas_x( 50.75 ) ) . ' ' . $demas_n( $demas_y( 27.55 ) ) ); ?>) rotate(35)"><?php esc_html_e( 'Arabian Gulf', 'demas-theme' ); ?></text>
+
+					<g class="dh-ct-plan__scale">
+						<path d="<?php echo esc_attr( $demas_scale ); ?>" />
+						<rect x="<?php echo esc_attr( $demas_n( $demas_bx ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_by - 1.5 * $demas_u ) ); ?>" width="<?php echo esc_attr( $demas_n( $demas_bar / 2 ) ); ?>" height="<?php echo esc_attr( $demas_n( 3 * $demas_u ) ); ?>" />
+						<text x="<?php echo esc_attr( $demas_n( $demas_bx ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_by - 6 * $demas_u ) ); ?>">0</text>
+						<text x="<?php echo esc_attr( $demas_n( $demas_bx + $demas_bar ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_by - 6 * $demas_u ) ); ?>" text-anchor="end"><?php esc_html_e( '500 km', 'demas-theme' ); ?></text>
+					</g>
+
+					<g class="dh-ct-plan__north">
+						<path d="<?php echo esc_attr( $demas_arrow( 1 ) ); ?>" />
+						<path class="dh-ct-plan__north-half" d="<?php echo esc_attr( $demas_arrow( -1 ) ); ?>" />
+						<text x="<?php echo esc_attr( $demas_n( $demas_ax ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_ay - 16 * $demas_u ) ); ?>" text-anchor="middle"><?php echo esc_html_x( 'N', 'north, on the map', 'demas-theme' ); ?></text>
+					</g>
+
+					<g class="dh-ct-plan__sites">
+						<?php foreach ( $demas_points as $demas_code => $demas_point ) : ?>
+							<?php
+							$demas_side   = $demas_sides[ $demas_code ] ?? 'right';
+							$demas_tx     = $demas_point[0];
+							$demas_ty     = $demas_point[1] + 3.6 * $demas_u;
+							$demas_anchor = 'middle';
+							if ( 'above' === $demas_side || 'below' === $demas_side ) {
+								$demas_ty = $demas_point[1] + ( 'above' === $demas_side ? -7 : 14 ) * $demas_u;
+							} else {
+								$demas_tx     = $demas_point[0] + ( 'right' === $demas_side ? 7 : -7 ) * $demas_u;
+								$demas_anchor = 'right' === $demas_side ? 'start' : 'end';
+							}
+							?>
+							<a class="dh-ct-plan__head dh-ct-plan__site<?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" href="#branch-<?php echo esc_attr( $demas_code ); ?>" tabindex="-1" data-code="<?php echo esc_attr( $demas_code ); ?>" style="--i:<?php echo (int) $demas_order[ $demas_code ]; ?>">
+								<circle class="dh-ct-plan__ring" cx="<?php echo esc_attr( $demas_n( $demas_point[0] ) ); ?>" cy="<?php echo esc_attr( $demas_n( $demas_point[1] ) ); ?>" r="<?php echo esc_attr( $demas_n( 8 * $demas_u ) ); ?>" />
+								<circle class="dh-ct-plan__dot" cx="<?php echo esc_attr( $demas_n( $demas_point[0] ) ); ?>" cy="<?php echo esc_attr( $demas_n( $demas_point[1] ) ); ?>" r="<?php echo esc_attr( $demas_n( 3.4 * $demas_u ) ); ?>" />
+								<text x="<?php echo esc_attr( $demas_n( $demas_tx ) ); ?>" y="<?php echo esc_attr( $demas_n( $demas_ty ) ); ?>" text-anchor="<?php echo esc_attr( $demas_anchor ); ?>"><?php echo esc_html( strtoupper( $demas_code ) ); ?></text>
+							</a>
+						<?php endforeach; ?>
+					</g>
+				</svg>
+
+				<div class="dh-ct-plan__labels">
+					<?php foreach ( $demas_points as $demas_code => $demas_point ) : ?>
+						<?php $demas_side = $demas_sides[ $demas_code ] ?? 'right'; ?>
+						<span class="dh-ct-plan__label is-<?php echo esc_attr( $demas_side ); ?><?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" data-code="<?php echo esc_attr( $demas_code ); ?>" style="--x:<?php echo esc_attr( $demas_pct( $demas_point[0], $demas_x0, $demas_width ) ); ?>;--y:<?php echo esc_attr( $demas_pct( $demas_point[1], $demas_y0, $demas_height ) ); ?>"><b><?php echo esc_html( strtoupper( $demas_code ) ); ?></b> <?php echo esc_html( $demas_branches[ $demas_code ]['city'] ); ?></span>
+					<?php endforeach; ?>
+				</div>
+			</div>
+
+			<figcaption class="dh-ct-plan__caption"><?php esc_html_e( 'Each area is closest to the branch inside it.', 'demas-theme' ); ?></figcaption>
+		</figure>
+
 		<div class="dh-ct-cards" data-reveal="rise">
 			<p class="screen-reader-text" aria-live="polite" data-announce></p>
 			<?php foreach ( $demas_branches as $demas_code => $demas_branch ) : ?>
@@ -221,8 +432,8 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 													<span class="dh-ct-hours__times">
 														<?php if ( $demas_line['times'] ) : ?>
 															<?php
-															foreach ( $demas_line['times'] as $demas_n => $demas_range ) {
-																echo ( $demas_n ? ', ' : '' ) . '<span class="dh-ct-hours__range">' . esc_html( $demas_range ) . '</span>';
+															foreach ( $demas_line['times'] as $demas_t => $demas_range ) {
+																echo ( $demas_t ? ', ' : '' ) . '<span class="dh-ct-hours__range">' . esc_html( $demas_range ) . '</span>';
 															}
 															?>
 														<?php else : ?>
@@ -260,98 +471,5 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-finder' 
 				</article>
 			<?php endforeach; ?>
 		</div>
-
-		<figure class="dh-ct-plan dh-card dh-card--canopy" data-reveal="seed" aria-hidden="true">
-			<div class="dh-ct-plan__draw">
-				<svg class="dh-ct-plan__svg" xmlns="http://www.w3.org/2000/svg" viewBox="<?php echo esc_attr( "$demas_vx $demas_vy $demas_vw $demas_vh" ); ?>" focusable="false" data-hub="<?php echo esc_attr( "$demas_hx $demas_hy" ); ?>">
-					<text class="dh-ct-plan__sea" transform="translate(<?php echo esc_attr( implode( ' ', demas_theme_branch_plan_point( 19.7, 38.3 ) ) ); ?>) rotate(55)"><?php esc_html_e( 'Red Sea', 'demas-theme' ); ?></text>
-					<text class="dh-ct-plan__sea" transform="translate(<?php echo esc_attr( implode( ' ', demas_theme_branch_plan_point( 29.4, 49.1 ) ) ); ?>) rotate(54)"><?php esc_html_e( 'Arabian Gulf', 'demas-theme' ); ?></text>
-					<text class="dh-ct-plan__sea" x="<?php echo esc_attr( demas_theme_branch_plan_point( 20, 50.2 )[0] ); ?>" y="<?php echo esc_attr( demas_theme_branch_plan_point( 20, 50.2 )[1] ); ?>" text-anchor="middle"><?php esc_html_e( 'Empty Quarter', 'demas-theme' ); ?></text>
-
-					<g class="dh-ct-plan__pipes">
-						<path class="dh-ct-plan__main" pathLength="1" d="<?php echo esc_attr( "M$demas_hx {$demas_hy}H" . min( $demas_xs ) ); ?>" />
-						<path class="dh-ct-plan__main" pathLength="1" d="<?php echo esc_attr( "M$demas_hx {$demas_hy}H" . max( $demas_xs ) ); ?>" />
-						<?php
-						$demas_i      = 0;
-						$demas_valves = array();
-						foreach ( $demas_points as $demas_code => $demas_point ) :
-							if ( $demas_code === $demas_main ) {
-								continue;
-							}
-							++$demas_i;
-							?>
-							<path class="dh-ct-plan__lateral" pathLength="1" style="--i:<?php echo (int) $demas_i; ?>" d="<?php echo esc_attr( "M{$demas_point[0]} {$demas_hy}V{$demas_point[1]}" ); ?>" />
-							<?php
-							$demas_side = $demas_point[1] < $demas_hy ? -1 : 1;
-							$demas_key  = $demas_point[0] . '|' . $demas_side;
-							if ( abs( $demas_point[1] - $demas_hy ) >= 16 && ! isset( $demas_valves[ $demas_key ] ) ) {
-								$demas_valves[ $demas_key ] = array( $demas_point[0], $demas_hy + 7 * $demas_side, $demas_i );
-							}
-						endforeach;
-						?>
-					</g>
-
-					<path class="dh-ct-plan__flow" pathLength="1" d="<?php echo esc_attr( "M$demas_hx $demas_hy" ); ?>" data-flow />
-
-					<g class="dh-ct-plan__valves">
-						<?php foreach ( $demas_valves as $demas_valve ) : ?>
-							<path class="dh-ct-plan__valve" style="--i:<?php echo (int) $demas_valve[2]; ?>" d="<?php echo esc_attr( sprintf( 'M%1$s %2$sH%3$sL%1$s %4$sH%3$sZ', $demas_valve[0] - 2.4, $demas_valve[1] - 3, $demas_valve[0] + 2.4, $demas_valve[1] + 3 ) ); ?>" />
-						<?php endforeach; ?>
-					</g>
-
-					<g class="dh-ct-plan__heads">
-						<?php
-						$demas_i = 0;
-						foreach ( $demas_points as $demas_code => $demas_point ) :
-							$demas_is_main = $demas_code === $demas_main;
-							?>
-							<a class="dh-ct-plan__head<?php echo $demas_is_main ? ' is-main' : ''; ?><?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" href="#branch-<?php echo esc_attr( $demas_code ); ?>" tabindex="-1" data-code="<?php echo esc_attr( $demas_code ); ?>" data-at="<?php echo esc_attr( "{$demas_point[0]} {$demas_point[1]}" ); ?>" style="--i:<?php echo (int) $demas_i++; ?>">
-								<circle class="dh-ct-plan__hit" cx="<?php echo esc_attr( $demas_point[0] ); ?>" cy="<?php echo esc_attr( $demas_point[1] ); ?>" r="9" />
-								<?php if ( $demas_is_main ) : ?>
-									<circle class="dh-ct-plan__ring" cx="<?php echo esc_attr( $demas_point[0] ); ?>" cy="<?php echo esc_attr( $demas_point[1] ); ?>" r="8.5" />
-									<rect class="dh-ct-plan__pump" x="<?php echo esc_attr( $demas_point[0] - 4 ); ?>" y="<?php echo esc_attr( $demas_point[1] - 4 ); ?>" width="8" height="8" />
-								<?php else : ?>
-									<circle class="dh-ct-plan__dot" cx="<?php echo esc_attr( $demas_point[0] ); ?>" cy="<?php echo esc_attr( $demas_point[1] ); ?>" r="3.4" />
-								<?php endif; ?>
-							</a>
-						<?php endforeach; ?>
-					</g>
-
-					<g class="dh-ct-plan__spray" data-spray>
-						<circle r="6" />
-						<circle r="10" />
-						<circle r="14" />
-					</g>
-				</svg>
-
-				<div class="dh-ct-plan__labels">
-					<?php foreach ( $demas_points as $demas_code => $demas_point ) : ?>
-						<?php
-						/*
-						 * A name sits at the end of its pipe: above a head north of
-						 * the mainline, below one south of it — unless another head
-						 * is right there (Unaizah, under Buraidah on one lateral);
-						 * then it goes to the left. The head office's is on the left.
-						 */
-						$demas_side = $demas_point[1] < $demas_hy ? -1 : 1;
-						$demas_at   = $demas_code === $demas_main ? 'left' : ( $demas_side < 0 ? 'above' : 'below' );
-						foreach ( $demas_points as $demas_other => $demas_near ) {
-							if ( $demas_other !== $demas_code && abs( $demas_near[0] - $demas_point[0] ) < 6 && ( $demas_near[1] - $demas_point[1] ) * $demas_side > 0 && abs( $demas_near[1] - $demas_point[1] ) < 14 ) {
-								$demas_at = 'left';
-							}
-						}
-						?>
-						<span class="dh-ct-plan__label is-<?php echo esc_attr( $demas_at ); ?><?php echo $demas_code === $demas_main ? ' is-main' : ''; ?><?php echo $demas_chosen === $demas_code ? ' is-current' : ''; ?>" data-code="<?php echo esc_attr( $demas_code ); ?>" style="--x:<?php echo esc_attr( $demas_pct( $demas_point[0], $demas_vx, $demas_vw ) ); ?>;--y:<?php echo esc_attr( $demas_pct( $demas_point[1], $demas_vy, $demas_vh ) ); ?>"><b><?php echo esc_html( strtoupper( $demas_code ) ); ?></b> <?php echo esc_html( $demas_branches[ $demas_code ]['city'] ); ?></span>
-					<?php endforeach; ?>
-				</div>
-			</div>
-
-			<figcaption class="dh-ct-plan__legend">
-				<span class="dh-ct-plan__title"><?php esc_html_e( 'Layout plan', 'demas-theme' ); ?></span>
-				<span class="dh-ct-plan__key dh-ct-plan__key--main"><?php esc_html_e( 'Mainline from head office', 'demas-theme' ); ?></span>
-				<span class="dh-ct-plan__key dh-ct-plan__key--head"><?php esc_html_e( 'Branch', 'demas-theme' ); ?></span>
-				<span class="dh-ct-plan__scale" style="--km:<?php echo esc_attr( round( 200 / 111.32 * 20 / $demas_vw * 100, 2 ) ); ?>"><?php esc_html_e( '200 km', 'demas-theme' ); ?></span>
-			</figcaption>
-		</figure>
 	</div>
 </div>

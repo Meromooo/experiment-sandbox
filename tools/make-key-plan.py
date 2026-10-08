@@ -118,7 +118,8 @@ php = f"""<?php
  * Natural Earth's 1:50m countries (public domain): run it again to change the
  * frame or the detail, never edit this file by hand.
  *
- * Read by src/branch-plan/render.php, which draws the frame given here.
+ * Read by src/branch-plan/render.php, which draws the frame given here, and by
+ * src/branch-finder/render.php (the Contact page's map, AMM-189).
  *
  * @package Demas_Theme
  */

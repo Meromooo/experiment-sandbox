@@ -200,7 +200,7 @@ function demas_theme_get_branches(): array {
 
 /**
  * Where a branch link goes: the Contact page with that branch chosen
- * (AMM-169) — its card, its pipe on the layout plan and the request form all
+ * (AMM-169) — its card, its area on the map and the request form all
  * follow the #branch-xxx hash. Without JavaScript the hash shows that card.
  *
  * @param string $code A branch code from demas_theme_get_branches(), e.g. "jed".
@@ -284,7 +284,7 @@ function demas_theme_branch_hours( string $spec ): array {
 
 /**
  * Where a branch sits on the theme's plans of the Kingdom: the footer's key
- * plan and the Contact page's layout plan draw from the same projection, so
+ * plan and the Contact page's map draw from the same projection, so
  * the two never disagree.
  *
  * Equirectangular, longitude scaled by cos(24°) so the Kingdom keeps its
