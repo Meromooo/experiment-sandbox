@@ -7,7 +7,10 @@
  * (.dh-ct-stage: the map with the card under it). Anywhere else they simply
  * stack.
  *
- * On a wide stage the card lies on its side, the photo beside the details.
+ * Where the card has 36rem or more it lies on its side, the photo beside the
+ * details. Measured on the cards' own box (.dh-ct-cards), not the stage:
+ * below 56rem the page sets the stage to display: contents, which can't be
+ * a size container.
  *
  * Which card shows: without JavaScript, the one a link targets (:target),
  * else the default branch's; with it (view.ts sets data-current), the
@@ -103,9 +106,12 @@
 /* The stage: the map, the card under it -------------------------------- */
 
 .dh-ct-stage {
-	container: dh-ct-stage / inline-size;
 	display: grid;
 	gap: var(--wp--preset--spacing--40);
+}
+
+.dh-ct-cards {
+	container: dh-ct-cards / inline-size;
 }
 
 /* The card ------------------------------------------------------------- */
@@ -142,7 +148,7 @@
 }
 
 /* On its side: the photo beside the details, as tall as they are. */
-@container dh-ct-stage (min-width: 36rem) {
+@container dh-ct-cards (min-width: 36rem) {
 	.dh-ct-card {
 		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
 	}

@@ -56,7 +56,7 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     setting (its sidebar; the drawn placeholder until then), so the editor gets the branch
     list as `window.demasThemeBranches`. The block's wrapper is `display: contents`; the
     page's hero grid (`style.css` section 15) places its list and its stage (the map, the
-    card under it, on its side where the stage is 36rem or wider); above 56rem the list
+    card under it, on its side where the card has 36rem or more); above 56rem the list
     stays in view (sticky) while the map and card scroll past.
     Also registers `demas-theme/request-form` (AMM-169 step 2): what the buyer needs (pill
     radios; `?need=parts|survey|repair|other` preselects), the branch (`?branch=`; kept in step

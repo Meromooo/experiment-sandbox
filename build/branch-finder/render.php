@@ -151,13 +151,13 @@ $demas_order = array_flip( array_keys( $demas_dist ) );
 
 /*
  * Where a branch's code and name sit beside its dot: to the right, unless
- * placed here so none collide: Buraidah and Unaizah are 28 km apart, and
- * the Gulf's name is to Dammam's right, Taif to Jeddah's. A new branch
- * starts on the right.
+ * placed here so none collide: Buraidah and Unaizah are 28 km apart, the
+ * Gulf's name is to Dammam's right, and Taif to Jeddah's (whose left is the
+ * map's edge on a phone). A new branch starts on the right.
  */
 $demas_sides = array(
 	'dam' => 'left',
-	'jed' => 'left',
+	'jed' => 'above',
 	'bur' => 'above',
 	'una' => 'below',
 	'saj' => 'below',
