@@ -2,8 +2,9 @@
 
 A custom, no-page-builder WooCommerce **block theme** for Demas Group, on a sandbox WordPress
 install (`cornflowerblue-fish-235112.hostingersite.com`) that shares a Hostinger account with the
-current demas-group.com (old site) but is otherwise isolated. `README.md` has the one-line
-summary. How Ammar works (plan → "ready" → scoped go-ahead; a question means stop; the live site
+current demas-group.com (old site) but is otherwise isolated: no live content, database or files
+are touched from work on this theme. `README.md` has the one-line summary and a pointer to the
+research doc behind this direction. How Ammar works (plan → "ready" → scoped go-ahead; a question means stop; the live site
 is untouchable; server work through him; watching a deploy; cloud sessions open pull requests)
 is in `.claude/rules/working-with-ammar.md`, which every session loads.
 
@@ -96,7 +97,8 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
   pattern and page 17, or the cutover paste (AMM-158) brings the old copy back.
 - `templates/`, `parts/` — block templates and parts; keep parts thin.
 - `tools/` — operational scripts run by a person, never by the theme; not deployed.
-- `docs/adr/` — architecture decision records (index in `docs/adr/README.md`). **Read ADR-002**
+- `docs/adr/` — architecture decision records (why a hard-to-reverse choice was made, what was
+  rejected, what it costs; index in `docs/adr/README.md`). **Read ADR-002**
   (the platform decision, and five corrections the build still needs) before proposing a change
   of stack, hosting or editing model.
 - `woocommerce/` — classic overrides, last resort only.
@@ -112,15 +114,18 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
   no-page-builder architecture works.
 - **No hardcoded content that belongs in a pattern** — marketing copy, repeated layouts, anything
   an editor would change goes in `patterns/`, not a template or part.
-- **No `!important` without a comment naming the specificity conflict it resolves.**
-- **No classic WooCommerce overrides in `woocommerce/`** unless a block genuinely can't do it;
-  document why in the override file.
+- **No `!important` without a comment naming the specificity conflict it resolves.** If you
+  can't name it, the `!important` is masking a specificity problem to fix instead.
+- **No classic WooCommerce overrides in `woocommerce/`** unless a block genuinely can't do it.
+  Block-theme-native WooCommerce blocks (`woocommerce/single-product`,
+  `woocommerce/product-image-gallery`, …) are the default; document why in any override file.
 - **No direct database queries** (`$wpdb` writes, raw SQL) from theme code; use the APIs.
   `functions.php` stays a pure loader.
-- **No dependencies on plugins beyond WooCommerce.** Documented exceptions: `hostinger-reach`
+- **No dependencies on plugins beyond WooCommerce** — not Kadence, page builders, or anything not
+  installed on the sandbox. Documented exceptions: `hostinger-reach`
   (intentional; don't depend on it, don't remove it) and **LiteSpeed Cache** (page cache only;
   `inc/cache.php` calls its `litespeed_purge_all` hook and does nothing without it; nothing else
-  may depend on it). Never depend on Kadence.
+  may depend on it).
 - **No live-site credentials, database rows or design** (Kadence markup, theme options, CSS,
   palette, typefaces) copied here. **Content reuse is authorized** (company copy, the category
   tree, service descriptions, branch cities with staff names). **Staff email addresses never
@@ -135,8 +140,9 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
 - **Build step (ADR-001):** a block using TypeScript/React must be compiled with
   `npm run build` before committing, and `build/` committed with it — the deploy has no build
   step, so a stale `build/` means the change isn't live (CI blocks it).
-- **CSS class names are global — namespace them per component**, and grep for a class before
-  naming it (the footer once reused the datasheet's `.dh-plate` and turned unreadable; it is
+- **CSS class names are global — namespace them per component** (a block's stylesheet and
+  `assets/css/style.css` load on the same page, so shared names style each other), and grep for
+  a class before naming it (the footer once reused the datasheet's `.dh-plate` and turned unreadable; it is
   `.dh-foot-plate` now).
 - **Touch targets are 44px (AMM-172).** Pills and header controls take taps through a
   transparent `::before` (`style.css` section 4, one `:is()` list): a new pill style or header
@@ -146,7 +152,8 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
   JS, TypeScript modules, the Interactivity API). After any enqueue change, run a network trace on
   home, catalogue and product pages and compare with AMM-154's table.
 - **A new file in `patterns/` needs a version bump:** WordPress caches the pattern list keyed on
-  `Version:` in the root `style.css`; bump it and `DEMAS_THEME_VERSION` in `functions.php`
+  `Version:` in the root `style.css`, so a new pattern file is invisible (a `wp:pattern` pointing
+  at it renders nothing) until it changes; bump it and `DEMAS_THEME_VERSION` in `functions.php`
   together (0.2.0 `not-found`, 0.3.0 `footer`, 0.4.0 `services`, 0.5.0 `contact`, 2026-10-01).
 - **`three`, `@react-three/fiber`, `@react-three/drei`** in `package.json` are reserved for a
   planned phase-2 scroll-driven pipe scene (the system design doc's "Future ideas"): don't remove

@@ -113,10 +113,11 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   same audit: a 19-word lead, a title that takes two lines on a phone, and its category index
   headed by each top-level category's name in the display face (no eyebrow dot or capitals;
   `.dh-404 .dh-line__eyebrow` in `style.css` section 12; the catalogue and an empty search keep
+  the eyebrow). The Contact page also uses the Designed page template: see `quote-and-contact.md`.
 
 ## No `single.html`; `template-parts/`; `woocommerce/`
 
-  homepage hero (page 17) and Services (page 822) buttons were re-pointed in the editor. There is no `single.html`: the site has
+  There is no `single.html`: the site has
   no blog posts, and `index.html` covers the fallback.
 - `template-parts/` — **not yet created** (as of 2026-07-28 audit). Once it exists: smaller
   reusable template fragments organized by concern (`header/`, `product/`, `navigation/`), for

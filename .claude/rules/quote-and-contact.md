@@ -72,8 +72,7 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
 
 ## The Contact page template, and every contact link
 
-  the eyebrow). The
-  Contact Us page uses it with the `contact` pattern (`patterns/contact.php`, AMM-169: the
+  The Contact Us page uses the Designed page template (`templates/designed-page.html`) with the `contact` pattern (`patterns/contact.php`, AMM-169: the
   intro and the Branch Finder as the hero, then the request section; `dh-ct-` classes), its
   hero opening the same way at 56rem and up. Version 0.5.0 for that pattern file. It passed the
   taste skill's audit in step 3 (2026-10-03): one eyebrow (the hero's), an 18-word subtext, a
@@ -84,5 +83,4 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   "Message the X branch" (`?branch=`), the closing CTA and "Request a site visit" buttons
   (`?need=survey`), the 404, an empty search and the header finder (`?need=parts`), the quote
   sheet's contact line. Content already saved in pages keeps its links until edited: the
-  homepage hero (page 17) and Services (page 822) buttons were re-pointed in the editor. There is no `single.html`: the site has
-  no blog posts, and `index.html` covers the fallback.
+  homepage hero (page 17) and Services (page 822) buttons were re-pointed in the editor.
