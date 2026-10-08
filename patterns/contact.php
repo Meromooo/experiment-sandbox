@@ -50,7 +50,7 @@
 <section id="request" class="wp-block-group dh-section dh-ct-request"><!-- wp:group {"className":"dh-ct-request__grid","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-ct-request__grid"><!-- wp:group {"className":"dh-ct-request__copy dh-reveal-group","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-ct-request__copy dh-reveal-group"><!-- wp:heading {"className":"dh-ct-title dh-reveal--rise"} -->
-<h2 class="wp-block-heading dh-ct-title dh-reveal--rise">Tell us what you need.</h2>
+<h2 class="wp-block-heading dh-ct-title dh-reveal--rise">Tell us what you <span class="dh-highlight" data-reveal="wipe">need</span>.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-ct-text dh-reveal--rise"} -->
