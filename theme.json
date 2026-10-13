@@ -343,6 +343,8 @@
 				"base": "400ms",
 				"slow": "550ms",
 				"ease": "cubic-bezier(0.2, 0.7, 0.2, 1)",
+				"press": "160ms",
+				"easeOut": "cubic-bezier(0.23, 1, 0.32, 1)",
 				"stagger": "70ms"
 			},
 			"display": {

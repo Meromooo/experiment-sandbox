@@ -34,6 +34,28 @@
 html {
 	-webkit-text-size-adjust: 100%;
 	scrollbar-gutter: stable;
+	/* Phones paint a blue flash over anything tapped; every control has its
+	   own press state instead (section 4, AMM-193). */
+	-webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * The page runs under the notch since the viewport tag carries
+ * viewport-fit=cover (inc/viewport.php, AMM-193); this pads it back out on a
+ * phone held sideways. The insets are 0 everywhere else.
+ */
+body {
+	padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
+}
+
+/* No double-tap wait before a tap counts: these never double-tap to zoom
+   (pinch zoom is untouched). */
+a,
+button,
+label,
+summary,
+[role="button"] {
+	touch-action: manipulation;
 }
 
 /*
@@ -361,6 +383,112 @@ svg {
 
 .wp-block-buttons:has(> .wp-block-button[class*="is-style-dh-pill-"]) {
 	row-gap: var(--wp--preset--spacing--30);
+}
+
+/*
+ * Press feedback (AMM-193): every control answers the moment it is pressed by
+ * dipping to 0.97, in 160ms on a strong ease-out, and springs back the same
+ * way. A control added later joins this list.
+ *
+ * - The individual `scale` property stays clear of any transform a control
+ *   already uses.
+ * - transition-property can't be appended to, so the list restates what the
+ *   controls already transition (colour, border, shadow, on the fast token)
+ *   and adds scale and opacity. Its specificity (0,3,0, from the pill-block
+ *   selector inside :is) outranks the controls' own rules.
+ * - The label stops being selectable on a long press; text stays selectable.
+ * - With reduced motion the press is a slight fade, not a movement (Ammar,
+ *   2026-10-13: "gentler, not zero").
+ */
+:is(
+	.dh-pill,
+	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+	.dh-mega-menu__trigger,
+	.dh-finder__trigger,
+	.dh-quote-toggle,
+	.dh-header .wp-block-navigation-item__content,
+	.dh-quote-btn,
+	.dh-quote-dialog__action,
+	.dh-qty__step,
+	.dh-quote-line__remove,
+	.dh-toolbar__segment,
+	.dh-toolbar__chip,
+	.dh-desk__city,
+	.dh-ct-city,
+	.dh-ct-need__option span,
+	.dh-search__submit,
+	.dh-foot__quote,
+	.dh-film__toggle,
+	.dh-pagination a
+) {
+	-webkit-user-select: none;
+	user-select: none;
+	transition-property: background-color, color, border-color, box-shadow, opacity, scale;
+	transition-duration:
+		var(--wp--custom--motion--fast),
+		var(--wp--custom--motion--fast),
+		var(--wp--custom--motion--fast),
+		var(--wp--custom--motion--fast),
+		var(--wp--custom--motion--press),
+		var(--wp--custom--motion--press);
+	transition-timing-function:
+		var(--wp--custom--motion--ease),
+		var(--wp--custom--motion--ease),
+		var(--wp--custom--motion--ease),
+		var(--wp--custom--motion--ease),
+		var(--wp--custom--motion--ease-out),
+		var(--wp--custom--motion--ease-out);
+}
+
+:is(
+	.dh-pill,
+	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+	.dh-mega-menu__trigger,
+	.dh-finder__trigger,
+	.dh-quote-toggle,
+	.dh-header .wp-block-navigation-item__content,
+	.dh-quote-btn,
+	.dh-quote-dialog__action,
+	.dh-qty__step,
+	.dh-quote-line__remove,
+	.dh-toolbar__segment,
+	.dh-toolbar__chip,
+	.dh-desk__city,
+	.dh-ct-city,
+	.dh-ct-need__option span,
+	.dh-search__submit,
+	.dh-foot__quote,
+	.dh-film__toggle,
+	.dh-pagination a
+):active {
+	scale: 0.97;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:is(
+		.dh-pill,
+		.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+		.dh-mega-menu__trigger,
+		.dh-finder__trigger,
+		.dh-quote-toggle,
+		.dh-header .wp-block-navigation-item__content,
+		.dh-quote-btn,
+		.dh-quote-dialog__action,
+		.dh-qty__step,
+		.dh-quote-line__remove,
+		.dh-toolbar__segment,
+		.dh-toolbar__chip,
+		.dh-desk__city,
+		.dh-ct-city,
+		.dh-ct-need__option span,
+		.dh-search__submit,
+		.dh-foot__quote,
+		.dh-film__toggle,
+		.dh-pagination a
+	):active {
+		scale: none;
+		opacity: 0.8;
+	}
 }
 
 .dh-pill--solid,
@@ -2615,7 +2743,21 @@ svg {
 	min-block-size: 15rem;
 	transition:
 		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		scale var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out);
+}
+
+/* A whole card is one link: a lighter press than the controls' 0.97, since
+   it is many times their size (AMM-193). */
+.dh-cat:active {
+	scale: 0.985;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dh-cat:active {
+		scale: none;
+		opacity: 0.85;
+	}
 }
 
 .dh-cat--wide {

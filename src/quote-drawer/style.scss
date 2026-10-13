@@ -647,6 +647,12 @@ html:has(.dh-quote-dialog[open]) {
 		animation-name: dh-quote-rise;
 	}
 
+	/* The sheet sits on the bottom edge: its foot keeps clear of the phone's
+	   home bar (viewport-fit=cover, inc/viewport.php; AMM-193). */
+	.dh-quote-dialog__foot {
+		padding-block-end: calc(var(--wp--preset--spacing--40) + env(safe-area-inset-bottom, 0px));
+	}
+
 	/* Quantity drops under the name; remove stays at the end of the row. */
 	.dh-quote-line {
 		grid-template-columns: 1.75rem 3rem minmax(0, 1fr) auto;

@@ -39,6 +39,7 @@ $demas_theme_includes = array(
 	'inc/cache.php',
 	'inc/site-icons.php',
 	'inc/typography.php',
+	'inc/viewport.php',
 );
 
 foreach ( $demas_theme_includes as $demas_theme_include ) {

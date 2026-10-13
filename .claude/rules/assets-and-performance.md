@@ -4,7 +4,7 @@ paths:
   - "theme.json"
   - "style.css"
   - "functions.php"
-  - "inc/{setup,enqueue,performance,cache,site-icons}.php"
+  - "inc/{setup,enqueue,performance,cache,site-icons,viewport}.php"
 ---
 
 # Assets, enqueues, performance, cache, icons and theme.json
@@ -81,6 +81,19 @@ No jQuery and no classic WooCommerce assets on any page (AMM-154): after any enq
     setting stays for the admin and login screens. No `/favicon.ico` at the domain root yet:
     that would be server work for Ammar, and browsers follow the link tags. Rules:
     `.claude/skills/favicon-cheat-sheet`.
+
+## `inc/viewport.php` — the viewport tag (AMM-193, 2026-10-13)
+
+  - Swaps core's fixed block-theme viewport tag (`_block_template_viewport_meta_tag()`, added
+    to `wp_head` at priority 0 while the template is resolved; there is no filter) for the same
+    tag with `viewport-fit=cover`, printed at priority -1, which also removes core's. Zoom is
+    never disabled. With `viewport-fit=cover` the page runs under a phone's notch: `style.css`
+    section 1 pads `body` with `env(safe-area-inset-left/right)`, and the quote list's bottom
+    sheet pads its foot with `env(safe-area-inset-bottom)` (`src/quote-drawer/style.scss`).
+    Anything new fixed to a screen edge pads itself the same way. Section 1 also turns off the
+    tap flash (`-webkit-tap-highlight-color`) and sets `touch-action: manipulation` on links,
+    buttons, labels and summaries; the press states that replace the flash are in section 4
+    (see CLAUDE.md's working agreement).
 
 ## `theme.json` — block-level styles
 

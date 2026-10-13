@@ -158,6 +158,14 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
   transparent `::before` (`style.css` section 4, one `:is()` list): a new pill style or header
   control joins that list, and a wrapped row of them needs `spacing-30` between rows. Other new
   controls are 44px themselves.
+- **Every control has a press state (AMM-193).** One `:is()` list in `style.css` section 4 gives
+  pills, header controls, quote buttons, chips, the segmented control and the rest a 0.97 dip on
+  `:active` (the `scale` property, `motion.press` 160ms on `motion.easeOut`; a fade instead with
+  reduced motion) and restates their colour transitions. A new control joins that list, or
+  `transition` set on it elsewhere will be overruled. `:hover` goes inside
+  `@media (hover: hover) and (pointer: fine)`, so it doesn't stick after a tap on a phone. The
+  viewport tag carries `viewport-fit=cover` (`inc/viewport.php`), so anything fixed to a screen
+  edge pads itself with `env(safe-area-inset-*)`.
 - **No jQuery, no classic WooCommerce assets** (AMM-154). Front-end code is dependency-free (plain
   JS, TypeScript modules, the Interactivity API). After any enqueue change, run a network trace on
   home, catalogue and product pages and compare with AMM-154's table.
