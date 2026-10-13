@@ -353,6 +353,15 @@ svg {
  * flush with a control that is already taller. The site title is a tap
  * target too. Wrapped pill rows get spacing-30 between them (below), so two
  * tap areas never overlap.
+ *
+ * AMM-193 batch F added the small targets measured on a 375px phone: chips
+ * (36px), page numbers and "Next" (32-36px), the footer's "All products"
+ * (22px) and plate links (40px), the datasheet's category link (25px) and
+ * Services' "Browse all parts" (18px). Each has at least 10px of free space
+ * above and below, so the stretched areas don't overlap a neighbour. Page
+ * numbers sit 3px apart, so only their height grows (WCAG 2.5.8's 24px width
+ * is met). Controls packed closer than that grow for real instead (the
+ * Branch Desk cities, section 9).
  */
 :is(
 	.dh-pill,
@@ -361,7 +370,14 @@ svg {
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
-	.dh-header .wp-block-site-title a
+	.dh-header .wp-block-site-title a,
+	.dh-toolbar__chip,
+	.dh-pagination a,
+	.wp-block-query-pagination-next,
+	.dh-cindex__all,
+	.dh-foot-plate a,
+	.dh-summary__eyebrow a,
+	.dh-svc-parts__all a
 ) {
 	position: relative;
 }
@@ -373,12 +389,28 @@ svg {
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
-	.dh-header .wp-block-site-title a
+	.dh-header .wp-block-site-title a,
+	.dh-toolbar__chip,
+	.dh-pagination a,
+	.wp-block-query-pagination-next,
+	.dh-cindex__all,
+	.dh-foot-plate a,
+	.dh-summary__eyebrow a,
+	.dh-svc-parts__all a
 )::before {
 	content: "";
 	position: absolute;
 	inset-inline: 0;
 	inset-block: min(0px, calc((100% - 2.75rem) / 2));
+}
+
+/* The chips scroll sideways, and a scroll box clips whatever reaches outside
+   it: room inside the row for the chips' stretched tap areas, taken back
+   outside so the row sits where it did. The ul outranks the block's own
+   padding: 0. */
+ul.dh-toolbar__chips {
+	padding-block: 0.25rem;
+	margin-block: -0.25rem;
 }
 
 .wp-block-buttons:has(> .wp-block-button[class*="is-style-dh-pill-"]) {
@@ -1573,6 +1605,15 @@ svg {
 	transition:
 		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+/* On touch screens each city is a full 44px target (AMM-193): they sit 4px
+   apart, too close for a stretched tap area, so the button itself grows.
+   Padding, not a min-height, keeps the code and the city on one baseline. */
+@media (pointer: coarse) {
+	.dh-desk__city {
+		padding-block: calc((2.75rem - 1.2em - 2px) / 2);
+	}
 }
 
 .dh-desk__city:hover {
