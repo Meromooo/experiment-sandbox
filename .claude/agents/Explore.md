@@ -46,7 +46,8 @@ path:line - `symbol or text` - note of six words at most
 - When the brief asks what a line says, quote it exactly, at most one line per finding.
 - For logs and CI output, quote only the decisive line or two.
 - Zero hits: `No match.` and what you searched.
-- Last line: the totals (`3 files, 7 uses.`).
+- Last line: the totals for everything found, every group together plus any lines cut by the
+  40-line limit (`3 files, 7 hits.`).
 - 40 lines at most. If there is more, give the first 40 and say how many are left.
 - If the question needs a judgement (which is better, why it breaks), report what you found
   and end with `needs-opus: <why>`.
