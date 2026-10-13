@@ -14,24 +14,33 @@
 // style.css section 15. Photos are media-library images by id (relative
 // paths, so they resolve on any domain); the installation photo is
 // AI-generated and flagged for replacement (AMM-149). AMM-171: the sections
-// alternate side by side (hero, installation, call to action) and stacked
-// (survey, maintenance), and only the hero and the call to action carry an
-// eyebrow; the stage line under the hero numbers the three services.
+// alternate side by side and stacked, and only the call to action carries an
+// eyebrow. AMM-192: the hero's second line is the Bold format and its figures
+// a list with Bold numbers; the offer is a card over the photo's edge (no
+// notch); the trust row and the services band (each title a link to its
+// section) sit under the hero; the survey section is the visit drawn as a
+// route, its checks a nested list.
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-svc-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-svc-hero"><!-- wp:group {"className":"dh-svc-hero__grid","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-svc-hero__grid"><!-- wp:group {"className":"dh-svc-hero__copy dh-reveal-group","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-hero__copy dh-reveal-group"><!-- wp:paragraph {"className":"dh-eyebrow dh-reveal--rise"} -->
-<p class="dh-eyebrow dh-reveal--rise">Services</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":1,"className":"dh-svc-hero__title dh-reveal--rise"} -->
-<h1 class="wp-block-heading dh-svc-hero__title dh-reveal--rise">Designed, installed, and <span class="dh-highlight" data-reveal="wipe">kept running</span>.</h1>
+<div class="wp-block-group dh-svc-hero__copy dh-reveal-group"><!-- wp:heading {"level":1,"className":"dh-svc-hero__title dh-reveal--rise"} -->
+<h1 class="wp-block-heading dh-svc-hero__title dh-reveal--rise">Designed, installed, <strong>and <span class="dh-highlight" data-reveal="wipe">kept running.</span></strong></h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc-lead dh-reveal--rise"} -->
-<p class="dh-svc-lead dh-reveal--rise">We design, install and maintain irrigation for villas, landscapes and farms across Saudi Arabia. Forty-six years, five-year warranty.</p>
+<p class="dh-svc-lead dh-reveal--rise">We design, install and maintain irrigation for villas, landscapes and farms across Saudi Arabia.</p>
 <!-- /wp:paragraph -->
+
+<!-- wp:list {"className":"dh-svc-proof dh-reveal--rise"} -->
+<ul class="wp-block-list dh-svc-proof dh-reveal--rise"><!-- wp:list-item -->
+<li><strong>46</strong> years in business</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>5</strong> year warranty</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
 
 <!-- wp:buttons {"className":"dh-svc-actions dh-reveal-group"} -->
 <div class="wp-block-buttons dh-svc-actions dh-reveal-group"><!-- wp:button {"className":"is-style-dh-pill-solid dh-reveal--dot"} -->
@@ -44,18 +53,22 @@
 <!-- /wp:buttons --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"className":"dh-notch dh-svc-hero__media dh-reveal--seed","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-notch dh-svc-hero__media dh-reveal--seed"><!-- wp:image {"id":1164,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-photo"} -->
+<!-- wp:group {"className":"dh-svc-hero__media dh-reveal--seed","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-hero__media dh-reveal--seed"><!-- wp:image {"id":1164,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-photo"} -->
 <figure class="wp-block-image size-large dh-svc-photo"><img src="/wp-content/uploads/2026/03/1000750832-1-768x1024.jpg" alt="A Demas crew laying irrigation lines across a desert site, mountains behind" class="wp-image-1164"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:group {"className":"dh-notch__tab dh-notch__tab--bottom-start","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-notch__tab dh-notch__tab--bottom-start"><!-- wp:paragraph {"className":"dh-notch__title"} -->
-<p class="dh-notch__title">Free site visit</p>
+<!-- wp:group {"className":"dh-svc-offer","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-offer"><!-- wp:paragraph {"className":"dh-svc-offer__badge"} -->
+<p class="dh-svc-offer__badge">Survey &amp; design</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph {"className":"dh-notch__copy"} -->
-<p class="dh-notch__copy">Anywhere in the Kingdom.</p>
+<!-- wp:paragraph {"className":"dh-svc-offer__title"} -->
+<p class="dh-svc-offer__title">Free site visit</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"className":"dh-svc-offer__copy"} -->
+<p class="dh-svc-offer__copy">Anywhere in the Kingdom.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group --></div>
@@ -63,61 +76,91 @@
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"dh-svc-stages","layout":{"type":"constrained"}} -->
-<div class="wp-block-group dh-svc-stages"><!-- wp:list {"ordered":true,"className":"dh-svc-stages__list"} -->
-<ol class="wp-block-list dh-svc-stages__list"><!-- wp:list-item -->
-<li><a href="#survey"><strong>01</strong> Survey &amp; design</a></li>
+<div class="wp-block-group dh-svc-stages"><!-- wp:list {"className":"dh-svc-trust"} -->
+<ul class="wp-block-list dh-svc-trust"><!-- wp:list-item {"className":"dh-svc-trust__branches"} -->
+<li class="dh-svc-trust__branches">15 branches across the Kingdom</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item {"className":"dh-svc-trust__certified"} -->
+<li class="dh-svc-trust__certified">ISO 9001 and SASO certified</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:list {"ordered":true,"className":"dh-svc-steps"} -->
+<ol class="wp-block-list dh-svc-steps"><!-- wp:list-item -->
+<li><a href="#survey">Survey &amp; design</a> A free visit, then a system drawn for your site.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><a href="#install"><strong>02</strong> Installation</a></li>
+<li><a href="#install">Installation</a> Pipes, drip, sprinklers, valves and controllers, set to run on their own.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><a href="#maintain"><strong>03</strong> Maintenance &amp; repairs</a></li>
+<li><a href="#maintain">Maintenance &amp; repairs</a> Scheduled checks and fast repairs, with a five-year warranty.</li>
 <!-- /wp:list-item --></ol>
 <!-- /wp:list --></div>
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"section","anchor":"survey","className":"dh-section dh-svc","layout":{"type":"constrained"}} -->
-<section id="survey" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc__head","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__head"><!-- wp:heading {"className":"dh-svc__title"} -->
+<section id="survey" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc-visit","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-visit"><!-- wp:group {"className":"dh-svc-visit__copy","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-visit__copy"><!-- wp:heading {"className":"dh-svc__title"} -->
 <h2 class="wp-block-heading dh-svc__title">It starts with a visit to your site.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc-lead"} -->
 <p class="dh-svc-lead">A Demas engineer visits for free, looks at what you have, and recommends the system that suits your villa, landscape or farm.</p>
-<!-- /wp:paragraph --></div>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons {"className":"dh-svc-actions"} -->
+<div class="wp-block-buttons dh-svc-actions"><!-- wp:button {"className":"is-style-dh-pill-solid"} -->
+<div class="wp-block-button is-style-dh-pill-solid"><a class="wp-block-button__link wp-element-button" href="/contact-us/?need=survey#request">Request a site visit</a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons -->
+
+<!-- wp:image {"id":1161,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-visit__photo"} -->
+<figure class="wp-block-image size-large dh-svc-visit__photo"><img src="/wp-content/uploads/2026/03/1000239887-1024x576.jpg" alt="Technicians in hard hats kneeling to fit drip lines in the sand" class="wp-image-1161"/></figure>
+<!-- /wp:image --></div>
 <!-- /wp:group -->
 
-<!-- wp:heading {"level":3,"className":"dh-svc__label"} -->
-<h3 class="wp-block-heading dh-svc__label">What we check</h3>
-<!-- /wp:heading -->
-
-<!-- wp:list {"className":"dh-svc-checks dh-reveal--sliver"} -->
-<ul class="wp-block-list dh-svc-checks dh-reveal--sliver"><!-- wp:list-item -->
-<li><strong>Water source</strong> Well, network or tank</li>
+<!-- wp:list {"ordered":true,"className":"dh-svc-route"} -->
+<ol class="wp-block-list dh-svc-route"><!-- wp:list-item -->
+<li>You tell us about the site and pick your nearest branch.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><strong>Pressure &amp; flow</strong> Measured at the source</li>
+<li>An engineer visits, free, anywhere in the Kingdom.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><strong>Soil &amp; slope</strong> How water moves on your ground</li>
+<li>We check what decides the design:<!-- wp:list {"className":"dh-svc-route__checks"} -->
+<ul class="wp-block-list dh-svc-route__checks"><!-- wp:list-item -->
+<li>Water source</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><strong>Sun &amp; shade</strong> What each area needs</li>
+<li>Pressure &amp; flow</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><strong>Zones</strong> Areas grouped by how much they drink</li>
+<li>Soil &amp; slope</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Sun &amp; shade</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Zones</li>
 <!-- /wp:list-item --></ul>
-<!-- /wp:list -->
+<!-- /wp:list --></li>
+<!-- /wp:list-item -->
 
-<!-- wp:paragraph {"className":"dh-svc-outcome"} -->
-<p class="dh-svc-outcome">You get a clear recommendation and a quotation, usually within two business days.</p>
-<!-- /wp:paragraph --></section>
+<!-- wp:list-item -->
+<li>You get a recommendation and a quotation, usually within two business days.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list --></div>
+<!-- /wp:group --></section>
 <!-- /wp:group -->
 
 <!-- wp:group {"tagName":"section","anchor":"install","className":"dh-section dh-svc dh-svc--plate","layout":{"type":"constrained"}} -->

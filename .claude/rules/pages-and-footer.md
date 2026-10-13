@@ -115,6 +115,30 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   `.dh-404 .dh-line__eyebrow` in `style.css` section 12; the catalogue and an empty search keep
   the eyebrow). The Contact page also uses the Designed page template: see `quote-and-contact.md`.
 
+  **The Services redesign, first two parts (AMM-192, 2026-10-13)**, after four mockup rounds
+  and the taste audit. The hero is on paper with no eyebrow: one weight of Archivo throughout
+  (700, the display width), the first line canopy and the second, the **Bold format** on a
+  line of its own, ink with "kept running." (full stop included) on a field-green pill; the
+  opening sentence; the **figures**, a list whose numbers are Bold, each number on field
+  green ("46 years in business", "5 year warranty"); the two buttons a full 44px with a
+  direction mark each (`::after` masks: an arrow across, a chevron down; the outline one on
+  white), the selector two classes deep (`.dh-svc-hero .wp-block-button > …`) because the pill
+  rule in section 4 is three. The crew photo is 4:5 with a canopy-tinted shadow, and the offer
+  ("Survey & design / Free site visit / Anywhere in the Kingdom.") is a **card over the
+  photo's lower edge** (`.dh-svc-offer`, three paragraphs; it rises in after the photo grows),
+  not the notch tab. Phones: the second line runs on (three lines, not four) and the buttons
+  come before the figures (flex `order`), so both buttons make a 320x568 first screen. Under
+  the hero, the **trust row** (`.dh-svc-trust`: the branches and the certificates, each list
+  item's class giving its mark) and the **services band** (`.dh-svc-steps`: an ordered list,
+  not numbered, each title a link to its section and the whole step its target) replace the
+  numbered stage line. The survey section is the visit (`.dh-svc-visit`): title, lead, button
+  and photo (hidden under 56rem) beside the four visit steps drawn as the **route** shared
+  with Contact (`.dh-svc-route`; see `quote-and-contact.md`), the checks a list nested in the
+  third step (`.dh-svc-route__checks`, placed in the step's text column). The checks strip,
+  "What we check" label and outcome line are gone, and so are their rules. Page 822 takes the
+  new markup by Ammar's paste in the Code editor (the pattern and the page must match for the
+  cutover).
+
 ## No `single.html`; `template-parts/`; `woocommerce/`
 
   There is no `single.html`: the site has

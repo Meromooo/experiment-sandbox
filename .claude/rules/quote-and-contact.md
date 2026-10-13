@@ -95,4 +95,9 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   tall, one track joining them, and field green drawn down it as the list scrolls up (the
   list's own `view-timeline`; ranges end by 40% so the sticky copy can't freeze it half
   drawn); finished with reduced motion. CSS only on the saved markup, apart from the
-  highlight span (in the pattern, and added in the editor on the sandbox).
+  highlight span (in the pattern, and added in the editor on the sandbox). **Since AMM-192
+  the route's rules are shared** with the Services visit (`:is(.dh-ct-next, .dh-svc-route) >
+  li`, timeline `--dh-route`, keyframes `dh-route-light` / `dh-route-draw`): only the list's
+  own items are steps, and the colours are variables on each list (`--_tab`, `--_tab-ink`,
+  `--_tab-off`, `--_tab-edge`, `--_track`), paper tabs on Contact's canopy frame, canopy tabs
+  on Services' paper.
