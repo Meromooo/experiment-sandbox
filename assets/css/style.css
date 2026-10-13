@@ -2753,8 +2753,12 @@ svg {
 	scale: 0.985;
 }
 
+/* The second selector outranks the reveal's reduced-motion `opacity: 1`
+   (.js [data-reveal].is-in, section 7), which otherwise held the card at full
+   opacity mid-press. */
 @media (prefers-reduced-motion: reduce) {
-	.dh-cat:active {
+	.dh-cat:active,
+	.js .dh-cat[data-reveal]:active {
 		scale: none;
 		opacity: 0.85;
 	}
