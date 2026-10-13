@@ -1035,6 +1035,7 @@ ul.dh-toolbar__chips {
 	/* The word sweeps two beats after its headline; the buttons follow the lead. */
 	.home .dh-hero .dh-highlight,
 	.home .dh-hero__actions > *,
+	.page-template-designed-page .dh-svc-hero .dh-svc-proof,
 	.page-template-designed-page .dh-svc-hero .dh-highlight,
 	.page-template-designed-page .dh-svc-hero .dh-svc-actions > *,
 	.page-template-designed-page .dh-ct-hero .dh-highlight,
@@ -1064,6 +1065,11 @@ ul.dh-toolbar__chips {
 
 	.home .dh-hero__grid > [data-reveal="seed"] + [data-reveal="seed"] {
 		--_step: 4;
+	}
+
+	.page-template-designed-page .dh-svc-offer {
+		animation: dh-hero-rise var(--wp--custom--motion--base) var(--wp--custom--motion--ease-out)
+			calc(3 * var(--wp--custom--motion--stagger) + var(--wp--custom--motion--base)) backwards;
 	}
 
 	.home .dh-hero [data-reveal] [data-reveal-content] {
@@ -4829,8 +4835,7 @@ footer.wp-block-template-part {
 
 .dh-svc-hero__grid {
 	grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-	gap: var(--wp--preset--spacing--60);
-	align-items: end;
+	gap: var(--wp--preset--spacing--70);
 }
 
 .dh-svc__grid {
@@ -4843,7 +4848,7 @@ footer.wp-block-template-part {
 }
 
 /* Grid cells and side-by-side pieces, not stacked blocks: no layout gap. */
-:is(.dh-svc-hero__grid, .dh-svc__grid, .dh-svc-band, .dh-svc-record-stage, .dh-svc-collage, .dh-svc-two, .dh-svc-parts__head, .dh-svc-record__head, .dh-svc-record__sign, .dh-svc-record) > * {
+:is(.dh-svc-hero__grid, .dh-svc__grid, .dh-svc-visit, .dh-svc-band, .dh-svc-record-stage, .dh-svc-collage, .dh-svc-two, .dh-svc-parts__head, .dh-svc-record__head, .dh-svc-record__sign, .dh-svc-record) > * {
 	margin-block: 0;
 }
 
@@ -4851,7 +4856,7 @@ footer.wp-block-template-part {
 	scroll-margin-block-start: var(--wp--preset--spacing--40);
 }
 
-:is(.dh-svc-hero__copy, .dh-svc-band__copy, .dh-ct-hero__intro, .dh-ct-request__copy) > .dh-eyebrow {
+:is(.dh-svc-band__copy, .dh-ct-hero__intro, .dh-ct-request__copy) > .dh-eyebrow {
 	margin-block: 0 var(--wp--preset--spacing--40);
 }
 
@@ -4859,12 +4864,132 @@ footer.wp-block-template-part {
 	container-type: inline-size; /* the headline is sized to this column */
 }
 
-/* Two lines from 768px up, sized to its column as on Contact (AMM-171); on
-   a 320x568 phone the buttons still make the first screen. */
+/*
+ * The hero headline (AMM-192): one weight throughout, the first line canopy,
+ * the second (the Bold format) ink on a line of its own with "kept running."
+ * on a field-green pill. Sized to its column, so "Designed, installed," fills
+ * one line from 768px up. On phones the second line runs on (three lines, not
+ * four) and the buttons come before the figures (below), so both buttons make
+ * a 320x568 first screen.
+ */
 .dh-svc-hero__title {
-	margin-block: var(--wp--preset--spacing--30) var(--wp--preset--spacing--40);
-	font-size: clamp(1.75rem, 9cqi, 4rem);
-	line-height: var(--wp--custom--display--leading);
+	margin-block: 0 var(--wp--preset--spacing--40);
+	font-size: clamp(2rem, 8.6cqi, 4.5rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.12;
+	color: var(--wp--preset--color--canopy);
+}
+
+.dh-svc-hero__title strong {
+	display: block;
+	font-weight: inherit;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-svc-hero .dh-highlight {
+	--_r: var(--wp--custom--radius--pill);
+	margin-inline-start: 0.04em;
+	padding: 0 0.32em 0.04em;
+	background-image: linear-gradient(var(--wp--preset--color--field), var(--wp--preset--color--field));
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-svc-hero .dh-svc-lead {
+	max-inline-size: 34rem;
+}
+
+/* The figures: each number on the headline's field green, its words beside
+   it. A list whose numbers are the Bold format. */
+.dh-svc-hero .dh-svc-proof {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--50);
+	margin-block: var(--wp--preset--spacing--40) 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-svc-proof li {
+	display: flex;
+	align-items: center;
+	gap: 0.6em;
+	margin: 0;
+	font-size: var(--wp--preset--font-size--md);
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-svc-proof strong {
+	display: inline-grid;
+	place-items: center;
+	min-inline-size: 2.4em;
+	padding: 0.3em 0.55em 0.34em;
+	border-radius: var(--wp--custom--radius--pill);
+	background: var(--wp--preset--color--field);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-stretch: var(--wp--custom--display--stretch);
+	font-variant-numeric: tabular-nums;
+	font-weight: 700;
+	line-height: 1;
+}
+
+/* The hero's two buttons: a full 44px, the outline one on white, each with a
+   direction mark (across to the form, down to the list) that nudges on hover. */
+.dh-svc-hero .wp-block-button > .wp-block-button__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6em;
+	min-block-size: 2.75rem;
+	padding: 0.8em 1.4em;
+	font-size: var(--wp--preset--font-size--md);
+}
+
+.dh-svc-hero .is-style-dh-pill-outline > .wp-block-button__link {
+	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 10%, transparent);
+	background: var(--wp--preset--color--white);
+	box-shadow:
+		0 1px 2px color-mix(in srgb, var(--wp--preset--color--ink) 6%, transparent),
+		0 8px 20px color-mix(in srgb, var(--wp--preset--color--canopy) 8%, transparent);
+}
+
+.dh-svc-hero .wp-block-button__link::after {
+	content: "";
+	flex: none;
+	inline-size: 1em;
+	block-size: 1em;
+	background: currentColor;
+	-webkit-mask: var(--_mark) center / contain no-repeat;
+	mask: var(--_mark) center / contain no-repeat;
+	transition: translate var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out);
+}
+
+.dh-svc-hero .is-style-dh-pill-solid > .wp-block-button__link {
+	--_mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M9 3.5 13.5 8 9 12.5'/%3E%3C/svg%3E");
+}
+
+.dh-svc-hero .is-style-dh-pill-outline > .wp-block-button__link {
+	--_mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 6 8 10.5 12.5 6'/%3E%3C/svg%3E");
+}
+
+[dir="rtl"] .dh-svc-hero .is-style-dh-pill-solid > .wp-block-button__link::after {
+	scale: -1 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-svc-hero .is-style-dh-pill-solid > .wp-block-button__link:hover::after {
+		translate: 3px 0;
+	}
+
+	[dir="rtl"] .dh-svc-hero .is-style-dh-pill-solid > .wp-block-button__link:hover::after {
+		translate: -3px 0;
+	}
+
+	.dh-svc-hero .is-style-dh-pill-outline > .wp-block-button__link:hover::after {
+		translate: 0 2px;
+	}
 }
 
 .dh-svc__title,
@@ -4909,11 +5034,11 @@ footer.wp-block-template-part {
 }
 
 /* Photos: core Image blocks, cropped to the frame they sit in. */
-:is(.dh-svc-photo, .dh-svc-media, .dh-svc-record__photo, .dh-svc-collage__a, .dh-svc-collage__b) {
+:is(.dh-svc-photo, .dh-svc-media, .dh-svc-visit__photo, .dh-svc-record__photo, .dh-svc-collage__a, .dh-svc-collage__b) {
 	margin: 0;
 }
 
-:is(.dh-svc-photo, .dh-svc-media, .dh-svc-record__photo, .dh-svc-collage__a, .dh-svc-collage__b) img {
+:is(.dh-svc-photo, .dh-svc-media, .dh-svc-visit__photo, .dh-svc-record__photo, .dh-svc-collage__a, .dh-svc-collage__b) img {
 	display: block;
 	inline-size: 100%;
 	block-size: auto;
@@ -4921,153 +5046,249 @@ footer.wp-block-template-part {
 	object-fit: cover;
 }
 
+.dh-svc-hero__media {
+	position: relative;
+}
+
 .dh-svc-photo img {
-	aspect-ratio: 3 / 4;
-	max-block-size: 40rem;
+	aspect-ratio: 4 / 5;
+	max-block-size: 38rem;
+	object-position: 50% 40%;
+	box-shadow: 0 24px 48px -16px color-mix(in srgb, var(--wp--preset--color--canopy) 35%, transparent);
 }
 
 .dh-svc-media img {
 	aspect-ratio: 4 / 3;
 }
 
-.dh-svc-hero__media .dh-notch__tab {
-	max-inline-size: min(70%, 18rem);
-}
-
-/* The stage line: three stations on one line, linking down the page. */
-.dh-svc-stages__list {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	border-block: var(--wp--custom--rule);
-}
-
-.dh-svc-stages__list li {
-	position: relative;
-	margin: 0;
-}
-
-.dh-svc-stages__list li:not(:last-child)::after {
-	content: "";
+/*
+ * The offer (AMM-192): a card over the photo's lower edge, reaching towards
+ * the copy. A label, not a control: it names what the first button asks for.
+ */
+.dh-svc-offer {
 	position: absolute;
-	inset-block-start: 50%;
-	inset-inline-start: 0.45rem;
-	inline-size: 100%;
-	border-block-start: 2px solid var(--wp--preset--color--field);
-}
-
-.dh-svc-stages__list a {
-	position: relative;
 	z-index: 1;
-	display: inline-flex;
-	align-items: center;
-	gap: var(--wp--preset--spacing--30);
-	min-block-size: 2.75rem;
-	padding-block: var(--wp--preset--spacing--40);
-	padding-inline-end: var(--wp--preset--spacing--30);
+	inset-block-end: var(--wp--preset--spacing--50);
+	inset-inline-start: calc(-1 * var(--wp--preset--spacing--60));
+	inline-size: min(72%, 16rem);
+	padding: var(--wp--preset--spacing--40);
+	border-radius: var(--wp--custom--radius--lg);
 	background: var(--wp--preset--color--paper);
-	color: var(--wp--preset--color--ink);
-	font-size: var(--wp--preset--font-size--sm);
-	font-weight: 500;
-	line-height: 1.2;
-	text-decoration: none;
+	box-shadow:
+		0 1px 0 color-mix(in srgb, var(--wp--preset--color--ink) 6%, transparent),
+		0 18px 40px color-mix(in srgb, var(--wp--preset--color--canopy) 20%, transparent);
 }
 
-.dh-svc-stages__list a::before {
-	content: "";
-	flex: none;
-	inline-size: 0.9rem;
-	block-size: 0.9rem;
-	border: 2px solid var(--wp--preset--color--field);
-	border-radius: 50%;
-	background: var(--wp--preset--color--paper);
-	transition:
-		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+.dh-svc-offer > p {
+	margin-block: 0;
 }
 
-.dh-svc-stages__list a:focus-visible::before {
+.dh-svc-offer .dh-svc-offer__badge {
+	inline-size: fit-content;
+	padding: 0.4em 0.7em;
+	border-radius: var(--wp--custom--radius--sm);
 	background: var(--wp--preset--color--field);
-	transform: scale(1.25);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	line-height: 1;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--ink);
 }
 
-@media (hover: hover) and (pointer: fine) {
-	.dh-svc-stages__list a:hover::before {
-		background: var(--wp--preset--color--field);
-		transform: scale(1.25);
+.dh-svc-offer .dh-svc-offer__title {
+	margin-block-start: var(--wp--preset--spacing--30);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-stretch: var(--wp--custom--display--stretch);
+	font-weight: 650;
+	letter-spacing: -0.01em;
+	line-height: 1.15;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-svc-offer__copy {
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 68%, transparent);
+}
+
+@media (min-width: 56.0625rem) and (max-width: 80rem) {
+	.dh-svc-offer {
+		inset-inline-start: calc(-1 * var(--wp--preset--spacing--40));
 	}
 }
 
-.dh-svc-stages__list strong {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	font-weight: 500;
-	color: var(--wp--preset--color--canopy);
+/* Under the hero (AMM-192): the trust row, two facts the site already
+   states (the branch list, the certificates belt), each with its mark. */
+.dh-svc-stages {
+	padding-block: 0 var(--wp--preset--spacing--20);
 }
 
-/* Survey: what a site visit checks, as one ruled strip across the page,
-   the way a survey sheet lays out its fields: a mono label over one line. */
-.dh-svc__label {
-	margin-block: var(--wp--preset--spacing--60) var(--wp--preset--spacing--30);
-	font-family: var(--wp--preset--font-family--body);
-	font-size: var(--wp--preset--font-size--xs);
-	font-weight: 500;
-	font-stretch: normal;
-	letter-spacing: 0.08em;
-	line-height: 1;
-	text-transform: uppercase;
-}
-
-.dh-svc-checks {
-	display: grid;
-	grid-template-columns: repeat(5, minmax(0, 1fr));
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	border-block-start: 2px solid var(--wp--preset--color--ink);
-	border-block-end: var(--wp--custom--rule);
-}
-
-.dh-svc-checks li {
+.dh-svc-stages > .dh-svc-trust {
 	display: flex;
-	flex-direction: column;
-	gap: var(--wp--preset--spacing--20);
-	margin: 0;
-	padding-block: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
-	padding-inline: 0 var(--wp--preset--spacing--40);
-	line-height: 1.4;
+	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--20) 0;
+	margin-block: 0 var(--wp--preset--spacing--40);
+	padding: var(--wp--preset--spacing--30) 0 0;
+	list-style: none;
+	border-block-start: var(--wp--custom--rule);
+	font-size: var(--wp--preset--font-size--sm);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 76%, transparent);
 }
 
-.dh-svc-checks li + li {
-	padding-inline-start: var(--wp--preset--spacing--40);
+.dh-svc-trust li {
+	display: flex;
+	align-items: center;
+	gap: 0.55em;
+	margin: 0;
+}
+
+.dh-svc-trust li + li {
+	margin-inline-start: var(--wp--preset--spacing--50);
+	padding-inline-start: var(--wp--preset--spacing--50);
 	border-inline-start: var(--wp--custom--rule);
 }
 
-.dh-svc-checks strong {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	font-weight: 500;
-	letter-spacing: 0.08em;
-	line-height: 1.7;
-	text-transform: uppercase;
-	color: var(--wp--preset--color--canopy);
-}
-
-.dh-svc-outcome {
-	display: flex;
-	gap: 0.6rem;
-	align-items: baseline;
-	margin-block: var(--wp--preset--spacing--50) 0;
-	font-weight: 500;
-}
-
-.dh-svc-outcome::before {
-	content: "→";
+:is(.dh-svc-trust__branches, .dh-svc-trust__certified)::before {
+	content: "";
 	flex: none;
-	color: var(--wp--preset--color--field);
+	inline-size: 1.3em;
+	block-size: 1.3em;
+	background: var(--wp--preset--color--canopy);
+	-webkit-mask: var(--_mark) center / contain no-repeat;
+	mask: var(--_mark) center / contain no-repeat;
+}
+
+.dh-svc-trust__branches {
+	--_mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z'/%3E%3Ccircle cx='12' cy='10' r='2.4'/%3E%3C/svg%3E");
+}
+
+.dh-svc-trust__certified {
+	--_mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='9.5' r='6'/%3E%3Cpath d='M8.6 14.6 7.5 21.5l4.5-2.2 4.5 2.2-1.1-6.9'/%3E%3Cpath d='m9.4 9.6 1.8 1.8 3.4-3.4'/%3E%3C/svg%3E");
+}
+
+/*
+ * The services band: the three services along a canopy rule, each title a
+ * link down to its section and the whole step its target. A real order
+ * (survey, then installation, then upkeep), so an ordered list, but not
+ * numbered: the visit route below carries the numbers.
+ */
+.dh-svc-stages > .dh-svc-steps {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--wp--preset--spacing--60);
+	margin-block: var(--wp--preset--spacing--30) 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-svc-steps li {
+	position: relative;
+	margin: 0;
+	padding-block-start: var(--wp--preset--spacing--50);
+	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
+}
+
+.dh-svc-steps li::before {
+	content: "";
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline: 0;
+	block-size: 4px;
+	border-radius: 2px;
+	background: var(--wp--preset--color--canopy);
+}
+
+.dh-svc-steps li::after {
+	content: "";
+	position: absolute;
+	inset-block-start: -6px;
+	inset-inline-end: -2px;
+	inline-size: 16px;
+	block-size: 16px;
+	background: var(--wp--preset--color--canopy);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 2 11 8 5 14'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 2 11 8 5 14'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+[dir="rtl"] .dh-svc-steps li::after {
+	scale: -1 1;
+}
+
+.dh-svc-steps a {
+	display: block;
+	inline-size: fit-content;
+	margin: 0 -0.18em var(--wp--preset--spacing--30);
+	padding-inline: 0.18em;
+	border-radius: var(--wp--custom--radius--md);
+	background-color: color-mix(in srgb, var(--wp--preset--color--field) 38%, var(--wp--preset--color--paper));
+	font-family: var(--wp--preset--font-family--display);
+	font-size: calc(1.2 * var(--wp--preset--font-size--lg));
+	font-stretch: var(--wp--custom--display--stretch);
 	font-weight: 600;
+	letter-spacing: -0.01em;
+	line-height: 1.15;
+	color: var(--wp--preset--color--canopy);
+	text-decoration: none;
+	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+}
+
+/* The whole step takes the click. */
+.dh-svc-steps a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-svc-steps a:hover {
+		background-color: var(--wp--preset--color--field);
+	}
+}
+
+/*
+ * The survey (AMM-192): the visit beside the steps it takes, drawn as a
+ * route (the Contact page's route, below, in canopy on paper). The checks are
+ * a list nested in the third step, shown as labels.
+ */
+.dh-svc-visit {
+	display: grid;
+	grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+	gap: var(--wp--preset--spacing--70);
+	align-items: start;
+}
+
+.dh-svc-visit__copy > .dh-svc-visit__photo {
+	margin-block: var(--wp--preset--spacing--60) 0;
+}
+
+.dh-svc-visit__photo img {
+	aspect-ratio: 16 / 9;
+}
+
+.dh-svc-route {
+	padding-block-start: var(--wp--preset--spacing--20);
+}
+
+.dh-svc-route .dh-svc-route__checks {
+	grid-column: 2;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin: var(--wp--preset--spacing--30) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-svc-route__checks li {
+	margin: 0;
+	padding: 0.3em 0.8em;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 16%, transparent);
+	border-radius: var(--wp--custom--radius--md);
+	background: color-mix(in srgb, var(--wp--preset--color--sand) 55%, var(--wp--preset--color--paper));
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.3;
 }
 
 /* Installation: the work set on a sand plate. */
@@ -5679,28 +5900,47 @@ footer.wp-block-template-part {
 }
 
 /*
- * "What happens next": a real sequence, so numbered, and drawn as a route
- * (AMM-191). Each number sits in a paper tab exactly one text line tall, so
- * it is level with its step's first line, and one line joins the tabs: a
- * faint track with field green drawn along it. The numbers are a CSS
- * counter, hidden from screen readers (the empty alternative after "/"),
- * since the list already says "1 of 3".
+ * The route (AMM-191; shared with Services' visit since AMM-192): a real
+ * sequence, so numbered. Each number sits in a tab exactly one text line tall,
+ * so it is level with its step's first line, and one line joins the tabs: a
+ * faint track with field green drawn along it. The numbers are a CSS counter,
+ * hidden from screen readers (the empty alternative after "/"), since the
+ * list already says "1 of 4". Only the list's own items are steps (`> li`):
+ * Services' third step holds a nested list of checks.
  *
- * As the steps come up the screen, each tab lights up (outline to filled
- * paper) and the green runs down to the next, on the list's own view
- * timeline: no pinning, no script, rewinding on scroll back. With reduced
- * motion, or without scroll timelines, the finished route shows. The ranges
- * end by 40% of the list's travel, before the sticky copy stops it moving.
+ * Its colours are variables: on Contact's canopy frame the tabs are paper; on
+ * Services' paper they are canopy. As the steps come up the screen, each tab
+ * lights up (outline to filled) and the green runs down to the next, on the
+ * list's own view timeline: no pinning, no script, rewinding on scroll back.
+ * With reduced motion, or without scroll timelines, the finished route shows.
+ * The ranges end by 40% of the list's travel, before Contact's sticky copy
+ * stops it moving.
  */
 .dh-ct-next {
+	--_tab: var(--wp--preset--color--paper);
+	--_tab-ink: var(--wp--preset--color--canopy);
+	--_tab-off: var(--wp--preset--color--paper);
+	--_tab-edge: color-mix(in srgb, var(--wp--preset--color--paper) 55%, transparent);
+	--_track: color-mix(in srgb, var(--wp--preset--color--paper) 22%, transparent);
+}
+
+.dh-svc-route {
+	--_tab: var(--wp--preset--color--canopy);
+	--_tab-ink: var(--wp--preset--color--paper);
+	--_tab-off: var(--wp--preset--color--canopy);
+	--_tab-edge: var(--wp--preset--color--canopy);
+	--_track: color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+}
+
+:is(.dh-ct-next, .dh-svc-route) {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	counter-reset: dh-ct-next;
-	view-timeline: --dh-ct-route block;
+	counter-reset: dh-route;
+	view-timeline: --dh-route block;
 }
 
-.dh-ct-next li {
+:is(.dh-ct-next, .dh-svc-route) > li {
 	--_line: calc(1.4 * var(--wp--preset--font-size--lg));
 	position: relative;
 	display: grid;
@@ -5710,41 +5950,41 @@ footer.wp-block-template-part {
 	padding-block: 0 var(--wp--preset--spacing--50);
 	font-size: var(--wp--preset--font-size--lg);
 	line-height: 1.4;
-	counter-increment: dh-ct-next;
+	counter-increment: dh-route;
 }
 
-.dh-ct-next li:last-child {
+:is(.dh-ct-next, .dh-svc-route) > li:last-child {
 	padding-block-end: 0;
 }
 
-.dh-ct-next li::before {
-	content: counter(dh-ct-next, decimal-leading-zero);
-	content: counter(dh-ct-next, decimal-leading-zero) / "";
+:is(.dh-ct-next, .dh-svc-route) > li::before {
+	content: counter(dh-route, decimal-leading-zero);
+	content: counter(dh-route, decimal-leading-zero) / "";
 	display: grid;
 	place-items: center;
 	align-self: start;
 	block-size: var(--_line);
 	border-radius: var(--wp--custom--radius--md);
-	background-color: var(--wp--preset--color--paper);
-	box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--wp--preset--color--paper) 55%, transparent);
+	background-color: var(--_tab);
+	box-shadow: inset 0 0 0 1.5px var(--_tab-edge);
 	font-family: var(--wp--preset--font-family--mono);
 	font-size: var(--wp--preset--font-size--sm);
 	font-variant-numeric: tabular-nums;
 	font-weight: 500;
 	line-height: 1;
-	color: var(--wp--preset--color--canopy);
+	color: var(--_tab-ink);
 }
 
 /* The track, from under this tab to the next one; the green drawn on it. */
-.dh-ct-next li:not(:last-child) {
-	background: linear-gradient(color-mix(in srgb, var(--wp--preset--color--paper) 22%, transparent) 0 0) no-repeat left calc(1.25rem - 1px) top var(--_line) / 2px calc(100% - var(--_line));
+:is(.dh-ct-next, .dh-svc-route) > li:not(:last-child) {
+	background: linear-gradient(var(--_track) 0 0) no-repeat left calc(1.25rem - 1px) top var(--_line) / 2px calc(100% - var(--_line));
 }
 
-[dir="rtl"] .dh-ct-next li:not(:last-child) {
+[dir="rtl"] :is(.dh-ct-next, .dh-svc-route) > li:not(:last-child) {
 	background-position: right calc(1.25rem - 1px) top var(--_line);
 }
 
-.dh-ct-next li:not(:last-child)::after {
+:is(.dh-ct-next, .dh-svc-route) > li:not(:last-child)::after {
 	content: "";
 	position: absolute;
 	inset-block: var(--_line) 0;
@@ -5756,46 +5996,46 @@ footer.wp-block-template-part {
 
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
-		.dh-ct-next li:nth-child(2) {
+		:is(.dh-ct-next, .dh-svc-route) > li:nth-child(2) {
 			--_i: 1;
 		}
 
-		.dh-ct-next li:nth-child(3) {
+		:is(.dh-ct-next, .dh-svc-route) > li:nth-child(3) {
 			--_i: 2;
 		}
 
-		.dh-ct-next li:nth-child(n + 4) {
+		:is(.dh-ct-next, .dh-svc-route) > li:nth-child(n + 4) {
 			--_i: 3;
 		}
 
-		.dh-ct-next li::before,
-		.dh-ct-next li::after {
+		:is(.dh-ct-next, .dh-svc-route) > li::before,
+		:is(.dh-ct-next, .dh-svc-route) > li::after {
 			animation-duration: auto;
 			animation-timing-function: linear;
 			animation-fill-mode: both;
-			animation-timeline: --dh-ct-route;
+			animation-timeline: --dh-route;
 		}
 
-		.dh-ct-next li::before {
-			animation-name: dh-ct-route-light;
+		:is(.dh-ct-next, .dh-svc-route) > li::before {
+			animation-name: dh-route-light;
 			animation-range: cover calc(5% + var(--_i, 0) * 11%) cover calc(9% + var(--_i, 0) * 11%);
 		}
 
-		.dh-ct-next li::after {
-			animation-name: dh-ct-route-draw;
+		:is(.dh-ct-next, .dh-svc-route) > li::after {
+			animation-name: dh-route-draw;
 			animation-range: cover calc(9% + var(--_i, 0) * 11%) cover calc(18% + var(--_i, 0) * 11%);
 		}
 	}
 }
 
-@keyframes dh-ct-route-light {
+@keyframes dh-route-light {
 	from {
 		background-color: transparent;
-		color: var(--wp--preset--color--paper);
+		color: var(--_tab-off);
 	}
 }
 
-@keyframes dh-ct-route-draw {
+@keyframes dh-route-draw {
 	from {
 		transform: scaleY(0);
 	}
@@ -5845,47 +6085,39 @@ footer.wp-block-template-part {
 		grid-template-columns: 1fr;
 	}
 
+	.dh-svc-hero__grid {
+		gap: var(--wp--preset--spacing--60);
+	}
+
 	.dh-svc-photo img {
-		aspect-ratio: 4 / 3;
+		max-block-size: 34rem;
 	}
 
-	.dh-svc-stages__list {
+	/* The card comes out from under the photo's edge, centred. */
+	.dh-svc-hero__media {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.dh-svc-offer {
+		position: relative;
+		inset: auto;
+		margin: calc(-1 * var(--wp--preset--spacing--70)) auto 0;
+		inline-size: min(88%, 20rem);
+	}
+
+	.dh-svc-stages > .dh-svc-steps {
 		grid-template-columns: 1fr;
-		padding-block: var(--wp--preset--spacing--30);
+		gap: var(--wp--preset--spacing--50);
 	}
 
-	/* The stage line runs down the page. */
-	.dh-svc-stages__list li:not(:last-child)::after {
-		inline-size: 0;
-		block-size: 100%;
-		border-block-start: 0;
-		border-inline-start: 2px solid var(--wp--preset--color--field);
+	.dh-svc-visit {
+		grid-template-columns: 1fr;
+		gap: var(--wp--preset--spacing--60);
 	}
 
-	.dh-svc-stages__list a {
-		padding-block: var(--wp--preset--spacing--20);
-	}
-
-	.dh-svc-checks {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
-	.dh-svc-checks li + li {
-		padding-inline-start: 0;
-		border-inline-start: 0;
-	}
-
-	.dh-svc-checks li:nth-child(even) {
-		padding-inline-start: var(--wp--preset--spacing--40);
-		border-inline-start: var(--wp--custom--rule);
-	}
-
-	.dh-svc-checks li:nth-child(n + 3) {
-		border-block-start: var(--wp--custom--rule);
-	}
-
-	.dh-svc-checks li:last-child:nth-child(odd) {
-		grid-column: 1 / -1;
+	.dh-svc-visit__copy > .dh-svc-visit__photo {
+		display: none;
 	}
 
 	.dh-svc-plate {
@@ -5951,10 +6183,37 @@ footer.wp-block-template-part {
 	.dh-svc-hero {
 		padding-block-start: var(--wp--preset--spacing--30);
 	}
+
+	.dh-svc-hero__title strong {
+		display: inline;
+	}
+
+	.dh-svc-hero__copy {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.dh-svc-hero .dh-svc-proof {
+		order: 1;
+		margin-block-start: var(--wp--preset--spacing--50);
+	}
+
+	.dh-svc-hero .wp-block-button > .wp-block-button__link {
+		font-size: var(--wp--preset--font-size--sm);
+	}
+
+	.dh-svc-stages > .dh-svc-trust {
+		flex-direction: column;
+	}
+
+	.dh-svc-trust li + li {
+		margin-inline-start: 0;
+		padding-inline-start: 0;
+		border-inline-start: 0;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-svc-stages__list a::before,
 	.dh-cat-row__link,
 	.dh-cat-row__arrow {
 		transition: none;
