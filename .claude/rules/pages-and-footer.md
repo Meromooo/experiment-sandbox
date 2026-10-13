@@ -139,6 +139,28 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   new markup by Ammar's paste in the Code editor (the pattern and the page must match for the
   cutover).
 
+  **The survey as a folder (AMM-195, 2026-10-13)** replaced AMM-192's services band and
+  side-by-side visit, after three mockup rounds and the taste audit (Ammar: "messy, zero
+  styling"). The trust row stays under the hero. `#survey` (`.dh-svc--folder`) is a folder:
+  its **tabs** (`.dh-svc-tabs`, a core list, in-page links styled as a folder's tabs, not a
+  tabs widget, so no `tablist` role) are the open one, Survey & design, plain text in the
+  board's own canopy with a field line on top, continuing the board's left edge and joined to
+  its top by the notch's fillet; and Installation and Maintenance behind it, darker, each a
+  link down the page with a chevron that nudges on hover (hover only on devices that hover).
+  The **board** (`.dh-svc-board`, canopy, top-left corner square under the open tab) holds the
+  heading ("visit" in the Highlight format, swept in field green as on Contact's request
+  frame), the opening text, the paper "Request a site visit" button and the route on the left,
+  and the crew photo (media 1161) full height on the right, its left edge fading into the
+  board. The route is the shared one with paper tabs; each step is its name in the Bold format
+  and one line, so on Services a step is a block with the tab in its margin rather than the
+  shared two-column grid; the five checks are a list nested in step 3. The tabs rise in turn
+  through the site's reveal classes (`dh-reveal-group`, `dh-reveal--rise` on the list items).
+  The board needs `.dh-svc-folder > .dh-svc-board { margin-block: 0 }`: the folder is a flow
+  layout, whose `* + *` gap otherwise opens a strip between the tabs and the board. Under
+  56rem the tabs stack, the open one last, on the board. Known for the next sections: the
+  hero, this board and Installation are three image-and-text splits in a row (the taste skill
+  allows two), and the page has two dark blocks (this board and the closing call to action).
+
 ## No `single.html`; `template-parts/`; `woocommerce/`
 
   There is no `single.html`: the site has

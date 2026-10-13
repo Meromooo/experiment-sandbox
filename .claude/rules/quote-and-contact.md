@@ -101,5 +101,6 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   the route's rules are shared** with the Services visit (`:is(.dh-ct-next, .dh-svc-route) >
   li`, timeline `--dh-route`, keyframes `dh-route-light` / `dh-route-draw`): only the list's
   own items are steps, and the colours are variables on each list (`--_tab`, `--_tab-ink`,
-  `--_tab-off`, `--_tab-edge`, `--_track`), paper tabs on Contact's canopy frame, canopy tabs
-  on Services' paper.
+  `--_tab-off`, `--_tab-edge`, `--_track`). Since AMM-195 both lists sit on canopy
+  (Contact's request frame, Services' folder board), so both have paper tabs; Services' steps
+  are blocks with the tab in their margin (a name in Bold and one line).

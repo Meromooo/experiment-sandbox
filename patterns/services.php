@@ -17,9 +17,10 @@
 // alternate side by side and stacked, and only the call to action carries an
 // eyebrow. AMM-192: the hero's second line is the Bold format and its figures
 // a list with Bold numbers; the offer is a card over the photo's edge (no
-// notch); the trust row and the services band (each title a link to its
-// section) sit under the hero; the survey section is the visit drawn as a
-// route, its checks a nested list.
+// notch); the trust row sits under the hero. AMM-195: the survey section is a
+// folder: its tabs a list (the open one, Survey & design, plain text; the
+// other two links down the page), its board the visit copy, the route (each
+// step's name in Bold, the checks a nested list) and the crew photo.
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-svc-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-svc-hero"><!-- wp:group {"className":"dh-svc-hero__grid","layout":{"type":"default"}} -->
@@ -84,28 +85,29 @@
 <!-- wp:list-item {"className":"dh-svc-trust__certified"} -->
 <li class="dh-svc-trust__certified">ISO 9001 and SASO certified</li>
 <!-- /wp:list-item --></ul>
-<!-- /wp:list -->
-
-<!-- wp:list {"ordered":true,"className":"dh-svc-steps"} -->
-<ol class="wp-block-list dh-svc-steps"><!-- wp:list-item -->
-<li><a href="#survey">Survey &amp; design</a> A free visit, then a system drawn for your site.</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li><a href="#install">Installation</a> Pipes, drip, sprinklers, valves and controllers, set to run on their own.</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li><a href="#maintain">Maintenance &amp; repairs</a> Scheduled checks and fast repairs, with a five-year warranty.</li>
-<!-- /wp:list-item --></ol>
 <!-- /wp:list --></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"tagName":"section","anchor":"survey","className":"dh-section dh-svc","layout":{"type":"constrained"}} -->
-<section id="survey" class="wp-block-group dh-section dh-svc"><!-- wp:group {"className":"dh-svc-visit","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-visit"><!-- wp:group {"className":"dh-svc-visit__copy","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-visit__copy"><!-- wp:heading {"className":"dh-svc__title"} -->
-<h2 class="wp-block-heading dh-svc__title">It starts with a visit to your site.</h2>
+<!-- wp:group {"tagName":"section","anchor":"survey","className":"dh-section dh-svc dh-svc--folder","layout":{"type":"constrained"}} -->
+<section id="survey" class="wp-block-group dh-section dh-svc dh-svc--folder"><!-- wp:group {"className":"dh-svc-folder","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-folder"><!-- wp:list {"className":"dh-svc-tabs dh-reveal-group"} -->
+<ul class="wp-block-list dh-svc-tabs dh-reveal-group"><!-- wp:list-item {"className":"is-current dh-reveal--rise"} -->
+<li class="is-current dh-reveal--rise">Survey &amp; design</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item {"className":"dh-reveal--rise"} -->
+<li class="dh-reveal--rise"><a href="#install">Installation</a></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item {"className":"dh-reveal--rise"} -->
+<li class="dh-reveal--rise"><a href="#maintain">Maintenance &amp; repairs</a></li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:group {"className":"dh-svc-board","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-board"><!-- wp:group {"className":"dh-svc-board__copy","layout":{"type":"default"}} -->
+<div class="wp-block-group dh-svc-board__copy"><!-- wp:heading {"className":"dh-svc__title"} -->
+<h2 class="wp-block-heading dh-svc__title">It starts with a <span class="dh-highlight" data-reveal="wipe">visit</span> to your site.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"dh-svc-lead"} -->
@@ -113,27 +115,22 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:buttons {"className":"dh-svc-actions"} -->
-<div class="wp-block-buttons dh-svc-actions"><!-- wp:button {"className":"is-style-dh-pill-solid"} -->
-<div class="wp-block-button is-style-dh-pill-solid"><a class="wp-block-button__link wp-element-button" href="/contact-us/?need=survey#request">Request a site visit</a></div>
+<div class="wp-block-buttons dh-svc-actions"><!-- wp:button {"className":"is-style-dh-pill-paper"} -->
+<div class="wp-block-button is-style-dh-pill-paper"><a class="wp-block-button__link wp-element-button" href="/contact-us/?need=survey#request">Request a site visit</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 
-<!-- wp:image {"id":1161,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-visit__photo"} -->
-<figure class="wp-block-image size-large dh-svc-visit__photo"><img src="/wp-content/uploads/2026/03/1000239887-1024x576.jpg" alt="Technicians in hard hats kneeling to fit drip lines in the sand" class="wp-image-1161"/></figure>
-<!-- /wp:image --></div>
-<!-- /wp:group -->
-
 <!-- wp:list {"ordered":true,"className":"dh-svc-route"} -->
 <ol class="wp-block-list dh-svc-route"><!-- wp:list-item -->
-<li>You tell us about the site and pick your nearest branch.</li>
+<li><strong>Tell us about your site</strong> Pick your nearest branch.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>An engineer visits, free, anywhere in the Kingdom.</li>
+<li><strong>An engineer visits</strong> Free, anywhere in the Kingdom.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>We check what decides the design:<!-- wp:list {"className":"dh-svc-route__checks"} -->
+<li><strong>We check your site</strong><!-- wp:list {"className":"dh-svc-route__checks"} -->
 <ul class="wp-block-list dh-svc-route__checks"><!-- wp:list-item -->
 <li>Water source</li>
 <!-- /wp:list-item -->
@@ -157,9 +154,15 @@
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>You get a recommendation and a quotation, usually within two business days.</li>
+<li><strong>You get a quotation</strong> Usually within two business days.</li>
 <!-- /wp:list-item --></ol>
 <!-- /wp:list --></div>
+<!-- /wp:group -->
+
+<!-- wp:image {"id":1161,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-board__photo"} -->
+<figure class="wp-block-image size-large dh-svc-board__photo"><img src="/wp-content/uploads/2026/03/1000239887-1024x576.jpg" alt="Technicians in hard hats kneeling to fit drip lines in the sand" class="wp-image-1161"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:group --></div>
 <!-- /wp:group --></section>
 <!-- /wp:group -->
 
