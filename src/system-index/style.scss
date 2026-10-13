@@ -31,10 +31,16 @@
 	text-decoration: none;
 }
 
-.dh-line__top:hover,
 .dh-line__top:focus-visible {
 	text-decoration: underline;
 	text-underline-offset: 0.25em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-line__top:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+	}
 }
 
 .dh-line__top:focus-visible {
@@ -106,10 +112,16 @@
 	color: var(--wp--preset--color--ink);
 }
 
-.dh-line__term:hover,
 .dh-line__term:focus-visible {
 	background: color-mix(in srgb, var(--wp--preset--color--sand) 55%, transparent);
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-line__term:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--sand) 55%, transparent);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-line__term:focus-visible {

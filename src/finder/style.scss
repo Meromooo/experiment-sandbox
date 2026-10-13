@@ -36,9 +36,11 @@
 	display: none;
 }
 
-.dh-finder__trigger:hover {
-	border-color: var(--wp--preset--color--ink);
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__trigger:hover {
+		border-color: var(--wp--preset--color--ink);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-finder__trigger svg {
@@ -236,8 +238,10 @@ html:has(.dh-finder__dialog[open]) {
 	cursor: pointer;
 }
 
-.dh-finder__close:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__close:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Body ------------------------------------------------------------------ */
@@ -296,10 +300,16 @@ html:has(.dh-finder__dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-finder__group-link:hover,
 .dh-finder__group-link:focus-visible {
 	border-color: var(--wp--preset--color--ink);
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__group-link:hover {
+		border-color: var(--wp--preset--color--ink);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Suggestions ------------------------------------------------------------ */
@@ -330,9 +340,11 @@ html:has(.dh-finder__dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-finder__row:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--sand) 45%, var(--wp--preset--color--paper));
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__row:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--sand) 45%, var(--wp--preset--color--paper));
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /* The chosen row: a sand ground and a canopy bar at its start edge. */
@@ -430,11 +442,18 @@ html:has(.dh-finder__dialog[open]) {
 	content: " ←";
 }
 
-.dh-finder__all:hover,
 .dh-finder__all:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__all:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 .dh-finder__keys {

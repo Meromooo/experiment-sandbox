@@ -113,8 +113,10 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 		padding: 0.2rem;
 	}
 
-	.dh-pcard:hover .dh-pcard__media img {
-		transform: none;
+	@media (hover: hover) and (pointer: fine) {
+		.dh-pcard:hover .dh-pcard__media img {
+			transform: none;
+		}
 	}
 
 	.dh-pcard__title {

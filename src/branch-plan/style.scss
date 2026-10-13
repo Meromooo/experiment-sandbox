@@ -186,13 +186,25 @@
 }
 
 /* While any branch link is hovered or focused, the others step back. */
-.dh-bplan:has([data-branch-link]:is(:hover, :focus-visible)) .dh-plan__site {
+.dh-bplan:has([data-branch-link]:focus-visible) .dh-plan__site {
 	--_dim: calc(0.3 + var(--_on, 0) * 0.7);
 }
 
+@media (hover: hover) and (pointer: fine) {
+	.dh-bplan:has([data-branch-link]:hover) .dh-plan__site {
+		--_dim: calc(0.3 + var(--_on, 0) * 0.7);
+	}
+}
+
 /* …and the main branch's permanent label gives way to the one being pointed at. */
-.dh-bplan:has([data-branch-link]:is(:hover, :focus-visible)) .dh-plan__site.is-main .dh-plan__code {
+.dh-bplan:has([data-branch-link]:focus-visible) .dh-plan__site.is-main .dh-plan__code {
 	opacity: var(--_on, 0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-bplan:has([data-branch-link]:hover) .dh-plan__site.is-main .dh-plan__code {
+		opacity: var(--_on, 0);
+	}
 }
 
 /* First view: outward from the main branch, one step at a time. */
@@ -265,20 +277,36 @@
 }
 
 /* Explicit: the site-wide link hover is field green, too faint on sand. */
-.dh-branch:hover,
 .dh-branch:focus-visible {
 	color: var(--wp--preset--color--ink);
 }
 
-.dh-branch:hover .dh-branch__city,
+@media (hover: hover) and (pointer: fine) {
+	.dh-branch:hover {
+		color: var(--wp--preset--color--ink);
+	}
+}
+
 .dh-branch:focus-visible .dh-branch__city {
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
 }
 
-.dh-branch:hover .dh-branch__code,
+@media (hover: hover) and (pointer: fine) {
+	.dh-branch:hover .dh-branch__city {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+}
+
 .dh-branch:focus-visible .dh-branch__code {
 	color: var(--wp--preset--color--canopy);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-branch:hover .dh-branch__code {
+		color: var(--wp--preset--color--canopy);
+	}
 }
 
 @media (pointer: coarse) {

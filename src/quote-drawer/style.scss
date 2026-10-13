@@ -36,8 +36,10 @@
 	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-quote-toggle:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-toggle:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-quote-toggle:focus-visible {
@@ -248,10 +250,16 @@ html:has(.dh-quote-dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-quote-line__name:hover,
 .dh-quote-line__name:focus-visible {
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-line__name:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 .dh-quote-line__sku {
@@ -320,9 +328,11 @@ html:has(.dh-quote-dialog[open]) {
 	cursor: pointer;
 }
 
-:is(.dh-quote-dialog__close, .dh-qty__step:not(:disabled), .dh-quote-line__remove):hover {
-	background: color-mix(in srgb, var(--wp--preset--color--sand) 70%, transparent);
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	:is(.dh-quote-dialog__close, .dh-qty__step:not(:disabled), .dh-quote-line__remove):hover {
+		background: color-mix(in srgb, var(--wp--preset--color--sand) 70%, transparent);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 :is(.dh-quote-dialog__close, .dh-qty__step, .dh-qty__input, .dh-quote-line__remove, .dh-quote-dialog__clear, .dh-quote-empty__link):focus-visible {
@@ -363,8 +373,10 @@ html:has(.dh-quote-dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-quote-empty__link:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-empty__link:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Footer ----------------------------------------------------------------- */
@@ -398,8 +410,10 @@ html:has(.dh-quote-dialog[open]) {
 	cursor: pointer;
 }
 
-.dh-quote-dialog__clear:hover {
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-dialog__clear:hover {
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Print · Copy list / Share · Clear all (AMM-163). */
@@ -427,8 +441,10 @@ html:has(.dh-quote-dialog[open]) {
 	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-quote-dialog__action:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-dialog__action:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-quote-dialog__action svg {

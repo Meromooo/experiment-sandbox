@@ -34,8 +34,10 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-mega-menu__trigger:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
+@media (hover: hover) and (pointer: fine) {
+	.dh-mega-menu__trigger:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
+	}
 }
 
 .is-open > .dh-mega-menu__trigger {
@@ -134,8 +136,10 @@
 	text-wrap: balance;
 }
 
-.dh-mega-menu__heading:hover {
-	color: var(--wp--preset--color--canopy);
+@media (hover: hover) and (pointer: fine) {
+	.dh-mega-menu__heading:hover {
+		color: var(--wp--preset--color--canopy);
+	}
 }
 
 /* Items --------------------------------------------------------------- */
@@ -165,10 +169,16 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-mega-menu__link:hover,
 .dh-mega-menu__link:focus-visible {
 	background: color-mix(in srgb, var(--wp--preset--color--field) 24%, transparent);
 	color: var(--wp--preset--color--canopy);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-mega-menu__link:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--field) 24%, transparent);
+		color: var(--wp--preset--color--canopy);
+	}
 }
 
 .dh-mega-menu__icon {
@@ -178,15 +188,25 @@
 	transition: color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-mega-menu__link:hover .dh-mega-menu__icon,
 .dh-mega-menu__link:focus-visible .dh-mega-menu__icon {
 	color: var(--wp--preset--color--canopy);
 }
 
+@media (hover: hover) and (pointer: fine) {
+	.dh-mega-menu__link:hover .dh-mega-menu__icon {
+		color: var(--wp--preset--color--canopy);
+	}
+}
+
 /* Outbound arrow nudges along its own diagonal. */
-.dh-mega-menu__link--external:hover .dh-mega-menu__icon,
 .dh-mega-menu__link--external:focus-visible .dh-mega-menu__icon {
 	transform: translate(1px, -1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-mega-menu__link--external:hover .dh-mega-menu__icon {
+		transform: translate(1px, -1px);
+	}
 }
 
 .dh-mega-menu__link--external .dh-mega-menu__icon {

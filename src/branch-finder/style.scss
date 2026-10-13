@@ -66,11 +66,18 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-city:hover,
 .dh-ct-city:focus-visible {
 	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 40%, transparent);
 	background: var(--wp--preset--color--sand);
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-ct-city:hover {
+		border-color: color-mix(in srgb, var(--wp--preset--color--ink) 40%, transparent);
+		background: var(--wp--preset--color--sand);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-ct-city[aria-current="true"] {

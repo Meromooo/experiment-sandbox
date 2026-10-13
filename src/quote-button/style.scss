@@ -41,8 +41,10 @@
 		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-quote-btn:hover {
-	background: color-mix(in srgb, var(--_water) 78%, var(--wp--preset--color--ink));
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-btn:hover {
+		background: color-mix(in srgb, var(--_water) 78%, var(--wp--preset--color--ink));
+	}
 }
 
 .dh-quote-btn:focus-visible {
@@ -99,8 +101,10 @@
 	font-size: var(--wp--preset--font-size--sm);
 }
 
-.dh-quote-add--compact .dh-quote-btn:hover {
-	background: var(--_water-tint);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-add--compact .dh-quote-btn:hover {
+		background: var(--_water-tint);
+	}
 }
 
 .dh-quote-add--compact .dh-quote-btn__icon {
@@ -118,8 +122,10 @@
 	box-shadow: inset 0 0 0 1.5px var(--_water);
 }
 
-.dh-quote-add .dh-quote-btn.is-added:hover {
-	background: color-mix(in srgb, var(--_water) 20%, var(--wp--preset--color--paper));
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-add .dh-quote-btn.is-added:hover {
+		background: color-mix(in srgb, var(--_water) 20%, var(--wp--preset--color--paper));
+	}
 }
 
 /* Touch screens: every quote control is at least 44px tall. */

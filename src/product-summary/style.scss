@@ -43,10 +43,16 @@
 	text-decoration: none;
 }
 
-.dh-summary__eyebrow a:hover,
 .dh-summary__eyebrow a:focus-visible {
 	text-decoration: underline;
 	text-underline-offset: 0.25em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-summary__eyebrow a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+	}
 }
 
 /*

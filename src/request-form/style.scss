@@ -90,8 +90,10 @@
 	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-input:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-ct-input:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* The site-wide ring, without its small radius: the field keeps its shape. */
@@ -203,8 +205,10 @@ select.dh-ct-input {
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-need__option input:hover + span {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-ct-need__option input:hover + span {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-ct-need__option input:checked + span {

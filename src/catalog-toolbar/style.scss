@@ -86,9 +86,14 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-toolbar__chip:hover,
 .dh-toolbar__chip:focus-visible {
 	border-color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-toolbar__chip:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-toolbar__chip[aria-current="page"] {
@@ -207,9 +212,14 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-toolbar__segment:hover,
 .dh-toolbar__segment:focus-visible {
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-toolbar__segment:hover {
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-toolbar__segment[aria-current="true"] {
