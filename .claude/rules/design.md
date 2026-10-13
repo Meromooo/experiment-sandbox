@@ -156,7 +156,88 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   for anything touching icons, the logo or brand mark, head tags for icons or the manifest, a
   `/favicon.ico` 404 in a network trace, and the cutover checklist (AMM-158).
 
-## Design & content reference docs
+## Emil Kowalski skills — feel, motion, mobile, worst case, options (2026-10-13)
+
+Added at Ammar's request ("our front-end design isn't the best"), option B of a review of all 15
+skills in github.com/emilkowalski/skills (commit 2d22863, MIT; Emil built the Sonner and Vaul
+components). Committed unchanged in `.claude/skills/<name>/`, each with LICENSE and SOURCE.txt.
+They fill what the roster lacked: frontend-design sets direction, frontend-ui-engineering holds
+the accessibility floor and the taste skill critiques marketing layout and copy, but nothing
+judged how the site **feels** (press feedback, easing, how motion enters and leaves), how it
+behaves on a **phone**, or how product UI survives **real data**. A check of our CSS that day
+found no `:active` press state anywhere, 81 of 82 `:hover` rules not gated to devices that hover
+(they stick after a tap on phones), and no tap-highlight or safe-area handling.
+
+Not taken, and why: `animate` (overlaps emil-design-eng), `find-animation-opportunities` (hunts
+for more motion; the site has plenty), `improve-animations` (a multi-agent planner;
+review-animations covers it for less), `animation-performance` (ponytail plus the DevTools LCP
+skill cover jank; load it from the upstream repo only if a stutter resists them),
+`apple-design` (drag gestures and springs we don't have), and `animate-expo`, `ask-sonner`,
+`pick-ui-library`, `write-swift` (React Native, React and Swift; the stack is locked).
+
+### When each one runs — by step of the plan → go-ahead → build → audit flow
+
+| Step | Skill | Runs when | Loads |
+|---|---|---|---|
+| Plan | `animation-vocabulary` | Ammar describes a motion loosely ("the thing where it bounces in"), or a brief has to name a motion effect | **Grep first**: `grep -i -A2 "<word>" .claude/skills/animation-vocabulary/SKILL.md` and answer with the term. Load the whole file (~3.5k tokens) only when the grep finds nothing that fits |
+| Plan | `prototype` | A design choice has two or three real directions and Ammar wants to see them before one is built (his standing "show me 2–3 small options"), or he types `/prototype` | `SKILL.md`; `PICKER.md` only when the harness is built |
+| Build | `emil-design-eng` | The change adds or alters interaction or motion: transitions, animations, `:hover` / `:active` / `:focus` states, buttons and pills, dialogs (quote list, finder), popovers and tooltips, the belt or marquee, reveals | `SKILL.md` (~7k tokens), once per task, at the start of the build |
+| Build | `mobile-native` | The change touches what a thumb uses: form fields, the sticky header, the dialogs, full-height layouts, the belt or marquee, the viewport meta, or a "wrong on my phone" bug | `SKILL.md` (~4k tokens), once per task |
+| Audit | `review-animations` | The task's diff touches motion: its added or changed lines contain `transition`, `animation`, `@keyframes`, `.animate(` or `@starting-style` | `SKILL.md`; `STANDARDS.md` only when a duration or easing value is in dispute |
+| Audit | `break-ui` | A component that renders data was built or changed: catalogue cards, sheet view, datasheet, search results, finder rows, quote list and print sheet, branch card, request form | `SKILL.md` + `CATALOG.md` (~6k tokens) |
+
+### Cost rules — so they run when needed and not otherwise
+
+1. **Once per task, at its step**, not on every turn; a later turn of the same task reuses what
+   was read. The step's trigger is checked, not assumed: a copy-only or PHP-only change loads
+   none of them.
+2. **Never two overlapping skills in one step.** emil-design-eng is the build-time guide;
+   review-animations is the audit. They share most rules, so the audit does not reload
+   emil-design-eng.
+3. **Companion files only on need** (the "Loads" column). Grep before loading a glossary.
+4. **They add to the existing skills, they don't replace them.** A marketing task that already
+   loads the taste skill (~35k) adds emil-design-eng only when its trigger holds.
+5. **`review-animations` and `prototype` can't be invoked as skills** (their files set
+   `disable-model-invocation`): Claude reads their `SKILL.md` with the Read tool at the step
+   above; Ammar can also type `/review-animations` or `/prototype`.
+6. **Skip their "Initial Response" greetings.** Each skill says to answer only "I'm ready…" when
+   loaded without a question; inside a task, apply it directly.
+7. A full sweep of the site with any of them is a separate task, run only when Ammar asks, with
+   the pages named first.
+
+### How they fit this project
+
+- **The stack stays locked.** Their React, Framer Motion, Tailwind and Base UI examples are
+  ignored; their CSS rules (custom easing curves, `:active` scale, origin-aware popovers,
+  `@starting-style`, `(hover: hover) and (pointer: fine)`, transform/opacity only) are plain CSS
+  and apply directly. Easing curves go in `theme.json` `settings.custom` beside the existing
+  `ease`, not as raw values.
+- **The 300 ms rule is for controls** (buttons, pills, dialogs, popovers, tooltips, the sheet
+  switch). The homepage and Services hero choreography, the film, the belt, the marquee and
+  scroll reveals are marketing motion, which emil-design-eng itself exempts.
+- **Reduced motion:** Emil prefers "gentler, not zero" (keep opacity and colour, drop movement);
+  ours is mostly a still state. Changing that is Ammar's decision: raise it, don't apply it.
+- **Findings follow the usual route.** review-animations' findings table and break-ui's report go
+  to Linear; fixes go through plan → go-ahead → build, with `ponytail`. Neither skill fixes
+  anything during the audit.
+- **break-ui's "worst case" switch never enters the theme**, because everything in the runtime
+  folders deploys. The worst-case data is injected in Chrome DevTools on the sandbox
+  (`evaluate_script` replacing names, part numbers, counts and rows in the rendered page), or in
+  a self-contained HTML copy of the component outside the repo. Real limits come from the data:
+  the longest product name, 15-digit codes, Arabic names, 0 and 643 products, a 50-line quote.
+- **prototype's harness lives outside the theme too:** one self-contained HTML file in the
+  session's scratchpad, built from `theme.json` tokens and the site's own colours and motion
+  (canopy-led, water as the accent), shared with Ammar as a private Artifact link or a file. The
+  picker copies `PICKER.md` as written. The chosen variant is then built the normal way; the
+  harness is deleted.
+- **mobile-native's "test on hardware":** DevTools phone emulation is the first pass;
+  Responsively is not a phone. A change that mobile-native triggered ends by asking Ammar to
+  try it on his phone, naming the page and what to tap.
+- **animation-vocabulary pairs with `name-that-ui`:** components by name-that-ui's glossary,
+  motion by this one ("the quote list (a modal dialog) opens with a pop in").
+- **break-ui's sample emails:** its worst-case data includes made-up addresses, so CI's email
+  guard skips `.claude/skills/break-ui/` (commented in the workflow). The rule about staff
+  addresses is unchanged everywhere else.
 
 ## Design & content reference docs
 

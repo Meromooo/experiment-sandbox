@@ -36,7 +36,8 @@ apply everywhere) in the same commit.
 - A push to `main` runs `.github/workflows/checks.yml`: `php -l` on every PHP file (PHP 8.3),
   WordPress Coding Standards (`phpcs.xml.dist`, zero violations, blocking; also posted as a
   "PHPCS report" check), `build/` must match `src/`, `theme.json`/`block.json` must parse, and
-  no email address anywhere in the repo. Only when all pass does the `deploy` job move the
+  no email address anywhere in the repo (except `.claude/skills/break-ui/`, whose made-up test
+  addresses are the skill's own worst-case data). Only when all pass does the `deploy` job move the
   **`deploy` branch**, which Hostinger deploys into `wp-content/themes/demas-theme` on the
   sandbox (switched from `main` to `deploy` on 2026-09-29, sandbox only). Check results without
   signing in at `/commits/<sha>/check-runs` in GitHub's API. **Never push to `deploy` by hand.**
@@ -68,11 +69,20 @@ and `.claude/rules/security.md`.
 | `ponytail` | **Only** when debugging or fixing code (bug, failing CI, audit finding), planning turn included | Root cause where every caller routes through; smallest correct diff. Its terse-output rule doesn't apply to reports for Ammar; "one runnable check" = CI + a sandbox check, no test files in the theme |
 | `security-audit` | Guidance mode on every security-sensitive change (plan step and before In Review); full audit only once before cutover, on Ammar's request | Source review only; never probes live systems or the server |
 | `favicon-cheat-sheet` | Icons, logo/brand mark, icon head tags or manifest, a `/favicon.ico` 404, the cutover checklist | Change icons through `tools/make-icons.py`, never by hand |
+| `emil-design-eng` | **Build** step, once per task, when the change adds or alters interaction or motion (states, buttons, dialogs, popovers, transitions, reveals, belt/marquee) | How it feels: press feedback, easing, origin, hover gating. CSS rules only (stack stays locked); 300 ms limit is for controls, not marketing motion |
+| `mobile-native` | **Build** step, once per task, when it touches form fields, the sticky header, dialogs, full-height layouts, the belt/marquee, the viewport, or a phone bug | Ends with Ammar trying it on his phone; never disable zoom |
+| `review-animations` | **Audit** step when the diff touches motion (transition, animation, keyframes, `.animate(`, `@starting-style`) | Read its `SKILL.md` (can't be invoked as a skill). Findings to Linear; don't reload emil-design-eng at the same step |
+| `break-ui` | **Audit** step when a data-rendering component was built or changed (cards, sheet, datasheet, search, finder, quote list, branch card, form) | Worst case injected in DevTools on the sandbox, never a switch in the theme; report, then stop |
+| `animation-vocabulary` | **Plan** step when Ammar describes a motion loosely or a brief names one | Grep its file for the term first; load it whole only if that finds nothing |
+| `prototype` | **Plan** step when a choice has 2–3 real directions to show Ammar, or he types `/prototype` | Read its `SKILL.md`; harness is one HTML file outside the theme, in the site's own tokens; deleted after the pick |
 | `caveman:caveman` (full) | Chat replies, every session (cloud sessions invoke the committed project skill themselves) | Code, commits, PRs, repo docs and Linear stay normal prose; security warnings, irreversible actions, step-by-step instructions and new terms drop back to plain language |
 | Chrome DevTools MCP | **Every browser check of the sandbox** | Measure, don't eyeball. Playwright only as the fallback (chiefly `prefers-reduced-motion`; say why). Responsively is Ammar's review tool, not evidence |
 
-All six project skills are committed under `.claude/skills/` (`.git/info/exclude` lists that
-folder, so a **new** file there needs `git add -f`). None of it deploys.
+All twelve project skills are committed under `.claude/skills/` (`.git/info/exclude` lists that
+folder, so a **new** file there needs `git add -f`). None of it deploys. The six from Emil
+Kowalski (the six rows above `caveman`) are loaded once per task at their step, never on every
+turn, with companion files only on need: the cost rules and how they fit this stack are in
+`.claude/rules/design.md` ("Emil Kowalski skills").
 
 **The taste skill's rules are Ammar's rules for visible copy and layout:** hero subtext ≤ 20
 words, at most one eyebrow per three sections, at most one middle dot per line, **no em or en

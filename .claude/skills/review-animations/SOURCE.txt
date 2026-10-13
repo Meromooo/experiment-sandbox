@@ -1,0 +1,1 @@
+Source: https://github.com/emilkowalski/skills (skills/review-animations), commit 2d22863, MIT. Committed 2026-10-13 unchanged; when and how this project uses it is in .claude/rules/design.md ("Emil Kowalski skills").
