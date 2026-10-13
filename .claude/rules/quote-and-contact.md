@@ -16,7 +16,9 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   - `quote.php` — registers the quote list's two blocks (AMM-139, 2026-09-24):
     `demas-theme/quote-button` ("Add to quote" — full on the product page, compact on catalogue
     cards) and `demas-theme/quote-drawer` (the header's "Your quote" control and the list, a
-    native modal `<dialog>`). They share one Interactivity API store, `demas-theme/quote`,
+    native modal `<dialog>`; since AMM-193 it opens and closes as one CSS transition with
+    `@starting-style` and discrete `display`/`overlay`, grown from its top corner, or slid up
+    as a sheet below 40em, faded only with reduced motion). They share one Interactivity API store, `demas-theme/quote`,
     defined in `src/quote-drawer/view.ts` — so the drawer must stay in `parts/header.html` or
     every quote button stops working. The list lives in the buyer's `localStorage` as a snapshot
     per part; nothing is sent anywhere until AMM-140. **Print / Copy list / Share** (AMM-163,

@@ -141,21 +141,15 @@ html:has(.dh-finder__dialog[open]) {
 	overflow: hidden;
 }
 
+/* Opens and closes instantly (AMM-193): it is opened from the keyboard, often,
+   and an animation there only delays what was asked for. */
 .dh-finder__dialog[open] {
 	display: flex;
 	flex-direction: column;
-	animation: dh-finder-in var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
 }
 
 .dh-finder__dialog::backdrop {
 	background: color-mix(in srgb, var(--wp--preset--color--ink) 34%, transparent);
-}
-
-@keyframes dh-finder-in {
-	from {
-		opacity: 0;
-		transform: translateY(-0.75rem);
-	}
 }
 
 .dh-finder__panel {
@@ -520,10 +514,6 @@ html:has(.dh-finder__dialog[open]) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-finder__dialog[open] {
-		animation: none;
-	}
-
 	.dh-finder__trigger,
 	.dh-finder__form,
 	.dh-finder__list[aria-busy="true"] {

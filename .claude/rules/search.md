@@ -27,7 +27,8 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
     (AMM-142, `demas-theme/finder`, registered here): a REST route `demas-theme/v1/find?q=`
     returns up to 5 categories and 8 parts with paths, part numbers and an exact flag, so the
     finder and the results page always agree. The finder is a native modal `<dialog>` with an
-    ARIA combobox, opened by its header control or `/`; its view module is plain TypeScript,
+    ARIA combobox, opened by its header control or `/`, with no opening or closing animation
+    (AMM-193: it is opened from the keyboard, often); its view module is plain TypeScript,
     not an Interactivity store (rows mark substrings, which the store's templating can't).
     Without JavaScript the control is a link to the catalogue.
 

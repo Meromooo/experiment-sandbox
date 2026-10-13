@@ -86,39 +86,64 @@
 	color: var(--wp--preset--color--ink);
 	box-shadow: var(--wp--preset--shadow--raised);
 	overflow: hidden;
+
+	/*
+	 * Opening and closing are one transition (AMM-193), so a close mid-open
+	 * reverses from where it is instead of restarting. Closed, the list sits a
+	 * little above and smaller, grown from its top corner under the header's
+	 * "Your quote"; it opens over the fast token and closes faster (press),
+	 * both on the strong ease-out. `display` and `overlay` are discrete, so
+	 * the list stays drawn, and in the top layer, until its exit has played;
+	 * a browser without `overlay` simply closes it at once. The RTL stylesheet
+	 * (rtlcss) flips the origin to the top-left corner by itself.
+	 */
+	opacity: 0;
+	translate: 0 -0.5rem;
+	scale: 0.98;
+	transform-origin: 100% 0;
+	transition:
+		opacity var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		translate var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		scale var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		display var(--wp--custom--motion--press) allow-discrete,
+		overlay var(--wp--custom--motion--press) allow-discrete;
 }
 
 /* Author `display` would override the browser's hiding of a closed dialog. */
 .dh-quote-dialog[open] {
 	display: flex;
 	flex-direction: column;
-	animation: dh-quote-drop var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
+	opacity: 1;
+	translate: 0 0;
+	scale: 1;
+	transition-duration: var(--wp--custom--motion--fast);
+}
+
+/* Where it starts from on the frame it opens. */
+@starting-style {
+	.dh-quote-dialog[open] {
+		opacity: 0;
+		translate: 0 -0.5rem;
+		scale: 0.98;
+	}
 }
 
 .dh-quote-dialog::backdrop {
-	background: color-mix(in srgb, var(--wp--preset--color--ink) 38%, transparent);
+	background: transparent;
+	transition:
+		background-color var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		display var(--wp--custom--motion--press) allow-discrete,
+		overlay var(--wp--custom--motion--press) allow-discrete;
 }
 
 .dh-quote-dialog[open]::backdrop {
-	animation: dh-quote-fade var(--wp--custom--motion--fast) ease-out;
+	background: color-mix(in srgb, var(--wp--preset--color--ink) 38%, transparent);
+	transition-duration: var(--wp--custom--motion--fast);
 }
 
-@keyframes dh-quote-drop {
-	from {
-		opacity: 0;
-		transform: translateY(-0.5rem) scale(0.98);
-	}
-}
-
-@keyframes dh-quote-rise {
-	from {
-		transform: translateY(100%);
-	}
-}
-
-@keyframes dh-quote-fade {
-	from {
-		opacity: 0;
+@starting-style {
+	.dh-quote-dialog[open]::backdrop {
+		background: transparent;
 	}
 }
 
@@ -659,8 +684,20 @@ html:has(.dh-quote-dialog[open]) {
 		border-end-end-radius: 0;
 	}
 
+	/* A sheet: it slides up from the bottom edge, at full size. */
+	.dh-quote-dialog {
+		translate: 0 100%;
+		scale: 1;
+	}
+
 	.dh-quote-dialog[open] {
-		animation-name: dh-quote-rise;
+		translate: 0 0;
+	}
+
+	@starting-style {
+		.dh-quote-dialog[open] {
+			translate: 0 100%;
+		}
 	}
 
 	/* The sheet sits on the bottom edge: its foot keeps clear of the phone's
@@ -688,10 +725,20 @@ html:has(.dh-quote-dialog[open]) {
 	}
 }
 
+/* Reduced motion: the list fades in and out, without moving (Ammar,
+   2026-10-13: "gentler, not zero"). */
 @media (prefers-reduced-motion: reduce) {
-	.dh-quote-dialog[open],
-	.dh-quote-dialog[open]::backdrop {
-		animation: none;
+	.dh-quote-dialog,
+	.dh-quote-dialog[open] {
+		translate: none;
+		scale: none;
+	}
+
+	@starting-style {
+		.dh-quote-dialog[open] {
+			translate: none;
+			scale: none;
+		}
 	}
 
 	.dh-quote-toggle {
