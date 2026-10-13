@@ -76,13 +76,24 @@ and `.claude/rules/security.md`.
 | `animation-vocabulary` | **Plan** step when Ammar describes a motion loosely or a brief names one | Grep its file for the term first; load it whole only if that finds nothing |
 | `prototype` | **Plan** step when a choice has 2–3 real directions to show Ammar, or he types `/prototype` | Read its `SKILL.md`; harness is one HTML file outside the theme, in the site's own tokens; deleted after the pick |
 | `caveman:caveman` (full) | Chat replies, every session (cloud sessions invoke the committed project skill themselves) | Code, commits, PRs, repo docs and Linear stay normal prose; security warnings, irreversible actions, step-by-step instructions and new terms drop back to plain language |
-| Chrome DevTools MCP | **Every browser check of the sandbox** | Measure, don't eyeball. Playwright only as the fallback (chiefly `prefers-reduced-motion`; say why). Responsively is Ammar's review tool, not evidence |
+| `model-routing` | **Plan** step of every task with three or more steps, once per task | Each plan step tagged with who does it: Opus in the main session thinks and decides; the helpers below take long reads, repeated exact edits and sandbox measurements. Every handoff is checked |
+| Chrome DevTools MCP | **Every browser check of the sandbox** | Measure, don't eyeball; measurement runs go to the `checker` helper. Playwright only as the fallback (chiefly `prefers-reduced-motion`; say why). Responsively is Ammar's review tool, not evidence |
 
-All twelve project skills are committed under `.claude/skills/` (`.git/info/exclude` lists that
+All thirteen project skills are committed under `.claude/skills/` (`.git/info/exclude` lists that
 folder, so a **new** file there needs `git add -f`). None of it deploys. The six from Emil
 Kowalski (the six rows above `caveman`) are loaded once per task at their step, never on every
 turn, with companion files only on need: the cost rules and how they fit this stack are in
 `.claude/rules/design.md` ("Emil Kowalski skills").
+
+**Helper agents (`.claude/agents/`, 2026-10-13; Ammar's standing instruction to use them).**
+`Explore` (Haiku, read-only: where things are, logs, git history, curl of the sandbox),
+`mechanic` (Haiku: the same exact edit in 5+ places or 3+ files, renames, `npm run build` and
+the `build/` cleanup) and `checker` (Sonnet: sandbox measurements, never edits). Planning,
+design, debugging, security, CI and deploy, and everything Ammar reads stay with the main
+session; so do one- or two-line edits, which cost more to hand off than to make. When and how
+to brief them, and how to check them, is in the `model-routing` skill; `usage.js` beside it
+measures the split. `.claude/settings.json` compacts the conversation at 300k tokens instead
+of near 1M (calls averaged 460k before, 2026-10-13).
 
 **The taste skill's rules are Ammar's rules for visible copy and layout:** hero subtext ≤ 20
 words, at most one eyebrow per three sections, at most one middle dot per line, **no em or en
