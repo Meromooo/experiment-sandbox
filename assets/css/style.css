@@ -529,12 +529,18 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--paper);
 }
 
-.dh-pill--solid:hover,
 .dh-pill--solid:focus-visible,
-.wp-block-button.is-style-dh-pill-solid > .wp-block-button__link:hover,
 .wp-block-button.is-style-dh-pill-solid > .wp-block-button__link:focus-visible {
 	background: var(--wp--preset--color--ink);
 	color: var(--wp--preset--color--paper);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-pill--solid:hover,
+	.wp-block-button.is-style-dh-pill-solid > .wp-block-button__link:hover {
+		background: var(--wp--preset--color--ink);
+		color: var(--wp--preset--color--paper);
+	}
 }
 
 .dh-pill--outline,
@@ -542,11 +548,16 @@ ul.dh-toolbar__chips {
 	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 24%, transparent);
 }
 
-.dh-pill--outline:hover,
 .dh-pill--outline:focus-visible,
-.wp-block-button.is-style-dh-pill-outline > .wp-block-button__link:hover,
 .wp-block-button.is-style-dh-pill-outline > .wp-block-button__link:focus-visible {
 	border-color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-pill--outline:hover,
+	.wp-block-button.is-style-dh-pill-outline > .wp-block-button__link:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Translucent tag sitting over photography. */
@@ -701,9 +712,14 @@ ul.dh-toolbar__chips {
 	animation-direction: reverse;
 }
 
-.dh-marquee:hover .dh-marquee__track,
 .dh-marquee:focus-within .dh-marquee__track {
 	animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-marquee:hover .dh-marquee__track {
+		animation-play-state: paused;
+	}
 }
 
 .dh-marquee__item {
@@ -1148,8 +1164,10 @@ ul.dh-toolbar__chips {
 	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-header__links a:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
+@media (hover: hover) and (pointer: fine) {
+	.dh-header__links a:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
+	}
 }
 
 /*
@@ -1319,15 +1337,17 @@ ul.dh-toolbar__chips {
 	padding: 0.8em 1.4em;
 }
 
-.woocommerce a.button:hover,
-.woocommerce button.button:hover,
-.woocommerce input.button:hover,
-.woocommerce #respond input#submit:hover,
-.woocommerce a.button.alt:hover,
-.woocommerce button.button.alt:hover,
-.woocommerce input.button.alt:hover {
-	background: var(--wp--preset--color--ink);
-	color: var(--wp--preset--color--paper);
+@media (hover: hover) and (pointer: fine) {
+	.woocommerce a.button:hover,
+	.woocommerce button.button:hover,
+	.woocommerce input.button:hover,
+	.woocommerce #respond input#submit:hover,
+	.woocommerce a.button.alt:hover,
+	.woocommerce button.button.alt:hover,
+	.woocommerce input.button.alt:hover {
+		background: var(--wp--preset--color--ink);
+		color: var(--wp--preset--color--paper);
+	}
 }
 
 /* Sorting row: stack on narrow screens instead of floating past the edge. */
@@ -1616,8 +1636,10 @@ ul.dh-toolbar__chips {
 	}
 }
 
-.dh-desk__city:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--white) 55%, transparent);
+@media (hover: hover) and (pointer: fine) {
+	.dh-desk__city:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--white) 55%, transparent);
+	}
 }
 
 .dh-desk__city[aria-pressed="true"] {
@@ -1814,9 +1836,11 @@ ul.dh-toolbar__chips {
 	display: none;
 }
 
-.dh-film__toggle:hover {
-	border-color: var(--wp--preset--color--ink);
-	background: var(--wp--preset--color--paper);
+@media (hover: hover) and (pointer: fine) {
+	.dh-film__toggle:hover {
+		border-color: var(--wp--preset--color--ink);
+		background: var(--wp--preset--color--paper);
+	}
 }
 
 .dh-film__icon {
@@ -1971,9 +1995,15 @@ ul.dh-toolbar__chips {
 
 /* Without main.js the pointer and focus pause it, as they do the supply line;
    main.js eases it instead. It also holds it still until the plates are in. */
-.dh-belt:not(.is-driven):is(:hover, :focus-within) .dh-belt__track,
+.dh-belt:not(.is-driven):focus-within .dh-belt__track,
 .dh-belt:is(.is-waiting, .is-stamping) .dh-belt__track {
 	animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-belt:not(.is-driven):hover .dh-belt__track {
+		animation-play-state: paused;
+	}
 }
 
 .dh-cred {
@@ -1985,8 +2015,14 @@ ul.dh-toolbar__chips {
 }
 
 /* Lifted above its neighbours and the fades while its tag is out. */
-.dh-cred:is(:hover, :focus-within) {
+.dh-cred:focus-within {
 	z-index: 2;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cred:hover {
+		z-index: 2;
+	}
 }
 
 .dh-cred__plate {
@@ -2011,10 +2047,23 @@ ul.dh-toolbar__chips {
 		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-cred__plate:is(:hover, :focus-visible) {
+/*
+ * :focus, not :focus-visible: a tap focuses a plate with a tag (tabindex="0"),
+ * and since hover is gated to mouse devices (AMM-193) a tap is how a phone
+ * shows the tag. The focus ring itself stays keyboard-only.
+ */
+.dh-cred__plate:focus {
 	transform: translateY(-3px);
 	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 45%, transparent);
 	box-shadow: 0 10px 18px -12px color-mix(in srgb, var(--wp--preset--color--canopy) 55%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cred__plate:hover {
+		transform: translateY(-3px);
+		border-color: color-mix(in srgb, var(--wp--preset--color--ink) 45%, transparent);
+		box-shadow: 0 10px 18px -12px color-mix(in srgb, var(--wp--preset--color--canopy) 55%, transparent);
+	}
 }
 
 /* The global focus style rounds to the small radius; the plate keeps its own. */
@@ -2048,12 +2097,24 @@ ul.dh-toolbar__chips {
 	opacity: 0;
 }
 
-.dh-cred__plate:is(:hover, :focus-visible) .dh-cred__ink {
+.dh-cred__plate:focus .dh-cred__ink {
 	opacity: 0;
 }
 
-.dh-cred__plate:is(:hover, :focus-visible) .dh-cred__logo {
+@media (hover: hover) and (pointer: fine) {
+	.dh-cred__plate:hover .dh-cred__ink {
+		opacity: 0;
+	}
+}
+
+.dh-cred__plate:focus .dh-cred__logo {
 	opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cred__plate:hover .dh-cred__logo {
+		opacity: 1;
+	}
 }
 
 /* A credential without a logo: its name, set on the plate. */
@@ -2121,7 +2182,7 @@ ul.dh-toolbar__chips {
 	transform: translate(50%, -6px) rotate(3deg);
 }
 
-.dh-cred__plate:is(:hover, :focus-visible) .dh-cred__tag {
+.dh-cred__plate:focus .dh-cred__tag {
 	transform: translate(-50%, 0) rotate(0deg);
 	opacity: 1;
 	visibility: visible;
@@ -2129,8 +2190,24 @@ ul.dh-toolbar__chips {
 	transition-delay: 0s;
 }
 
-[dir="rtl"] .dh-cred__plate:is(:hover, :focus-visible) .dh-cred__tag {
+@media (hover: hover) and (pointer: fine) {
+	.dh-cred__plate:hover .dh-cred__tag {
+		transform: translate(-50%, 0) rotate(0deg);
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transition-delay: 0s;
+	}
+}
+
+[dir="rtl"] .dh-cred__plate:focus .dh-cred__tag {
 	transform: translate(50%, 0) rotate(0deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	[dir="rtl"] .dh-cred__plate:hover .dh-cred__tag {
+		transform: translate(50%, 0) rotate(0deg);
+	}
 }
 
 .dh-cred__tag-name {
@@ -2809,9 +2886,11 @@ ul.dh-toolbar__chips {
 	grid-column: span 3;
 }
 
-.dh-cat:hover {
-	transform: translateY(-2px);
-	box-shadow: var(--wp--preset--shadow--card);
+@media (hover: hover) and (pointer: fine) {
+	.dh-cat:hover {
+		transform: translateY(-2px);
+		box-shadow: var(--wp--preset--shadow--card);
+	}
 }
 
 .dh-cat__link {
@@ -2872,16 +2951,20 @@ ul.dh-toolbar__chips {
 	transition: transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-cat:hover .dh-cat__arrow {
-	transform: translateX(3px);
+@media (hover: hover) and (pointer: fine) {
+	.dh-cat:hover .dh-cat__arrow {
+		transform: translateX(3px);
+	}
 }
 
 [dir="rtl"] .dh-cat__arrow svg {
 	transform: scaleX(-1);
 }
 
-[dir="rtl"] .dh-cat:hover .dh-cat__arrow {
-	transform: translateX(-3px);
+@media (hover: hover) and (pointer: fine) {
+	[dir="rtl"] .dh-cat:hover .dh-cat__arrow {
+		transform: translateX(-3px);
+	}
 }
 
 /* The count sits in the card's corner, socketed with the notch. */
@@ -3664,11 +3747,16 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--ink);
 }
 
-.dh-pill--paper:hover,
 .dh-pill--paper:focus-visible,
-.wp-block-button.is-style-dh-pill-paper > .wp-block-button__link:hover,
 .wp-block-button.is-style-dh-pill-paper > .wp-block-button__link:focus-visible {
 	background: var(--wp--preset--color--white);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-pill--paper:hover,
+	.wp-block-button.is-style-dh-pill-paper > .wp-block-button__link:hover {
+		background: var(--wp--preset--color--white);
+	}
 }
 
 .dh-pill--outline-paper,
@@ -3677,11 +3765,16 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--paper);
 }
 
-.dh-pill--outline-paper:hover,
 .dh-pill--outline-paper:focus-visible,
-.wp-block-button.is-style-dh-pill-outline-paper > .wp-block-button__link:hover,
 .wp-block-button.is-style-dh-pill-outline-paper > .wp-block-button__link:focus-visible {
 	border-color: var(--wp--preset--color--paper);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-pill--outline-paper:hover,
+	.wp-block-button.is-style-dh-pill-outline-paper > .wp-block-button__link:hover {
+		border-color: var(--wp--preset--color--paper);
+	}
 }
 
 /* Small screens ------------------------------------------------------ */
@@ -3815,9 +3908,11 @@ ul.dh-toolbar__chips {
 	text-decoration: none;
 }
 
-.dh-shop__crumbs a:hover {
-	color: var(--wp--preset--color--canopy);
-	text-decoration: underline;
+@media (hover: hover) and (pointer: fine) {
+	.dh-shop__crumbs a:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration: underline;
+	}
 }
 
 .dh-shop__title {
@@ -3890,8 +3985,10 @@ ul.dh-toolbar__chips {
 	transition: transform var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
 }
 
-.dh-pcard:hover .dh-pcard__media img {
-	transform: scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+	.dh-pcard:hover .dh-pcard__media img {
+		transform: scale(1.04);
+	}
 }
 
 .dh-pcard__body {
@@ -3926,8 +4023,10 @@ ul.dh-toolbar__chips {
 	text-decoration: none;
 }
 
-.dh-pcard__title a:hover {
-	color: var(--wp--preset--color--canopy);
+@media (hover: hover) and (pointer: fine) {
+	.dh-pcard__title a:hover {
+		color: var(--wp--preset--color--canopy);
+	}
 }
 
 /* Unpriced catalogue: the substitute for "SAR 0.00", set in inc/woocommerce.php. */
@@ -3975,8 +4074,10 @@ ul.dh-toolbar__chips {
 	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-pagination a:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--field) 24%, transparent);
+@media (hover: hover) and (pointer: fine) {
+	.dh-pagination a:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--field) 24%, transparent);
+	}
 }
 
 .dh-pagination .page-numbers.current {
@@ -3990,8 +4091,10 @@ ul.dh-toolbar__chips {
 		transition: none;
 	}
 
-	.dh-pcard:hover .dh-pcard__media img {
-		transform: none;
+	@media (hover: hover) and (pointer: fine) {
+		.dh-pcard:hover .dh-pcard__media img {
+			transform: none;
+		}
 	}
 }
 
@@ -4197,11 +4300,18 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--ink);
 }
 
-.dh-404__actions .is-style-outline .wp-block-button__link:hover,
 .dh-404__actions .is-style-outline .wp-block-button__link:focus-visible {
 	border-color: var(--wp--preset--color--ink);
 	background: transparent;
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-404__actions .is-style-outline .wp-block-button__link:hover {
+		border-color: var(--wp--preset--color--ink);
+		background: transparent;
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /*
@@ -4387,10 +4497,16 @@ footer.wp-block-template-part {
 	text-underline-offset: 0.2em;
 }
 
-.dh-foot-plate a:hover,
 .dh-foot-plate a:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration-color: currentColor;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-foot-plate a:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration-color: currentColor;
+	}
 }
 
 .dh-foot-plate__doc {
@@ -4441,11 +4557,18 @@ footer.wp-block-template-part {
 	text-decoration: none;
 }
 
-.dh-foot__links a:hover,
 .dh-foot__links a:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-foot__links a:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 .dh-foot__out {
@@ -4470,10 +4593,16 @@ footer.wp-block-template-part {
 		border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-foot__quote:hover,
 .dh-foot__quote:focus-visible {
 	border-color: var(--_water-deep);
 	background: color-mix(in srgb, var(--wp--preset--color--water) 12%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-foot__quote:hover {
+		border-color: var(--_water-deep);
+		background: color-mix(in srgb, var(--wp--preset--color--water) 12%, transparent);
+	}
 }
 
 @media (pointer: coarse) {
@@ -4550,8 +4679,10 @@ footer.wp-block-template-part {
 	opacity: 1;
 }
 
-.dh-search__input:hover {
-	border-color: color-mix(in srgb, var(--wp--preset--color--ink) 45%, transparent);
+@media (hover: hover) and (pointer: fine) {
+	.dh-search__input:hover {
+		border-color: color-mix(in srgb, var(--wp--preset--color--ink) 45%, transparent);
+	}
 }
 
 /* The global focus ring squares corners to radius-sm; a pill must stay a pill. */
@@ -4578,10 +4709,16 @@ footer.wp-block-template-part {
 	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-search__submit:hover,
 .dh-search__submit:focus-visible {
 	background: var(--wp--preset--color--ink);
 	border-radius: var(--wp--custom--radius--pill);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-search__submit:hover {
+		background: var(--wp--preset--color--ink);
+		border-radius: var(--wp--custom--radius--pill);
+	}
 }
 
 @media (pointer: coarse) {
@@ -4851,10 +4988,16 @@ footer.wp-block-template-part {
 		transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-svc-stages__list a:hover::before,
 .dh-svc-stages__list a:focus-visible::before {
 	background: var(--wp--preset--color--field);
 	transform: scale(1.25);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-svc-stages__list a:hover::before {
+		background: var(--wp--preset--color--field);
+		transform: scale(1.25);
+	}
 }
 
 .dh-svc-stages__list strong {
@@ -4991,11 +5134,18 @@ footer.wp-block-template-part {
 		box-shadow var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-cat-row__link:hover,
 .dh-cat-row__link:focus-visible {
 	background: var(--wp--preset--color--white);
 	box-shadow: var(--wp--preset--shadow--card);
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cat-row__link:hover {
+		background: var(--wp--preset--color--white);
+		box-shadow: var(--wp--preset--shadow--card);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-cat-row__link:focus-visible {
@@ -5041,9 +5191,14 @@ footer.wp-block-template-part {
 	transition: translate var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-cat-row__link:hover .dh-cat-row__arrow,
 .dh-cat-row__link:focus-visible .dh-cat-row__arrow {
 	translate: 3px 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cat-row__link:hover .dh-cat-row__arrow {
+		translate: 3px 0;
+	}
 }
 
 [dir="rtl"] .dh-cat-row__arrow svg {
