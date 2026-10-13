@@ -697,6 +697,7 @@ html:has(.dh-quote-dialog[open]) {
 	@starting-style {
 		.dh-quote-dialog[open] {
 			translate: 0 100%;
+			scale: 1;
 		}
 	}
 
