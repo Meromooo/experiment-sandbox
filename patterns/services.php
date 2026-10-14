@@ -20,7 +20,8 @@
 // notch); the trust row sits under the hero. AMM-195: the survey section is a
 // folder: its tabs a list (the open one, Survey & design, plain text; the
 // other two links down the page), its board the visit copy, the route (each
-// step's name in Bold, the checks a nested list) and the crew photo.
+// step's name in Bold, then one line) and the crew photo. The steps' copy is
+// Ammar's, as saved on page 822 (2026-10-14).
 ?>
 <!-- wp:group {"tagName":"section","className":"dh-section dh-svc-hero","layout":{"type":"constrained"}} -->
 <section class="wp-block-group dh-section dh-svc-hero"><!-- wp:group {"className":"dh-svc-hero__grid","layout":{"type":"default"}} -->
@@ -122,7 +123,7 @@
 
 <!-- wp:list {"ordered":true,"className":"dh-svc-route"} -->
 <ol class="wp-block-list dh-svc-route"><!-- wp:list-item -->
-<li><strong>Tell us about your site</strong> Pick your nearest branch.</li>
+<li><strong>Tell us about your site</strong> &amp; Pick your nearest branch.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
@@ -130,31 +131,11 @@
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li><strong>We check your site</strong><!-- wp:list {"className":"dh-svc-route__checks"} -->
-<ul class="wp-block-list dh-svc-route__checks"><!-- wp:list-item -->
-<li>Water source</li>
+<li><strong>We check your site</strong></li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>Pressure &amp; flow</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li>Soil &amp; slope</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li>Sun &amp; shade</li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li>Zones</li>
-<!-- /wp:list-item --></ul>
-<!-- /wp:list --></li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li><strong>You get a quotation</strong> Usually within two business days.</li>
+<li><strong>You get a quotation</strong>! Usually within two business days.</li>
 <!-- /wp:list-item --></ol>
 <!-- /wp:list --></div>
 <!-- /wp:group -->
