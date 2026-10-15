@@ -100,8 +100,8 @@ words, at most one eyebrow per three sections, at most one middle dot per line, 
 dash in anything a visitor reads** (repo docs, code comments, commits and Linear are exempt). It
 does not override what is locked here: block theme with plain CSS and `theme.json` tokens (no
 React/Tailwind/Motion packages), the hand-drawn schematic icon set, light-only, no stock
-photography, and Ammar's exceptions (the homepage's two moving strips, AMM-178; the certification
-and partner logos).
+photography, and Ammar's exceptions (the homepage's two moving strips, AMM-178, and its hero photo
+carousel, AMM-196; the certification and partner logos).
 
 ## Version targets
 

@@ -90,7 +90,9 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     measure; below 56rem the field sits in the card's bottom corner. The arm's `<svg>` sits in a
     `<span>` that turns, because Chrome won't run a transform animation on an `<svg>` on the
     compositor (a trace showed `compositeFailed`); with reduced motion it is parked at the same angle
-    it starts from. A global `max-inline-size: 100%` on SVGs had to be lifted for it). Enqueues `assets/js/editor.js`, the **Highlight**
+    it starts from. A global `max-inline-size: 100%` on SVGs had to be lifted for it. **Unused
+    since AMM-196**, when the hero became a photo frame; kept registered with its CSS, so a page
+    that still holds it renders it). Enqueues `assets/js/editor.js`, the **Highlight**
     rich-text format (`<span class="dh-highlight" data-reveal="wipe">`) for the headline's
     green word — a plain editor script, no build step. Registers
     the pills as **Button block styles** (`is-style-dh-pill-solid`, `-outline`, `-paper`,
@@ -98,7 +100,8 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     bridge**: a `render_block` filter that turns classes on core blocks (`dh-reveal--rise`,
     `--bar`, `--dot` …, `dh-reveal-group`, `dh-reveal-content`) into the `data-reveal*`
     attributes the motion code reads — the browser gets the same markup as before, so
-    `main.js` and the motion CSS barely change. A `data-reveal-group` numbers only **its own**
+    `main.js` and the motion CSS barely change. Beside it, the hero photos' loading filter
+    (AMM-196, below). A `data-reveal-group` numbers only **its own**
     reveals (`main.js`): a group inside it numbers itself, and a reveal inside another reveal
     (the highlighted word) inherits its container's `--i` and sweeps two beats after it — so no
     inline `--i` is needed. **A reveal steps aside once it lands** (AMM-166): its starting state
@@ -113,12 +116,23 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     usual, no special case needed. **The hero is not a scroll reveal** (AMM-168): it is on screen
     from the first paint, and `main.js` loads in the footer, so it switched the reveals on too
     late to hide the hero — the hero never animated. It now plays as the page opens on CSS
-    keyframes alone (`style.css` section 7, `.home .dh-hero`, no `.js` gate): eyebrow, headline,
-    the word's sweep, lead, buttons, then — above 56rem only, where they share the first screen —
+    keyframes alone (`style.css` section 7, `.home .dh-hero`, no `.js` gate). Since AMM-196 the
+    photo frame opens out from its middle while the first photo settles, then the headline,
+    lead and the word's sweep, the socket with the buttons from below and the caption tab from
+    above (`main.js` builds the tab later and sets `--_since`, how long the frame has been
+    opening, so it keeps its place); then, above 56rem only, where they share the first screen,
     the Branch Desk and the schematic drawing itself; on narrower screens those two stay scroll
     reveals. `main.js` leaves alone any reveal whose computed `animation-name` is not `none`,
     marking it `.is-in .is-settled` *before* it adds `.js`, so the breakpoint lives in CSS only.
-    Cost: the headline (the LCP element) reaches the screen ~160ms after first paint.
+    Before AMM-196 the headline was the LCP element, reaching the screen ~160ms after first
+    paint; AMM-196's Linear report has the traces since.
+
+    **The loading order of the hero's photos** (AMM-196): a `render_block_core/group` filter on
+    the group with the class `dh-hero-slides` gives its first image `fetchpriority="high"` and
+    no lazy loading, and the rest `loading="lazy"`. They stay unrendered until their turn, so the
+    browser leaves them alone; `main.js` switches them to eager 1.5 s after the page's `load`.
+    WordPress's own image pass runs after the filter and keeps both attributes, adding `srcset`
+    and `sizes` from each image's `wp-image-ID` class.
     Core blocks inside a group get the block
     layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
     defaults has to be written down — see the section eyebrows in `style.css` section 9.
@@ -170,6 +184,26 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   category card shows its product drawing in place of the icon (fog line and gauge, pop-up
   rotor, pipe with tee and valve, drill in a plate, fabric roll with a loupe); the cards are
   ~57px taller at desktop. Nothing in Page 17 changed: the drawings follow the cards' slugs.
+  **AMM-196 (2026-10-15):** the hero head is a **photo frame**, a carousel of Demas's own photos
+  (Ammar's exception to the taste rules, beside the two moving strips). Markup (`patterns/hero.php`
+  and Page 17): a full-width group `dh-hero__frame` holding the copy group `dh-hero__copy` (the
+  headline and lead, still `dh-reveal--rise`), the Buttons block `dh-hero__actions` (the
+  **socket**, paper cut into the frame's bottom corner with the notch's fillets) and the group
+  `dh-hero-slides`: one core Image block per photo, `sizeSlug` full, alt text and a caption
+  edited in the editor. A `dh-focus--left`, `--right`, `--up` or `--down` class on an Image
+  block moves its crop (`object-position` 40% or 60% on that axis). The image ids and URLs are
+  the sandbox's Media Library, so the cutover paste (AMM-158) takes live's ids and URLs. CSS
+  (`style.css` section 9): the frame is a gutter in from the screen's sides, up to 100rem, at
+  least most of the screen's height; a canopy shade from the copy's corner (from the bottom only
+  on phones) keeps the paper text readable. `main.js` (job 7) builds the **tab** in the frame's
+  top corner (the caption, a segment per photo, the pause button) and changes photo every
+  7.9 s: the next one grows up over the last in six strips (four below 48rem), left to right
+  (right to left in Arabic), 1.9 s each, 160 ms apart, while the one leaving darkens; the
+  timings are custom properties on `.dh-hero-slides`. The current segment's fill
+  (`dh-hero-fill`) is the timer. It holds off screen, under the mouse and while the button has
+  keyboard focus; with reduced motion it starts paused and a played change is a fade. Without
+  JavaScript the first photo stays and no tab shows. The eyebrow card and the Pivot field
+  drawing left the hero.
   The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 

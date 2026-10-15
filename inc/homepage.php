@@ -22,7 +22,10 @@
  *  - the "Highlight" text format (assets/js/editor.js) for the headline's
  *    green word;
  *  - the bridge that turns reveal classes on core blocks into the data
- *    attributes the motion code reads.
+ *    attributes the motion code reads;
+ *  - the loading order of the hero's photos (AMM-196): the first one
+ *    first, the rest lazy. /pivot-field stays registered but the hero no
+ *    longer uses it.
  *
  * @package Demas_Theme
  */
@@ -137,3 +140,41 @@ function demas_theme_reveal_attributes( $html, $block ) {
 	return $tags->get_updated_html();
 }
 add_filter( 'render_block', 'demas_theme_reveal_attributes', 10, 2 );
+
+/**
+ * Loading order for the hero's photos (AMM-196).
+ *
+ * The hero frame's photos are core Image blocks in a group with the class
+ * dh-hero-slides. The first is the page's largest paint, so it gets
+ * fetchpriority="high" and no lazy loading; the rest are hidden until their
+ * turn and get loading="lazy", so the browser leaves them alone until
+ * main.js asks for them once the page has loaded. WordPress's own image
+ * pass (wp_filter_content_tags) runs after this and keeps both attributes.
+ *
+ * @param string $html  Rendered group markup, its images included.
+ * @param array  $block Parsed block.
+ * @return string
+ */
+function demas_theme_hero_slides_loading( $html, $block ) {
+	$class = (string) ( $block['attrs']['className'] ?? '' );
+
+	if ( '' === $html || ! in_array( 'dh-hero-slides', preg_split( '/\s+/', $class ), true ) ) {
+		return $html;
+	}
+
+	$tags  = new WP_HTML_Tag_Processor( $html );
+	$first = true;
+
+	while ( $tags->next_tag( 'img' ) ) {
+		if ( $first ) {
+			$tags->set_attribute( 'fetchpriority', 'high' );
+			$tags->remove_attribute( 'loading' );
+			$first = false;
+		} else {
+			$tags->set_attribute( 'loading', 'lazy' );
+		}
+	}
+
+	return $tags->get_updated_html();
+}
+add_filter( 'render_block_core/group', 'demas_theme_hero_slides_loading', 10, 2 );

@@ -83,7 +83,8 @@ archive's file count before giving a delete command. Permanent deletes are his t
   every later turn of that task. Measure before changing; fix only what the measurement names.
 - **The taste skill's rules are ones he likes**, not findings to debate. His standing exceptions:
   the homepage may have two moving strips (the supply-list marquee and the certificates logo
-  strip, AMM-178), and the certificate and partner logos may be used.
+  strip, AMM-178) and a hero photo carousel (AMM-196), and the certificate and partner logos
+  may be used.
 - **Browser checks** use Chrome DevTools locally. A cloud session has no browser: check the
   sandbox with `curl` (its domain is allowed in the cloud environment), and say plainly that the
   visual and accessibility checks are still to be done in a local session.

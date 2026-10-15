@@ -107,7 +107,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
      - *Eyebrow count ≤ ceil(sections ÷ 3), one marquee per page:* count `.dh-eyebrow` (and
        other eyebrows) against sections, `.dh-marquee` per page. **Exception (Ammar,
        2026-10-05): the homepage has two moving strips,** the supply-list marquee and the
-       certificates belt (`.dh-belt`, AMM-178), counter-flowing; don't flag it.
+       certificates belt (`.dh-belt`, AMM-178), counter-flowing; don't flag it. **Nor the
+       hero's photo carousel** (`.dh-hero-slides`, AMM-196, Ammar 2026-10-15): Demas's own
+       photos changing on their own every 7.9 s, with a pause button, holding off screen, on
+       hover and on keyboard focus, paused from the start with reduced motion.
      - *Mobile collapse:* no `scrollWidth > innerWidth` at 320; 44px tap targets.
      - *Core Web Vitals:* `chrome-devtools-mcp:debug-optimize-lcp` — a reload trace for LCP and
        CLS (INP needs an interaction trace).
@@ -130,7 +133,7 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   site (real photos wait on AMM-149); the branch-city marquee is real content, not a "locale
   strip"; the homepage's second moving strip (the certificates belt, AMM-178) is Ammar's
   standing call, as is the use of the certification bodies' and partners' logos on it (they
-  are on the live site). Installed as a project skill in the main checkout's `.claude/skills/` (from
+  are on the live site), and so is the hero's photo carousel (AMM-196). Installed as a project skill in the main checkout's `.claude/skills/` (from
   github.com/leonxlnx/taste-skill, commit ce26fc2, MIT). **Committed since 2026-10-06** (with
   ponytail, both with their LICENSE and SOURCE.txt) so cloud sessions get them; neither reaches
   the server, because only the `RUNTIME` files deploy (AMM-173). All five project skills are now
