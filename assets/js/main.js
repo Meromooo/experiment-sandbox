@@ -1,7 +1,7 @@
 /**
  * Demas Theme (Sandbox) — front-end behaviour.
  *
- * Six jobs, no dependencies, no build step:
+ * Seven jobs, no dependencies, no build step:
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
  *     viewport, and number the reveals of each [data-reveal-group] (--i) so
  *     CSS can stagger them. Reduced-motion users get the final state at once.
@@ -20,6 +20,9 @@
  *     the footer slides over it. Without this script nothing is pinned.
  *  6. Catalogue view: switches Gallery / Sheet in place, remembers it, and
  *     animates. Without this script the toggle links reload with ?view=.
+ *  7. Hero photos: the homepage frame's Image blocks (.dh-hero-slides)
+ *     become a carousel with a caption tab and a pause button. Without this
+ *     script the first photo stays.
  *
  * The .js class on <html> is the gate for every hidden initial state in
  * assets/css/style.css — with this file absent or failing, nothing is hidden.
@@ -495,6 +498,293 @@
 		});
 
 		carryView(currentView());
+	}
+
+	/* 7. Hero photos (AMM-196) ----------------------------------------- */
+
+	// The hero frame's photos (core Image blocks in .dh-hero-slides) become a
+	// carousel: one photo at a time, the next growing up over it in strips,
+	// and a tab in the frame's corner with the caption, a segment per photo
+	// and a pause button (WCAG 2.2.2). The current segment filling is the
+	// timer: its animationend moves to the next photo, so pausing is pausing
+	// that animation (style.css). It also holds while the frame is off
+	// screen, under the mouse, and while the button has keyboard focus. With
+	// reduced motion it starts paused, and a played change is a fade. The
+	// photos after the first load once the page has; captions are copied as
+	// text, never as markup.
+	var slideshow = document.querySelector('.dh-hero-slides');
+	var slides = slideshow ? Array.prototype.filter.call(slideshow.children, function (el) {
+		return el.classList.contains('wp-block-image') && el.querySelector('img');
+	}) : [];
+
+	if (slides.length > 1 && hasObserver && typeof slideshow.getAnimations === 'function') {
+		(function () {
+			var frame = slideshow.closest('.dh-hero__frame') || slideshow;
+			var count = slides.length;
+			var current = 0;
+			var busy = false;
+			var holds = {};
+			var tab = document.createElement('div');
+			var info = document.createElement('div');
+			var caps = document.createElement('div');
+			var steps = document.createElement('div');
+			var button = document.createElement('button');
+			var capItems = [];
+			var stepItems = [];
+
+			slideshow.setAttribute('role', 'group');
+			slideshow.setAttribute('aria-roledescription', 'carousel');
+			slideshow.setAttribute('aria-label', 'Photos of Demas work');
+
+			slides.forEach(function (slide, i) {
+				var caption = slide.querySelector('figcaption');
+				var text = caption ? caption.textContent.trim() : '';
+				var cap = document.createElement('span');
+				var step = document.createElement('span');
+
+				slide.setAttribute('role', 'group');
+				slide.setAttribute('aria-roledescription', 'slide');
+				slide.setAttribute('aria-label', (i + 1) + ' of ' + count + (text ? ': ' + text : ''));
+
+				cap.textContent = text;
+				caps.appendChild(cap);
+				steps.appendChild(step);
+				capItems.push(cap);
+				stepItems.push(step);
+			});
+
+			tab.className = 'dh-hero-slides__tab';
+			info.className = 'dh-hero-slides__info';
+			info.setAttribute('aria-hidden', 'true');
+			caps.className = 'dh-hero-slides__caps';
+			steps.className = 'dh-hero-slides__steps';
+			steps.style.setProperty('--_n', String(count));
+			button.className = 'dh-hero-slides__pause';
+			button.type = 'button';
+			button.setAttribute('aria-label', 'Pause the slideshow');
+			info.appendChild(caps);
+			info.appendChild(steps);
+			tab.appendChild(info);
+			tab.appendChild(button);
+
+			function mark(n) {
+				capItems.forEach(function (cap, k) {
+					cap.classList.toggle('is-current', k === n);
+				});
+				stepItems.forEach(function (step, k) {
+					step.classList.toggle('is-done', k < n);
+					step.classList.remove('is-current');
+					step.style.removeProperty('--_wait');
+				});
+				// Restarts the fill when the same photo runs its time again.
+				void stepItems[n].offsetWidth;
+				stepItems[n].classList.add('is-current');
+			}
+
+			// The frame opens as the page paints (style.css section 7) and this
+			// script runs later, so the tab and the first fill are placed in
+			// that sequence by how long the frame has been opening.
+			var opening = frame.getAnimations().filter(function (animation) {
+				return animation.animationName === 'dh-hero-open';
+			})[0];
+			var since = 1e4;
+			var wait = 0;
+
+			if (opening) {
+				since = opening.startTime === null ? 0 : document.timeline.currentTime - opening.startTime;
+				wait = Math.max(0, opening.effect.getComputedTiming().endTime - since);
+			}
+
+			mark(0);
+			stepItems[0].style.setProperty('--_wait', wait + 'ms');
+			tab.style.setProperty('--_since', since + 'ms');
+			slides[0].classList.add('is-current');
+			slideshow.classList.add('is-live');
+			slideshow.insertBefore(tab, slideshow.firstChild);
+
+			function load(slide) {
+				var img = slide.querySelector('img');
+
+				img.loading = 'eager';
+				return img.decode();
+			}
+
+			// The next photo in strips, left to right (right to left in Arabic),
+			// each a copy of it clipped to its band, at the photo's own crop.
+			function rows(slide) {
+				var img = slide.querySelector('img');
+				var style = window.getComputedStyle(slideshow);
+				var n = window.matchMedia('(min-width: 48rem)').matches ? 6 : 4;
+				var stagger = parseFloat(style.getPropertyValue('--dh-slides-stagger')) || 0;
+				var rtl = style.direction === 'rtl';
+				var position = window.getComputedStyle(img).objectPosition;
+				var wrap = document.createElement('div');
+				var k;
+
+				wrap.className = 'dh-hero-slides__rows';
+				wrap.setAttribute('aria-hidden', 'true');
+
+				for (k = 0; k < n; k += 1) {
+					var row = document.createElement('div');
+					var copy = document.createElement('img');
+
+					row.className = 'dh-hero-slides__row';
+					row.style.setProperty('--_left', ((k / n) * 100).toFixed(3) + '%');
+					// Each band reaches a pixel under the next, so no seam shows.
+					row.style.setProperty('--_right', k < n - 1 ? 'calc(' + (100 - ((k + 1) / n) * 100).toFixed(3) + '% - 1px)' : '0%');
+					row.style.animationDelay = (rtl ? n - 1 - k : k) * stagger + 'ms';
+					copy.src = img.currentSrc || img.src;
+					copy.alt = '';
+					copy.style.objectPosition = position;
+					row.appendChild(copy);
+					wrap.appendChild(row);
+				}
+
+				return wrap;
+			}
+
+			function go(n) {
+				var from = slides[current];
+				var to = slides[n];
+
+				if (busy || n === current) {
+					return;
+				}
+				busy = true;
+
+				load(to).then(function () {
+					var strip = null;
+					var running = [];
+
+					slideshow.setAttribute('data-mode', reduce.matches ? 'fade' : 'rows');
+					slideshow.classList.add('has-moved');
+					from.classList.replace('is-current', 'is-leaving');
+					mark(n);
+
+					if (reduce.matches) {
+						to.classList.add('is-current', 'is-in');
+					} else {
+						strip = rows(to);
+						slideshow.appendChild(strip);
+					}
+					slideshow.classList.add('is-changing');
+
+					// The change is over when the photos' own animations are;
+					// the new segment's fill runs on.
+					[from, to, strip].forEach(function (el) {
+						if (el) {
+							running = running.concat(el.getAnimations({ subtree: true }));
+						}
+					});
+
+					return Promise.all(running.map(function (animation) {
+						return animation.finished.catch(function () {});
+					})).then(function () {
+						if (strip) {
+							to.classList.add('is-current');
+							strip.remove();
+						}
+						from.classList.remove('is-leaving');
+						to.classList.remove('is-in');
+						slideshow.classList.remove('is-changing');
+						current = n;
+						busy = false;
+					});
+				}, function () {
+					// The photo would not load: this one stays for another turn.
+					busy = false;
+					mark(current);
+				});
+			}
+
+			tab.addEventListener('animationend', function (event) {
+				if (event.animationName === 'dh-hero-fill') {
+					go((stepItems.indexOf(event.target) + 1) % count);
+				}
+			});
+
+			function hold(reason, on) {
+				holds[reason] = on;
+				slideshow.toggleAttribute('data-hold', Object.keys(holds).some(function (key) {
+					return holds[key];
+				}));
+			}
+
+			function setPaused(paused) {
+				slideshow.toggleAttribute('data-paused', paused);
+				button.setAttribute('aria-label', paused ? 'Play the slideshow' : 'Pause the slideshow');
+			}
+
+			// Play means play: it also ends the hold that keyboard focus on the
+			// button put on.
+			button.addEventListener('click', function () {
+				var paused = !slideshow.hasAttribute('data-paused');
+
+				setPaused(paused);
+				if (!paused) {
+					hold('focus', false);
+				}
+			});
+
+			if (reduce.matches) {
+				setPaused(true);
+			}
+
+			if (typeof reduce.addEventListener === 'function') {
+				reduce.addEventListener('change', function (event) {
+					if (event.matches) {
+						setPaused(true);
+					}
+				});
+			}
+
+			new IntersectionObserver(function (entries) {
+				hold('offscreen', !entries[entries.length - 1].isIntersecting);
+			}).observe(frame);
+
+			frame.addEventListener('pointerenter', function (event) {
+				if (event.pointerType !== 'touch') {
+					hold('hover', true);
+				}
+			});
+
+			frame.addEventListener('pointerleave', function (event) {
+				if (event.pointerType !== 'touch') {
+					hold('hover', false);
+				}
+			});
+
+			slideshow.addEventListener('focusin', function (event) {
+				var keyboard = true;
+
+				try {
+					keyboard = event.target.matches(':focus-visible');
+				} catch (error) {
+					// A browser without :focus-visible holds for any focus.
+				}
+				if (keyboard) {
+					hold('focus', true);
+				}
+			});
+
+			slideshow.addEventListener('focusout', function () {
+				hold('focus', false);
+			});
+
+			function loadRest() {
+				window.setTimeout(function () {
+					slides.slice(1).forEach(function (slide) {
+						slide.querySelector('img').loading = 'eager';
+					});
+				}, 1500);
+			}
+
+			if (document.readyState === 'complete') {
+				loadRest();
+			} else {
+				window.addEventListener('load', loadRest);
+			}
+		})();
 	}
 
 	// The printed sheet's date is the day it is printed, not the day the

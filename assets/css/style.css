@@ -451,6 +451,7 @@ ul.dh-toolbar__chips {
 	.dh-search__submit,
 	.dh-foot__quote,
 	.dh-film__toggle,
+	.dh-hero-slides__pause,
 	.dh-pagination a
 ) {
 	-webkit-user-select: none;
@@ -491,6 +492,7 @@ ul.dh-toolbar__chips {
 	.dh-search__submit,
 	.dh-foot__quote,
 	.dh-film__toggle,
+	.dh-hero-slides__pause,
 	.dh-pagination a
 ):active {
 	scale: 0.97;
@@ -516,6 +518,7 @@ ul.dh-toolbar__chips {
 		.dh-search__submit,
 		.dh-foot__quote,
 		.dh-film__toggle,
+		.dh-hero-slides__pause,
 		.dh-pagination a
 	):active {
 		scale: none;
@@ -987,6 +990,59 @@ ul.dh-toolbar__chips {
 	}
 }
 
+@keyframes dh-hero-open {
+	from {
+		clip-path: inset(14% 20% 14% 20% round var(--wp--custom--radius--lg));
+	}
+
+	to {
+		clip-path: inset(0 round var(--wp--custom--radius--lg));
+	}
+}
+
+@keyframes dh-hero-settle {
+	from {
+		scale: 1.12;
+	}
+}
+
+@keyframes dh-hero-socket {
+	from {
+		transform: translateY(100%);
+	}
+}
+
+@keyframes dh-hero-tab {
+	from {
+		transform: translateY(-100%);
+	}
+}
+
+/* The current photo's segment filling: the carousel's timer (main.js). */
+@keyframes dh-hero-fill {
+	to {
+		scale: 1;
+	}
+}
+
+@keyframes dh-hero-shade {
+	to {
+		opacity: 0.4;
+	}
+}
+
+@keyframes dh-hero-row {
+	from {
+		clip-path: inset(100% var(--_right) 0 var(--_left));
+	}
+}
+
+@keyframes dh-hero-row-photo {
+	from {
+		translate: 0 8%;
+	}
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	.home .dh-hero [data-reveal],
 	.page-template-designed-page .dh-svc-hero [data-reveal],
@@ -1020,21 +1076,17 @@ ul.dh-toolbar__chips {
 		animation-name: dh-hero-wipe;
 	}
 
-	.home .dh-hero__title,
 	.page-template-designed-page .dh-svc-hero__title,
 	.page-template-designed-page .dh-ct-hero__title {
 		--_step: 1;
 	}
 
-	.home .dh-hero__lead,
 	.page-template-designed-page .dh-svc-hero .dh-svc-lead,
 	.page-template-designed-page .dh-ct-hero .dh-ct-lead {
 		--_step: 2;
 	}
 
 	/* The word sweeps two beats after its headline; the buttons follow the lead. */
-	.home .dh-hero .dh-highlight,
-	.home .dh-hero__actions > *,
 	.page-template-designed-page .dh-svc-hero .dh-svc-proof,
 	.page-template-designed-page .dh-svc-hero .dh-highlight,
 	.page-template-designed-page .dh-svc-hero .dh-svc-actions > *,
@@ -1043,7 +1095,6 @@ ul.dh-toolbar__chips {
 		--_step: 3;
 	}
 
-	.home .dh-hero__actions > * + *,
 	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * + *,
 	.page-template-designed-page .dh-ct-hero .dh-ct-actions > * + * {
 		--_step: 4;
@@ -1054,6 +1105,61 @@ ul.dh-toolbar__chips {
 		animation: dh-hero-fade var(--wp--custom--motion--slow) var(--wp--custom--motion--ease)
 			calc(3 * var(--wp--custom--motion--stagger)) backwards;
 	}
+
+	/* The photo frame (AMM-196) opens out from its middle while the first
+	   photo settles; the headline, its lead and the word's sweep follow, then
+	   the socket rises with the buttons and the caption tab drops in. main.js
+	   builds the tab after the first paint, so it sets --_since (how long the
+	   frame has been opening) to keep the tab's place in the sequence. */
+	.home .dh-hero__frame {
+		animation: dh-hero-open 1100ms var(--wp--custom--motion--ease-out) backwards;
+	}
+
+	.home .dh-hero-slides:not(.has-moved) > .wp-block-image:first-of-type > img {
+		animation: dh-hero-settle 1800ms var(--wp--custom--motion--ease-out) backwards;
+	}
+
+	.home .dh-hero__frame [data-reveal="rise"] {
+		animation: dh-hero-rise var(--wp--custom--motion--slow) var(--wp--custom--motion--ease-out) 420ms backwards;
+	}
+
+	.home .dh-hero__frame .dh-hero__lead {
+		animation-delay: 540ms;
+	}
+
+	.home .dh-hero__frame .dh-highlight {
+		animation: dh-hero-wipe var(--wp--custom--motion--slow) var(--wp--custom--motion--ease) 820ms backwards;
+	}
+
+	.home .dh-hero__frame > .dh-hero__actions {
+		animation: dh-hero-socket var(--wp--custom--motion--slow) var(--wp--custom--motion--ease-out) 640ms backwards;
+	}
+
+	.home .dh-hero-slides__tab {
+		animation: dh-hero-tab var(--wp--custom--motion--slow) var(--wp--custom--motion--ease-out)
+			calc(760ms - var(--_since, 0ms)) backwards;
+	}
+
+	/* A change of photo: the next one grows up over the last in strips, left
+	   to right like planted rows (main.js builds them, each a beat after the
+	   one before), while the one going out darkens a little. */
+	.dh-hero-slides.is-changing > .is-leaving::after {
+		animation: dh-hero-shade var(--dh-slides-change) var(--wp--custom--motion--ease-in-out) forwards;
+	}
+
+	.dh-hero-slides__row {
+		animation: dh-hero-row var(--dh-slides-row) var(--wp--custom--motion--ease-in-out) backwards;
+	}
+
+	.dh-hero-slides__row > img {
+		animation: dh-hero-row-photo var(--dh-slides-row) var(--wp--custom--motion--ease-out) backwards;
+		animation-delay: inherit;
+	}
+}
+
+/* With reduced motion the photos start paused; played, the next one fades in. */
+.dh-hero-slides[data-mode="fade"].is-changing > .is-in {
+	animation: dh-hero-fade var(--wp--custom--motion--fast) var(--wp--custom--motion--ease) backwards;
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 56.0625rem) {
@@ -1396,7 +1502,7 @@ ul.dh-toolbar__chips {
  * by default. Written down since the sections became blocks (AMM-153): the
  * block layout zeroes the first block's margins in a group.
  */
-:is(.dh-hero__head, .dh-section__head, .dh-band__copy, .dh-cta__inner) > .dh-eyebrow {
+:is(.dh-section__head, .dh-band__copy, .dh-cta__inner) > .dh-eyebrow {
 	margin-block: 1em;
 }
 
@@ -1419,50 +1525,392 @@ ul.dh-toolbar__chips {
 /* Hero ---------------------------------------------------------------- */
 
 .dh-hero {
-	padding-block-start: var(--wp--preset--spacing--60);
+	padding-block-start: var(--wp--preset--spacing--20);
 }
 
 /*
- * The head is a card (AMM-177): sand washed into paper, lighter than the
- * Branch Desk below it, as wide as the cards under it, with the Pivot field
- * drawing (src/pivot-field) behind its right side. The outline pill takes the
- * card's ground, so the drawing never shows through a label.
+ * The frame (AMM-196): Demas's own photos edge to edge, a gutter in from the
+ * screen's sides and up to 100rem wide, with the headline over them. A canopy
+ * shade from the copy's corner keeps paper text readable on every photo. The
+ * buttons sit in a paper socket cut into its bottom corner and the caption
+ * tab (main.js) in its top corner, both with the site's concave notch. The
+ * top padding is the tab's height, so on a short screen the headline never
+ * runs under it. alignfull drops the constrained layout's centring; the
+ * margins replace core's root-padding ones with the gutter.
  */
-.dh-hero__head {
-	--_ground: color-mix(in srgb, var(--wp--preset--color--sand) 42%, var(--wp--preset--color--paper));
+.dh-hero > .dh-hero__frame.alignfull {
+	--_gutter: var(--wp--preset--spacing--20);
+	--_pad: clamp(1.25rem, 5vw, 4.5rem);
+	--_r: var(--wp--custom--notch);
 	position: relative;
 	isolation: isolate;
-	overflow: hidden;
-	max-inline-size: var(--wp--style--global--content-size);
-	margin-block-end: var(--wp--preset--spacing--60);
-	padding: var(--wp--preset--spacing--70);
-	border-radius: var(--wp--custom--radius--lg);
-	background: var(--_ground);
+	display: grid;
+	align-content: end;
+	min-block-size: clamp(34rem, 100svh - 8.5rem, 52rem);
+	margin-block: 0 var(--wp--preset--spacing--60);
+	margin-inline: max(var(--_gutter) - var(--wp--style--root--padding-left, 0px), (100% - 100rem) / 2);
+	padding-block-start: calc(2.75rem + var(--wp--preset--spacing--20) + var(--wp--preset--spacing--30) + var(--wp--preset--spacing--40));
+	color: var(--wp--preset--color--paper);
 }
 
-.dh-hero__head .wp-block-button.is-style-dh-pill-outline > .wp-block-button__link {
-	background-color: var(--_ground);
+.dh-hero__frame > .dh-hero__copy {
+	position: relative;
+	z-index: 5;
+	display: grid;
+	gap: var(--wp--preset--spacing--40);
+	margin: 0;
+	padding-inline: var(--_pad);
 }
 
-/* One size below the display max: "Water, engineered" must hold on one line. */
+.dh-hero__copy > :is(.dh-hero__title, .dh-hero__lead) {
+	margin: 0;
+}
+
 .dh-hero__title {
-	margin-block: 0 var(--wp--preset--spacing--40);
-	font-size: var(--wp--preset--font-size--xxxl);
+	max-inline-size: 15ch;
+	font-size: clamp(2.6rem, 6.4vw, 6rem);
+}
+
+/* The highlight's field green is light, so the word takes ink, not paper. */
+.dh-hero__title .dh-highlight {
+	color: var(--wp--preset--color--ink);
 }
 
 .dh-hero__lead {
-	margin: 0 0 var(--wp--preset--spacing--50);
-	max-inline-size: 36rem;
+	max-inline-size: 34rem;
 	font-size: var(--wp--preset--font-size--lg);
 	line-height: 1.5;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 88%, transparent);
 }
 
-.dh-hero__actions {
+/*
+ * The socket: the page's paper cut into the frame's bottom corner, a pixel
+ * past its edges so no photo shows at the seam, its concave fillets drawn as
+ * radial gradients. A wrapped row of pills keeps spacing-30 between rows for
+ * their 44px tap areas.
+ */
+.dh-hero__frame > .dh-hero__actions {
+	--_corner: 100% 0;
+	position: relative;
+	z-index: 5;
 	display: flex;
 	flex-wrap: wrap;
+	gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
+	justify-self: start;
+	margin-block: var(--wp--preset--spacing--50) -1px;
+	margin-inline: -1px 0;
+	padding-block: var(--wp--preset--spacing--40) 1px;
+	padding-inline: calc(var(--_pad) + 1px) var(--wp--preset--spacing--40);
+	border-start-end-radius: var(--_r);
+	background: var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--ink);
+}
+
+:is(.dh-hero__frame > .dh-hero__actions, .dh-hero-slides__tab)::before,
+:is(.dh-hero__frame > .dh-hero__actions, .dh-hero-slides__tab)::after {
+	content: "";
+	position: absolute;
+	inline-size: var(--_r);
+	block-size: var(--_r);
+	background: radial-gradient(circle at var(--_corner), transparent calc(var(--_r) - 0.5px), var(--wp--preset--color--paper) var(--_r));
+	pointer-events: none;
+}
+
+.dh-hero__frame > .dh-hero__actions::before {
+	inset-block-end: calc(100% - 1px);
+	inset-inline-start: 0;
+}
+
+.dh-hero__frame > .dh-hero__actions::after {
+	inset-block-end: 0;
+	inset-inline-start: calc(100% - 1px);
+}
+
+[dir="rtl"] .dh-hero__frame > .dh-hero__actions {
+	--_corner: 0 0;
+}
+
+/*
+ * The photos: core Image blocks, each filling the frame. A dh-focus--left,
+ * --right, --up or --down class on one moves its crop. Without JavaScript the
+ * first stays; main.js makes the group a carousel (.is-live), showing the
+ * current photo and, during a change, the one leaving, while the next grows
+ * up over it in strips (.dh-hero-slides__rows). The rest stay unrendered, so
+ * their lazy images wait until main.js asks for them. Captions show in the
+ * tab. The group sets no z-index, so the tab can sit above the copy.
+ */
+.dh-hero__frame > .dh-hero-slides {
+	--dh-slides-row: 1900ms;
+	--dh-slides-stagger: 160ms;
+	--dh-slides-change: 2700ms;
+	--dh-slides-dwell: 7900ms;
+	--_side: to right;
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	margin: 0;
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--canopy);
+}
+
+[dir="rtl"] .dh-hero__frame > .dh-hero-slides {
+	--_side: to left;
+}
+
+.dh-hero-slides::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 4;
+	background:
+		linear-gradient(to top, color-mix(in srgb, var(--wp--preset--color--canopy) 70%, transparent), transparent 62%),
+		linear-gradient(var(--_side), color-mix(in srgb, var(--wp--preset--color--canopy) 88%, transparent), color-mix(in srgb, var(--wp--preset--color--canopy) 40%, transparent) 48%, transparent 72%);
+	pointer-events: none;
+}
+
+.dh-hero-slides > .wp-block-image {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	overflow: hidden;
+	margin: 0;
+}
+
+.dh-hero-slides > .wp-block-image.is-current {
+	z-index: 3;
+}
+
+.dh-hero-slides:not(.is-live) > .wp-block-image:not(:first-of-type),
+.dh-hero-slides.is-live > .wp-block-image:not(.is-current, .is-leaving),
+.dh-hero-slides > .wp-block-image > figcaption {
+	display: none;
+}
+
+/* The photo going out darkens a little as the next one covers it. */
+.dh-hero-slides > .wp-block-image::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--wp--preset--color--canopy);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.dh-hero-slides :is(.wp-block-image, .dh-hero-slides__row) > img {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	max-inline-size: none;
+	object-fit: cover;
+	object-position: var(--dh-focus-x, 50%) var(--dh-focus-y, 50%);
+}
+
+.dh-hero-slides > .dh-focus--left {
+	--dh-focus-x: 40%;
+}
+
+.dh-hero-slides > .dh-focus--right {
+	--dh-focus-x: 60%;
+}
+
+.dh-hero-slides > .dh-focus--up {
+	--dh-focus-y: 40%;
+}
+
+.dh-hero-slides > .dh-focus--down {
+	--dh-focus-y: 60%;
+}
+
+/* The strips (main.js): one copy of the next photo each, clipped to its band. */
+.dh-hero-slides > .dh-hero-slides__rows,
+.dh-hero-slides__row {
+	position: absolute;
+	inset: 0;
+	margin: 0;
+}
+
+.dh-hero-slides > .dh-hero-slides__rows {
+	z-index: 3;
+}
+
+.dh-hero-slides__row {
+	overflow: hidden;
+	clip-path: inset(0 var(--_right) 0 var(--_left));
+}
+
+/*
+ * The tab (main.js): the notch again, in the frame's top corner, with the
+ * photo's caption, a segment per photo (the current one fills while it
+ * shows: the carousel's timer, paused with the button or while held) and the
+ * pause button (WCAG 2.2.2).
+ */
+.dh-hero-slides > .dh-hero-slides__tab {
+	--_corner: 0 100%;
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	z-index: 6;
+	display: flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--40);
+	margin: 0;
+	padding-block: var(--wp--preset--spacing--20) var(--wp--preset--spacing--30);
+	padding-inline: var(--wp--preset--spacing--40);
+	border-end-start-radius: var(--_r);
+	background: var(--wp--preset--color--paper);
+	color: var(--wp--preset--color--ink);
+}
+
+[dir="rtl"] .dh-hero-slides > .dh-hero-slides__tab {
+	--_corner: 100% 100%;
+}
+
+.dh-hero-slides__tab::before {
+	inset-block-start: 0;
+	inset-inline-end: calc(100% - 1px);
+}
+
+.dh-hero-slides__tab::after {
+	inset-block-start: calc(100% - 1px);
+	inset-inline-end: 0;
+}
+
+.dh-hero-slides__info {
+	display: grid;
 	gap: var(--wp--preset--spacing--20);
-	margin-block: 0;
+}
+
+/* The captions share one cell, so the tab keeps the width of the longest. */
+.dh-hero-slides__caps {
+	display: grid;
+	max-inline-size: min(14rem, 100vw - 9rem);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	line-height: 1.3;
+	text-wrap: balance;
+}
+
+.dh-hero-slides__caps > span {
+	grid-area: 1 / 1;
+	opacity: 0;
+	translate: 0 4px;
+	transition:
+		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+		translate var(--wp--custom--motion--fast) var(--wp--custom--motion--ease-out);
+}
+
+.dh-hero-slides__caps > .is-current {
+	opacity: 1;
+	translate: none;
+}
+
+.dh-hero-slides__steps {
+	display: grid;
+	grid-template-columns: repeat(var(--_n), 1.5rem);
+	gap: 4px;
+}
+
+.dh-hero-slides__steps > span {
+	position: relative;
+	block-size: 3px;
+	overflow: hidden;
+	border-radius: 2px;
+	background: color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+}
+
+.dh-hero-slides__steps > span::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--wp--preset--color--canopy);
+	transform-origin: left;
+	scale: 0 1;
+}
+
+[dir="rtl"] .dh-hero-slides__steps > span::after {
+	transform-origin: right;
+}
+
+.dh-hero-slides__steps > .is-done::after {
+	scale: none;
+}
+
+.dh-hero-slides__steps > .is-current::after {
+	animation: dh-hero-fill var(--dh-slides-dwell) linear var(--_wait, 0ms) forwards;
+}
+
+.dh-hero-slides:is([data-paused], [data-hold]) .dh-hero-slides__steps > span::after {
+	animation-play-state: paused;
+}
+
+/* 44px itself, so it stays out of the pills' tap-area list (section 4). */
+.dh-hero-slides__pause {
+	display: grid;
+	flex: none;
+	place-items: center;
+	inline-size: 2.75rem;
+	block-size: 2.75rem;
+	padding: 0;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 22%, transparent);
+	border-radius: 50%;
+	background: transparent;
+	color: var(--wp--preset--color--ink);
+	cursor: pointer;
+}
+
+/* Two bars; a play triangle while paused. */
+.dh-hero-slides__pause::after {
+	content: "";
+	inline-size: 10px;
+	block-size: 12px;
+	background: linear-gradient(to right, currentColor 0 3px, transparent 3px 7px, currentColor 7px);
+}
+
+.dh-hero-slides[data-paused] .dh-hero-slides__pause::after {
+	inline-size: 11px;
+	translate: 1px 0;
+	background: currentColor;
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-hero-slides__pause:hover {
+		background-color: color-mix(in srgb, var(--wp--preset--color--ink) 6%, transparent);
+	}
+}
+
+@media (min-width: 48rem) {
+	.dh-hero > .dh-hero__frame.alignfull {
+		--_gutter: var(--wp--preset--spacing--40);
+	}
+}
+
+/* Phones: a shorter frame, the shade from the bottom only (the copy runs the
+   full width), the buttons stacked, a tighter tab. */
+@media (max-width: 47.99rem) {
+	.dh-hero > .dh-hero__frame.alignfull {
+		min-block-size: clamp(24rem, 100svh - 11rem, 44rem);
+		padding-block-start: calc(2.75rem + 2 * var(--wp--preset--spacing--20) + var(--wp--preset--spacing--30));
+	}
+
+	.dh-hero-slides::after {
+		background: linear-gradient(to top, color-mix(in srgb, var(--wp--preset--color--canopy) 92%, transparent) 0, color-mix(in srgb, var(--wp--preset--color--canopy) 70%, transparent) 55%, transparent 85%);
+	}
+
+	.dh-hero__frame > .dh-hero__actions {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.dh-hero-slides > .dh-hero-slides__tab {
+		gap: var(--wp--preset--spacing--30);
+		padding-block: var(--wp--preset--spacing--20);
+		padding-inline: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
+	}
+
+	.dh-hero-slides__steps {
+		grid-template-columns: repeat(var(--_n), 1.125rem);
+	}
 }
 
 .dh-hero__grid {
@@ -3795,10 +4243,6 @@ ul.dh-toolbar__chips {
 		grid-template-columns: 1fr;
 	}
 
-	.dh-hero__head {
-		padding: var(--wp--preset--spacing--50);
-	}
-
 	/* The main field sits in the card's bottom corner, clear of the copy,
 	   rising under the buttons' side only. */
 	.dh-pivot {
@@ -3861,14 +4305,10 @@ ul.dh-toolbar__chips {
 	}
 
 	/* The hero's buttons must show without scrolling, even on a 320×568
-	   phone under the two-row header (AMM-170): one step down the type
-	   scale for the headline and lead, and a tighter top. */
-	.dh-hero {
-		padding-block-start: var(--wp--preset--spacing--30);
-	}
-
+	   phone under the two-row header (AMM-170): a smaller headline and lead
+	   in the photo frame (AMM-196). */
 	.dh-hero__title {
-		font-size: var(--wp--preset--font-size--xxl);
+		font-size: clamp(2rem, 10vw, 2.6rem);
 	}
 
 	.dh-hero__lead {
