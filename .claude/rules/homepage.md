@@ -200,8 +200,10 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   7.9 s: the next one grows up over the last in six strips (four below 48rem), left to right
   (right to left in Arabic), 1.9 s each, 160 ms apart, while the one leaving darkens; the
   timings are custom properties on `.dh-hero-slides`. The current segment's fill
-  (`dh-hero-fill`) is the timer. It holds off screen, under the mouse and while the button has
-  keyboard focus; with reduced motion it starts paused and a played change is a fade. Without
+  (`dh-hero-fill`) is the timer. It holds off screen and while the button has keyboard focus,
+  not under the mouse: the frame fills most of the first screen, so a hover hold kept it still
+  on desktops (removed on Ammar's call, 2026-10-15). With reduced motion it starts paused and a
+  played change is a fade. Without
   JavaScript the first photo stays and no tab shows. The eyebrow card and the Pivot field
   drawing left the hero.
   The patterns and Page 17 were changed together; when a homepage

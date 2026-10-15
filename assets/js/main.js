@@ -508,7 +508,8 @@
 	// and a pause button (WCAG 2.2.2). The current segment filling is the
 	// timer: its animationend moves to the next photo, so pausing is pausing
 	// that animation (style.css). It also holds while the frame is off
-	// screen, under the mouse, and while the button has keyboard focus. With
+	// screen and while the button has keyboard focus; not under the mouse,
+	// since the frame fills most of the first screen (AMM-196). With
 	// reduced motion it starts paused, and a played change is a fade. The
 	// photos after the first load once the page has; captions are copied as
 	// text, never as markup.
@@ -741,18 +742,6 @@
 			new IntersectionObserver(function (entries) {
 				hold('offscreen', !entries[entries.length - 1].isIntersecting);
 			}).observe(frame);
-
-			frame.addEventListener('pointerenter', function (event) {
-				if (event.pointerType !== 'touch') {
-					hold('hover', true);
-				}
-			});
-
-			frame.addEventListener('pointerleave', function (event) {
-				if (event.pointerType !== 'touch') {
-					hold('hover', false);
-				}
-			});
 
 			slideshow.addEventListener('focusin', function (event) {
 				var keyboard = true;
