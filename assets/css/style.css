@@ -367,6 +367,7 @@ svg {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -386,6 +387,7 @@ svg {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -436,6 +438,7 @@ ul.dh-toolbar__chips {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -477,6 +480,7 @@ ul.dh-toolbar__chips {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -503,6 +507,7 @@ ul.dh-toolbar__chips {
 		.dh-pill,
 		.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 		.dh-mega-menu__trigger,
+		.dh-mega-menu__toggle,
 		.dh-finder__trigger,
 		.dh-quote-toggle,
 		.dh-header .wp-block-navigation-item__content,
@@ -1250,19 +1255,49 @@ ul.dh-toolbar__chips {
 }
 
 /*
- * Header: logo left, product menu and links right. The bar keeps its own
+ * The page gutter: how far the hero frame sits in from the screen's sides.
+ * The header's band shares it so the two line up, and on the homepage it is
+ * also the gap between them.
+ */
+:root {
+	--dh-gutter: var(--wp--preset--spacing--20);
+}
+
+@media (min-width: 48rem) {
+	:root {
+		--dh-gutter: var(--wp--preset--spacing--40);
+	}
+}
+
+/*
+ * Header (AMM-198): a canopy band as wide as the hero frame, with its corners
+ * and its padding, a gutter in from the screen. Paper type on canopy; hover,
+ * the open menu and the current page take the field highlight with ink, as
+ * the Contact page's "what you need" pills do. The finder stays a white
+ * field, the quote control an outline in paper. The header keeps its own
  * stacking context so the mega-menu panel sits above page content.
  */
 .dh-header {
 	position: relative;
 	z-index: 30;
-	padding-block: var(--wp--preset--spacing--40);
-	border-block-end: var(--wp--custom--rule);
-	background: var(--wp--preset--color--paper);
+	padding-block: var(--dh-gutter) 0;
+	padding-inline: var(--dh-gutter);
 }
 
-.dh-header__bar {
+.dh-header > .dh-header__bar {
+	max-width: 100rem;
 	gap: var(--wp--preset--spacing--40);
+	padding-block: var(--wp--preset--spacing--30);
+	padding-inline: clamp(1.25rem, 5vw, 4.5rem); /* the hero frame's --_pad */
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--canopy);
+	color: var(--wp--preset--color--paper);
+}
+
+/* It wraps at its space, never inside "Demas" (at 320px with 200% text it
+   broke into six lines, both words split). */
+.dh-header .wp-block-site-title {
+	overflow-wrap: normal;
 }
 
 .dh-header__nav {
@@ -1276,9 +1311,89 @@ ul.dh-toolbar__chips {
 	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
+.dh-header .wp-block-site-title a,
+.dh-header .dh-mega-menu__trigger,
+.dh-header .dh-mega-menu__toggle,
+.dh-header .wp-block-navigation__responsive-container-open,
+.dh-header .dh-header__links .wp-block-navigation__responsive-container:not(.is-menu-open) a {
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-header .is-open > .dh-mega-menu__trigger,
+.dh-header .is-open > .dh-mega-menu__toggle,
+.dh-header .dh-header__links .wp-block-navigation__responsive-container:not(.is-menu-open) [aria-current="page"] {
+	background: var(--wp--preset--color--field);
+	color: var(--wp--preset--color--ink);
+}
+
 @media (hover: hover) and (pointer: fine) {
-	.dh-header__links a:hover {
-		background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
+	.dh-header .dh-mega-menu__trigger:hover,
+	.dh-header .dh-mega-menu__toggle:hover,
+	.dh-header .dh-header__links .wp-block-navigation__responsive-container:not(.is-menu-open) a:hover {
+		background: var(--wp--preset--color--field);
+		color: var(--wp--preset--color--ink);
+	}
+
+	.dh-header .dh-quote-toggle:hover {
+		border-color: var(--wp--preset--color--paper);
+		background: color-mix(in srgb, var(--wp--preset--color--paper) 14%, transparent);
+	}
+}
+
+.dh-header .dh-quote-toggle {
+	border-color: color-mix(in srgb, var(--wp--preset--color--paper) 45%, transparent);
+	color: var(--wp--preset--color--paper);
+}
+
+.dh-header .dh-quote-toggle__icon {
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 80%, transparent);
+}
+
+.dh-header .dh-finder__trigger--open {
+	border-color: transparent;
+}
+
+/* Water is too dark to see on canopy: the rings around the band's own
+   controls turn paper. The open panel and the dialogs keep water. */
+.dh-header :is(
+	.wp-block-site-title a,
+	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
+	.dh-finder__trigger--open,
+	.dh-quote-toggle,
+	.wp-block-navigation__responsive-container-open,
+	.wp-block-navigation__responsive-container:not(.is-menu-open) a
+):focus-visible {
+	outline-color: var(--wp--preset--color--paper);
+}
+
+/*
+ * Sticky from the mega menu's breakpoint up, under the admin bar when one
+ * shows. The template part is the element that sticks: .dh-header fills it,
+ * so it would have nowhere to slide. Over the first 8rem of scroll the band
+ * lifts off the page with the raised shadow; scrolling back rewinds it.
+ */
+@media (min-width: 56.0625rem) {
+	.wp-site-blocks > header.wp-block-template-part {
+		position: sticky;
+		top: var(--wp-admin--admin-bar--height, 0px);
+		z-index: 30;
+	}
+
+	@supports (animation-timeline: scroll()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.dh-header > .dh-header__bar {
+				animation: dh-header-lift linear both;
+				animation-timeline: scroll(root);
+				animation-range: 0 8rem;
+			}
+		}
+	}
+}
+
+@keyframes dh-header-lift {
+	to {
+		box-shadow: var(--wp--preset--shadow--raised);
 	}
 }
 
@@ -1303,6 +1418,23 @@ ul.dh-toolbar__chips {
 		inline-size: auto;
 		transform: none;
 	}
+
+	/*
+	 * Hover bridge (AMM-198). The panel floats below the bar, so the pointer
+	 * crosses the bar's bottom padding and the gap above the panel on its way
+	 * down; both lie outside the menu's box, and the mouseleave there closed
+	 * it. This strip belongs to the menu and fills that path while it is open.
+	 * The other header controls come later in the page, so their tap areas
+	 * still sit on top of it. Not on the panel itself: its clip-path would
+	 * clip the strip away.
+	 */
+	.dh-header .dh-mega-menu.is-open::after {
+		content: "";
+		position: absolute;
+		inset-inline: 0;
+		inset-block-start: calc(100% - var(--wp--preset--spacing--30));
+		block-size: calc(var(--wp--preset--spacing--30) + 0.6rem);
+	}
 }
 
 /*
@@ -1310,29 +1442,29 @@ ul.dh-toolbar__chips {
  * controls beside it, then the product menu at full width, where its in-flow
  * panel opens and pushes the page down.
  *
- *   Demas Group ....................... ≡  (Your quote · 002)
- *   [ Products                                         ⌄ ]
+ *   Demas Group ...................... ⌕ ≡ (Your quote · 002)
+ *   [ Products ................................... | ⌄ ]
  *
  * It used to stack every item on its own full-width row, which — with the
  * closed menu panel still holding its height — made the header ~730px tall
  * on a phone (AMM-159). The nav group is flattened with display: contents so
- * its children can sit in the bar's grid next to the title; it is a plain
+ * its children can sit in the bar's row next to the title; it is a plain
  * group, not a landmark, so nothing is lost to assistive technology.
  *
- * The title keeps its natural width and the links take the flexible column.
- * Below 600px the links (Services, Contact) sit behind the hamburger; from
- * 600px up to this breakpoint they show as text and wrap inside their column
- * rather than squeezing the title.
+ * A wrapping row, not a grid (AMM-198): when the title and the controls
+ * don't fit, as at 320px with 200% text, the controls drop to the next line
+ * instead of running off the screen. The 44px controls sit edge to edge
+ * (their icons are still 24px apart), which keeps the title on one line at
+ * 320px. Below 600px the links (Services, Contact) sit behind the hamburger;
+ * from 600px up to this breakpoint they show as text and wrap among
+ * themselves.
  */
 @media (max-width: 56rem) {
 	.dh-header .dh-header__bar {
-		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto auto;
-		grid-template-areas:
-			"title links finder quote"
-			"menu  menu  menu   menu";
+		flex-wrap: wrap;
 		align-items: center;
-		gap: var(--wp--preset--spacing--30) var(--wp--preset--spacing--20);
+		justify-content: flex-end;
+		gap: var(--wp--preset--spacing--30) 0;
 	}
 
 	.dh-header .dh-header__nav {
@@ -1340,11 +1472,13 @@ ul.dh-toolbar__chips {
 	}
 
 	.dh-header__bar > .wp-block-site-title {
-		grid-area: title;
+		flex: 1 1 auto;
+		margin-inline-end: var(--wp--preset--spacing--20);
 	}
 
 	.dh-header .dh-mega-menu {
-		grid-area: menu;
+		order: 1;
+		flex-basis: 100%;
 	}
 
 	/* Core navigation reads its list's alignment and wrapping from these. */
@@ -1352,18 +1486,13 @@ ul.dh-toolbar__chips {
 		--navigation-layout-justify: flex-end;
 		--navigation-layout-wrap: wrap;
 
-		grid-area: links;
-		justify-self: end;
 		justify-content: flex-end;
 		flex-wrap: wrap;
 	}
 
-	.dh-header .dh-quote {
-		grid-area: quote;
-	}
-
-	.dh-header .dh-finder {
-		grid-area: finder;
+	/* The finder is a bare icon button here: paper on the band. */
+	.dh-header .dh-finder__trigger--open {
+		color: var(--wp--preset--color--paper);
 	}
 }
 
@@ -1524,8 +1653,16 @@ ul.dh-toolbar__chips {
 
 /* Hero ---------------------------------------------------------------- */
 
-.dh-hero {
-	padding-block-start: var(--wp--preset--spacing--20);
+/* The gap under the header's band is the gutter beside it (AMM-198). Both
+   classes, because .dh-section's phone padding comes later in this file and
+   put 2.5rem of bare paper there. The homepage's main drops its block gap so
+   this padding is the whole gap. */
+.dh-section.dh-hero {
+	padding-block-start: var(--dh-gutter);
+}
+
+.wp-site-blocks > .dh-home {
+	margin-block-start: 0;
 }
 
 /*
@@ -1541,7 +1678,7 @@ ul.dh-toolbar__chips {
  * screen: taller until the header folds its menu away at 56rem.
  */
 .dh-hero > .dh-hero__frame.alignfull {
-	--_gutter: var(--wp--preset--spacing--20);
+	--_gutter: var(--dh-gutter);
 	--_pad: clamp(1.25rem, 5vw, 4.5rem);
 	--_r: var(--wp--custom--notch);
 	--_above: 12rem;
@@ -1863,12 +2000,6 @@ ul.dh-toolbar__chips {
 @media (hover: hover) and (pointer: fine) {
 	.dh-hero-slides__pause:hover {
 		background-color: color-mix(in srgb, var(--wp--preset--color--ink) 6%, transparent);
-	}
-}
-
-@media (min-width: 48rem) {
-	.dh-hero > .dh-hero__frame.alignfull {
-		--_gutter: var(--wp--preset--spacing--40);
 	}
 }
 
