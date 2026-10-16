@@ -1536,17 +1536,20 @@ ul.dh-toolbar__chips {
  * tab (main.js) in its top corner, both with the site's concave notch. The
  * top padding is the tab's height, so on a short screen the headline never
  * runs under it. alignfull drops the constrained layout's centring; the
- * margins replace core's root-padding ones with the gutter.
+ * margins replace core's root-padding ones with the gutter. --_above is the
+ * header and the gap over the frame, so the buttons end inside the first
+ * screen: taller until the header folds its menu away at 56rem.
  */
 .dh-hero > .dh-hero__frame.alignfull {
 	--_gutter: var(--wp--preset--spacing--20);
 	--_pad: clamp(1.25rem, 5vw, 4.5rem);
 	--_r: var(--wp--custom--notch);
+	--_above: 12rem;
 	position: relative;
 	isolation: isolate;
 	display: grid;
 	align-content: end;
-	min-block-size: clamp(34rem, 100svh - 8.5rem, 52rem);
+	min-block-size: clamp(34rem, 100svh - var(--_above), 52rem);
 	margin-block: 0 var(--wp--preset--spacing--60);
 	margin-inline: max(var(--_gutter) - var(--wp--style--root--padding-left, 0px), (100% - 100rem) / 2);
 	padding-block-start: calc(2.75rem + var(--wp--preset--spacing--20) + var(--wp--preset--spacing--30) + var(--wp--preset--spacing--40));
@@ -1885,11 +1888,17 @@ ul.dh-toolbar__chips {
 	}
 }
 
+@media (min-width: 56.0625rem) {
+	.dh-hero > .dh-hero__frame.alignfull {
+		--_above: 8.5rem;
+	}
+}
+
 /* Phones: a shorter frame, the shade from the bottom only (the copy runs the
    full width), the buttons stacked, a tighter tab. */
 @media (max-width: 47.99rem) {
 	.dh-hero > .dh-hero__frame.alignfull {
-		min-block-size: clamp(24rem, 100svh - 11rem, 44rem);
+		min-block-size: clamp(24rem, 100svh - var(--_above), 44rem);
 		padding-block-start: calc(2.75rem + 2 * var(--wp--preset--spacing--20) + var(--wp--preset--spacing--30));
 	}
 
