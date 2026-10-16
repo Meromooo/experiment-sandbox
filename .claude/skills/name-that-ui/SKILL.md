@@ -51,8 +51,8 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Form error summary | **Alert / callout** | `/web/alert-callout-banner`, `/vs/toast-vs-alert` | Not a toast: it stays until fixed and takes focus. |
 | Sheet-row − / + quantity | **Number stepper** | `/vs/stepper-vs-slider` | |
 | Empty search / empty listing | **Empty state** | `/web/empty-state`, `/vs/empty-state-vs-skeleton` | |
-| Sticky header | **Sticky header** | `/web/sticky-fixed`, `/web/header-navbar` | |
-| Product menu | **Mega menu** | none on the site | |
+| Header canopy band (`.dh-header__bar`) | **Sticky header** (a navbar) | `/web/sticky-fixed`, `/web/header-navbar` | AMM-198. Sticky from 56.0625rem only, under the admin bar; gains its shadow as the page scrolls. On phones it scrolls away. |
+| Product menu (`demas-theme/mega-menu`) | **Mega menu**, built as a **disclosure navigation menu with a top-level link** | none on the site | AMM-198. "Products" is a link to `/products/`; the chevron is a separate button (`aria-expanded`, `aria-controls`) that shows and hides the panel; a mouse opens it by hovering, and a hover bridge spans the gap down to the panel. Not `role="menu"`: it is site navigation. |
 | Keyboard focus outline | **Focus ring** | `/web/focus-ring-web` | |
 | Reveal timing | **Easing** | `/web/easing`, `/vs/easing-vs-spring` | |
 

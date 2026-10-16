@@ -77,10 +77,33 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   — left empty it falls back to the cloned site's only navigation post, a Page List of every
   page (AMM-145). WooCommerce
   would also block-hook a customer-account icon and a mini-cart after the navigation block;
-  both are removed in `inc/woocommerce.php` (`hooked_block_types`). Below 56rem the header is a
-  two-row grid in `style.css` (title + controls, then the full-width product menu); the mega
-  menu's closed panel must collapse to zero height there (AMM-159) or the header grows ~530px. Keep these
+  both are removed in `inc/woocommerce.php` (`hooked_block_types`). Keep these
   thin — push real content into patterns, not directly into the part.
+- **The header is a canopy band (AMM-198, 2026-10-16).** `.dh-header__bar` is a rounded canopy
+  panel with paper type, inset from the screen edges by `--dh-gutter` (`style.css`, header
+  section: spacing-20 on phones, spacing-40 from 48rem). The homepage hero frame uses the same
+  gutter and sits that far under the band (`.wp-site-blocks > .dh-home` has no top margin; the
+  hero's top padding is the gutter); every other page keeps main's own top margin. Controls in
+  the band are paper; hover, the open menu and the current page are field with ink text. Their
+  focus rings turn paper through an explicit `:is()` list of the band's own controls, not a
+  descendant rule, so the finder and quote dialogs and the open hamburger overlay keep the
+  default ring. From 56.0625rem the header part is **sticky** under the admin bar
+  (`top: var(--wp-admin--admin-bar--height, 0px)`) and the band gains its shadow over the
+  first 8rem of scroll (a scroll-driven animation, only where supported and without reduced
+  motion). Below 56rem the bar is a wrapping flex row: the title, the links, finder, quote and
+  hamburger at the end, and the product menu on its own full-width line beneath (`order: 1`;
+  the nav wrapper is `display: contents`). The mega menu's closed panel must collapse to zero
+  height there (AMM-159) or the header grows ~530px.
+- **The product menu (the mega menu) is a disclosure navigation menu with a top-level link
+  (AMM-198).** "Products" is a link to the catalogue (`demas_theme_catalogue_url()`); the
+  chevron button beside it shows and hides the panel for touch and keyboard (Escape closes and
+  returns focus to it); a mouse opens it by hovering. The floating panel sits 0.6rem below the
+  band, and a **hover bridge** (`.dh-mega-menu.is-open::after`, in `style.css`'s 56.0625rem
+  block) covers that gap so the pointer can travel down into the panel without leaving the
+  nav. The bridge hangs on the nav, not the panel, because the panel's `clip-path` would clip
+  it. Below 56rem the chevron button is 44px tall itself rather than through the tap-area
+  list: at 320px with 200% text it wraps under the link, where a stretched tap area would
+  cover "Products". There is no close delay; add one only if closing feels twitchy.
 
 ## `templates/`
 
