@@ -1108,7 +1108,7 @@ ul.dh-toolbar__chips {
 
 	/* The photo frame (AMM-196) opens out from its middle while the first
 	   photo settles; the headline, its lead and the word's sweep follow, then
-	   the socket rises with the buttons and the caption tab drops in. main.js
+	   the socket rises with the buttons and the photo tab drops in. main.js
 	   builds the tab after the first paint, so it sets --_since (how long the
 	   frame has been opening) to keep the tab's place in the sequence. */
 	.home .dh-hero__frame {
@@ -1154,11 +1154,6 @@ ul.dh-toolbar__chips {
 	.dh-hero-slides__row > img {
 		animation: dh-hero-row-photo var(--dh-slides-row) var(--wp--custom--motion--ease-out) backwards;
 		animation-delay: inherit;
-	}
-
-	/* The next caption lifts into place as it fades in. */
-	.dh-hero-slides__caps > span {
-		translate: 0 4px;
 	}
 }
 
@@ -1537,7 +1532,7 @@ ul.dh-toolbar__chips {
  * The frame (AMM-196): Demas's own photos edge to edge, a gutter in from the
  * screen's sides and up to 100rem wide, with the headline over them. A canopy
  * shade from the copy's corner keeps paper text readable on every photo. The
- * buttons sit in a paper socket cut into its bottom corner and the caption
+ * buttons sit in a paper socket cut into its bottom corner and the photo
  * tab (main.js) in its top corner, both with the site's concave notch. The
  * top padding is the tab's height, so on a short screen the headline never
  * runs under it. alignfull drops the constrained layout's centring; the
@@ -1758,8 +1753,8 @@ ul.dh-toolbar__chips {
 }
 
 /*
- * The tab (main.js): the notch again, in the frame's top corner, with the
- * photo's caption, a segment per photo (the current one fills while it
+ * The tab (main.js): the notch again, in the frame's top corner, with a
+ * segment per photo (the current one fills while it
  * shows: the carousel's timer, paused with the button or while held) and the
  * pause button (WCAG 2.2.2). It stays inside the frame, its fillet too:
  * with many photos or large text the segments narrow instead.
@@ -1794,39 +1789,6 @@ ul.dh-toolbar__chips {
 .dh-hero-slides__tab::after {
 	inset-block-start: calc(100% - 1px);
 	inset-inline-end: 0;
-}
-
-.dh-hero-slides__info {
-	display: grid;
-	gap: var(--wp--preset--spacing--20);
-}
-
-/* The captions share one cell, so the tab keeps the width of the longest. */
-.dh-hero-slides__caps {
-	display: grid;
-	max-inline-size: min(14rem, 100vw - 9rem);
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	line-height: 1.3;
-	text-wrap: balance;
-}
-
-/* Two lines at most (editors keep captions near 30 characters, homepage.md). */
-.dh-hero-slides__caps > span {
-	display: -webkit-box;
-	grid-area: 1 / 1;
-	overflow: hidden;
-	opacity: 0;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	transition:
-		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		translate var(--wp--custom--motion--fast) var(--wp--custom--motion--ease-out);
-}
-
-.dh-hero-slides__caps > .is-current {
-	opacity: 1;
-	translate: none;
 }
 
 .dh-hero-slides__steps {
