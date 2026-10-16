@@ -1568,15 +1568,23 @@ ul.dh-toolbar__chips {
 	gap: var(--wp--preset--spacing--40);
 	margin: 0;
 	padding-inline: var(--_pad);
+	container-type: inline-size; /* the headline is sized to this column */
 }
 
 .dh-hero__copy > :is(.dh-hero__title, .dh-hero__lead) {
 	margin: 0;
 }
 
+/* Each screen size sets --_size; the cap keeps the longest word on one line
+   when text is enlarged to 200% (AMM-197): "engineered" with its highlight
+   is 6.7em, so 14.5cqi of the copy column fits it with a little to spare.
+   At normal text size the cap never binds. A longer word typed into the
+   headline in the editor breaks instead of pushing the frame. */
 .dh-hero__title {
+	--_size: clamp(2.6rem, 6.4vw, 6rem);
 	max-inline-size: 15ch;
-	font-size: clamp(2.6rem, 6.4vw, 6rem);
+	font-size: min(var(--_size), 14.5cqi);
+	overflow-wrap: anywhere;
 }
 
 /* The highlight's field green is light, so the word takes ink, not paper. */
@@ -4331,7 +4339,7 @@ ul.dh-toolbar__chips {
 	   phone under the two-row header (AMM-170): a smaller headline and lead
 	   in the photo frame (AMM-196). */
 	.dh-hero__title {
-		font-size: clamp(2rem, 10vw, 2.6rem);
+		--_size: clamp(2rem, 10vw, 2.6rem);
 	}
 
 	.dh-hero__lead {
@@ -4343,7 +4351,7 @@ ul.dh-toolbar__chips {
    first screen; the phone frame's 22rem floor lets the frame follow. */
 @media (max-width: 40em) and (max-height: 38rem) {
 	.dh-hero__title {
-		font-size: 1.625rem;
+		--_size: 1.625rem;
 	}
 
 	.dh-hero__lead {
