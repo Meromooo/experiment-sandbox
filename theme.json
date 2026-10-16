@@ -146,7 +146,7 @@
 				{
 					"slug": "mono",
 					"name": "IBM Plex Mono (data)",
-					"fontFamily": "\"IBM Plex Mono\", ui-monospace, \"Cascadia Mono\", Consolas, monospace",
+					"fontFamily": "\"IBM Plex Mono\", \"IBM Plex Sans Arabic\", ui-monospace, \"Cascadia Mono\", Consolas, monospace",
 					"fontFace": [
 						{
 							"fontFamily": "IBM Plex Mono",

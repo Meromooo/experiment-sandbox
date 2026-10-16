@@ -692,9 +692,14 @@
 						busy = false;
 					});
 				}, function () {
-					// The photo would not load: this one stays for another turn.
+					// The photo would not load: the one after it takes the turn,
+					// and the shown one stays only when every other one failed.
 					busy = false;
-					mark(current);
+					if ((n + 1) % count === current) {
+						mark(current);
+					} else {
+						go((n + 1) % count);
+					}
 				});
 			}
 
