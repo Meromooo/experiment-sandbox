@@ -215,6 +215,11 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   caption mono stack includes IBM Plex Sans Arabic for Arabic captions. On short phones
   (`max-width: 40em` and `max-height: 38rem`, e.g. 320×568) the headline is 1.625rem and the
   lead `sm`, and the phone frame's floor is 22rem, so both buttons end inside the first screen.
+  **Headline at 200% text (AMM-197, 2026-10-16):** each screen size sets the headline's
+  `--_size`, and its `font-size` is `min(var(--_size), 14.5cqi)` of the copy group (a size
+  container), the width where its longest word ("engineered", 6.7em with the highlight) still
+  fits one line; `overflow-wrap: anywhere` breaks a longer word typed in the editor. Change the
+  size through `--_size`, and re-measure the cap if the headline's longest word changes.
   The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 
