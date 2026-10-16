@@ -29,7 +29,14 @@ No jQuery and no classic WooCommerce assets on any page (AMM-154): after any enq
   is not kept, the files are. IBM Plex Sans is one variable file per subset
   (`ibm-plex-sans-latin-400-600.woff2`, `…-latin-ext-400-600.woff2`) declared once for weights
   400–600; the API had served the same file for each weight and it was downloaded three times
-  (AMM-154). `style.css` section 2 holds **metric-matched stand-in faces** ("Archivo Fallback",
+  (AMM-154). **IBM Plex Sans Arabic is its own `theme.json` family** (slug `arabic`,
+  2026-10-16, AMM-196): WordPress prints every `fontFace` under its family's first name, so
+  while its faces sat in the body family they came out as "IBM Plex Sans", and Chrome, which
+  picks one set of faces by weight (the Latin file is `400 600`, the Arabic ones 400, 500 and
+  600), never used them; Arabic text fell to system fonts everywhere. The display, body and
+  mono stacks all name "IBM Plex Sans Arabic", which exists only as its own family. Keep
+  script-specific faces in their own family; its files still load only on pages with Arabic
+  text (`unicodeRange`). `style.css` section 2 holds **metric-matched stand-in faces** ("Archivo Fallback",
   "IBM Plex Sans Fallback": Arial scaled to the web fonts' measured widths), listed after the
   web fonts in `theme.json`'s stacks, so text wraps the same before and after the fonts swap
   in. Change a face or its width axis and those values must be re-measured.
