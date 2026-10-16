@@ -89,8 +89,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   descendant rule, so the finder and quote dialogs and the open hamburger overlay keep the
   default ring. From 56.0625rem the header part is **sticky** under the admin bar
   (`top: var(--wp-admin--admin-bar--height, 0px)`) and the band gains its shadow over the
-  first 8rem of scroll (a scroll-driven animation, only where supported and without reduced
-  motion). Below 56rem the bar is a wrapping flex row: the title, the links, finder, quote and
+  first 8rem of scroll (a scroll-driven animation, only where supported). The shadow is on a
+  `::after` layer of the band and only its `opacity` animates, so the band isn't repainted on
+  every scroll frame (AMM-199); with reduced motion the shadow switches on without a fade
+  (`step-end`) once 8rem have scrolled, Ammar's call. Below 56rem the bar is a wrapping flex row: the title, the links, finder, quote and
   hamburger at the end, and the product menu on its own full-width line beneath (`order: 1`;
   the nav wrapper is `display: contents`). The mega menu's closed panel must collapse to zero
   height there (AMM-159) or the header grows ~530px.
@@ -103,7 +105,11 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   nav. The bridge hangs on the nav, not the panel, because the panel's `clip-path` would clip
   it. Below 56rem the chevron button is 44px tall itself rather than through the tap-area
   list: at 320px with 200% text it wraps under the link, where a stretched tap area would
-  cover "Products". There is no close delay; add one only if closing feels twitchy.
+  cover "Products". There is no close delay; add one only if closing feels twitchy. The
+  panel opens and closes in 250ms (`motion.fast`, AMM-199), then its columns fade in 70ms
+  apart; opened or closed from the keyboard it appears at once: while the chevron is
+  `:focus-visible` (which the browser sets only after keyboard use) a `:has()` rule turns the
+  panel's and columns' transitions off.
 
 ## `templates/`
 

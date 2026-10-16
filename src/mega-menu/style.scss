@@ -91,14 +91,15 @@
 	box-shadow: var(--wp--preset--shadow--raised);
 	transform: translateX(-50%);
 
-	/* Container expands first; columns fade in after (see below). */
+	/* Container expands first; columns fade in after (see below). 250ms,
+	   inside the 300ms a control's motion should take (AMM-199). */
 	clip-path: inset(0 0 100% 0 round var(--wp--custom--radius--lg));
 	opacity: 0;
 	visibility: hidden;
 	transition:
-		clip-path var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+		clip-path var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		visibility 0s linear var(--wp--custom--motion--base);
+		visibility 0s linear var(--wp--custom--motion--fast);
 }
 
 .is-open > .dh-mega-menu__panel {
@@ -106,7 +107,7 @@
 	opacity: 1;
 	visibility: visible;
 	transition:
-		clip-path var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+		clip-path var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 		visibility 0s;
 }
@@ -134,8 +135,23 @@
 .is-open .dh-mega-menu__column {
 	opacity: 1;
 	transform: none;
-	/* Content follows the container: half the panel's expansion, then stagger. */
+	/* Content follows the container: once it has opened, then stagger. */
 	transition-delay: calc(var(--wp--custom--motion--fast) + var(--i, 0) * var(--wp--custom--motion--stagger));
+}
+
+/*
+ * Opened or closed from the keyboard (Enter or Space on the chevron, or
+ * Escape, which hands focus back to it), the panel appears at once: a
+ * keyboard action shouldn't wait on motion (AMM-199). The browser marks the
+ * button :focus-visible only after keyboard use, so hover, a mouse click and
+ * a tap keep the reveal.
+ * ponytail: closing by tabbing past the last link still fades (focus has left
+ * the button), and a screen reader's synthetic click may animate; a flag set
+ * from `event.detail === 0` in view.ts would cover both if either matters.
+ */
+.dh-mega-menu:has(> .dh-mega-menu__toggle:focus-visible) > .dh-mega-menu__panel,
+.dh-mega-menu:has(> .dh-mega-menu__toggle:focus-visible) .dh-mega-menu__column {
+	transition: none;
 }
 
 /*
@@ -297,12 +313,12 @@
 		clip-path: none;
 		transform: none;
 		transition:
-			max-block-size var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
-			margin-block-start var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
-			padding-block var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
-			border-block-width var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			max-block-size var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			margin-block-start var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			padding-block var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			border-block-width var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 			opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-			visibility 0s linear var(--wp--custom--motion--base);
+			visibility 0s linear var(--wp--custom--motion--fast);
 	}
 
 	.is-open > .dh-mega-menu__panel {
@@ -313,10 +329,10 @@
 		overflow-y: auto;
 		clip-path: none;
 		transition:
-			max-block-size var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
-			margin-block-start var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
-			padding-block var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
-			border-block-width var(--wp--custom--motion--base) var(--wp--custom--motion--ease),
+			max-block-size var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			margin-block-start var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			padding-block var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			border-block-width var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 			opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 			visibility 0s;
 	}
