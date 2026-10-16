@@ -1380,12 +1380,32 @@ ul.dh-toolbar__chips {
 		z-index: 30;
 	}
 
+	/* The shadow is a layer of its own, so the scroll changes only its
+	   opacity, which the compositor draws, instead of repainting the band's
+	   box-shadow every frame (AMM-199). The band is position: relative at
+	   this width (below). */
+	.dh-header > .dh-header__bar::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: var(--wp--preset--shadow--raised);
+		opacity: 0;
+		pointer-events: none;
+	}
+
 	@supports (animation-timeline: scroll()) {
-		@media (prefers-reduced-motion: no-preference) {
-			.dh-header > .dh-header__bar {
-				animation: dh-header-lift linear both;
-				animation-timeline: scroll(root);
-				animation-range: 0 8rem;
+		.dh-header > .dh-header__bar::after {
+			animation: dh-header-lift linear both;
+			animation-timeline: scroll(root);
+			animation-range: 0 8rem;
+		}
+
+		/* Reduced motion: no fade. The shadow switches on once the page has
+		   scrolled 8rem and off again at the top (AMM-199, Ammar's call). */
+		@media (prefers-reduced-motion: reduce) {
+			.dh-header > .dh-header__bar::after {
+				animation-timing-function: step-end;
 			}
 		}
 	}
@@ -1393,7 +1413,7 @@ ul.dh-toolbar__chips {
 
 @keyframes dh-header-lift {
 	to {
-		box-shadow: var(--wp--preset--shadow--raised);
+		opacity: 1;
 	}
 }
 
