@@ -206,6 +206,15 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   played change is a fade. Without
   JavaScript the first photo stays and no tab shows. The eyebrow card and the Pivot field
   drawing left the hero.
+  **Break-ui fixes (2026-10-16):** a photo that fails to load is skipped (the next one takes its
+  turn; the shown photo stays only when every other one failed), and a missing photo shows the
+  canopy ground without its alt text drawn over it (`color: transparent` on the image). The tab
+  never leaves the frame (`max-inline-size`, segments `minmax(0.375rem, …)`), so many photos or
+  200% text narrow the segments. **Captions: keep them near 30 characters**; the tab shows two
+  lines at most (a longer one is cut off), and an empty caption leaves an empty line. The
+  caption mono stack includes IBM Plex Sans Arabic for Arabic captions. On short phones
+  (`max-width: 40em` and `max-height: 38rem`, e.g. 320×568) the headline is 1.625rem and the
+  lead `sm`, and the phone frame's floor is 22rem, so both buttons end inside the first screen.
   The patterns and Page 17 were changed together; when a homepage
   section's copy changes, change both, or the cutover paste (AMM-158) brings the old copy back.
 

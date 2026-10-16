@@ -1155,6 +1155,11 @@ ul.dh-toolbar__chips {
 		animation: dh-hero-row-photo var(--dh-slides-row) var(--wp--custom--motion--ease-out) backwards;
 		animation-delay: inherit;
 	}
+
+	/* The next caption lifts into place as it fades in. */
+	.dh-hero-slides__caps > span {
+		translate: 0 4px;
+	}
 }
 
 /* With reduced motion the photos start paused; played, the next one fades in. */
@@ -1699,6 +1704,8 @@ ul.dh-toolbar__chips {
 	pointer-events: none;
 }
 
+/* A photo that fails to load leaves the canopy ground, without its alt text
+   drawn over it; screen readers still read the alt text. */
 .dh-hero-slides :is(.wp-block-image, .dh-hero-slides__row) > img {
 	display: block;
 	inline-size: 100%;
@@ -1706,6 +1713,7 @@ ul.dh-toolbar__chips {
 	max-inline-size: none;
 	object-fit: cover;
 	object-position: var(--dh-focus-x, 50%) var(--dh-focus-y, 50%);
+	color: transparent;
 }
 
 .dh-hero-slides > .dh-focus--left {
@@ -1745,7 +1753,8 @@ ul.dh-toolbar__chips {
  * The tab (main.js): the notch again, in the frame's top corner, with the
  * photo's caption, a segment per photo (the current one fills while it
  * shows: the carousel's timer, paused with the button or while held) and the
- * pause button (WCAG 2.2.2).
+ * pause button (WCAG 2.2.2). It stays inside the frame, its fillet too:
+ * with many photos or large text the segments narrow instead.
  */
 .dh-hero-slides > .dh-hero-slides__tab {
 	--_corner: 0 100%;
@@ -1753,6 +1762,7 @@ ul.dh-toolbar__chips {
 	inset-block-start: 0;
 	inset-inline-end: 0;
 	z-index: 6;
+	max-inline-size: calc(100% - var(--_r));
 	display: flex;
 	align-items: center;
 	gap: var(--wp--preset--spacing--40);
@@ -1793,10 +1803,14 @@ ul.dh-toolbar__chips {
 	text-wrap: balance;
 }
 
+/* Two lines at most (editors keep captions near 30 characters, homepage.md). */
 .dh-hero-slides__caps > span {
+	display: -webkit-box;
 	grid-area: 1 / 1;
+	overflow: hidden;
 	opacity: 0;
-	translate: 0 4px;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 	transition:
 		opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 		translate var(--wp--custom--motion--fast) var(--wp--custom--motion--ease-out);
@@ -1809,7 +1823,7 @@ ul.dh-toolbar__chips {
 
 .dh-hero-slides__steps {
 	display: grid;
-	grid-template-columns: repeat(var(--_n), 1.5rem);
+	grid-template-columns: repeat(var(--_n), minmax(0.375rem, 1.5rem));
 	gap: 4px;
 }
 
@@ -1898,7 +1912,7 @@ ul.dh-toolbar__chips {
    full width), the buttons stacked, a tighter tab. */
 @media (max-width: 47.99rem) {
 	.dh-hero > .dh-hero__frame.alignfull {
-		min-block-size: clamp(24rem, 100svh - var(--_above), 44rem);
+		min-block-size: clamp(22rem, 100svh - var(--_above), 44rem);
 		padding-block-start: calc(2.75rem + 2 * var(--wp--preset--spacing--20) + var(--wp--preset--spacing--30));
 	}
 
@@ -1918,7 +1932,7 @@ ul.dh-toolbar__chips {
 	}
 
 	.dh-hero-slides__steps {
-		grid-template-columns: repeat(var(--_n), 1.125rem);
+		grid-template-columns: repeat(var(--_n), minmax(0.375rem, 1.125rem));
 	}
 }
 
@@ -4322,6 +4336,18 @@ ul.dh-toolbar__chips {
 
 	.dh-hero__lead {
 		font-size: var(--wp--preset--font-size--md);
+	}
+}
+
+/* Short phones (320×568): smaller again, so both buttons end inside the
+   first screen; the phone frame's 22rem floor lets the frame follow. */
+@media (max-width: 40em) and (max-height: 38rem) {
+	.dh-hero__title {
+		font-size: 1.625rem;
+	}
+
+	.dh-hero__lead {
+		font-size: var(--wp--preset--font-size--sm);
 	}
 }
 
