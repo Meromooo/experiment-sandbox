@@ -18,7 +18,7 @@ The short trigger table is in CLAUDE.md; this is the detail behind it.
 ## Skills — the full entries
 
 Ammar's standing instruction (2026-09-27): these three are always on for this project, and
-`ponytail` is added for debugging and fixing (2026-09-29).
+`ponytail` is added for debugging and fixing (2026-09-29), widened to every issue (2026-10-16).
 
 **Invoke the two front-end skills at the start of every front-end task — every plan, every
 build, and every fix or audit-fix pass — each time.** A skill loaded for an earlier task does
@@ -44,8 +44,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   so the plugin and its hooks aren't there: its main skill is committed as the project skill
   `caveman` (`.claude/skills/caveman/`, MIT, with LICENSE and SOURCE.txt; 2026-10-06), and a
   cloud session invokes it itself at the start.
-- **`ponytail`** — invoke **only when debugging or fixing code**: a bug, a failing CI check, an
-  audit finding, a broken behaviour. Not for new features, plans, docs or Linear. It governs the
+- **`ponytail`** — invoke **on every issue** (Ammar, 2026-10-16; before that only for debugging
+  and fixing): a feature, a bug, a failing CI check, an audit finding, a performance task. Not
+  for docs-only or Linear-only work. It governs the
   fix: read and trace the real flow first, fix the root cause where every caller routes through
   rather than the one symptom reported, reuse what the codebase already has, smallest correct
   diff, never cutting security, accessibility or error handling. Two adjustments for this repo:

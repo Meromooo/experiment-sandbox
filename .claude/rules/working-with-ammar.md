@@ -79,8 +79,9 @@ archive's file count before giving a delete command. Permanent deletes are his t
 
 ## Skills and checks
 
-- **`ponytail`** on every debugging, fixing or performance task, including the planning turn and
-  every later turn of that task. Measure before changing; fix only what the measurement names.
+- **`ponytail`** on every issue (features too, not only debugging, fixing or performance; Ammar,
+  2026-10-16), including the planning turn and every later turn of that task. Think simple: one
+  fix first, rare worst cases named rather than built for, short plans. Measure before changing; fix only what the measurement names.
 - **The taste skill's rules are ones he likes**, not findings to debate. His standing exceptions:
   the homepage may have two moving strips (the supply-list marquee and the certificates logo
   strip, AMM-178) and a hero photo carousel (AMM-196), and the certificate and partner logos
