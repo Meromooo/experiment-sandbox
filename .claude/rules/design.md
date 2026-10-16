@@ -109,8 +109,9 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
        2026-10-05): the homepage has two moving strips,** the supply-list marquee and the
        certificates belt (`.dh-belt`, AMM-178), counter-flowing; don't flag it. **Nor the
        hero's photo carousel** (`.dh-hero-slides`, AMM-196, Ammar 2026-10-15): Demas's own
-       photos changing on their own every 7.9 s, with a pause button, holding off screen, on
-       hover and on keyboard focus, paused from the start with reduced motion.
+       photos changing on their own every 7.9 s, with a pause button, holding off screen and
+       on keyboard focus (not on hover, since 2026-10-15), paused from the start with reduced
+       motion.
      - *Mobile collapse:* no `scrollWidth > innerWidth` at 320; 44px tap targets.
      - *Core Web Vitals:* `chrome-devtools-mcp:debug-optimize-lcp` — a reload trace for LCP and
        CLS (INP needs an interaction trace).
