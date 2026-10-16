@@ -21,7 +21,7 @@
  *  6. Catalogue view: switches Gallery / Sheet in place, remembers it, and
  *     animates. Without this script the toggle links reload with ?view=.
  *  7. Hero photos: the homepage frame's Image blocks (.dh-hero-slides)
- *     become a carousel with a caption tab and a pause button. Without this
+ *     become a carousel with a tab of segments and a pause button. Without this
  *     script the first photo stays.
  *
  * The .js class on <html> is the gate for every hidden initial state in
@@ -504,15 +504,15 @@
 
 	// The hero frame's photos (core Image blocks in .dh-hero-slides) become a
 	// carousel: one photo at a time, the next growing up over it in strips,
-	// and a tab in the frame's corner with the caption, a segment per photo
-	// and a pause button (WCAG 2.2.2). The current segment filling is the
+	// and a tab in the frame's corner with a segment per photo and a pause
+	// button (WCAG 2.2.2). The current segment filling is the
 	// timer: its animationend moves to the next photo, so pausing is pausing
 	// that animation (style.css). It also holds while the frame is off
 	// screen and while the button has keyboard focus; not under the mouse,
 	// since the frame fills most of the first screen (AMM-196). With
 	// reduced motion it starts paused, and a played change is a fade. The
-	// photos after the first load once the page has; captions are copied as
-	// text, never as markup.
+	// photos after the first load once the page has. Captions stay hidden;
+	// screen readers hear them in each slide's label (Ammar, 2026-10-16).
 	var slideshow = document.querySelector('.dh-hero-slides');
 	var slides = slideshow ? Array.prototype.filter.call(slideshow.children, function (el) {
 		return el.classList.contains('wp-block-image') && el.querySelector('img');
@@ -526,11 +526,8 @@
 			var busy = false;
 			var holds = {};
 			var tab = document.createElement('div');
-			var info = document.createElement('div');
-			var caps = document.createElement('div');
 			var steps = document.createElement('div');
 			var button = document.createElement('button');
-			var capItems = [];
 			var stepItems = [];
 
 			slideshow.setAttribute('role', 'group');
@@ -540,38 +537,27 @@
 			slides.forEach(function (slide, i) {
 				var caption = slide.querySelector('figcaption');
 				var text = caption ? caption.textContent.trim() : '';
-				var cap = document.createElement('span');
 				var step = document.createElement('span');
 
 				slide.setAttribute('role', 'group');
 				slide.setAttribute('aria-roledescription', 'slide');
 				slide.setAttribute('aria-label', (i + 1) + ' of ' + count + (text ? ': ' + text : ''));
 
-				cap.textContent = text;
-				caps.appendChild(cap);
 				steps.appendChild(step);
-				capItems.push(cap);
 				stepItems.push(step);
 			});
 
 			tab.className = 'dh-hero-slides__tab';
-			info.className = 'dh-hero-slides__info';
-			info.setAttribute('aria-hidden', 'true');
-			caps.className = 'dh-hero-slides__caps';
 			steps.className = 'dh-hero-slides__steps';
+			steps.setAttribute('aria-hidden', 'true');
 			steps.style.setProperty('--_n', String(count));
 			button.className = 'dh-hero-slides__pause';
 			button.type = 'button';
 			button.setAttribute('aria-label', 'Pause the slideshow');
-			info.appendChild(caps);
-			info.appendChild(steps);
-			tab.appendChild(info);
+			tab.appendChild(steps);
 			tab.appendChild(button);
 
 			function mark(n) {
-				capItems.forEach(function (cap, k) {
-					cap.classList.toggle('is-current', k === n);
-				});
 				stepItems.forEach(function (step, k) {
 					step.classList.toggle('is-done', k < n);
 					step.classList.remove('is-current');

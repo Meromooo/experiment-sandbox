@@ -9,8 +9,9 @@
  */
 
 // The frame (AMM-196) is a carousel of Demas's own photos: one Image block
-// each, its alt text and caption edited here, in the editor. main.js turns
-// the captions into the tab with the pause button; without it the first
+// each, its alt text and caption edited here, in the editor (the caption is read
+// out to screen readers, not shown). main.js adds the tab with a segment
+// per photo and the pause button; without it the first
 // photo stays. The image ids are the sandbox's Media Library; a paste on
 // another site takes that site's ids. A dh-focus--left/right/up/down class
 // on an image moves its crop. The Branch Desk's cities and people come from

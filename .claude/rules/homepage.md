@@ -118,7 +118,7 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     late to hide the hero — the hero never animated. It now plays as the page opens on CSS
     keyframes alone (`style.css` section 7, `.home .dh-hero`, no `.js` gate). Since AMM-196 the
     photo frame opens out from its middle while the first photo settles, then the headline,
-    lead and the word's sweep, the socket with the buttons from below and the caption tab from
+    lead and the word's sweep, the socket with the buttons from below and the tab from
     above (`main.js` builds the tab later and sets `--_since`, how long the frame has been
     opening, so it keeps its place); then, above 56rem only, where they share the first screen,
     the Branch Desk and the schematic drawing itself; on narrower screens those two stay scroll
@@ -196,7 +196,8 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   (`style.css` section 9): the frame is a gutter in from the screen's sides, up to 100rem, at
   least most of the screen's height; a canopy shade from the copy's corner (from the bottom only
   on phones) keeps the paper text readable. `main.js` (job 7) builds the **tab** in the frame's
-  top corner (the caption, a segment per photo, the pause button) and changes photo every
+  top corner (a segment per photo and the pause button; no caption words since 2026-10-16,
+  Ammar: captions stay hidden and screen readers hear them in each slide's label) and changes photo every
   7.9 s: the next one grows up over the last in six strips (four below 48rem), left to right
   (right to left in Arabic), 1.9 s each, 160 ms apart, while the one leaving darkens; the
   timings are custom properties on `.dh-hero-slides`. The current segment's fill
@@ -210,9 +211,8 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   turn; the shown photo stays only when every other one failed), and a missing photo shows the
   canopy ground without its alt text drawn over it (`color: transparent` on the image). The tab
   never leaves the frame (`max-inline-size`, segments `minmax(0.375rem, …)`), so many photos or
-  200% text narrow the segments. **Captions: keep them near 30 characters**; the tab shows two
-  lines at most (a longer one is cut off), and an empty caption leaves an empty line. The
-  caption mono stack includes IBM Plex Sans Arabic for Arabic captions. On short phones
+  200% text narrow the segments.
+  On short phones
   (`max-width: 40em` and `max-height: 38rem`, e.g. 320×568) the headline is 1.625rem and the
   lead `sm`, and the phone frame's floor is 22rem, so both buttons end inside the first screen.
   **Headline at 200% text (AMM-197, 2026-10-16):** each screen size sets the headline's
