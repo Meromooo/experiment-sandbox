@@ -14,33 +14,58 @@
 
 /* Trigger ------------------------------------------------------------- */
 
-.dh-mega-menu__trigger {
+/*
+ * "Products" (a link to the catalogue) and the chevron button (shows and
+ * hides the panel) read as one pill split in two: the link takes the start
+ * half, the button the end half, and both light up while the menu is open.
+ * The button is 2.75rem wide, so the chevron sits as far from the label as
+ * the label sits from the pill's start; its height reaches 44px through the
+ * tap-area list in style.css.
+ */
+.dh-mega-menu__trigger,
+.dh-mega-menu__toggle {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.45em;
 	margin: 0;
-	padding: 0.6em 1.05em;
 	border: 1px solid transparent;
-	border-radius: var(--wp--custom--radius--pill);
 	background: transparent;
 	color: var(--wp--preset--color--ink);
-	font-family: var(--wp--preset--font-family--body);
-	font-size: var(--wp--preset--font-size--sm);
-	font-weight: 500;
-	line-height: 1;
-	cursor: pointer;
 	transition:
 		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
+.dh-mega-menu__trigger {
+	padding-block: 0.6em;
+	padding-inline: 1.05em 0;
+	border-start-start-radius: var(--wp--custom--radius--pill);
+	border-end-start-radius: var(--wp--custom--radius--pill);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.dh-mega-menu__toggle {
+	justify-content: center;
+	align-self: stretch;
+	inline-size: 2.75rem;
+	padding: 0;
+	border-start-end-radius: var(--wp--custom--radius--pill);
+	border-end-end-radius: var(--wp--custom--radius--pill);
+	cursor: pointer;
+}
+
 @media (hover: hover) and (pointer: fine) {
-	.dh-mega-menu__trigger:hover {
+	.dh-mega-menu__trigger:hover,
+	.dh-mega-menu__toggle:hover {
 		background: color-mix(in srgb, var(--wp--preset--color--field) 22%, transparent);
 	}
 }
 
-.is-open > .dh-mega-menu__trigger {
+.is-open > .dh-mega-menu__trigger,
+.is-open > .dh-mega-menu__toggle {
 	background: color-mix(in srgb, var(--wp--preset--color--field) 35%, var(--wp--preset--color--paper));
 }
 
@@ -48,7 +73,7 @@
 	transition: transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.is-open > .dh-mega-menu__trigger .dh-mega-menu__chevron {
+.is-open > .dh-mega-menu__toggle .dh-mega-menu__chevron {
 	transform: rotate(180deg);
 }
 
@@ -239,14 +264,23 @@
  * container-then-content order as the desktop reveal.
  */
 @media (max-width: 56rem) {
+	/* "Products" fills the row, the chevron ends it, the panel wraps below. */
 	.dh-mega-menu {
-		display: block;
+		display: flex;
+		flex-wrap: wrap;
 		inline-size: 100%;
 	}
 
 	.dh-mega-menu__trigger {
-		inline-size: 100%;
-		justify-content: space-between;
+		flex: 1;
+	}
+
+	/* 44px tall itself, not through the tap area: at 320px with 200% text
+	   there is no room for both on one line, and the chevron wraps to its
+	   own line, where a stretched tap area would cover "Products". */
+	.dh-mega-menu__toggle {
+		min-block-size: 2.75rem;
+		margin-inline-start: auto;
 	}
 
 	.dh-mega-menu__panel {
@@ -309,6 +343,7 @@
 	}
 
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-mega-menu__chevron,
 	.dh-mega-menu__link,
 	.dh-mega-menu__icon {

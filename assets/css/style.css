@@ -367,6 +367,7 @@ svg {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -386,6 +387,7 @@ svg {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -436,6 +438,7 @@ ul.dh-toolbar__chips {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -477,6 +480,7 @@ ul.dh-toolbar__chips {
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 	.dh-mega-menu__trigger,
+	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
@@ -503,6 +507,7 @@ ul.dh-toolbar__chips {
 		.dh-pill,
 		.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
 		.dh-mega-menu__trigger,
+		.dh-mega-menu__toggle,
 		.dh-finder__trigger,
 		.dh-quote-toggle,
 		.dh-header .wp-block-navigation-item__content,
@@ -1302,6 +1307,23 @@ ul.dh-toolbar__chips {
 		inset-inline: 0;
 		inline-size: auto;
 		transform: none;
+	}
+
+	/*
+	 * Hover bridge (AMM-198). The panel floats below the bar, so the pointer
+	 * crosses the bar's bottom padding and the gap above the panel on its way
+	 * down; both lie outside the menu's box, and the mouseleave there closed
+	 * it. This strip belongs to the menu and fills that path while it is open.
+	 * The other header controls come later in the page, so their tap areas
+	 * still sit on top of it. Not on the panel itself: its clip-path would
+	 * clip the strip away.
+	 */
+	.dh-header .dh-mega-menu.is-open::after {
+		content: "";
+		position: absolute;
+		inset-inline: 0;
+		inset-block-start: calc(100% - var(--wp--preset--spacing--30));
+		block-size: calc(var(--wp--preset--spacing--30) + 0.6rem);
 	}
 }
 

@@ -24,11 +24,12 @@ const close = ( context: MegaMenuContext ) => {
 store( 'demas-theme/mega-menu', {
 	actions: {
 		/**
-		 * Hover previews, click pins.
+		 * The chevron button. "Products" itself is a link to the catalogue
+		 * (AMM-198); hover previews, a click on the chevron pins.
 		 *
 		 * Without the pin, hovering would open the panel and the click that
 		 * follows would read as "already open" and shut it again — the menu
-		 * would appear to close the moment you clicked its own trigger.
+		 * would appear to close the moment you clicked its own chevron.
 		 */
 		toggle: () => {
 			const context = getContext< MegaMenuContext >();
@@ -60,8 +61,8 @@ store( 'demas-theme/mega-menu', {
 		},
 
 		/**
-		 * Escape closes and hands focus back to the trigger, so keyboard users
-		 * are never stranded inside a panel they can no longer see.
+		 * Escape closes and hands focus back to the chevron button, so keyboard
+		 * users are never stranded inside a panel they can no longer see.
 		 */
 		onKeydown: ( event: KeyboardEvent ) => {
 			if ( event.key !== 'Escape' ) {
@@ -78,7 +79,7 @@ store( 'demas-theme/mega-menu', {
 			close( context );
 
 			const { ref } = getElement();
-			ref?.querySelector< HTMLButtonElement >( '.dh-mega-menu__trigger' )?.focus();
+			ref?.querySelector< HTMLButtonElement >( '.dh-mega-menu__toggle' )?.focus();
 		},
 
 		/**
