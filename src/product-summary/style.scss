@@ -630,6 +630,7 @@
 
 .dh-spec__body .dh-spec__doc {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--wp--preset--spacing--30);
 	min-block-size: 2.75rem;
@@ -646,8 +647,11 @@
 	flex: none;
 }
 
+/* With large text on a phone the words drop under the icon rather than shrink to a letter-wide column. */
 .dh-spec__doc-text {
+	flex: 1 1 8rem;
 	min-inline-size: 0;
+	overflow-wrap: break-word;
 }
 
 .dh-spec__doc-note {
