@@ -8,7 +8,7 @@
  * the Kingdom nearer to that branch than to any other (a Voronoi diagram),
  * so a visitor finds their branch by finding where they are. The land is the
  * footer key plan's (inc/key-plan-land.php, Natural Earth, in the projection
- * of demas_theme_branch_plan_point()), drawn the same way on the dark green:
+ * of demas_theme_branch_plan_point()), drawn the same way on the dark indigo:
  * water-lines along the coasts, the neighbours a shade off the background,
  * a north arrow and a 500 km scale bar. The chosen branch's area is filled
  * and its dot ringed and named; pointing at an area, a dot or a city in the
