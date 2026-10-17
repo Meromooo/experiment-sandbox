@@ -21,7 +21,9 @@
  * The drawing's ids get a unique prefix here.
  *
  * A group or a subcategory can be listed: the mega menu's columns are read
- * with their children. The "List" block style (is-style-list, AMM-167) draws
+ * with their children, and any other category is found by its slug in the
+ * catalogue's index (the category index's tiles list third-level categories,
+ * such as Hunter's series, AMM-200). The "List" block style (is-style-list, AMM-167) draws
  * compact rows instead of cards — icon, name, live count — for a page that
  * points into the catalogue, such as Services' "What we install".
  *
@@ -56,7 +58,7 @@ foreach ( demas_theme_get_catalogue_columns() as $demas_column ) {
 foreach ( (array) ( $attributes['cards'] ?? array() ) as $demas_card ) {
 	$demas_slug = sanitize_title( (string) ( $demas_card['category'] ?? '' ) );
 	$demas_link = $demas_external[ $demas_slug ][0] ?? null;
-	$demas_term = $demas_terms[ $demas_slug ] ?? null;
+	$demas_term = $demas_terms[ $demas_slug ] ?? ( demas_theme_get_product_cat_index()['by_slug'][ $demas_slug ] ?? null );
 
 	$demas_url = $demas_link ? $demas_link['url'] : ( $demas_term ? get_term_link( $demas_term ) : '' );
 

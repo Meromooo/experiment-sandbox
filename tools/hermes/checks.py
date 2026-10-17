@@ -65,13 +65,14 @@ LINEAR_LABEL = "15430d06-4eef-43cb-a045-da63f51e8501"
 # The marketing pages the taste rules cover, as they stood after the audits in
 # AMM-170, AMM-171 and AMM-169 step 3. `lead` is the hero subtext's class,
 # `eyebrows` the number of .dh-eyebrow elements the audit accepted (the 404's
-# three system-line headings carry the class too), `strips` the moving strips
-# allowed (the homepage's second one is the certificates belt, AMM-178).
+# system-line headings carried the class too until AMM-200 gave it the category
+# cards), `strips` the moving strips allowed (the homepage's second one is the
+# certificates belt, AMM-178).
 TASTE_PAGES = {
     "/": {"lead": "dh-hero__lead", "eyebrows": 1, "strips": 2},
     "/services/": {"lead": "dh-svc-lead", "eyebrows": 2, "strips": 1},
     "/contact-us/": {"lead": "dh-ct-lead", "eyebrows": 1, "strips": 1},
-    "/no-such-page-demas-check/": {"lead": "dh-404__lede", "eyebrows": 4, "strips": 1, "status": 404},
+    "/no-such-page-demas-check/": {"lead": "dh-404__lede", "eyebrows": 1, "strips": 1, "status": 404},
 }
 LEAD_MAX_WORDS = 20
 STRIP_CLASSES = ("wp-block-demas-theme-marquee", "wp-block-demas-theme-credentials")
@@ -466,9 +467,9 @@ def check_taste(rep):
         if status != rule.get("status", 200):
             rep.fail(f"taste:{path}:status", f"{path} answered {status or 'no response'}; taste checks skipped")
             continue
-        # Catalogue names (the system index's category names) are product data, not
+        # Catalogue names (the category cards and tiles) are product data, not
         # copy: "Clamp Saddle – PN6, PN16" keeps its dash (Ammar, 2026-10-07).
-        html = re.sub(r'<span class="dh-line__name">.*?</span>', "", html, flags=re.S)
+        html = re.sub(r'<span class="dh-cat(?:-row)?__name">.*?</span>', "", html, flags=re.S)
         page = read_page(html, leads=[rule["lead"]])
 
         dashes = []

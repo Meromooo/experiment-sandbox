@@ -141,7 +141,10 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
 
   - `category-drawings.php` — **generated** by `tools/make-category-drawings.py` (AMM-186):
     `demas_theme_get_category_drawing( $slug )`, the product drawing for a product_cat slug as
-    SVG markup (empty when there is none). Read by the category cards block only. Its ids start
+    SVG markup (empty when there is none). Read by the category cards block only (which the
+    catalogue's category index also draws with since AMM-200, adding Swimming Pool's ladder;
+    AMM-200 also let card and row names wrap and the one-column grid shrink below its content,
+    which had run the homepage's cards 116px off a phone at 200% text). Its ids start
     `dh-cd-`, which `render.php` swaps for a unique prefix; its classes start `dh-ca-` (paint
     and motion in `style.css`, "The product drawing").
 

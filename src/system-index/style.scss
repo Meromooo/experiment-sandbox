@@ -1,182 +1,56 @@
 /*
- * Category index — the catalogue's own tree above a listing.
+ * Category index — where to go next, above a catalogue listing (AMM-200).
  *
- * An eyebrow with the top-level category, then one column per
- * sub-category: its name as the column's head, its own sub-categories
- * listed beneath. Columns fill the row and wrap, so three groups
- * (Landscape) and eleven (Fog Systems) both lay out without a breakpoint.
+ * Both views are drawn by the Category Cards block, so the cards and rows
+ * themselves are styled in style.css ("Category gateway", and the "List"
+ * style); this file only places them and adjusts them for the catalogue.
+ *
+ *  - .dh-catnav: the catalogue root, the 404 and an empty search show the
+ *    homepage's category cards.
+ *  - .dh-subcats: a category with sub-categories shows a tile per
+ *    sub-category (the "List" rows, without icons), under the rail label.
  *
  * Every value resolves from theme.json. Logical properties so it mirrors
  * under dir="rtl".
  */
 
-.dh-lines {
-	margin-block-end: var(--wp--preset--spacing--60);
+.dh-catnav {
+	margin-block: var(--wp--preset--spacing--50) var(--wp--preset--spacing--60);
 }
 
-.dh-lines--all .dh-line + .dh-line {
-	margin-block-start: var(--wp--preset--spacing--60);
+/* A tablet gets two cards a row, not one long column; the drawing keeps
+   its 260 x 144 sheet at the card's width. */
+@media (min-width: 36rem) and (max-width: 56rem) {
+	.dh-catnav .dh-cats__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.dh-catnav .dh-cat__art {
+		block-size: min(11.5rem, ((100cqi - var(--wp--preset--spacing--40)) / 2 - var(--wp--preset--spacing--50)) * 144 / 260);
+	}
 }
 
-.dh-line__eyebrow {
-	margin: 0 0 var(--wp--preset--spacing--40);
+.dh-subcats {
+	margin-block: var(--wp--preset--spacing--50);
+}
+
+.dh-subcats__label {
+	display: block;
+	margin: 0 0 var(--wp--preset--spacing--30);
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 60%, transparent);
 }
 
-.dh-line__top {
-	display: inline-flex;
-	align-items: baseline;
-	gap: 0.6em;
-	color: var(--wp--preset--color--canopy);
-	text-decoration: none;
+/* Its transitions and press state are in style.css section 4's lists. */
+.dh-subcats .dh-cat-row__link {
+	grid-template-columns: minmax(0, 1fr) auto;
+	block-size: 100%;
+	min-block-size: 4rem;
+	padding-block: var(--wp--preset--spacing--30);
+	background: color-mix(in srgb, var(--wp--preset--color--sand) 55%, var(--wp--preset--color--paper));
 }
 
-.dh-line__top:focus-visible {
-	text-decoration: underline;
-	text-underline-offset: 0.25em;
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.dh-line__top:hover {
-		text-decoration: underline;
-		text-underline-offset: 0.25em;
-	}
-}
-
-.dh-line__top:focus-visible {
-	outline: 2px solid var(--wp--preset--color--field);
-	outline-offset: 2px;
-}
-
-/* Groups ------------------------------------------------------------- */
-
-.dh-line__groups {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
-	gap: var(--wp--preset--spacing--40);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.dh-line__group {
-	min-inline-size: 0;
-}
-
-.dh-line__head {
-	margin: 0 0 var(--wp--preset--spacing--20);
-	font-size: inherit;
-	line-height: 1;
-}
-
-/* Terms -------------------------------------------------------------- */
-
-.dh-line__terms {
-	display: flex;
-	flex-direction: column;
-	gap: 0.2rem;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.dh-line__item {
-	min-inline-size: 0;
-}
-
-.dh-line__term {
-	display: inline-flex;
-	align-items: baseline;
-	gap: 0.5rem;
-	max-inline-size: 100%;
-	padding: 0.2rem 0.55rem;
-	margin-inline-start: -0.55rem;
-	border-radius: var(--wp--custom--radius--pill);
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 78%, transparent);
-	font-size: var(--wp--preset--font-size--sm);
-	font-weight: 400;
-	line-height: 1.25;
-	text-decoration: none;
-	transition:
-		background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
-		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
-}
-
-/* The column's head: the sub-category itself, in the display face. */
-.dh-line__term--head {
-	font-family: var(--wp--preset--font-family--display);
-	font-size: var(--wp--preset--font-size--md);
-	font-weight: 600;
-	font-stretch: var(--wp--custom--display--stretch);
-	letter-spacing: var(--wp--custom--display--tracking);
-	color: var(--wp--preset--color--ink);
-}
-
-.dh-line__term:focus-visible {
-	background: color-mix(in srgb, var(--wp--preset--color--sand) 55%, transparent);
-	color: var(--wp--preset--color--ink);
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.dh-line__term:hover {
-		background: color-mix(in srgb, var(--wp--preset--color--sand) 55%, transparent);
-		color: var(--wp--preset--color--ink);
-	}
-}
-
-.dh-line__term:focus-visible {
-	outline: 2px solid var(--wp--preset--color--field);
-	outline-offset: 1px;
-}
-
-/* On the path to here: ink text. The page itself: ink pill. */
-.dh-line__term[aria-current="true"] {
-	font-weight: 600;
-	color: var(--wp--preset--color--ink);
-}
-
-.dh-line__term[aria-current="page"] {
-	background: var(--wp--preset--color--ink);
-	color: var(--wp--preset--color--paper);
-}
-
-.dh-line__name {
-	min-inline-size: 0;
-	overflow-wrap: anywhere;
-}
-
-// Muted, but at 4.5:1 on paper: 60% opacity and 52% ink measured 3.0 and
-// 3.5 (axe, AMM-141 audit). 70% ink is the catalogue sheet's muted value too.
-.dh-line__count {
-	font-family: var(--wp--preset--font-family--mono);
-	font-size: var(--wp--preset--font-size--xs);
-	font-weight: 400;
-	letter-spacing: 0;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
-}
-
-.dh-line__term[aria-current="page"] .dh-line__count {
-	color: color-mix(in srgb, var(--wp--preset--color--paper) 85%, transparent);
-}
-
-/* Touch: every link a 44px target (AMM-172). */
-@media (pointer: coarse) {
-	.dh-line__top,
-	.dh-line__term {
-		align-items: center;
-		min-block-size: 44px;
-		padding-block: 0;
-	}
-
-	.dh-line__terms {
-		gap: 0;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.dh-line__term {
-		transition: none;
-	}
+.dh-subcats .dh-cat-row__icon {
+	display: none;
 }
 
 /* Editor placeholder (shared by the theme's server-rendered blocks) ---- */

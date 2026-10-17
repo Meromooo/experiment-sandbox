@@ -1,20 +1,22 @@
 <?php
 /**
- * Server-rendered markup for the category index above a catalogue listing.
+ * Server-rendered markup for the category index above a catalogue listing:
+ * where a buyer can go next, before the products (AMM-200, direction A).
  *
- * The store's own category tree, under the store's own names and in the
- * store's own order, filed exactly as the live site files it. On a category
- * page: the top-level category the page sits in, one column per
- * sub-category, each with its own sub-categories beneath it. On the
- * catalogue root, the 404 and an empty search: every top-level category
- * that has sub-categories. The buyer's position is marked with
- * aria-current. Categories holding no products are left out, as everywhere
- * else on the site.
+ *  - The catalogue root, the 404 and an empty search: the homepage's drawn
+ *    category cards, one per top-level category in the header menu's order
+ *    (Non-Woven as the sister-site card), each with its product count.
+ *  - A category with sub-categories: one tile per sub-category that holds
+ *    products, in the store's order (the cards' "List" style, without icons).
+ *  - A deepest category: nothing; the toolbar's chips to its siblings do the
+ *    job there.
  *
- * Nothing is renamed or regrouped. Until 2026-10-08 this block drew the
- * catalogue as the stages of a system ("Source, Carry, Join, Control,
- * Deliver"), which put invented names over the real ones and showed
- * Irrigation's pipes and fittings on the Landscape page.
+ * Both are drawn by the Category Cards block (src/category-cards), so there
+ * is one card design. On page 2 and later nothing is shown: the products come
+ * first (Ammar, 2026-10-17).
+ *
+ * Nothing is renamed or regrouped: names, parents and order are the store's.
+ * Until AMM-200 this block drew the tree as a nested link list (.dh-lines).
  *
  * @param array    $attributes Block attributes (none).
  * @param string   $content    Inner content (unused — fully dynamic).
@@ -27,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! function_exists( 'demas_theme_get_product_cat_index' ) ) {
+if ( ! function_exists( 'demas_theme_get_product_cat_index' ) || ! function_exists( 'demas_theme_get_catalogue_columns' ) ) {
 	return;
 }
 
@@ -40,116 +42,73 @@ if ( ! ( is_post_type_archive( 'product' ) || is_tax( get_object_taxonomies( 'pr
 
 // WordPress renders a block's inner blocks before the block itself, so inside
 // a search's empty state this would be built, then thrown away, whenever the
-// search has results (AMM-164).
-if ( is_search() && $GLOBALS['wp_query']->found_posts ) {
+// search has results (AMM-164). Page 2 onward opens on the products.
+if ( ( is_search() && $GLOBALS['wp_query']->found_posts ) || is_paged() ) {
 	return;
 }
 
-$demas_children = demas_theme_get_product_cat_index()['children'];
+$demas_term = is_tax( 'product_cat' ) ? get_queried_object() : null;
 
-// A category's sub-categories that hold products, in the store's order.
-$demas_kids = static function ( int $parent_id ) use ( $demas_children ): array {
-	return array_values(
+if ( $demas_term instanceof WP_Term ) {
+	// The category's sub-categories that hold products, in the store's order.
+	$demas_kids = array_values(
 		array_filter(
-			$demas_children[ $parent_id ] ?? array(),
+			demas_theme_get_product_cat_index()['children'][ $demas_term->term_id ] ?? array(),
 			static fn( WP_Term $t ) => demas_theme_term_product_count( $t ) > 0
 		)
 	);
-};
 
-$demas_term = is_tax( 'product_cat' ) ? get_queried_object() : null;
-$demas_term = $demas_term instanceof WP_Term ? $demas_term : null;
-$demas_here = array(); // The queried term and everything above it.
-$demas_tops = $demas_kids( 0 );
-
-if ( $demas_term ) {
-	$demas_here   = array_merge( array( $demas_term->term_id ), get_ancestors( $demas_term->term_id, 'product_cat', 'taxonomy' ) );
-	$demas_top_id = end( $demas_here );
-	$demas_tops   = array_filter( $demas_tops, static fn( WP_Term $t ) => $t->term_id === $demas_top_id );
-}
-
-$demas_sections = array();
-
-foreach ( $demas_tops as $demas_top ) {
-	$demas_groups = array();
-
-	foreach ( $demas_kids( $demas_top->term_id ) as $demas_group ) {
-		$demas_groups[] = array(
-			'term'  => $demas_group,
-			'items' => $demas_kids( $demas_group->term_id ),
-		);
+	if ( ! $demas_kids ) {
+		return;
 	}
 
-	// A category with no sub-categories (Swimming Pool) has nothing to index.
-	if ( $demas_groups ) {
-		$demas_sections[] = array(
-			'top'    => $demas_top,
-			'groups' => $demas_groups,
-		);
-	}
-}
-
-if ( ! $demas_sections ) {
+	$demas_label   = function_exists( 'demas_theme_get_rail_label' ) ? demas_theme_get_rail_label( $demas_kids ) : '';
+	$demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-subcats' ) );
+	$demas_cards   = render_block(
+		array(
+			'blockName'   => 'demas-theme/category-cards',
+			'attrs'       => array(
+				'className' => 'is-style-list dh-subcats__grid',
+				'cards'     => array_map( static fn( WP_Term $t ) => array( 'category' => $t->slug ), $demas_kids ),
+			),
+			'innerBlocks' => array(),
+		)
+	);
+	/* translators: %s: a product category, e.g. Landscape. */
+	$demas_nav_label = sprintf( __( '%s categories', 'demas-theme' ), $demas_term->name );
+	?>
+<nav <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?> aria-label="<?php echo esc_attr( $demas_nav_label ); ?>">
+	<p class="dh-subcats__label dh-eyebrow"><?php echo esc_html( '' !== $demas_label ? $demas_label : __( 'By type', 'demas-theme' ) ); ?></p>
+	<?php echo $demas_cards; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in src/category-cards/render.php. ?>
+</nav>
+	<?php
 	return;
 }
 
-// One link: the category's name and its product count, marked when it is
-// this page or a category above it.
-$demas_link = static function ( WP_Term $t, string $css_class ) use ( $demas_term, $demas_here ): string {
-	$current = '';
-	if ( $demas_term && $t->term_id === $demas_term->term_id ) {
-		$current = ' aria-current="page"';
-	} elseif ( in_array( $t->term_id, $demas_here, true ) ) {
-		$current = ' aria-current="true"';
-	}
-
-	return sprintf(
-		'<a class="%1$s" href="%2$s"%3$s><span class="dh-line__name">%4$s</span><span class="dh-line__count dh-mono">%5$s</span></a>',
-		esc_attr( $css_class ),
-		esc_url( get_term_link( $t ) ),
-		$current,
-		esc_html( $t->name ),
-		esc_html( str_pad( (string) demas_theme_term_product_count( $t ), 3, '0', STR_PAD_LEFT ) )
-	);
-};
-
-$demas_wrapper = get_block_wrapper_attributes(
-	array(
-		'class' => 'dh-lines' . ( count( $demas_sections ) > 1 ? ' dh-lines--all' : '' ),
+// Every top-level category, in the header menu's order, plus the outbound
+// ones (Non-Woven) the menu lists as links.
+$demas_slugs = array_unique(
+	array_merge(
+		array_keys( demas_theme_get_catalogue_columns() ),
+		array_keys( demas_theme_get_catalogue_external_links() )
 	)
 );
+
+$demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-catnav' ) );
+$demas_cards   = render_block(
+	array(
+		'blockName'   => 'demas-theme/category-cards',
+		'attrs'       => array(
+			'cards' => array_map( static fn( string $slug ) => array( 'category' => $slug ), $demas_slugs ),
+		),
+		'innerBlocks' => array(),
+	)
+);
+
+if ( '' === trim( $demas_cards ) ) {
+	return;
+}
 ?>
-<div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>>
-	<?php foreach ( $demas_sections as $demas_section ) : ?>
-		<?php
-		/* translators: %s: a top-level product category, e.g. Landscape. */
-		$demas_label = sprintf( __( '%s categories', 'demas-theme' ), $demas_section['top']->name );
-		?>
-		<nav class="dh-line" aria-label="<?php echo esc_attr( $demas_label ); ?>" data-reveal="rise">
-			<?php // An h2 styled as an eyebrow: the sub-category names below are h3s, and the page's h1 is above. ?>
-			<h2 class="dh-line__eyebrow dh-eyebrow">
-				<?php echo $demas_link( $demas_section['top'], 'dh-line__top' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in $demas_link. ?>
-			</h2>
-
-			<ul class="dh-line__groups">
-				<?php foreach ( $demas_section['groups'] as $demas_group ) : ?>
-					<li class="dh-line__group">
-						<h3 class="dh-line__head">
-							<?php echo $demas_link( $demas_group['term'], 'dh-line__term dh-line__term--head' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in $demas_link. ?>
-						</h3>
-
-						<?php if ( $demas_group['items'] ) : ?>
-							<ul class="dh-line__terms">
-								<?php foreach ( $demas_group['items'] as $demas_item ) : ?>
-									<li class="dh-line__item">
-										<?php echo $demas_link( $demas_item, 'dh-line__term' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in $demas_link. ?>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						<?php endif; ?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</nav>
-	<?php endforeach; ?>
-</div>
+<nav <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?> aria-label="<?php esc_attr_e( 'Product categories', 'demas-theme' ); ?>">
+	<?php echo $demas_cards; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in src/category-cards/render.php. ?>
+</nav>

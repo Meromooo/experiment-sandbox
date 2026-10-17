@@ -40,15 +40,22 @@ The product category tree is locked: make it easier to navigate, never re-parent
     Irrigation's pipes and fittings on the Landscape page. Ammar found the names meaningless;
     the map is gone. Don't regroup or relabel categories in the theme again: a different
     grouping is a change to the category tree, made in the store (and on live at cutover).
-  - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count, child-category
-    rail with a "By brand / By type / By series" label, sort links; server-rendered, no JS) and
-    the `demas-theme/system-index` block — the **category index** (block title "Category
-    Index"; the old block name stays because templates place it): an eyebrow with the
-    top-level category, then one column per sub-category, each with its own sub-categories
-    beneath, names and order as the store has them, the buyer's position marked with
-    `aria-current`. A category page shows its own top-level category (Landscape: Controllers,
-    Valves, Rotors); the shop root, the 404 and an empty search show every top-level category
-    with sub-categories (not Swimming Pool). Empty categories are left out. It
+  - `catalog-filters.php` — registers the `demas-theme/catalog-toolbar` block (count in plain
+    digits, sort links ("A to Z" among them), and on the **deepest categories only** a rail of
+    chips to the category's siblings with a back chip and a "By brand / By type / By series"
+    label; server-rendered, no JS, no chip icons since AMM-200) and the
+    `demas-theme/system-index` block — the **category index** (block title "Category Index";
+    the old block name stays because templates place it). Since AMM-200 (direction A) it draws
+    with the Category Cards block: the catalogue root, the 404 and an empty search show the
+    homepage's **category cards** in a `nav` landmark (no descriptions, the header menu's
+    order, Swimming Pool included, Non-Woven as the sister-site card); a category with
+    sub-categories shows a **tile** per sub-category (the cards' "List" style without icons,
+    under the rail label); a deepest category shows nothing (its chips do the job). Page 2 and
+    later show neither (`is_paged()`). The toolbar's chips and the tiles use the same test
+    (sub-categories with products, from `demas_theme_get_product_cat_index()`), so a page never
+    shows both. Names and order are the store's. Empty categories are left out. On desktop
+    the toolbar sticks under the sticky header (`5rem`, the header's height, a `ponytail:`
+    note in its stylesheet); on phones it doesn't stick. It
     also adds SKU ordering via a `posts_clauses` join. The toolbar also carries the search field;
     on a search its rail lists categories whose names match and its default sort is "Best
     match". There are no product attributes in the

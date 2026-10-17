@@ -227,11 +227,68 @@ def nonwoven():
     return sheet(g, defs)
 
 
+def pool():
+    """A pool ladder on a tiled wall: the pool fills, light nets drift on the wall, the lamp comes on (AMM-200).
+
+    One ladder, the dry and submerged parts on the same lines. The water, its surface and the
+    light nets are long repeating waves that drift sideways (dh-ca-swell, dh-ca-caustic) only while
+    the card is hovered or focused; dh-ca-rise is the fill, dh-ca-light and dh-ca-lamp come on after.
+    """
+    def wave(x, y, half, amp, count):
+        # A run of identical crests: one quadratic, then smooth repeats.
+        return f'M{x} {y}q{n(half / 2)} -{n(amp)} {n(half)} 0' + f't{n(half)} 0' * count
+
+    fade = 'mask="url(#dh-cd-p-fade)"'
+    defs = ('<radialGradient id="dh-cd-p-glow" cx=".5" cy=".5" r=".5">'
+            '<stop class="dh-ca-stop-white" offset="0" stop-opacity=".95"/>'
+            '<stop class="dh-ca-stop-white" offset=".35" stop-opacity=".4"/>'
+            '<stop class="dh-ca-stop-white" offset="1" stop-opacity="0"/></radialGradient>'
+            # The mask fades the wall out to the left and towards the floor.
+            '<linearGradient id="dh-cd-p-fx" gradientUnits="userSpaceOnUse" x1="44" y1="0" x2="120" y2="0">'
+            '<stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>'
+            '<linearGradient id="dh-cd-p-fy" gradientUnits="userSpaceOnUse" x1="0" y1="104" x2="0" y2="144">'
+            '<stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></linearGradient>'
+            '<mask id="dh-cd-p-fade" maskUnits="userSpaceOnUse" x="-400" y="0" width="800" height="200">'
+            '<rect x="-400" y="0" width="800" height="200" fill="url(#dh-cd-p-fx)"/>'
+            '<rect x="-400" y="0" width="800" height="200" fill="url(#dh-cd-p-fy)"/></mask>'
+            '<clipPath id="dh-cd-p-below"><rect x="-400" y="64" width="800" height="120"/></clipPath>')
+    # the wall: a row of tiles under the coping, then plain courses
+    joints = ''.join(f'M{x} 48V61' for x in range(-400, 312, 9))
+    courses = ''.join(f'M-400 {y}H316' for y in range(75, 132, 14))
+    g = f'<g {fade}><path class="dh-ca-tile" d="{joints}M-400 61H316"/><path class="dh-ca-tile dh-ca-tile--wall" d="{courses}"/></g>'
+    g += '<rect class="dh-ca-body" x="-400" y="40" width="716" height="8" rx="2"/>'
+    g += '<circle class="dh-ca-body" cx="128" cy="104" r="9"/><circle class="dh-ca-lens" cx="128" cy="104" r="5.5"/>'
+    # the ladder: three treads, two handrails over the coping, their anchors
+    g += f'<g {fade}>'
+    for y in (80, 102, 124):
+        ribs = ''.join(f'M{x} {n(y + 1.6)}v2.8' for x in range(233, 266, 8))
+        g += f'<rect class="dh-ca-green" x="225" y="{y}" width="52" height="6" rx="1.5"/><path class="dh-ca-rib" d="{ribs}"/>'
+    for x in (196, 248):
+        rail = f'M{x} 46V30q0-14 14-14h6q9 0 9 9V146'
+        g += f'<path class="dh-ca-rail" d="{rail}"/><path class="dh-ca-rail-core" d="{rail}"/>'
+    g += '<rect class="dh-ca-dark" x="191" y="43.5" width="10" height="4.5" rx="1"/>'
+    g += '<rect class="dh-ca-dark" x="243" y="43.5" width="10" height="4.5" rx="1"/></g>'
+    # the water, then the light nets on the wall below the surface
+    g += (f'<g {fade}><g class="dh-ca-rise"><g class="dh-ca-swell dh-ca-run">'
+          f'<path class="dh-ca-water" d="{wave(-424, 64, 12, 1.6, 63)}V170H-424Z"/></g></g>'
+          '<g clip-path="url(#dh-cd-p-below)"><g class="dh-ca-light">'
+          '<path class="dh-ca-caustic dh-ca-caustic--a dh-ca-run" d="'
+          + ''.join(wave(-430, y, 15, 3.2, 51) for y in range(74, 147, 12)) + '"/>'
+          '<path class="dh-ca-caustic dh-ca-caustic--b dh-ca-run" d="'
+          + ''.join(wave(-400, y, 7, 1.8, 107) for y in range(80, 141, 12)) + '"/></g></g></g>')
+    g += '<g class="dh-ca-lamp"><circle class="dh-ca-glow dh-ca-run" cx="128" cy="104" r="30" fill="url(#dh-cd-p-glow)"/></g>'
+    # the surface line over everything
+    g += (f'<g {fade}><g class="dh-ca-rise"><g class="dh-ca-swell dh-ca-run">'
+          f'<path class="dh-ca-wave" d="{wave(-424, 64, 12, 1.6, 63)}"/></g></g></g>')
+    return sheet(g, defs)
+
+
 DRAWINGS = {
     'fog-systems': fog(),
     'landscape': landscape(),
     'irrigation': irrigation(),
     'industrial-tools-services': tools(),
+    'swimming-pool': pool(),
     'non-wooven': nonwoven(),
 }
 

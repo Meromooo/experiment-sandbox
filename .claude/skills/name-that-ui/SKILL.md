@@ -23,12 +23,12 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | "Your quote" list (`demas-theme/quote-drawer`) | **Modal dialog** (anchored top-right); rises from the bottom like a **sheet** on small screens | `/web/dialog-drawer-sheet` | Not a drawer: a drawer slides in from a side edge. The block keeps its name. |
 | Dialog backdrop | **Scrim** | `/web/scrim` | |
 | Gallery \| Sheet switch (catalogue toolbar) | **Segmented control** (toggle group) | `/web/toggle-group`, `/vs/tabs-vs-segmented-control` | Same parts, shown another way, so segmented control is right. Built as links with `aria-current`. |
-| Child-category rail (catalogue toolbar) | **Chips** (link chips) | `/web/badge-chip-pill` | |
+| Sibling-category rail (catalogue toolbar) | **Chips** (link chips) | `/web/badge-chip-pill` | Only on the deepest categories (siblings, the current one marked, a back chip) and on searches; no icons since AMM-200. |
 | "Exact match" tag (search results) | **Badge** | `/web/badge-chip-pill` | Badge = status label; chip = something you act on. |
 | Pills (Button block styles) | **Pill buttons** | `/web/badge-chip-pill` | "Pill" names the shape; ours are buttons. |
 | Parts sheet (Sheet view) | **Data table** | `/web/data-table` | Columns and numbered lines reflowed by CSS. |
-| Category cards | **Card**, each with a **spot illustration** (its product drawing, AMM-186) | `/web/card` | The drawing is decorative (`aria-hidden`); it moves on hover and on keyboard focus alike. |
-| Category index (`demas-theme/system-index`, above every listing) | **Nested link list** in a `nav` landmark, sitemap style | none on the site | Not a tree view: nothing expands or collapses. Names and parents exactly as the store has them; position marked with `aria-current`. |
+| Category cards | **Card**, each with a **spot illustration** (its product drawing, AMM-186; Swimming Pool's ladder, AMM-200) | `/web/card` | The drawing is decorative (`aria-hidden`); it moves on hover and on keyboard focus alike. |
+| Category index (`demas-theme/system-index`, above a listing's first page) | **Cards** in a `nav` landmark on the catalogue root, 404 and empty search; **tiles** (link cards, the cards' List style) for a category's sub-categories | `/web/card` | AMM-200. Drawn by the Category Cards block; names and order as the store has them. Nothing on the deepest categories or after page 1. |
 | Breadcrumb trail | **Breadcrumbs** | `/web/breadcrumbs` | |
 | Catalogue page links | **Pagination** | `/web/pagination` | |
 | Credential marks with a detail | **Tooltip** | `/web/popover-dropdown-tooltip`, `/vs/tooltip-vs-hover-card` | If it ever holds links or rich content it becomes a hover card or popover. |

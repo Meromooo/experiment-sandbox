@@ -5,7 +5,7 @@
   "title": "Category Index",
   "category": "woocommerce",
   "icon": "list-view",
-  "description": "The store's category tree above a catalogue listing: the current top-level category with its sub-categories, or every top-level category on the catalogue root. Server-rendered; works without JavaScript.",
+  "description": "Where to go next, above a catalogue listing: the category cards on the catalogue root, a tile per sub-category on a category that has them, nothing on the deepest categories or after page 1. Server-rendered; works without JavaScript.",
   "textdomain": "demas-theme",
   "editorScript": "file:./index.js",
   "style": "file:./style-index.css",
