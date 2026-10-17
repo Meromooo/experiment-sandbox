@@ -23,7 +23,7 @@ Source: [favicon-cheat-sheet](https://github.com/audreyfeldroy/favicon-cheat-she
 | `favicon.svg` | vector | Simple shapes only (no gradients or filters); must read at 16px. May carry a `prefers-color-scheme: dark` style so the mark stays visible on a dark tab strip. That is the browser's chrome, not the page, so the theme's light-only rule doesn't forbid it; ask Ammar before adding it. |
 | `apple-touch-icon.png` | 180×180 | **Opaque** background (iOS fills transparency with black), mark inset ~10% from the edge. |
 | manifest icons | 192×192 and 512×512 PNG | Plus one 512 with `"purpose": "maskable"` whose mark sits inside the central 80% safe zone (Android crops it to a circle or squircle). |
-| `theme-color` | — | From `theme.json`, never a new hex: `paper` #FAF9F6 (or `canopy` #1E4D3A for a dark toolbar). The manifest's `background_color` uses the same token. |
+| `theme-color` | — | From `theme.json`, never a new hex: `paper` #FAF9F6 (or `canopy` #232D8E for a dark toolbar). The manifest's `background_color` uses the same token. |
 
 When an icon changes, bust caches with a version query (`favicon.ico?v=2`); browsers hold favicons for a long time.
 

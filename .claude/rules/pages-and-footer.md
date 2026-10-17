@@ -147,9 +147,9 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   **The Services redesign, first two parts (AMM-192, 2026-10-13)**, after four mockup rounds
   and the taste audit. The hero is on paper with no eyebrow: one weight of Archivo throughout
   (700, the display width), the first line canopy and the second, the **Bold format** on a
-  line of its own, ink with "kept running." (full stop included) on a field-green pill; the
-  opening sentence; the **figures**, a list whose numbers are Bold, each number on field
-  green ("46 years in business", "5 year warranty"); the two buttons a full 44px with a
+  line of its own, ink with "kept running." (full stop included) on a sky-blue pill; the
+  opening sentence; the **figures**, a list whose numbers are Bold, each number on sky
+  blue ("46 years in business", "5 year warranty"); the two buttons a full 44px with a
   direction mark each (`::after` masks: an arrow across, a chevron down; the outline one on
   white), the selector two classes deep (`.dh-svc-hero .wp-block-button > …`) because the pill
   rule in section 4 is three. The crew photo is 4:5 with a canopy-tinted shadow, and the offer
@@ -180,7 +180,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   link: a transform on the link would make it the containing block of its `::before`, which
   covers the tab, so the tap area would shrink mid-press.
   The **board** (`.dh-svc-board`, canopy, top-left corner square under the open tab) holds the
-  heading ("visit" in the Highlight format, swept in field green as on Contact's request
+  heading ("visit" in the Highlight format, swept in sky blue as on Contact's request
   frame), the opening text, the paper "Request a site visit" button and the route on the left,
   and the crew photo (media 1161) full height on the right, its left edge fading into the
   board. The route is the shared one with paper tabs; each step is its name in the Bold format

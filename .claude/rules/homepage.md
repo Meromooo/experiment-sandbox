@@ -94,7 +94,7 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     since AMM-196**, when the hero became a photo frame; kept registered with its CSS, so a page
     that still holds it renders it). Enqueues `assets/js/editor.js`, the **Highlight**
     rich-text format (`<span class="dh-highlight" data-reveal="wipe">`) for the headline's
-    green word — a plain editor script, no build step. Registers
+    sky blue word — a plain editor script, no build step. Registers
     the pills as **Button block styles** (`is-style-dh-pill-solid`, `-outline`, `-paper`,
     `-outline-paper`; rules beside `.dh-pill` in `style.css` section 4). And the **reveal
     bridge**: a `render_block` filter that turns classes on core blocks (`dh-reveal--rise`,
@@ -182,7 +182,7 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   pivot field drawing (`demas-theme/pivot-field`, last in the head). **AMM-184 (2026-10-07):** the
   numbers band is in the film card's frame (canopy card, a `spacing-50` frame round a sand
   sheet, the tab's socket cut into the frame), its two numbers on riveted paper plates edged in
-  2px field green, each with a canopy unit word and its drawing (46: the scale from 1979; 15:
+  2px sky blue, each with a canopy unit word and its drawing (46: the scale from 1979; 15:
   the network), and "irrigation" in its heading highlighted. **AMM-186 (2026-10-07):** each
   category card shows its product drawing in place of the icon (fog line and gauge, pop-up
   rotor, pipe with tee and valve, drill in a plate, fabric roll with a loupe); the cards are

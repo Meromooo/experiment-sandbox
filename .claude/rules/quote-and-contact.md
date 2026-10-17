@@ -47,10 +47,10 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     branches as a list of in-page links, the chosen branch's card — photo, who answers there,
     address, hours with an "Open now" status worked out in Riyadh time in the browser,
     directions — and, since AMM-189, a **store locator map with service areas**: the
-    footer key plan's real land drawn on the dark green, divided into one area per branch,
+    footer key plan's real land drawn on the dark indigo, divided into one area per branch,
     each the part of the Kingdom nearer to that branch than to any other (a Voronoi diagram,
     computed in `render.php` from the branch list, so a new branch redraws them); the chosen
-    branch's area filled field green, its dot ringed and named, and pointing at an area, a
+    branch's area filled sky blue, its dot ringed and named, and pointing at an area, a
     dot or a city lights that area). Works without JavaScript: every city, area and dot
     links to its card (`#branch-jed`) and CSS shows the `:target` one; the
     view module (`src/branch-finder/view.ts`) swaps cards in place and announces choices as a
@@ -91,10 +91,10 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   form (`.dh-ct-request__grid`, `style.css` section 15), the form on its sand sheet inside it.
   The copy is in paper; **only the copy** takes the paper colour, because the form's unchosen
   choice labels inherit their colour and went paper on paper when the frame set it. "need" in
-  its heading carries the Highlight format, drawn on canopy as field green with ink on it (the
+  its heading carries the Highlight format, drawn on canopy as sky blue with ink on it (the
   ink comes in with the sweep). Above 56rem the copy is sticky beside the form. "What happens
   next" (`.dh-ct-next`) is drawn as a route: CSS-counter numbers in paper tabs one text line
-  tall, one track joining them, and field green drawn down it as the list scrolls up (the
+  tall, one track joining them, and sky blue drawn down it as the list scrolls up (the
   list's own `view-timeline`; ranges end by 40% so the sticky copy can't freeze it half
   drawn); finished with reduced motion. CSS only on the saved markup, apart from the
   highlight span (in the pattern, and added in the editor on the sandbox). **Since AMM-192
