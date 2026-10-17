@@ -201,7 +201,7 @@ svg {
 	line-height: var(--wp--custom--display--leading);
 }
 
-/* Small caps label with a field-green dot, e.g. "SINCE 1979 · RIYADH". */
+/* Small caps label with a sky-blue dot, e.g. "SINCE 1979 · RIYADH". */
 .dh-eyebrow {
 	display: inline-flex;
 	align-items: center;
@@ -229,7 +229,7 @@ svg {
 	letter-spacing: 0.02em;
 }
 
-/* One word carrying a soft field-green pill behind it. */
+/* One word carrying a soft sky-blue pill behind it. */
 .dh-highlight {
 	--_r: var(--wp--custom--radius--md);
 	background-image: linear-gradient(
@@ -1745,7 +1745,7 @@ ul.dh-toolbar__chips {
 	overflow-wrap: anywhere;
 }
 
-/* The highlight's field green is light, so the word takes ink, not paper. */
+/* The highlight's sky blue is light, so the word takes ink, not paper. */
 .dh-hero__title .dh-highlight {
 	color: var(--wp--preset--color--ink);
 }
@@ -2477,7 +2477,7 @@ ul.dh-toolbar__chips {
 	}
 }
 
-/* City marquee under the hero: a field-green dot after each item. */
+/* City marquee under the hero: a sky-blue dot after each item. */
 .dh-marquee__item::after {
 	content: "";
 	inline-size: 0.35em;
@@ -3161,7 +3161,7 @@ ul.dh-toolbar__chips {
 
 /*
  * Each number on a paper plate riveted at its top corners, the certificates
- * belt's approval plates, edged in the process line's 2px field green. A
+ * belt's approval plates, edged in the process line's 2px sky blue. A
  * number with a unit word shows it in place of what it counts; the term stays
  * in the list for screen readers (and shows in the editor, where it is
  * edited). The number and word are sized to share one line in the plate.
@@ -5568,7 +5568,7 @@ footer.wp-block-template-part {
 /*
  * The hero headline (AMM-192): one weight throughout, the first line canopy,
  * the second (the Bold format) ink on a line of its own with "kept running."
- * on a field-green pill. Sized to its column, so "Designed, installed," fills
+ * on a sky-blue pill. Sized to its column, so "Designed, installed," fills
  * one line from 768px up. On phones the second line runs on (three lines, not
  * four) and the buttons come before the figures (below), so both buttons make
  * a 320x568 first screen.
@@ -5600,7 +5600,7 @@ footer.wp-block-template-part {
 	max-inline-size: 34rem;
 }
 
-/* The figures: each number on the headline's field green, its words beside
+/* The figures: each number on the headline's sky blue, its words beside
    it. A list whose numbers are the Bold format. */
 .dh-svc-hero .dh-svc-proof {
 	display: flex;
@@ -6673,9 +6673,9 @@ footer.wp-block-template-part {
 	color: color-mix(in srgb, var(--wp--preset--color--paper) 82%, transparent);
 }
 
-/* The highlight on canopy: field green with ink on it, as the chosen branch's
+/* The highlight on canopy: sky blue with ink on it, as the chosen branch's
    area on the map above. Its ink comes in with the sweep, or the word would
-   show dark on the canopy before the green is behind it. */
+   show dark on the canopy before the sky blue is behind it. */
 :is(.dh-ct-request, .dh-svc-board) .dh-highlight {
 	background-image: linear-gradient(var(--wp--preset--color--field), var(--wp--preset--color--field));
 	color: var(--wp--preset--color--ink);
@@ -6711,14 +6711,14 @@ footer.wp-block-template-part {
  * The route (AMM-191; shared with Services' visit since AMM-192): a real
  * sequence, so numbered. Each number sits in a tab exactly one text line tall,
  * so it is level with its step's first line, and one line joins the tabs: a
- * faint track with field green drawn along it. The numbers are a CSS counter,
+ * faint track with sky blue drawn along it. The numbers are a CSS counter,
  * hidden from screen readers (the empty alternative after "/"), since the
  * list already says "1 of 4". Only the list's own items are steps (`> li`):
  * Services' third step holds a nested list of checks.
  *
  * Its colours are variables, set per list; both lists now sit on canopy
  * (Contact's request frame, Services' folder board), so both have paper tabs. As the steps come up the screen, each tab
- * lights up (outline to filled) and the green runs down to the next, on the
+ * lights up (outline to filled) and the sky blue runs down to the next, on the
  * list's own view timeline: no pinning, no script, rewinding on scroll back.
  * With reduced motion, or without scroll timelines, the finished route shows.
  * The ranges end by 40% of the list's travel, before Contact's sticky copy
@@ -6783,7 +6783,7 @@ footer.wp-block-template-part {
 	color: var(--_tab-ink);
 }
 
-/* The track, from under this tab to the next one; the green drawn on it. */
+/* The track, from under this tab to the next one; the sky blue drawn on it. */
 :is(.dh-ct-next, .dh-svc-route) > li:not(:last-child) {
 	background: linear-gradient(var(--_track) 0 0) no-repeat left calc(1.25rem - 1px) top var(--_line) / 2px calc(100% - var(--_line));
 }
