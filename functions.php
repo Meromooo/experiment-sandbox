@@ -25,6 +25,7 @@ $demas_theme_includes = array(
 	'inc/system-map.php',
 	'inc/catalog-filters.php',
 	'inc/product-page.php',
+	'inc/spec-sheet.php',
 	'inc/quote.php',
 	'inc/pages.php',
 	'inc/branches.php',

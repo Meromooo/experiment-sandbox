@@ -456,7 +456,8 @@ ul.dh-toolbar__chips {
 	.dh-film__toggle,
 	.dh-hero-slides__pause,
 	.dh-pagination a,
-	.dh-subcats .dh-cat-row__link
+	.dh-subcats .dh-cat-row__link,
+	.dh-spec__doc
 ) {
 	-webkit-user-select: none;
 	user-select: none;
@@ -499,7 +500,8 @@ ul.dh-toolbar__chips {
 	.dh-film__toggle,
 	.dh-hero-slides__pause,
 	.dh-pagination a,
-	.dh-subcats .dh-cat-row__link
+	.dh-subcats .dh-cat-row__link,
+	.dh-spec__doc
 ):active {
 	scale: 0.97;
 }
@@ -527,7 +529,8 @@ ul.dh-toolbar__chips {
 		.dh-film__toggle,
 		.dh-hero-slides__pause,
 		.dh-pagination a,
-		.dh-subcats .dh-cat-row__link
+		.dh-subcats .dh-cat-row__link,
+		.dh-spec__doc
 	):active {
 		scale: none;
 		opacity: 0.8;
