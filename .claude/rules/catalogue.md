@@ -1,6 +1,6 @@
 ---
 paths:
-  - "inc/{navigation,system-map,catalog-filters,product-page,woocommerce,sheet-view,structured-data,typography}.php"
+  - "inc/{navigation,system-map,catalog-filters,product-page,spec-sheet,woocommerce,sheet-view,structured-data,typography}.php"
   - "src/{catalog-toolbar,system-index,product-meta,product-summary,mega-menu}/**"
   - "templates/{single-product,archive-product,taxonomy-product_cat}.html"
   - "demas-mega-menu-content-spec.md"
@@ -71,6 +71,21 @@ The product category tree is locked: make it easier to navigate, never re-parent
     untouched. Brand children count as "series" only under Hunter, Rain Bird and Irritrol
     (`demas_theme_get_series_brand_slugs()` in `system-map.php`); under tool brands they are
     types.
+  - `spec-sheet.php` — draws the product page's specification as a **spec sheet** (the
+    "Plate" design, 2026-10-17): `demas_theme_shape_spec( $html, $title )`. Render order in
+    `src/product-summary/render.php`: `the_content`, then `demas_theme_clean_description()`
+    (the lede test reads this cleaned HTML), then `demas_theme_shape_spec()`, which filters
+    it with `wp_kses_post()` **before** reading it with DOMDocument (`LIBXML_NONET`) and
+    escapes every text node it writes back out. Each heading of the description becomes a
+    card under a canopy band; inside, a two-column table becomes label and value pairs (a
+    `dl`), a column of part codes becomes models with feature tags (phrases most models
+    share are faded, phrases every model shares sit in one "Every model" strip), a
+    one-column table becomes a size grid, and anything wider scrolls in its own box with the
+    first column pinned (colspan and rowspan capped at 30; from five columns a container
+    query shows "Scroll sideways" on narrow boxes). PDF links gather in a Documents card
+    (http and https only, each a 44px row in the press-state list). En and em dashes in the
+    imported text become "to", a comma or a hyphen. Without DOMDocument, or when the HTML
+    can't be read, the filtered HTML is printed unshaped. Database untouched.
 
 ## `inc/woocommerce.php` — no cart, no checkout
 

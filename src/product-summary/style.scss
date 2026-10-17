@@ -161,33 +161,69 @@
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
 }
 
-/* Specification ----------------------------------------------------------- */
+/* Specification: the spec sheet ------------------------------------------- */
 
+/*
+ * The "Plate" sheet (inc/spec-sheet.php draws the markup from the imported
+ * description). Every heading of the description is a white card under a
+ * canopy band, hatched like a stamped plate, with a rivet at each end. Inside
+ * a card: label and value pairs, a size grid, model tags, or a table that
+ * scrolls in its own box with the first column pinned. Rows alternate on a
+ * sand tint; header rows sit on a deeper sand.
+ *
+ * The section is a size container, so the pairs go side by side and the
+ * scroll hint shows by the column's own width, not the screen's.
+ */
 .dh-spec {
+	--_line: color-mix(in srgb, var(--wp--preset--color--ink) 12%, transparent);
+	--_frame: color-mix(in srgb, var(--wp--preset--color--canopy) 30%, transparent);
+	--_head-bg: color-mix(in srgb, var(--wp--preset--color--sand) 70%, var(--wp--preset--color--white));
+	--_zebra: color-mix(in srgb, var(--wp--preset--color--sand) 30%, var(--wp--preset--color--paper));
+	--_ink-86: color-mix(in srgb, var(--wp--preset--color--ink) 86%, transparent);
+	--_ink-70: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+	--_ink-64: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+	container-type: inline-size;
 	padding-block-start: var(--wp--preset--spacing--50);
 	border-block-start: var(--wp--custom--rule);
 }
 
+/* "Specification", with the field-green dot. */
 .dh-spec .dh-spec__title {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
 	margin: 0 0 var(--wp--preset--spacing--50);
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: var(--wp--preset--font-size--lg);
+	font-stretch: 125%;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	text-transform: none;
+	color: var(--wp--preset--color--ink);
+	hyphens: auto;
+	overflow-wrap: anywhere;
+}
+
+.dh-spec .dh-spec__title::before {
+	content: "";
+	flex: none;
+	inline-size: 0.6rem;
+	block-size: 0.6rem;
+	border-radius: 50%;
+	background: var(--wp--preset--color--field);
 }
 
 .dh-spec__empty {
 	margin: 0;
 	font-size: var(--wp--preset--font-size--md);
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+	color: var(--_ink-64);
 }
 
-/*
- * The body is descriptions imported from the old site, so it is styled from
- * the elements up rather than from classes: headings, paragraphs, lists and
- * tables are all that is left once the inline styles are stripped.
- */
 .dh-spec__body {
 	font-size: var(--wp--preset--font-size--md);
 	line-height: 1.65;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 86%, transparent);
+	color: var(--_ink-86);
 	overflow-wrap: anywhere;
 }
 
@@ -195,37 +231,8 @@
 	margin: 0 0 var(--wp--preset--spacing--40);
 }
 
-.dh-spec__body > :last-child,
 .dh-spec__body :is(p, ul, ol):last-child {
 	margin-block-end: 0;
-}
-
-/*
- * Imported headings are section labels ("Overview", "Key features"), not
- * titles. The theme's global h3 is 2.5rem of stretched Archivo; here they
- * become eyebrows so the spec reads as a sheet, not an article.
- */
-.dh-spec__body :is(h1, h2, h3, h4, h5, h6) {
-	margin: var(--wp--preset--spacing--60) 0 var(--wp--preset--spacing--30);
-	font-family: var(--wp--preset--font-family--body);
-	font-size: var(--wp--preset--font-size--xs);
-	font-weight: 600;
-	font-stretch: normal;
-	letter-spacing: 0.08em;
-	line-height: 1.3;
-	text-transform: uppercase;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
-}
-
-/* Only the sheet's very first heading sits flush; every later one gets air. */
-.dh-spec__body > :first-child {
-	margin-block-start: 0;
-}
-
-.dh-spec__body strong,
-.dh-spec__body b {
-	font-weight: 600;
-	color: var(--wp--preset--color--ink);
 }
 
 .dh-spec__body :is(ul, ol) {
@@ -233,11 +240,16 @@
 }
 
 .dh-spec__body li + li {
-	margin-block-start: 0.3em;
+	margin-block-start: 0.4em;
 }
 
 .dh-spec__body li::marker {
 	color: var(--wp--preset--color--field);
+}
+
+.dh-spec__body :is(strong, b) {
+	font-weight: 600;
+	color: var(--wp--preset--color--ink);
 }
 
 .dh-spec__body a {
@@ -251,47 +263,448 @@
 	border-radius: var(--wp--custom--radius--md);
 }
 
-/* Tables scroll inside the column instead of widening the page. */
-.dh-spec__table {
-	max-inline-size: 100%;
-	margin-block-end: var(--wp--preset--spacing--50);
-	overflow-x: auto;
-	overscroll-behavior-x: contain;
+.dh-spec__sr {
+	position: absolute;
+	inline-size: 1px;
+	block-size: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
 }
 
-.dh-spec__table:last-child {
-	margin-block-end: 0;
+.dh-spec__none {
+	font-size: var(--wp--preset--font-size--xs);
+	letter-spacing: 0.04em;
+	color: var(--_ink-64);
 }
 
-.dh-spec__body table {
-	inline-size: 100%;
-	border-collapse: collapse;
-	border-block-start: var(--wp--custom--rule);
+/* Cards and their bands */
+
+.dh-spec__card {
+	border: 1px solid var(--_frame);
+	border-radius: var(--wp--custom--radius--lg);
+	background: var(--wp--preset--color--white);
+	overflow: clip;
+}
+
+.dh-spec__card + .dh-spec__card {
+	margin-block-start: var(--wp--preset--spacing--50);
+}
+
+.dh-spec__band {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--wp--preset--spacing--10) var(--wp--preset--spacing--40);
+	padding: 0.8rem 1.75rem;
+	color: var(--wp--preset--color--paper);
+	background:
+		radial-gradient(circle, color-mix(in srgb, var(--wp--preset--color--paper) 55%, transparent) 0 2.5px, transparent 3px) left 0.55rem center / 8px 8px no-repeat,
+		radial-gradient(circle, color-mix(in srgb, var(--wp--preset--color--paper) 55%, transparent) 0 2.5px, transparent 3px) right 0.55rem center / 8px 8px no-repeat,
+		repeating-linear-gradient(135deg, color-mix(in srgb, var(--wp--preset--color--paper) 9%, transparent) 0 1px, transparent 1px 7px),
+		var(--wp--preset--color--canopy);
+}
+
+/* The theme's h3 is a display heading; inside a band it is a plate label. */
+.dh-spec .dh-spec__heading {
+	min-inline-size: 0;
+	margin: 0;
+	font-family: var(--wp--preset--font-family--display);
 	font-size: var(--wp--preset--font-size--sm);
+	font-stretch: 125%;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	line-height: 1.3;
+	color: var(--wp--preset--color--paper);
+	hyphens: auto;
+	overflow-wrap: anywhere;
+}
+
+.dh-spec__count {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--xs);
+	color: color-mix(in srgb, var(--wp--preset--color--paper) 72%, transparent);
+	white-space: nowrap;
+}
+
+.dh-spec__block {
+	padding: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+}
+
+.dh-spec__block:has(> .dh-spec__pairs, > .dh-spec__scroll) {
+	padding: 0;
+}
+
+.dh-spec__block + .dh-spec__block {
+	border-block-start: 1px solid var(--_line);
+}
+
+.dh-spec__block--text + .dh-spec__block--text {
+	padding-block-start: var(--wp--preset--spacing--20);
+	border: 0;
+}
+
+/* Label and value pairs: a description list, side by side when there is room. */
+
+.dh-spec__pairs {
+	margin: 0;
+}
+
+.dh-spec__pairs-head {
+	display: none;
+}
+
+.dh-spec__pair {
+	display: grid;
+	gap: 0.15rem;
+	padding: 0.8rem var(--wp--preset--spacing--50);
+	border-block-end: 1px solid var(--_line);
+}
+
+.dh-spec__pair:nth-child(even) {
+	background: var(--_zebra);
+}
+
+.dh-spec__pair:last-child {
+	border-block-end: 0;
+}
+
+.dh-spec__pair dt {
+	font-size: var(--wp--preset--font-size--sm);
+	line-height: 1.45;
+	color: var(--_ink-70);
+}
+
+.dh-spec__pair dd {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--md);
 	font-variant-numeric: tabular-nums;
 	line-height: 1.5;
-	overflow-wrap: normal;
+	color: var(--wp--preset--color--ink);
 }
 
-.dh-spec__body :is(th, td) {
-	padding: 0.7rem 1rem 0.7rem 0;
-	border-block-end: var(--wp--custom--rule);
-	text-align: start;
-	vertical-align: top;
+.dh-spec__pairs.is-code .dh-spec__pair dt {
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	color: var(--wp--preset--color--ink);
 }
 
-.dh-spec__body th {
+.dh-spec__pairs.is-code .dh-spec__pair dd {
+	font-size: var(--wp--preset--font-size--sm);
+	color: var(--_ink-86);
+}
+
+@container (min-width: 26rem) {
+	.dh-spec__pair,
+	.dh-spec__pairs-head {
+		grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+		gap: var(--wp--preset--spacing--40);
+		align-items: baseline;
+	}
+
+	.dh-spec__pairs-head {
+		display: grid;
+		padding: 0.6rem var(--wp--preset--spacing--50);
+		border-block-end: 1px solid var(--_line);
+		background: var(--_head-bg);
+		font-size: var(--wp--preset--font-size--xs);
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		line-height: 1.4;
+		text-transform: uppercase;
+		color: var(--_ink-70);
+	}
+}
+
+/* Model lists: the code over its text, full width at any size. */
+.dh-spec__pairs.is-stack .dh-spec__pair {
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.4rem;
+	padding-block: 0.9rem;
+}
+
+.dh-spec__pairs.is-code.is-stack .dh-spec__pair dt {
+	font-size: var(--wp--preset--font-size--md);
+}
+
+.dh-spec__pairs.is-code.is-stack .dh-spec__pair dd {
+	max-inline-size: 62ch;
+	font-size: var(--wp--preset--font-size--md);
+	line-height: 1.6;
+	color: var(--_ink-86);
+}
+
+.dh-spec__pairs.is-tags .dh-spec__pair {
+	gap: 0.55rem;
+}
+
+/* Feature tags: what sets a model apart is filled; what most models have is faded. */
+.dh-spec__body .dh-spec__tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-spec__body .dh-spec__tags li {
+	margin: 0;
+	padding: 0.25rem 0.6rem;
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--canopy) 28%, transparent);
+	border-radius: var(--wp--custom--radius--sm);
+	background: color-mix(in srgb, var(--wp--preset--color--field) 14%, var(--wp--preset--color--white));
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 500;
+	line-height: 1.4;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-spec__body .dh-spec__tags li.is-common {
+	border-color: var(--_line);
+	background: transparent;
+	font-weight: 400;
+	color: var(--_ink-70);
+}
+
+.dh-spec__shared {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 0.75rem;
+	padding: 0.85rem var(--wp--preset--spacing--50);
+	border-block-end: 1px solid var(--_line);
+	background: var(--_head-bg);
+}
+
+.dh-spec__body .dh-spec__shared p {
+	margin: 0;
 	font-size: var(--wp--preset--font-size--xs);
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 64%, transparent);
+	color: var(--_ink-70);
 }
 
-/* Label / value tables: a fixed label column scans faster down a long sheet. */
-.dh-spec__body td:first-child:not(:only-child) {
-	inline-size: 36%;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
+.dh-spec__body .dh-spec__shared .dh-spec__tags li {
+	border-color: var(--_line);
+	background: var(--wp--preset--color--white);
+	font-weight: 400;
+}
+
+/* Size grid: plain values in the data face. */
+
+.dh-spec__body .dh-spec__sizes-label {
+	margin: 0 0 var(--wp--preset--spacing--20);
+	font-size: var(--wp--preset--font-size--xs);
+	color: var(--_ink-64);
+}
+
+.dh-spec__body .dh-spec__sizes {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(6.75rem, 100%), 1fr));
+	gap: var(--wp--preset--spacing--20);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dh-spec__body .dh-spec__sizes li {
+	margin: 0;
+	padding: 0.5rem 0.6rem;
+	border: 1px solid var(--_line);
+	border-radius: var(--wp--custom--radius--sm);
+	background: var(--wp--preset--color--paper);
+	font-family: var(--wp--preset--font-family--mono);
+	font-size: var(--wp--preset--font-size--sm);
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+	color: var(--wp--preset--color--ink);
+}
+
+/* Wide tables: scroll inside their own box, first column pinned. */
+
+.dh-spec__scroll {
+	max-inline-size: 100%;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+}
+
+/* The card clips, so the focus ring is drawn inside the box. */
+.dh-spec__scroll:focus-visible {
+	outline: 2px solid var(--wp--preset--color--canopy);
+	outline-offset: -2px;
+}
+
+.dh-spec__scroll table {
+	inline-size: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	font-size: var(--wp--preset--font-size--sm);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.45;
+	overflow-wrap: normal;
+}
+
+.dh-spec__scroll :is(th, td) {
+	padding: 0.6rem 0.9rem 0.6rem 0;
+	border-block-end: 1px solid var(--_line);
+	background: var(--wp--preset--color--white);
+	text-align: start;
+	vertical-align: top;
+	white-space: nowrap;
+	color: var(--wp--preset--color--ink);
+}
+
+.dh-spec__scroll th {
+	min-inline-size: 4.5rem;
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 600;
+	white-space: normal;
+}
+
+.dh-spec__scroll thead th {
+	background: var(--_head-bg);
+}
+
+.dh-spec__scroll tbody tr:nth-child(even) > * {
+	background: var(--_zebra);
+}
+
+.dh-spec__scroll tbody tr:last-child > * {
+	border-block-end: 0;
+}
+
+/*
+ * The pinned column wraps, so on a narrow box or with large text it shrinks
+ * to its longest word instead of covering the columns it should scroll past.
+ */
+.dh-spec__scroll :is(th, td):first-child {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+	padding-inline: var(--wp--preset--spacing--50) 1rem;
+	white-space: normal;
+	box-shadow: 1px 0 0 var(--_line);
+}
+
+/* A second header row under a rowspan cell must not pin its first cell. */
+.dh-spec__scroll thead tr:not(:first-child) > :first-child {
+	position: static;
+	padding-inline-start: 0;
+	box-shadow: none;
+}
+
+/* Said only when the box is narrow enough that the table probably scrolls. */
+.dh-spec__body .dh-spec__hint {
+	display: none;
+	align-items: center;
+	gap: 0.4rem;
+	margin: 0;
+	padding: var(--wp--preset--spacing--20) var(--wp--preset--spacing--50) var(--wp--preset--spacing--30);
+	border-block-start: 1px solid var(--_line);
+	font-size: var(--wp--preset--font-size--xs);
+	color: var(--_ink-64);
+}
+
+@container (max-width: 47.99rem) {
+	.dh-spec__body .dh-spec__hint {
+		display: flex;
+	}
+}
+
+.dh-spec__hint svg {
+	flex: none;
+}
+
+/* Documents: each PDF a 44px row (press state in style.css section 4). */
+
+.dh-spec__docs {
+	display: grid;
+	gap: var(--wp--preset--spacing--20);
+	padding: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+}
+
+.dh-spec__body .dh-spec__doc {
+	display: flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--30);
+	min-block-size: 2.75rem;
+	padding: 0.6rem var(--wp--preset--spacing--40) 0.6rem var(--wp--preset--spacing--30);
+	border: var(--wp--custom--rule);
+	border-radius: var(--wp--custom--radius--md);
+	font-weight: 600;
+	line-height: 1.35;
+	color: var(--wp--preset--color--canopy);
+	text-decoration: none;
+}
+
+.dh-spec__doc svg {
+	flex: none;
+}
+
+.dh-spec__doc-text {
+	min-inline-size: 0;
+}
+
+.dh-spec__doc-note {
+	font-size: var(--wp--preset--font-size--sm);
+	font-weight: 400;
+	color: var(--_ink-64);
+}
+
+.dh-spec__body .dh-spec__doc:focus-visible {
+	outline: 2px solid var(--wp--preset--color--canopy);
+	outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-spec__body .dh-spec__doc:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--canopy) 6%, transparent);
+	}
+}
+
+/*
+ * Without DOMDocument the description is printed as cleaned, unshaped: its
+ * headings as quiet labels and its tables in demas_theme_clean_description()'s
+ * scrolling wrapper.
+ */
+.dh-spec__body > :is(h1, h2, h3, h4, h5, h6) {
+	margin: var(--wp--preset--spacing--60) 0 var(--wp--preset--spacing--30);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	line-height: 1.3;
+	text-transform: uppercase;
+	color: var(--_ink-64);
+}
+
+.dh-spec__body > :first-child {
+	margin-block-start: 0;
+}
+
+.dh-spec__table {
+	max-inline-size: 100%;
+	margin-block-end: var(--wp--preset--spacing--50);
+	overflow-x: auto;
+}
+
+.dh-spec__table table {
+	inline-size: 100%;
+	border-collapse: collapse;
+	font-size: var(--wp--preset--font-size--sm);
+	overflow-wrap: normal;
+}
+
+.dh-spec__table :is(th, td) {
+	padding: 0.7rem 1rem 0.7rem 0;
+	border-block-end: var(--wp--custom--rule);
+	text-align: start;
+	vertical-align: top;
 }
 
 /* Editor placeholder ------------------------------------------------------ */

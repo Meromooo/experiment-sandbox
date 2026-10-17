@@ -10,10 +10,11 @@
  *  - the nameplate: SKU, brand and series when the category tree knows them;
  *  - the quote action;
  *  - the specification — the description, cleaned by
- *    demas_theme_clean_description() — or a direction when there is none
+ *    demas_theme_clean_description() and drawn as a spec sheet by
+ *    demas_theme_shape_spec() — or a direction when there is none
  *    (122 products have no description at all).
  *
- * Helpers live in inc/product-page.php and inc/system-map.php.
+ * Helpers live in inc/product-page.php, inc/spec-sheet.php and inc/system-map.php.
  *
  * @param array    $attributes Block attributes (none).
  * @param string   $content    Inner content (unused — fully dynamic).
@@ -60,8 +61,12 @@ if (
 ) {
 	$demas_lede = '';
 } else {
-	$demas_lede = wp_trim_words( $demas_lede, 60, '…' );
+	$demas_lede = demas_theme_spec_tidy( wp_trim_words( $demas_lede, 60, '…' ) );
 }
+
+// The lede test above reads the cleaned description; the page shows it
+// reshaped into the spec sheet (inc/spec-sheet.php).
+$demas_spec_html = demas_theme_shape_spec( $demas_spec, $demas_title );
 
 /* Nameplate rows ---------------------------------------------------------- */
 
@@ -147,11 +152,11 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 	</div>
 
 	<section class="dh-spec" aria-labelledby="dh-spec-title-<?php echo esc_attr( (string) $demas_id ); ?>">
-		<h2 class="dh-spec__title dh-eyebrow" id="dh-spec-title-<?php echo esc_attr( (string) $demas_id ); ?>"><?php esc_html_e( 'Specification', 'demas-theme' ); ?></h2>
+		<h2 class="dh-spec__title" id="dh-spec-title-<?php echo esc_attr( (string) $demas_id ); ?>"><?php esc_html_e( 'Specification', 'demas-theme' ); ?></h2>
 
-		<?php if ( '' !== $demas_spec ) : ?>
+		<?php if ( '' !== $demas_spec_html ) : ?>
 			<div class="dh-spec__body">
-				<?php echo $demas_spec; // phpcs:ignore WordPress.Security.EscapeOutput -- post content passed through the_content, then cleaned. ?>
+				<?php echo $demas_spec_html; // phpcs:ignore WordPress.Security.EscapeOutput -- the_content, cleaned, filtered with wp_kses_post() and reshaped; every text node is escaped in demas_theme_shape_spec(). ?>
 			</div>
 		<?php else : ?>
 			<p class="dh-spec__empty"><?php esc_html_e( 'No published specification for this part yet. Ask for the datasheet with your quote.', 'demas-theme' ); ?></p>
