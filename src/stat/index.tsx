@@ -36,7 +36,7 @@ registerBlockType( metadata.name, {
 							__next40pxDefaultSize
 							label={ __( 'Before the number', 'demas-theme' ) }
 							help={ __(
-								'Optional, in green — for example ~ or +. A whole number counts up from zero as it scrolls into view.',
+								'Optional, shown in the accent colour, for example ~ or +. A whole number counts up from zero as it scrolls into view.',
 								'demas-theme'
 							) }
 							value={ attributes.prefix }
