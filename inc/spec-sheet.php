@@ -450,7 +450,8 @@ function demas_theme_spec_render_block( array $block, string $name, string $titl
 		return '<div class="dh-spec__block">' . $head . demas_theme_spec_dl( $block['rows'], '' ) . '</div>';
 	}
 
-	// A wide table. From five columns it also says it scrolls; CSS shows that only on narrow boxes.
+	// A wide table. From five columns it also says it scrolls; main.js shows that only while the
+	// table overflows (without it, CSS guesses by the box's width).
 	$hint = '';
 
 	if ( $block['cols'] >= 5 ) {

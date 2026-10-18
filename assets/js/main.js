@@ -1,7 +1,7 @@
 /**
  * Demas Theme (Sandbox) — front-end behaviour.
  *
- * Seven jobs, no dependencies, no build step:
+ * Eight jobs, no dependencies, no build step:
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
  *     viewport, and number the reveals of each [data-reveal-group] (--i) so
  *     CSS can stagger them. Reduced-motion users get the final state at once.
@@ -23,6 +23,8 @@
  *  7. Hero photos: the homepage frame's Image blocks (.dh-hero-slides)
  *     become a carousel with a tab of segments and a pause button. Without this
  *     script the first photo stays.
+ *  8. Spec sheet: a wide table's "Scroll sideways" hint shows only while the
+ *     table overflows. Without this script CSS guesses by the box's width.
  *
  * The .js class on <html> is the gate for every hidden initial state in
  * assets/css/style.css — with this file absent or failing, nothing is hidden.
@@ -774,6 +776,30 @@
 			el.textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 		});
 	});
+
+	/* 8. Spec sheet scroll hint ----------------------------------------- */
+
+	// Says "Scroll sideways" only while its table really overflows its box
+	// (data-overflow on the block, read by the block's stylesheet). Without
+	// this script a container query guesses by the box's width.
+	if ('ResizeObserver' in window) {
+		var fits = new ResizeObserver(function (entries) {
+			entries.forEach(function (entry) {
+				var box = entry.target.closest('.dh-spec__scroll');
+				box.parentNode.dataset.overflow = box.scrollWidth > box.clientWidth;
+			});
+		});
+
+		each(document.querySelectorAll('.dh-spec__hint'), function (hint) {
+			var box = hint.parentNode.querySelector('.dh-spec__scroll');
+
+			if (box) {
+				// The box for its width, the table for text that grows inside it.
+				fits.observe(box);
+				fits.observe(box.firstElementChild || box);
+			}
+		});
+	}
 
 	/* Reduced-motion change at runtime --------------------------------- */
 
