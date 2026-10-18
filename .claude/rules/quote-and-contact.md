@@ -35,7 +35,10 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     href is `#request`, a same-page jump, so a form already half typed is not lost to a
     reload. It runs `actions.close` as it is followed. The foot is a two-column grid: the
     note and the button, then the actions row (Print, Copy list, Clear all at the inline
-    end); under 40em one column, the button full width. No branch picker in the list, and
+    end); under 40em one column, the button full width, and on a short phone (also
+    `max-height: 40em`) the note is hidden so the list keeps its room. Print, Copy list and
+    Clear all are 44px tall. The heading count is plain ("50 parts"); only the line numbers
+    and the header badge are zero padded. No branch picker in the list, and
     no sending (AMM-140).
 
 ## `inc/branches.php`, `inc/contact.php`

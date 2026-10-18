@@ -161,7 +161,7 @@ const { state } = store( 'demas-theme/quote', {
 		get partsLabel(): string {
 			const n = state.items.length;
 
-			return `${ pad( n ) } ${
+			return `${ n } ${
 				n === 1 ? state.strings.part : state.strings.parts
 			}`;
 		},

@@ -463,7 +463,7 @@ html:has(.dh-quote-dialog[open]) {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
-	min-block-size: 2.5rem;
+	min-block-size: 2.75rem;
 	padding: 0 0.9rem;
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 20%, transparent);
 	border-radius: var(--wp--custom--radius--pill);
@@ -659,10 +659,6 @@ html:has(.dh-quote-dialog[open]) {
 		inline-size: 2.75rem;
 		block-size: 2.75rem;
 	}
-
-	.dh-quote-dialog__action {
-		min-block-size: 2.75rem;
-	}
 }
 
 /* Phones: icon-and-count control, sheet from the bottom ------------------ */
@@ -716,6 +712,13 @@ html:has(.dh-quote-dialog[open]) {
 	.dh-quote-dialog__foot {
 		grid-template-columns: minmax(0, 1fr);
 		padding-block-end: calc(var(--wp--preset--spacing--40) + env(safe-area-inset-bottom, 0px));
+	}
+
+	/* A short phone (about 640px or less) gives the list more room: the button says the rest (AMM-209). */
+	@media (max-height: 40em) {
+		.dh-quote-dialog__note {
+			display: none;
+		}
 	}
 
 	/* Quantity drops under the name; remove stays at the end of the row. */
