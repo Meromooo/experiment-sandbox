@@ -55,7 +55,7 @@ wp_interactivity_state(
 			/* translators: plural noun after a total quantity, e.g. "86 items". */
 			'items'        => __( 'items', 'demas-theme' ),
 			/* translators: 1: number of parts with its noun ("35 parts"), 2: total quantity with its noun ("86 items"). */
-			'sheetTitle'   => __( 'Demas Group · Quote list · %1$s · %2$s', 'demas-theme' ),
+			'sheetTitle'   => __( 'Demas Group · Quote list, %1$s, %2$s', 'demas-theme' ),
 			/* translators: %s: date. */
 			'printed'      => __( 'Printed %s', 'demas-theme' ),
 			'colLine'      => __( 'Line', 'demas-theme' ),
@@ -69,11 +69,11 @@ wp_interactivity_state(
 				__( 'Project', 'demas-theme' ),
 			),
 			/* translators: 1: number of parts with its noun ("35 parts"), 2: total quantity with its noun ("86 items"). */
-			'textTitle'    => __( 'Demas quote list — %1$s, %2$s', 'demas-theme' ),
+			'textTitle'    => __( 'Demas Group · Quote list, %1$s, %2$s', 'demas-theme' ),
 			'copy'         => __( 'Copy list', 'demas-theme' ),
 			'share'        => __( 'Share', 'demas-theme' ),
 			'copied'       => __( 'List copied.', 'demas-theme' ),
-			'copyFallback' => __( 'Copying is blocked here. The list is selected below — copy it with your keyboard.', 'demas-theme' ),
+			'copyFallback' => __( 'Copying is blocked here. The list is selected below. Copy it with your keyboard.', 'demas-theme' ),
 
 			/*
 			 * The sheet's last line: who prices it and how to reach them. The
@@ -83,7 +83,7 @@ wp_interactivity_state(
 				'demas_theme_quote_sheet_contact',
 				sprintf(
 					/* translators: %s: address of the Contact page on this site. */
-					__( 'Prices are quoted by your nearest Demas branch · 011 463 4102 · %s', 'demas-theme' ),
+					__( 'Prices are quoted by your nearest Demas branch: 011 463 4102 · %s', 'demas-theme' ),
 					wp_parse_url( home_url(), PHP_URL_HOST ) . '/contact-us/'
 				)
 			),
