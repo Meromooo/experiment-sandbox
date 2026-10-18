@@ -67,7 +67,7 @@
 
 .dh-plan__tick {
 	font-size: calc(10px * var(--_u, 1));
-	fill: color-mix(in srgb, var(--wp--preset--color--ink) 50%, transparent);
+	fill: color-mix(in srgb, var(--wp--preset--color--ink) 65%, transparent); /* 5.0:1 on sand */
 }
 
 .dh-plan__sea {

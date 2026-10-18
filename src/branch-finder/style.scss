@@ -449,7 +449,7 @@
 	font-size: calc(9px * var(--_u, 1));
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-	fill: color-mix(in srgb, var(--_water) 75%, transparent);
+	fill: var(--_water); /* 5.0:1 on canopy */
 }
 
 .dh-ct-plan__scale path,
