@@ -76,7 +76,7 @@ svg {
 }
 
 :focus-visible {
-	outline: 3px solid var(--wp--preset--color--water);
+	outline: 3px solid var(--dh-ring, var(--wp--preset--color--water));
 	outline-offset: 3px;
 	border-radius: var(--wp--custom--radius--sm);
 }
@@ -269,12 +269,14 @@ svg {
 }
 
 /*
- * The focus ring stays water everywhere, but water on canopy is 2.03:1. A
- * paper band fills the ring's 3px offset, so on canopy the ring reads as
- * paper then water: the paper edge is 9.16:1 against the card (AMM-182).
+ * Water is 2.38:1 on canopy, under the 3:1 a focus ring needs, so on the
+ * dark surfaces the global ring turns Sky (field, 4.97:1) through --dh-ring
+ * (AMM-204; it replaces AMM-182's paper band in the ring's offset). A new
+ * dark surface with controls joins this list. The header band's own
+ * controls turn paper instead (header section), so its dialogs keep water.
  */
-.dh-card--canopy :focus-visible {
-	box-shadow: 0 0 0 3px var(--wp--preset--color--paper);
+:is(.dh-card--canopy, .dh-svc-board, .dh-ct-request__copy) {
+	--dh-ring: var(--wp--preset--color--field);
 }
 
 .dh-card--flush {
