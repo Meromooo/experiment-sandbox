@@ -616,6 +616,15 @@
 	}
 }
 
+/* With main.js, said only while the table really overflows (AMM-206). */
+.dh-spec__block[data-overflow="true"] > .dh-spec__hint {
+	display: flex;
+}
+
+.dh-spec__block[data-overflow="false"] > .dh-spec__hint {
+	display: none;
+}
+
 .dh-spec__hint svg {
 	flex: none;
 }

@@ -81,8 +81,10 @@ The product category tree is locked: make it easier to navigate, never re-parent
     `dl`), a column of part codes becomes models with feature tags (phrases most models
     share are faded, phrases every model shares sit in one "Every model" strip), a
     one-column table becomes a size grid, and anything wider scrolls in its own box with the
-    first column pinned (colspan and rowspan capped at 30; from five columns a container
-    query shows "Scroll sideways" on narrow boxes). PDF links gather in a Documents card
+    first column pinned (colspan and rowspan capped at 30; from five columns it prints a
+    "Scroll sideways" hint, which `main.js` shows only while the table really overflows its
+    box, through `data-overflow` on the block and one `ResizeObserver` (AMM-206); without
+    JavaScript a container query shows it on narrow boxes). PDF links gather in a Documents card
     (http and https only, each a 44px row in the press-state list). En and em dashes in the
     imported text become "to", a comma or a hyphen. Without DOMDocument, or when the HTML
     can't be read, the filtered HTML is printed unshaped. Database untouched.
