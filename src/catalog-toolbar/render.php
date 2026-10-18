@@ -155,7 +155,7 @@ if ( $demas_total > $demas_per_page ) {
 
 	$demas_print_line = sprintf(
 		/* translators: 1: page title, 2: first line number, 3: last line number, 4: total number of parts. */
-		__( 'Demas Group · %1$s · lines %2$s–%3$s of %4$s parts', 'demas-theme' ),
+		__( 'Demas Group · %1$s, lines %2$s to %3$s of %4$s parts', 'demas-theme' ),
 		$demas_print_title,
 		str_pad( (string) $demas_first_line, 3, '0', STR_PAD_LEFT ),
 		str_pad( (string) $demas_last_line, 3, '0', STR_PAD_LEFT ),
@@ -164,7 +164,7 @@ if ( $demas_total > $demas_per_page ) {
 } else {
 	$demas_print_line = sprintf(
 		/* translators: 1: page title, 2: number of parts. */
-		_n( 'Demas Group · %1$s · %2$s part', 'Demas Group · %1$s · %2$s parts', $demas_total, 'demas-theme' ),
+		_n( 'Demas Group · %1$s, %2$s part', 'Demas Group · %1$s, %2$s parts', $demas_total, 'demas-theme' ),
 		$demas_print_title,
 		number_format_i18n( $demas_total )
 	);
