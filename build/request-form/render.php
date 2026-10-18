@@ -75,6 +75,9 @@ $demas_strings = array(
 		'email'    => __( 'Enter a full email address, or leave it empty.', 'demas-theme' ),
 		'message'  => __( 'Tell us what you need.', 'demas-theme' ),
 	),
+	'required'     => __( 'Required', 'demas-theme' ),
+	'optional'     => __( 'Optional', 'demas-theme' ),
+	'addHint'      => __( 'Anything to add, such as delivery or the project.', 'demas-theme' ),
 	'notSentTitle' => __( 'Sending isn’t connected yet', 'demas-theme' ),
 	'notSent'      => __( 'Nothing was sent, and everything you typed is still here. Until sending is switched on, call head office or visit the branch.', 'demas-theme' ),
 	'call'         => __( 'Call 011 463 4102', 'demas-theme' ),
@@ -156,7 +159,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-
 	</div>
 
 	<div class="dh-ct-field">
-		<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-message' ); ?>"><?php esc_html_e( 'Your request', 'demas-theme' ); ?> <span class="dh-ct-form__tag"><?php esc_html_e( 'Required', 'demas-theme' ); ?></span></label>
+		<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-message' ); ?>"><?php esc_html_e( 'Your request', 'demas-theme' ); ?> <span class="dh-ct-form__tag" data-message-tag><?php esc_html_e( 'Required', 'demas-theme' ); ?></span></label>
 		<p class="dh-ct-field__hint" id="<?php echo esc_attr( $demas_id . '-message-hint' ); ?>" data-need-hint><?php echo esc_html( $demas_needs[ $demas_need ][1] ); ?></p>
 		<textarea class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-message' ); ?>" name="message" rows="5" required aria-describedby="<?php echo esc_attr( $demas_id . '-message-hint ' . $demas_id . '-message-error' ); ?>" data-field="message"></textarea>
 		<p class="dh-ct-field__error" id="<?php echo esc_attr( $demas_id . '-message-error' ); ?>" data-error-for="message" hidden></p>

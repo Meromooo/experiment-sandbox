@@ -406,14 +406,23 @@ html:has(.dh-quote-dialog[open]) {
 
 /* Footer ----------------------------------------------------------------- */
 
+/* Row 1: the note and Request prices (AMM-209). Row 2: the actions. */
 .dh-quote-dialog__foot {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
-	justify-content: space-between;
 	gap: var(--wp--preset--spacing--30);
 	padding: var(--wp--preset--spacing--40) var(--_pad);
 	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-quote-dialog__request {
+	justify-content: center;
+}
+
+.dh-quote-dialog__actions,
+.dh-quote-dialog__copy {
+	grid-column: 1 / -1;
 }
 
 .dh-quote-dialog__note {
@@ -423,6 +432,7 @@ html:has(.dh-quote-dialog[open]) {
 }
 
 .dh-quote-dialog__clear {
+	margin-inline-start: auto;
 	min-block-size: 2.75rem;
 	padding: 0 0.5rem;
 	border: 0;
@@ -704,6 +714,7 @@ html:has(.dh-quote-dialog[open]) {
 	/* The sheet sits on the bottom edge: its foot keeps clear of the phone's
 	   home bar (viewport-fit=cover, inc/viewport.php; AMM-193). */
 	.dh-quote-dialog__foot {
+		grid-template-columns: minmax(0, 1fr);
 		padding-block-end: calc(var(--wp--preset--spacing--40) + env(safe-area-inset-bottom, 0px));
 	}
 

@@ -28,6 +28,9 @@ interface Strings {
 	checkOne: string;
 	checkMany: string;
 	errors: Record< string, string >;
+	required: string;
+	optional: string;
+	addHint: string;
 	notSentTitle: string;
 	notSent: string;
 	call: string;
@@ -179,14 +182,46 @@ function init( form: HTMLFormElement ): void {
 
 	/* What the buyer needs ---------------------------------------------- */
 
-	form.querySelectorAll< HTMLInputElement >( 'input[name="need"]' ).forEach(
-		( radio ) =>
-			radio.addEventListener( 'change', () => {
-				if ( hint ) {
-					hint.textContent = radio.dataset.hint ?? '';
-				}
-			} )
+	const include = form.querySelector< HTMLInputElement >(
+		'input[name="quote"]'
 	);
+	const messageTag = form.querySelector< HTMLElement >(
+		'[data-message-tag]'
+	);
+	const need = () =>
+		form.querySelector< HTMLInputElement >( 'input[name="need"]:checked' );
+
+	/** Parts & prices with the quote list included: the list is the request. */
+	const carried = () =>
+		'parts' === need()?.value &&
+		!! include?.checked &&
+		!! quote &&
+		! quote.hidden;
+
+	/** The message and its hint follow the need; the message is optional when the list carries the request. */
+	const syncMessage = () => {
+		const optional = carried();
+		controls.get( 'message' )?.toggleAttribute( 'required', ! optional );
+		if ( messageTag ) {
+			messageTag.textContent = optional
+				? strings.optional
+				: strings.required;
+			messageTag.classList.toggle( 'is-optional', optional );
+		}
+		if ( hint ) {
+			hint.textContent = optional
+				? strings.addHint
+				: need()?.dataset.hint ?? '';
+		}
+		if ( tried ) {
+			check();
+		}
+	};
+
+	form.querySelectorAll< HTMLInputElement >( 'input[name="need"]' ).forEach(
+		( radio ) => radio.addEventListener( 'change', syncMessage )
+	);
+	include?.addEventListener( 'change', syncMessage );
 
 	/* The quote list ---------------------------------------------------- */
 
@@ -196,6 +231,7 @@ function init( form: HTMLFormElement ): void {
 		}
 		const parts = readQuote();
 		quote.hidden = 0 === parts.length;
+		syncMessage();
 		if ( ! parts.length ) {
 			return;
 		}
@@ -244,8 +280,9 @@ function init( form: HTMLFormElement ): void {
 
 		switch ( field ) {
 			case 'name':
+				return value ? '' : strings.errors.name;
 			case 'message':
-				return value ? '' : strings.errors[ field ];
+				return value || carried() ? '' : strings.errors.message;
 			case 'phone': {
 				if ( ! value ) {
 					return strings.errors.phone;

@@ -20,7 +20,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Ours (where) | Standard name | Entry | Note |
 |---|---|---|---|
 | Header finder (`demas-theme/finder`) | **Command palette** holding a **combobox** | `/web/command-palette`, `/web/combobox` | Modal `<dialog>` opened by its control or `/`; `role="combobox"` + `role="listbox"`. |
-| "Your quote" list (`demas-theme/quote-drawer`) | **Modal dialog** (anchored top-right); rises from the bottom like a **sheet** on small screens | `/web/dialog-drawer-sheet` | Not a drawer: a drawer slides in from a side edge. The block keeps its name. |
+| "Your quote" list (`demas-theme/quote-drawer`) | **Modal dialog** (anchored top-right); rises from the bottom like a **sheet** on small screens | `/web/dialog-drawer-sheet` | Not a drawer: a drawer slides in from a side edge. The block keeps its name. Its foot's main action is a **pill button** link, "Request prices", to the request form (AMM-209), with Print, Copy list and Clear all as quiet secondary actions. |
 | Dialog backdrop | **Scrim** | `/web/scrim` | |
 | Gallery \| Sheet switch (catalogue toolbar) | **Segmented control** (toggle group) | `/web/toggle-group`, `/vs/tabs-vs-segmented-control` | Same parts, shown another way, so segmented control is right. Built as links with `aria-current`. |
 | Sibling-category rail (catalogue toolbar) | **Chips** (link chips) | `/web/badge-chip-pill` | Only on the deepest categories (siblings, the current one marked, a back chip) and on searches; no icons since AMM-200. |

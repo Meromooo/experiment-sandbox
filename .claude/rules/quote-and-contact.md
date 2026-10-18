@@ -28,6 +28,15 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     where `navigator.share` exists. The sheet's contact line is filterable
     (`demas_theme_quote_sheet_contact`); it carries the company phone and the Branch Desk, never
     a staff email.
+    **Request prices (AMM-209, 2026-10-18):** the foot's main action is a solid pill link
+    (`.dh-pill .dh-pill--solid .dh-quote-dialog__request`, markup in `render.php`) to
+    `demas_theme_contact_url( '', 'parts' )`, so the request form opens with Parts & prices
+    chosen and the list shown. On the Contact page itself (`is_page( 'contact-us' )`) the
+    href is `#request`, a same-page jump, so a form already half typed is not lost to a
+    reload. It runs `actions.close` as it is followed. The foot is a two-column grid: the
+    note and the button, then the actions row (Print, Copy list, Clear all at the inline
+    end); under 40em one column, the button full width. No branch picker in the list, and
+    no sending (AMM-140).
 
 ## `inc/branches.php`, `inc/contact.php`
 
@@ -68,6 +77,12 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     (messages on the field plus a summary that takes focus) and, on a complete form, says
     sending isn't connected yet and offers head office's number and the branch's directions —
     nothing typed leaves the browser. Without JavaScript Send stays disabled with a note.
+    **The message is optional when the list carries the request (AMM-209):** with Parts &
+    prices chosen, "Include my quote list" ticked and parts in the list, `view.ts`'s
+    `syncMessage()` takes `required` off the message, tags it "Optional" and changes the hint
+    to "Anything to add, such as delivery or the project."; `problem( 'message' )` then
+    passes an empty message. It re-runs on a need change, the Include box and every redraw
+    of the list (storage event, dialog close). Any other combination is as before.
     AMM-140 adds the handler (branch code → address server-side, nonce, rate limit, honeypot),
     after the privacy notice (AMM-162). Errors use `theme.json` `custom.alert` (#A3361F, 5:1
     on sand), always with words too.

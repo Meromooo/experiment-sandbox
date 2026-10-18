@@ -98,7 +98,12 @@ wp_interactivity_state(
 );
 
 $demas_catalogue = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' );
-$demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) );
+$demas_request   = function_exists( 'demas_theme_contact_url' ) ? demas_theme_contact_url( '', 'parts' ) : home_url( '/' );
+if ( is_page( 'contact-us' ) ) {
+	// Already on the request form's page: jump to it instead of reloading, so what the buyer typed stays.
+	$demas_request = '#request';
+}
+$demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) );
 ?>
 <div
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
@@ -173,6 +178,9 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 
 			<div class="dh-quote-dialog__foot" hidden data-wp-bind--hidden="!state.hasItems">
 				<p class="dh-quote-dialog__note"><?php esc_html_e( 'Prices come from your nearest Demas branch.', 'demas-theme' ); ?></p>
+
+				<?php // The list's next step: the request form, with Parts & prices chosen (AMM-209). The list closes as the link is followed. ?>
+				<a class="dh-pill dh-pill--solid dh-quote-dialog__request" href="<?php echo esc_url( $demas_request ); ?>" data-wp-on--click="actions.close"><?php esc_html_e( 'Request prices', 'demas-theme' ); ?></a>
 
 				<?php // Take the list out of the site (AMM-163): print it, or copy / share it as text. ?>
 				<div class="dh-quote-dialog__actions">
