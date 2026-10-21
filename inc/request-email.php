@@ -14,7 +14,7 @@
  *
  * Nothing here sends mail. The handler (stage 2, inc/request.php) builds the
  * email with demas_theme_request_email() and sends it through Microsoft
- * Graph; until then the preview page is the only caller.
+ * Graph.
  *
  * @package Demas_Theme
  */
@@ -214,6 +214,23 @@ function demas_theme_request_email( array $request ): array {
 	);
 }
 
+/**
+ * One parts line for the email, read from the store: the handler and the
+ * preview build lines the same way.
+ *
+ * @param WC_Product $product A published part.
+ * @param int        $qty     How many the buyer wants.
+ * @return array { name, sku, url, qty }
+ */
+function demas_theme_request_line( WC_Product $product, int $qty ): array {
+	return array(
+		'name' => html_entity_decode( $product->get_name(), ENT_QUOTES, 'UTF-8' ),
+		'sku'  => $product->get_sku(),
+		'url'  => (string) get_permalink( $product->get_id() ),
+		'qty'  => $qty,
+	);
+}
+
 /*
  * The preview: Tools > Request email, administrators only. It shows the email
  * for three made-up requests built from real published parts, the settings
@@ -251,20 +268,13 @@ function demas_theme_request_preview_page(): void {
 		)
 		: array();
 
-	$to_line = static fn( WC_Product $product, int $qty ): array => array(
-		'name' => html_entity_decode( $product->get_name(), ENT_QUOTES, 'UTF-8' ),
-		'sku'  => $product->get_sku(),
-		'url'  => (string) get_permalink( $product->get_id() ),
-		'qty'  => $qty,
-	);
-
 	// The worst case: the five longest names, repeated to 40 lines.
 	$longest = $products;
 	usort( $longest, static fn( $a, $b ) => mb_strlen( $b->get_name() ) <=> mb_strlen( $a->get_name() ) );
 	$longest = array_slice( $longest, 0, 5 );
 	$worst   = array();
 	for ( $i = 0; $longest && $i < 40; $i++ ) {
-		$worst[] = $to_line( $longest[ $i % count( $longest ) ], 0 === $i % 3 ? 9999 : $i + 1 );
+		$worst[] = demas_theme_request_line( $longest[ $i % count( $longest ) ], 0 === $i % 3 ? 9999 : $i + 1 );
 	}
 
 	// The buyer's email is your own, read at runtime: none is written in the repo.
@@ -283,7 +293,7 @@ function demas_theme_request_preview_page(): void {
 			'name'    => 'Faisal Al-Harbi',
 			'phone'   => '050 123 4567',
 			'message' => 'Please include delivery to our site in Obhur.',
-			'lines'   => array_map( $to_line, array_slice( $products, 0, 3 ), array_slice( array( 4, 12, 1 ), 0, min( 3, count( $products ) ) ) ),
+			'lines'   => array_map( 'demas_theme_request_line', array_slice( $products, 0, 3 ), array_slice( array( 4, 12, 1 ), 0, min( 3, count( $products ) ) ) ),
 		),
 		__( 'Site visit, no parts, no email', 'demas-theme' ) => array(
 			'ref'     => 1043,
