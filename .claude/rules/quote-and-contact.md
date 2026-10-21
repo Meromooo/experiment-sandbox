@@ -90,6 +90,32 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     after the privacy notice (AMM-162). Errors use `theme.json` `custom.alert` (#A3361F, 5:1
     on sand), always with words too.
 
+## `inc/request-email.php` — the request email and its preview (AMM-140 stage 1, 2026-10-21)
+
+  - `demas_theme_request_email( $request )` builds what a branch receives: one email, no
+    attachment (Ammar, 2026-10-18). Subject `Price request: <n> parts, <City> branch (ref.
+    <nnnn>)`, or `<Need>: <City> branch (ref. <nnnn>)` when no parts are attached. Body in one
+    column: an indigo band (need, branch, ref), the buyer's details as label and value rows
+    with sand hairlines (phone as a `tel:` link, email as a `mailto:` link only when valid), a
+    line saying how to answer (reply, or call when no email was given), the parts table (line,
+    part linked to its page, part number, quantity), and a footer line in Riyadh time.
+    Tables and inline styles only, so Gmail and Outlook show it the same; the colours are the
+    `theme.json` palette written out. Every value is escaped; the buyer's text and part names
+    carry `dir="auto"`. It takes parts as `{ name, sku, url, qty }` read from the store by the
+    handler, never from the browser. It sends nothing.
+  - `demas_theme_request_needs()` names the four needs as the form's choices do; the form's
+    `render.php` still has its own copy with the hints, so change both together.
+  - **Tools → Request email** (`manage_options` only) previews three made-up requests built
+    from real published parts (three parts; a site visit with no parts or email; a 40-line
+    worst case with the longest names and long Arabic and English text), each at desktop and
+    phone width in sandboxed `srcdoc` frames. The sample buyer's email is the logged-in
+    administrator's own, read at runtime, because CI fails on any address in the repo. It also
+    lists the settings the handler will read from `wp-config.php` (`DEMAS_GRAPH_TENANT`,
+    `DEMAS_GRAPH_CLIENT_ID`, `DEMAS_GRAPH_SECRET`, `DEMAS_GRAPH_SENDER`,
+    `DEMAS_BRANCH_MAILBOXES`, `DEMAS_REQUEST_TEST_TO`) as set or not, never their values, and
+    the visitor address headers the server receives, so the rate limit (stage 2) knows whether
+    the CDN hides visitors' addresses.
+
 ## The Contact page template, and every contact link
 
   The Contact Us page uses the Designed page template (`templates/designed-page.html`) with the `contact` pattern (`patterns/contact.php`, AMM-169: the

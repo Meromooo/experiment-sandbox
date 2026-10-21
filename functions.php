@@ -37,6 +37,7 @@ $demas_theme_includes = array(
 	'inc/homepage.php',
 	'inc/category-drawings.php',
 	'inc/contact.php',
+	'inc/request-email.php',
 	'inc/cache.php',
 	'inc/site-icons.php',
 	'inc/typography.php',
