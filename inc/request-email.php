@@ -192,7 +192,7 @@ function demas_theme_request_email( array $request ): array {
 			<tr>
 				<td style="<?php echo esc_attr( $td . 'color:' . $muted . ';' ); ?>"><?php echo esc_html( number_format_i18n( $i + 1 ) ); ?></td>
 				<td style="<?php echo esc_attr( $td ); ?>" dir="auto"><a href="<?php echo esc_url( $line['url'] ); ?>" style="<?php echo esc_attr( $link ); ?>"><?php echo esc_html( $line['name'] ); ?></a></td>
-				<td style="<?php echo esc_attr( $td . $mono . 'font-size:15px;' ); ?>"><?php echo esc_html( $line['sku'] ); ?></td>
+				<td style="<?php echo esc_attr( $td . $mono . 'font-size:15px;white-space:nowrap;' ); ?>"><?php echo esc_html( $line['sku'] ); ?></td>
 				<td style="<?php echo esc_attr( $td . 'text-align:right;font-weight:bold;white-space:nowrap;' ); ?>"><?php echo esc_html( number_format_i18n( (int) $line['qty'] ) ); ?></td>
 			</tr>
 			<?php endforeach; ?>
