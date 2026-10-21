@@ -1,6 +1,6 @@
 ---
 paths:
-  - "inc/{quote,contact,branches}.php"
+  - "inc/{quote,contact,branches,request,request-email}.php"
   - "src/{quote-button,quote-drawer,branch-finder,request-form}/**"
   - "patterns/contact.php"
 ---
@@ -86,8 +86,8 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     to "Anything to add, such as delivery or the project."; `problem( 'message' )` then
     passes an empty message. It re-runs on a need change, the Include box and every redraw
     of the list (storage event, dialog close). Any other combination is as before.
-    AMM-140 adds the handler (branch code → address server-side, nonce, rate limit, honeypot),
-    after the privacy notice (AMM-162). Errors use `theme.json` `custom.alert` (#A3361F, 5:1
+    The handler is `inc/request.php` (AMM-140 stage 2, below); the form starts posting to it
+    in stage 3, after the privacy notice (AMM-162). Errors use `theme.json` `custom.alert` (#A3361F, 5:1
     on sand), always with words too.
 
 ## `inc/request-email.php` — the request email and its preview (AMM-140 stage 1, 2026-10-21)
@@ -115,6 +115,39 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     `DEMAS_BRANCH_MAILBOXES`, `DEMAS_REQUEST_TEST_TO`) as set or not, never their values, and
     the visitor address headers the server receives, so the rate limit (stage 2) knows whether
     the CDN hides visitors' addresses.
+
+## `inc/request.php` — the request form's handler (AMM-140 stage 2, 2026-10-21)
+
+  - `POST /wp-json/demas-theme/v1/request`, JSON `{ need, branch, name, phone, email, company,
+    message, items: [ { id, qty } ], hp }`, public. In order: a filled honeypot (`hp`) gets a
+    fake 200; every field is checked on the server (400 `{ code: "invalid", fields: [...] }`,
+    the field names as the form uses them); without the Microsoft 365 settings, 503
+    `{ code: "not_connected" }`; over 5 requests an hour from one visitor or 30 an hour
+    site-wide, 429 `{ code: "busy" }` (only valid requests count); then the next ref, the
+    email from `inc/request-email.php`, and Microsoft Graph `sendMail`: 200 `{ ref, branch }`
+    (`ref` zero padded, as in the email), or 502 `{ code: "not_sent" }`.
+  - **Checks:** need one of the four, branch one of the 15 codes, name 1–100 characters,
+    phone the form's own rule (`+ ( ) -`, spaces, 9–15 digits), email optional but valid,
+    company up to 150, message up to 4000 and required unless the need is Parts & prices and
+    a published part comes through (AMM-209). Items: up to 200, quantity 1–9999, each part
+    re-read from the store (`demas_theme_request_line()`, shared with the preview); an
+    unpublished or missing part is dropped. Typed text is cleaned by
+    `demas_theme_request_text()`, not `sanitize_text_field()` (which turns "< 50 mm" into an
+    entity); the email escapes everything.
+  - **No nonce** (Ammar, 2026-10-21): pages are cached and shared, so a nonce in the HTML
+    would be stale, and the form needs no login, so a forged post can only do what any
+    visitor can, within the rate limit.
+  - **Rate limit:** transients for an hour from the last counted request, keyed by
+    `wp_hash()` of `REMOTE_ADDR` (never the address itself). `REMOTE_ADDR` is the visitor's
+    real address on this host, behind the CDN too (measured 2026-10-21), so no forwarded
+    header is read. Still to check at stage 5: whether a forged `X-Forwarded-For` changes it.
+  - **Sending:** a client-credentials token, used once and never stored, then `sendMail` as
+    `DEMAS_GRAPH_SENDER`, kept in its Sent Items (the only record; WordPress stores nothing
+    about a request but the `demas_theme_request_ref` counter). Recipient:
+    `DEMAS_REQUEST_TEST_TO` when set (the sandbox), else the branch's mailbox in
+    `DEMAS_BRANCH_MAILBOXES`, else its `default` (head office); one address each (a branch
+    with several people uses a Microsoft 365 group). Reply-To only for a valid buyer email.
+    Failures go to the PHP error log with the HTTP status only.
 
 ## The Contact page template, and every contact link
 
