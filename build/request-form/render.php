@@ -7,9 +7,13 @@
  * The view module (view.ts) checks the form and posts it as JSON to
  * inc/request.php (AMM-140), which resolves the branch code to an address
  * held outside version control: the form posts a branch code, never an
- * address. The maxlength values match that handler's limits. Until the
- * Microsoft 365 settings are in place (AMM-140 stage 4, after the privacy
- * notice, AMM-162) the handler answers "not connected" and the form says so.
+ * address. The maxlength values match that handler's limits. Wherever the
+ * Microsoft 365 settings are missing the handler answers "not connected" and
+ * the form says so.
+ *
+ * Under Send, the short privacy notice (AMM-162): who gets the details, what
+ * for, and where they go. It links to the page set in Settings → Privacy, and
+ * shows without the link until one is set.
  *
  * Without JavaScript the Send button stays disabled, and a note says to call
  * head office: the handler takes JSON only.
@@ -60,6 +64,8 @@ $demas_asked_need   = isset( $_GET['need'] ) ? sanitize_key( wp_unslash( $_GET['
 // phpcs:enable WordPress.Security.NonceVerification.Recommended
 $demas_branch = isset( $demas_branches[ $demas_asked_branch ] ) ? $demas_asked_branch : $demas_main;
 $demas_need   = isset( $demas_needs[ $demas_asked_need ] ) ? $demas_asked_need : 'parts';
+
+$demas_privacy_url = get_privacy_policy_url();
 
 $demas_strings = array(
 	/* translators: %s: city */
@@ -186,12 +192,17 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-
 			printf( esc_html__( 'Send to the %s branch', 'demas-theme' ), esc_html( $demas_branches[ $demas_branch ]['city'] ) );
 			?>
 		</button>
-		<p class="dh-ct-form__privacy"><?php esc_html_e( 'Privacy notice: to come.', 'demas-theme' ); ?></p>
+		<p class="dh-ct-form__privacy">
+			<?php esc_html_e( 'We send these details only to the branch you choose, to answer your request, and use them for nothing else. Our website is hosted in the United States, and your request is delivered by email through Microsoft 365 in Saudi Arabia.', 'demas-theme' ); ?>
+			<?php if ( $demas_privacy_url ) : ?>
+				<a href="<?php echo esc_url( $demas_privacy_url ); ?>"><?php esc_html_e( 'Read our privacy notice.', 'demas-theme' ); ?></a>
+			<?php endif; ?>
+		</p>
 	</div>
 
 	<noscript>
 		<p class="dh-ct-form__nojs">
-			<?php esc_html_e( 'Sending is not connected yet. Call head office on', 'demas-theme' ); ?>
+			<?php esc_html_e( 'Sending this form needs JavaScript. Call head office on', 'demas-theme' ); ?>
 			<a href="tel:+966114634102">011 463 4102</a>.
 		</p>
 	</noscript>
