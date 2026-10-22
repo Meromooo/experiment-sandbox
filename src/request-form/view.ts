@@ -12,10 +12,13 @@
  *  - changes the message's hint with what the buyer needs;
  *  - shows the buyer's quote list — the one the header's Your quote keeps
  *    in this browser — with a box to include it, whenever it has parts;
- *  - on a complete form, says plainly that sending is not connected yet and
- *    offers head office's number and the branch's directions. Nothing is
- *    sent and nothing typed is cleared. AMM-140 replaces that step with the
- *    real send (and its sending, sent and failed states).
+ *  - on a complete form, posts it to inc/request.php (AMM-140) as JSON, with
+ *    the quote list as { id, qty } when it is included (the server reads
+ *    each part from the store), and shows what came back: sent (with the
+ *    reference, and the typed fields cleared), not connected (until the
+ *    Microsoft 365 settings exist), or not sent for anything else. Those
+ *    two offer head office's number and the branch's directions, and keep
+ *    everything typed. The panel takes focus.
  *
  * A wrong or missing field is marked on the field (aria-invalid, with its
  * message tied to it by aria-describedby) and listed in a summary at the top
@@ -31,6 +34,11 @@ interface Strings {
 	required: string;
 	optional: string;
 	addHint: string;
+	sending: string;
+	sentTitle: string;
+	sent: string;
+	failedTitle: string;
+	failed: string;
 	notSentTitle: string;
 	notSent: string;
 	call: string;
@@ -42,6 +50,7 @@ interface Strings {
 }
 
 interface Part {
+	id: number;
 	qty: number;
 	name: string;
 	sku: string;
@@ -53,6 +62,12 @@ interface BranchEvent {
 }
 
 type Control = HTMLInputElement | HTMLTextAreaElement;
+
+/** What inc/request.php answers: a ref when sent, a code when not. */
+interface Reply {
+	ref?: string;
+	code?: string;
+}
 
 /** The quote list's key, as src/quote-drawer/view.ts writes it. */
 const QUOTE_KEY = 'demas-theme/quote';
@@ -357,9 +372,56 @@ function init( form: HTMLFormElement ): void {
 		} )
 	);
 
-	/* Sending (not connected until AMM-140) ----------------------------- */
+	/* Sending ----------------------------------------------------------- */
 
-	const notConnected = () => {
+	const value = ( field: string ) =>
+		( form.elements.namedItem( field ) as Control | null )?.value ?? '';
+
+	/** Posts the form; the HTTP status and the reply, or 0 when nothing came back. */
+	const post = async (): Promise< [ number, Reply ] > => {
+		let code = 0;
+		let reply: Reply = {};
+		try {
+			const response = await fetch( form.dataset.endpoint ?? '', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify( {
+					need: need()?.value ?? '',
+					branch: select.value,
+					name: value( 'name' ),
+					phone: value( 'phone' ),
+					email: value( 'email' ),
+					company: value( 'company' ),
+					message: value( 'message' ),
+					items:
+						include?.checked && quote && ! quote.hidden
+							? readQuote().map( ( { id, qty } ) => ( { id, qty } ) )
+							: [],
+				} ),
+			} );
+			code = response.status;
+			reply = await response.json();
+		} catch {
+			// Offline, or a reply that isn't JSON: the code says which.
+		}
+		return [ code, reply ];
+	};
+
+	/** Shows a result under Send and moves focus to it. */
+	const show = ( title: string, text: string, help: boolean ) => {
+		status.replaceChildren(
+			element( 'p', 'dh-ct-form__status-title', title ),
+			element( 'p', 'dh-ct-form__status-text', text )
+		);
+		if ( help ) {
+			status.append( helpLinks() );
+		}
+		status.classList.add( 'is-shown' );
+		status.focus();
+	};
+
+	/** Head office's number, and the branch's directions when it has a map link. */
+	const helpLinks = () => {
 		const city = option()?.dataset.city ?? '';
 		const map = option()?.dataset.map ?? '';
 		const actions = element( 'p', 'dh-ct-form__status-actions' );
@@ -388,16 +450,17 @@ function init( form: HTMLFormElement ): void {
 			actions.append( directions );
 		}
 
-		status.replaceChildren(
-			element( 'p', 'dh-ct-form__status-title', strings.notSentTitle ),
-			element( 'p', 'dh-ct-form__status-text', strings.notSent ),
-			actions
-		);
-		status.classList.add( 'is-shown' );
+		return actions;
 	};
 
-	form.addEventListener( 'submit', ( event ) => {
+	let sending = false;
+
+	form.addEventListener( 'submit', async ( event ) => {
 		event.preventDefault();
+		// A second press while the first is on its way would send twice.
+		if ( sending ) {
+			return;
+		}
 		tried = true;
 		clearStatus();
 
@@ -406,7 +469,29 @@ function init( form: HTMLFormElement ): void {
 			return;
 		}
 
-		notConnected();
+		sending = true;
+		send.textContent = strings.sending;
+		const [ code, reply ] = await post();
+		sending = false;
+		name();
+
+		if ( 200 === code ) {
+			[ 'name', 'phone', 'email', 'company', 'message' ].forEach(
+				( field ) => {
+					( form.elements.namedItem( field ) as Control ).value = '';
+				}
+			);
+			tried = false;
+			show(
+				format( strings.sentTitle, option()?.dataset.city ?? '' ),
+				format( strings.sent, reply.ref ?? '' ),
+				false
+			);
+		} else if ( 'not_connected' === reply.code ) {
+			show( strings.notSentTitle, strings.notSent, true );
+		} else {
+			show( strings.failedTitle, strings.failed, true );
+		}
 	} );
 }
 

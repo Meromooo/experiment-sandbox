@@ -76,18 +76,27 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     radios; `?need=parts|survey|repair|other` preselects), the branch (`?branch=`; kept in step
     with the finder both ways through the `demas-theme:branch` event), name, phone, email,
     company, message, and the buyer's quote list (read from the same `localStorage` key as the
-    quote drawer) with an "Include" box. **Front end only:** its view module checks the fields
-    (messages on the field plus a summary that takes focus) and, on a complete form, says
-    sending isn't connected yet and offers head office's number and the branch's directions —
-    nothing typed leaves the browser. Without JavaScript Send stays disabled with a note.
+    quote drawer) with an "Include" box. **Sending (AMM-140 stage 3, 2026-10-22):** its view module checks the fields
+    (messages on the field plus a summary that takes focus), then posts the form as JSON to
+    `inc/request.php` (the endpoint is the form's `data-endpoint`; items go as `{ id, qty }`
+    only when "Include my quote list" is ticked). Send reads "Sending…" and ignores presses
+    until the answer comes. One panel shows the result and takes focus: **sent** (200: "Sent
+    to the X branch" and the reference; the typed fields are cleared, the quote list kept),
+    **not connected** (`code: "not_connected"`, matched on the code, not on 503, which a
+    server error page could also give), or **wasn't sent** (anything else, offline included);
+    the last two keep everything typed and offer head office's number and the branch's
+    directions. Replies are shown with `textContent` only. The `maxlength` on name, phone,
+    email, company and message match the handler's limits. No honeypot input and no timeout
+    (ponytail: add them if spam or a hung request is ever seen). Without JavaScript Send stays disabled with a note.
     **The message is optional when the list carries the request (AMM-209):** with Parts &
     prices chosen, "Include my quote list" ticked and parts in the list, `view.ts`'s
     `syncMessage()` takes `required` off the message, tags it "Optional" and changes the hint
     to "Anything to add, such as delivery or the project."; `problem( 'message' )` then
     passes an empty message. It re-runs on a need change, the Include box and every redraw
     of the list (storage event, dialog close). Any other combination is as before.
-    The handler is `inc/request.php` (AMM-140 stage 2, below); the form starts posting to it
-    in stage 3, after the privacy notice (AMM-162). Errors use `theme.json` `custom.alert` (#A3361F, 5:1
+    The handler is `inc/request.php` (AMM-140 stage 2, below). Until the Microsoft 365
+    settings are in place (stage 4, after the privacy notice, AMM-162) it answers "not
+    connected" before it counts or stores anything, so nothing typed is kept. Errors use `theme.json` `custom.alert` (#A3361F, 5:1
     on sand), always with words too.
 
 ## `inc/request-email.php` — the request email and its preview (AMM-140 stage 1, 2026-10-21)
