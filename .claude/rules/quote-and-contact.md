@@ -94,9 +94,10 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     to "Anything to add, such as delivery or the project."; `problem( 'message' )` then
     passes an empty message. It re-runs on a need change, the Include box and every redraw
     of the list (storage event, dialog close). Any other combination is as before.
-    The handler is `inc/request.php` (AMM-140 stage 2, below). Until the Microsoft 365
-    settings are in place (stage 4, after the privacy notice, AMM-162) it answers "not
-    connected" before it counts or stores anything, so nothing typed is kept. Errors use `theme.json` `custom.alert` (#A3361F, 5:1
+    The handler is `inc/request.php` (AMM-140 stage 2, below). Wherever the Microsoft 365
+    settings are missing it answers "not connected" before it counts or stores anything, so
+    nothing typed is kept. Since stage 4 (2026-10-22) the sandbox sends, every request to the
+    test address. Errors use `theme.json` `custom.alert` (#A3361F, 5:1
     on sand), always with words too.
 
 ## `inc/request-email.php` — the request email and its preview (AMM-140 stage 1, 2026-10-21)
@@ -157,6 +158,24 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     `DEMAS_BRANCH_MAILBOXES`, else its `default` (head office); one address each (a branch
     with several people uses a Microsoft 365 group). Reply-To only for a valid buyer email.
     Failures go to the PHP error log with the HTTP status only.
+  - **Microsoft 365 setup (AMM-140 stage 4, 2026-10-22, Ammar in the Demas tenant).** The
+    sender is a shared mailbox named `website` on the company domain (no licence, no
+    password). The Entra app "Demas website mail" has **no** Entra API permissions: an Entra
+    `Mail.Send` grant would let it send as anyone and would override the limit below. The limit
+    is Exchange RBAC for Applications (Microsoft's replacement for application access
+    policies): `Enable-OrganizationCustomization` (needed once, then the role assignment took
+    a few hours to be allowed), the management scope "Demas website mailbox" (a recipient
+    filter on that one mailbox) and the role "Application Mail.Send" assigned to the app on
+    that scope. `Test-ServicePrincipalAuthorization` shows `InScope True` for the website
+    mailbox and `False` for any other. Client secret "sandbox", 24 months (expires 2028-10-22;
+    renew a month before, Linear AMM-140); the live site gets its own "live" secret. The
+    sandbox's `wp-config.php` holds the "sandbox" secret, `DEMAS_REQUEST_TEST_TO` (Ammar's address) and an empty
+    `DEMAS_BRANCH_MAILBOXES`; at cutover the live site gets the "live" secret, the branch
+    list from Demas, and no test address. The first real send arrived in the inbox, not junk:
+    mail from the tenant's own mailbox needs no DNS change. Rejected as more work or less safe
+    (2026-10-22): SMTP AUTH (off by default from end of 2026), Direct Send and relay
+    connectors (port 25 or a fixed IP, plus DNS), outside mail services (DNS records on the
+    old site's domain), and `wp_mail()` from Hostinger (spam, AMM-148).
 
 ## The Contact page template, and every contact link
 
