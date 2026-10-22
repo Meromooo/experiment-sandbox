@@ -4,16 +4,15 @@
  * page's request — what the buyer needs, the branch it goes to, their
  * details, their message, and their quote list when they have one.
  *
- * Front end only. Sending is AMM-140: a server-side handler that resolves
- * the branch code to an address held outside version control (the form
- * posts a branch code, never an address), with a nonce, rate limiting and
- * a honeypot, after the privacy notice (AMM-162) is in place. Until then
- * the view module (view.ts) checks the form and, when it is complete, says
- * plainly that sending is not connected and offers head office's number and
- * the branch's directions instead. Nothing typed leaves the browser.
+ * The view module (view.ts) checks the form and posts it as JSON to
+ * inc/request.php (AMM-140), which resolves the branch code to an address
+ * held outside version control: the form posts a branch code, never an
+ * address. The maxlength values match that handler's limits. Until the
+ * Microsoft 365 settings are in place (AMM-140 stage 4, after the privacy
+ * notice, AMM-162) the handler answers "not connected" and the form says so.
  *
  * Without JavaScript the Send button stays disabled, and a note says to call
- * head office: there is nothing on the server to receive the form yet.
+ * head office: the handler takes JSON only.
  *
  * The branch starts as the Branch Finder's — the main branch, or the one
  * ?branch= names — and the two stay in step through the demas-theme:branch
@@ -78,6 +77,13 @@ $demas_strings = array(
 	'required'     => __( 'Required', 'demas-theme' ),
 	'optional'     => __( 'Optional', 'demas-theme' ),
 	'addHint'      => __( 'Anything to add, such as delivery or the project.', 'demas-theme' ),
+	'sending'      => __( 'Sending…', 'demas-theme' ),
+	/* translators: %s: city */
+	'sentTitle'    => __( 'Sent to the %s branch', 'demas-theme' ),
+	/* translators: %s: reference number */
+	'sent'         => __( 'Your reference is %s. The branch will call you back on the number you gave.', 'demas-theme' ),
+	'failedTitle'  => __( 'Your request wasn’t sent', 'demas-theme' ),
+	'failed'       => __( 'Everything you typed is still here. Try again in a few minutes, or call head office.', 'demas-theme' ),
 	'notSentTitle' => __( 'Sending isn’t connected yet', 'demas-theme' ),
 	'notSent'      => __( 'Nothing was sent, and everything you typed is still here. Until sending is switched on, call head office or visit the branch.', 'demas-theme' ),
 	'call'         => __( 'Call 011 463 4102', 'demas-theme' ),
@@ -94,7 +100,7 @@ $demas_strings = array(
 $demas_id      = wp_unique_id( 'dh-ct-form-' );
 $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-card dh-card--sand' ) );
 ?>
-<form <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?> method="post" action="#request" data-request-form data-strings="<?php echo esc_attr( wp_json_encode( $demas_strings ) ); ?>">
+<form <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?> method="post" action="#request" data-request-form data-endpoint="<?php echo esc_url( rest_url( 'demas-theme/v1/request' ) ); ?>" data-strings="<?php echo esc_attr( wp_json_encode( $demas_strings ) ); ?>">
 	<div class="dh-ct-form__summary" tabindex="-1" data-summary hidden>
 		<p class="dh-ct-form__summary-title" data-summary-title></p>
 		<ul class="dh-ct-form__summary-list" data-summary-list></ul>
@@ -133,13 +139,13 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-
 	<div class="dh-ct-form__row">
 		<div class="dh-ct-field">
 			<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-name' ); ?>"><?php esc_html_e( 'Your name', 'demas-theme' ); ?> <span class="dh-ct-form__tag"><?php esc_html_e( 'Required', 'demas-theme' ); ?></span></label>
-			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-name' ); ?>" name="name" type="text" autocomplete="name" required aria-describedby="<?php echo esc_attr( $demas_id . '-name-error' ); ?>" data-field="name">
+			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-name' ); ?>" name="name" maxlength="100" type="text" autocomplete="name" required aria-describedby="<?php echo esc_attr( $demas_id . '-name-error' ); ?>" data-field="name">
 			<p class="dh-ct-field__error" id="<?php echo esc_attr( $demas_id . '-name-error' ); ?>" data-error-for="name" hidden></p>
 		</div>
 
 		<div class="dh-ct-field">
 			<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-phone' ); ?>"><?php esc_html_e( 'Phone', 'demas-theme' ); ?> <span class="dh-ct-form__tag"><?php esc_html_e( 'Required', 'demas-theme' ); ?></span></label>
-			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-phone' ); ?>" name="phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="<?php echo esc_attr( $demas_id . '-phone-hint ' . $demas_id . '-phone-error' ); ?>" data-field="phone">
+			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-phone' ); ?>" name="phone" maxlength="30" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="<?php echo esc_attr( $demas_id . '-phone-hint ' . $demas_id . '-phone-error' ); ?>" data-field="phone">
 			<p class="dh-ct-field__hint" id="<?php echo esc_attr( $demas_id . '-phone-hint' ); ?>"><?php esc_html_e( 'The branch calls you back on this number.', 'demas-theme' ); ?></p>
 			<p class="dh-ct-field__error" id="<?php echo esc_attr( $demas_id . '-phone-error' ); ?>" data-error-for="phone" hidden></p>
 		</div>
@@ -148,20 +154,20 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-
 	<div class="dh-ct-form__row">
 		<div class="dh-ct-field">
 			<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-email' ); ?>"><?php esc_html_e( 'Email', 'demas-theme' ); ?> <span class="dh-ct-form__tag is-optional"><?php esc_html_e( 'Optional', 'demas-theme' ); ?></span></label>
-			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-email' ); ?>" name="email" type="email" autocomplete="email" aria-describedby="<?php echo esc_attr( $demas_id . '-email-error' ); ?>" data-field="email">
+			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-email' ); ?>" name="email" maxlength="254" type="email" autocomplete="email" aria-describedby="<?php echo esc_attr( $demas_id . '-email-error' ); ?>" data-field="email">
 			<p class="dh-ct-field__error" id="<?php echo esc_attr( $demas_id . '-email-error' ); ?>" data-error-for="email" hidden></p>
 		</div>
 
 		<div class="dh-ct-field">
 			<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-company' ); ?>"><?php esc_html_e( 'Company', 'demas-theme' ); ?> <span class="dh-ct-form__tag is-optional"><?php esc_html_e( 'Optional', 'demas-theme' ); ?></span></label>
-			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-company' ); ?>" name="company" type="text" autocomplete="organization">
+			<input class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-company' ); ?>" name="company" maxlength="150" type="text" autocomplete="organization">
 		</div>
 	</div>
 
 	<div class="dh-ct-field">
 		<label class="dh-ct-form__label" for="<?php echo esc_attr( $demas_id . '-message' ); ?>"><?php esc_html_e( 'Your request', 'demas-theme' ); ?> <span class="dh-ct-form__tag" data-message-tag><?php esc_html_e( 'Required', 'demas-theme' ); ?></span></label>
 		<p class="dh-ct-field__hint" id="<?php echo esc_attr( $demas_id . '-message-hint' ); ?>" data-need-hint><?php echo esc_html( $demas_needs[ $demas_need ][1] ); ?></p>
-		<textarea class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-message' ); ?>" name="message" rows="5" required aria-describedby="<?php echo esc_attr( $demas_id . '-message-hint ' . $demas_id . '-message-error' ); ?>" data-field="message"></textarea>
+		<textarea class="dh-ct-input" id="<?php echo esc_attr( $demas_id . '-message' ); ?>" name="message" maxlength="4000" rows="5" required aria-describedby="<?php echo esc_attr( $demas_id . '-message-hint ' . $demas_id . '-message-error' ); ?>" data-field="message"></textarea>
 		<p class="dh-ct-field__error" id="<?php echo esc_attr( $demas_id . '-message-error' ); ?>" data-error-for="message" hidden></p>
 	</div>
 
@@ -190,5 +196,5 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-ct-form dh-
 		</p>
 	</noscript>
 
-	<div class="dh-ct-form__status" role="status" data-send-status></div>
+	<div class="dh-ct-form__status" role="status" tabindex="-1" data-send-status></div>
 </form>
