@@ -150,7 +150,16 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   - **Rate limit:** transients for an hour from the last counted request, keyed by
     `wp_hash()` of `REMOTE_ADDR` (never the address itself). `REMOTE_ADDR` is the visitor's
     real address on this host, behind the CDN too (measured 2026-10-21), so no forwarded
-    header is read. Still to check at stage 5: whether a forged `X-Forwarded-For` changes it.
+    header is read. Stage 5 (2026-10-22) checked that forged `X-Forwarded-For`,
+    `X-Real-IP`, `CF-Connecting-IP`, `True-Client-IP` and `X-Client-IP` don't change it: from
+    one fixed address, each request claiming a different one, the fifth counted request got
+    429. Someone with many real addresses still gets 5 each (a cloud session's outgoing
+    address changes on every request, so it can't run this check); the site-wide 30 an hour
+    is the backstop for that.
+  - **Stage 5 end to end (2026-10-22):** a bad field gets 400 and sends nothing; a filled
+    honeypot gets a fake 200 and sends nothing; four needs, 40 parts, Arabic and English text,
+    no buyer email (the email says to call), a missing part id (dropped), and a phone send
+    over mobile data all arrived in the inbox and read right, Reply going to the buyer.
   - **Sending:** a client-credentials token, used once and never stored, then `sendMail` as
     `DEMAS_GRAPH_SENDER`, kept in its Sent Items (the only record; WordPress stores nothing
     about a request but the `demas_theme_request_ref` counter). Recipient:
