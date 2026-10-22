@@ -88,6 +88,15 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     directions. Replies are shown with `textContent` only. The `maxlength` on name, phone,
     email, company and message match the handler's limits. No honeypot input and no timeout
     (ponytail: add them if spam or a hung request is ever seen). Without JavaScript Send stays disabled with a note.
+    **The short privacy notice (AMM-162, 2026-10-22)** sits under Send (`.dh-ct-form__privacy`):
+    who gets the details and what for, that the site is hosted in the United States and the
+    request goes by email through Microsoft 365 in Saudi Arabia, then "Read our privacy
+    notice." linked to `get_privacy_policy_url()`, the page chosen in Settings → Privacy
+    (database content, Ammar's). With no page chosen the sentence shows without the link. The
+    full notice is Linear's "Privacy notice: draft v0.3" (English and Arabic), awaiting
+    Demas's legal review; privacy requests come in through "Something else". Change the
+    short text and the drafts together. No consent box: sending the
+    form after reading the notice is the consent.
     **The message is optional when the list carries the request (AMM-209):** with Parts &
     prices chosen, "Include my quote list" ticked and parts in the list, `view.ts`'s
     `syncMessage()` takes `required` off the message, tags it "Optional" and changes the hint

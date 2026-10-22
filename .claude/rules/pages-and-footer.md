@@ -65,7 +65,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   plate, the closing line; not inserter-visible). The plate's registered name (English, plus
   the Arabic of the CR certificate as a `lang="ar"` line), CR number (1010028038) and VAT
   number (300054069400003) come from the certificates PDF (AMM-162); "Our certificates" links the
-  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. **AMM-153:** all six
+  `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. The
+  closing line's first link is the privacy page (`get_the_privacy_policy_link( '<li>', '</li>' )`,
+  AMM-162: the page chosen in Settings → Privacy, titled as that page; nothing until one is
+  chosen). **AMM-153:** all six
 
 ## `parts/`
 
