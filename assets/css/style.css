@@ -1632,6 +1632,25 @@ ul.dh-toolbar__chips {
 	}
 }
 
+/*
+ * Tables with "Fixed width table cells" on (has-fixed-layout): on a phone the
+ * equal columns get too narrow and core's word-break splits words mid-word
+ * (the privacy notice's four-column table was 72px a column at 320px,
+ * AMM-162). Below 40em the columns size to their words instead; a table
+ * wider than the column scrolls inside its figure, which core already sets
+ * to overflow-x: auto. Same specificity as core's rule; this file loads after.
+ */
+@media (max-width: 40em) {
+	.wp-block-table .has-fixed-layout {
+		table-layout: auto;
+	}
+
+	.wp-block-table .has-fixed-layout :is(td, th) {
+		word-break: normal;
+		overflow-wrap: break-word;
+	}
+}
+
 /* ------------------------------------------------------------------ */
 /* 9. Homepage patterns                                                */
 /* ------------------------------------------------------------------ */
