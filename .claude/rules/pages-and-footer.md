@@ -90,7 +90,8 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   the band are paper; hover, the open menu and the current page are field with ink text. Their
   focus rings turn paper through an explicit `:is()` list of the band's own controls, not a
   descendant rule, so the finder and quote dialogs and the open hamburger overlay keep the
-  default ring. From 56.0625rem the header part is **sticky** under the admin bar
+  default ring. Core's skip link sits outside the header but opens over the band, so it is a
+  second selector on that rule (AMM-204). From 56.0625rem the header part is **sticky** under the admin bar
   (`top: var(--wp-admin--admin-bar--height, 0px)`) and the band gains its shadow over the
   first 8rem of scroll (a scroll-driven animation, only where supported). The shadow is on a
   `::after` layer of the band and only its `opacity` animates, so the band isn't repainted on

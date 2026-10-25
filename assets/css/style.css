@@ -1362,7 +1362,8 @@ ul.dh-toolbar__chips {
 }
 
 /* Water is too dark to see on canopy: the rings around the band's own
-   controls turn paper. The open panel and the dialogs keep water. */
+   controls turn paper. The open panel and the dialogs keep water. Core's
+   skip link sits outside the header but opens over the band (AMM-204). */
 .dh-header :is(
 	.wp-block-site-title a,
 	.dh-mega-menu__trigger,
@@ -1371,7 +1372,8 @@ ul.dh-toolbar__chips {
 	.dh-quote-toggle,
 	.wp-block-navigation__responsive-container-open,
 	.wp-block-navigation__responsive-container:not(.is-menu-open) a
-):focus-visible {
+):focus-visible,
+.skip-link:focus-visible {
 	outline-color: var(--wp--preset--color--paper);
 }
 
@@ -2396,7 +2398,10 @@ ul.dh-toolbar__chips {
 	margin: 0 0 calc(-1 * var(--wp--preset--spacing--50)) calc(-1 * var(--wp--preset--spacing--50));
 }
 
+/* A paper panel inside a canopy card: its controls take water back from
+   the card's Sky ring (2.19:1 on paper; water is 4.57:1, AMM-204). */
 .dh-film {
+	--dh-ring: var(--wp--preset--color--water);
 	position: relative;
 	align-self: center;
 	overflow: hidden;
