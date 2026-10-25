@@ -74,7 +74,8 @@
 
 	position: fixed;
 	inset-block: var(--wp--preset--spacing--40) auto;
-	inset-inline: auto var(--wp--preset--spacing--40);
+	/* Keeps its gap clear of a sideways phone's notch (AMM-193). */
+	inset-inline: auto max(var(--wp--preset--spacing--40), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
 	inline-size: min(31rem, calc(100vw - 2 * var(--wp--preset--spacing--40)));
 	max-inline-size: none;
 	max-block-size: calc(100dvh - 2 * var(--wp--preset--spacing--40));

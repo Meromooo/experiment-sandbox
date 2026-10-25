@@ -433,6 +433,8 @@ ul.dh-toolbar__chips {
  *   and adds scale and opacity. Its specificity (0,3,0, from the pill-block
  *   selector inside :is) outranks the controls' own rules.
  * - The label stops being selectable on a long press; text stays selectable.
+ * - A pill radio joins as its label (`.dh-ct-need__option`): the real radio
+ *   covers the pill, so its sibling span is never :active, but the label is.
  * - With reduced motion the press is a slight fade, not a movement (Ammar,
  *   2026-10-13: "gentler, not zero").
  */
@@ -452,14 +454,20 @@ ul.dh-toolbar__chips {
 	.dh-toolbar__chip,
 	.dh-desk__city,
 	.dh-ct-city,
-	.dh-ct-need__option span,
+	.dh-ct-need__option,
 	.dh-search__submit,
 	.dh-foot__quote,
 	.dh-film__toggle,
 	.dh-hero-slides__pause,
 	.dh-pagination a,
-	.dh-subcats .dh-cat-row__link,
-	.dh-spec__doc
+	.dh-cat-row__link,
+	.dh-spec__doc,
+	.dh-header .wp-block-navigation__responsive-container-open,
+	.wp-block-navigation__responsive-container-close,
+	.dh-quote-dialog__close,
+	.dh-quote-dialog__clear,
+	.dh-finder__close,
+	.dh-404__actions .wp-block-button__link
 ) {
 	-webkit-user-select: none;
 	user-select: none;
@@ -496,14 +504,20 @@ ul.dh-toolbar__chips {
 	.dh-toolbar__chip,
 	.dh-desk__city,
 	.dh-ct-city,
-	.dh-ct-need__option span,
+	.dh-ct-need__option,
 	.dh-search__submit,
 	.dh-foot__quote,
 	.dh-film__toggle,
 	.dh-hero-slides__pause,
 	.dh-pagination a,
-	.dh-subcats .dh-cat-row__link,
-	.dh-spec__doc
+	.dh-cat-row__link,
+	.dh-spec__doc,
+	.dh-header .wp-block-navigation__responsive-container-open,
+	.wp-block-navigation__responsive-container-close,
+	.dh-quote-dialog__close,
+	.dh-quote-dialog__clear,
+	.dh-finder__close,
+	.dh-404__actions .wp-block-button__link
 ):active {
 	scale: 0.97;
 }
@@ -525,14 +539,20 @@ ul.dh-toolbar__chips {
 		.dh-toolbar__chip,
 		.dh-desk__city,
 		.dh-ct-city,
-		.dh-ct-need__option span,
+		.dh-ct-need__option,
 		.dh-search__submit,
 		.dh-foot__quote,
 		.dh-film__toggle,
 		.dh-hero-slides__pause,
 		.dh-pagination a,
-		.dh-subcats .dh-cat-row__link,
-		.dh-spec__doc
+		.dh-cat-row__link,
+		.dh-spec__doc,
+		.dh-header .wp-block-navigation__responsive-container-open,
+		.wp-block-navigation__responsive-container-close,
+		.dh-quote-dialog__close,
+		.dh-quote-dialog__clear,
+		.dh-finder__close,
+		.dh-404__actions .wp-block-button__link
 	):active {
 		scale: none;
 		opacity: 0.8;

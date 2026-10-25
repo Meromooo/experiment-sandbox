@@ -98,7 +98,9 @@ No jQuery and no classic WooCommerce assets on any page (AMM-154): after any enq
     tag with `viewport-fit=cover`, printed at priority -1, which also removes core's. Zoom is
     never disabled. With `viewport-fit=cover` the page runs under a phone's notch: `style.css`
     section 1 pads `body` with `env(safe-area-inset-left/right)`, and the quote list's bottom
-    sheet pads its foot with `env(safe-area-inset-bottom)` (`src/quote-drawer/style.scss`).
+    sheet pads its foot with `env(safe-area-inset-bottom)` (`src/quote-drawer/style.scss`);
+    its desktop panel keeps its inline gap at least `env(safe-area-inset-left/right)`, and the
+    header finder's full-width sheet pads its top and sides with them (`src/finder/style.scss`).
     Anything new fixed to a screen edge pads itself the same way. Section 1 also turns off the
     tap flash (`-webkit-tap-highlight-color`) and sets `touch-action: manipulation` on links,
     buttons, labels and summaries; the press states that replace the flash are in section 4
