@@ -133,7 +133,8 @@ html:has(.dh-finder__dialog[open]) {
 	max-inline-size: none;
 	max-block-size: min(85vh, 46rem);
 	margin: 0;
-	padding: 0;
+	/* Full width from the top edge, so it clears a phone's notch itself (AMM-193). */
+	padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
 	border: 0;
 	border-block-end: var(--wp--custom--rule);
 	background: var(--wp--preset--color--paper);
