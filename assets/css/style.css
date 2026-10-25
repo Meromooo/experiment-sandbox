@@ -433,6 +433,8 @@ ul.dh-toolbar__chips {
  *   and adds scale and opacity. Its specificity (0,3,0, from the pill-block
  *   selector inside :is) outranks the controls' own rules.
  * - The label stops being selectable on a long press; text stays selectable.
+ * - A pill radio joins as its label (`.dh-ct-need__option`): the real radio
+ *   covers the pill, so its sibling span is never :active, but the label is.
  * - With reduced motion the press is a slight fade, not a movement (Ammar,
  *   2026-10-13: "gentler, not zero").
  */
@@ -452,14 +454,20 @@ ul.dh-toolbar__chips {
 	.dh-toolbar__chip,
 	.dh-desk__city,
 	.dh-ct-city,
-	.dh-ct-need__option span,
+	.dh-ct-need__option,
 	.dh-search__submit,
 	.dh-foot__quote,
 	.dh-film__toggle,
 	.dh-hero-slides__pause,
 	.dh-pagination a,
-	.dh-subcats .dh-cat-row__link,
-	.dh-spec__doc
+	.dh-cat-row__link,
+	.dh-spec__doc,
+	.dh-header .wp-block-navigation__responsive-container-open,
+	.wp-block-navigation__responsive-container-close,
+	.dh-quote-dialog__close,
+	.dh-quote-dialog__clear,
+	.dh-finder__close,
+	.dh-404__actions .wp-block-button__link
 ) {
 	-webkit-user-select: none;
 	user-select: none;
@@ -496,14 +504,20 @@ ul.dh-toolbar__chips {
 	.dh-toolbar__chip,
 	.dh-desk__city,
 	.dh-ct-city,
-	.dh-ct-need__option span,
+	.dh-ct-need__option,
 	.dh-search__submit,
 	.dh-foot__quote,
 	.dh-film__toggle,
 	.dh-hero-slides__pause,
 	.dh-pagination a,
-	.dh-subcats .dh-cat-row__link,
-	.dh-spec__doc
+	.dh-cat-row__link,
+	.dh-spec__doc,
+	.dh-header .wp-block-navigation__responsive-container-open,
+	.wp-block-navigation__responsive-container-close,
+	.dh-quote-dialog__close,
+	.dh-quote-dialog__clear,
+	.dh-finder__close,
+	.dh-404__actions .wp-block-button__link
 ):active {
 	scale: 0.97;
 }
@@ -525,14 +539,20 @@ ul.dh-toolbar__chips {
 		.dh-toolbar__chip,
 		.dh-desk__city,
 		.dh-ct-city,
-		.dh-ct-need__option span,
+		.dh-ct-need__option,
 		.dh-search__submit,
 		.dh-foot__quote,
 		.dh-film__toggle,
 		.dh-hero-slides__pause,
 		.dh-pagination a,
-		.dh-subcats .dh-cat-row__link,
-		.dh-spec__doc
+		.dh-cat-row__link,
+		.dh-spec__doc,
+		.dh-header .wp-block-navigation__responsive-container-open,
+		.wp-block-navigation__responsive-container-close,
+		.dh-quote-dialog__close,
+		.dh-quote-dialog__clear,
+		.dh-finder__close,
+		.dh-404__actions .wp-block-button__link
 	):active {
 		scale: none;
 		opacity: 0.8;
@@ -1362,7 +1382,8 @@ ul.dh-toolbar__chips {
 }
 
 /* Water is too dark to see on canopy: the rings around the band's own
-   controls turn paper. The open panel and the dialogs keep water. */
+   controls turn paper. The open panel and the dialogs keep water. Core's
+   skip link sits outside the header but opens over the band (AMM-204). */
 .dh-header :is(
 	.wp-block-site-title a,
 	.dh-mega-menu__trigger,
@@ -1371,7 +1392,8 @@ ul.dh-toolbar__chips {
 	.dh-quote-toggle,
 	.wp-block-navigation__responsive-container-open,
 	.wp-block-navigation__responsive-container:not(.is-menu-open) a
-):focus-visible {
+):focus-visible,
+.skip-link:focus-visible {
 	outline-color: var(--wp--preset--color--paper);
 }
 
@@ -2396,7 +2418,10 @@ ul.dh-toolbar__chips {
 	margin: 0 0 calc(-1 * var(--wp--preset--spacing--50)) calc(-1 * var(--wp--preset--spacing--50));
 }
 
+/* A paper panel inside a canopy card: its controls take water back from
+   the card's Sky ring (2.19:1 on paper; water is 4.57:1, AMM-204). */
 .dh-film {
+	--dh-ring: var(--wp--preset--color--water);
 	position: relative;
 	align-self: center;
 	overflow: hidden;
