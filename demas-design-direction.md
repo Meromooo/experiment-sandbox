@@ -1,8 +1,10 @@
 # Demas Sandbox — Design Direction
 
-**Status:** current. Rewritten 2026-10-06 (AMM-157) around what was actually built. It replaces
-the 2026-09-14 navy/gold/serif version, which stays in git history (`git log --follow` on this
-file).
+**Status:** current. Rewritten 2026-10-06 (AMM-157) around what was actually built, and brought
+up to date on 2026-10-25 with the logo palette (AMM-203), the sticky header (AMM-198), the
+category index (2026-10-08), the spec sheet (AMM-202) and the hero carousel (AMM-196). It
+replaces the 2026-09-14 navy/gold/serif version, which stays in git history (`git log --follow`
+on this file).
 
 **What this file is for:** the *reasons* behind the visual system. The *values* live elsewhere:
 the tokens (named colours, sizes, radii and timings that everything reads) in `theme.json`, and
@@ -28,8 +30,8 @@ a lifestyle brand.
 Since 2026-09-14 the direction has been the reference recording analysed in
 `demas-motion-reference.md`: cards, a concave notch, containers that grow from a seed, a
 marquee, and one restrained motion vocabulary reused everywhere. It is re-skinned in Demas's own
-register: arid ground and irrigated green, and the language of engineering drawings and
-datasheets. Nothing from the old demas-group.com design carries over.
+register: the colours of the Demas logo on warm paper, and the language of engineering drawings
+and datasheets. Nothing from the old demas-group.com design carries over.
 
 Three principles run through everything below:
 
@@ -46,41 +48,46 @@ The theme is **light-only** until Ammar decides otherwise.
 
 Six colours plus white, in `theme.json` (`settings.color.palette`), and an alert colour in
 `settings.custom.alert`. WordPress's default palette, gradients and duotones are off, so editors
-pick only from these. The idea: **arid ground against irrigated green, with water where water
-flows.**
+pick only from these. The idea: **the Demas logo's indigo and blue on warm paper, with water
+where water flows.**
+
+Since 2026-10-17 (AMM-203) the colours are measured from the logo. The slugs (`canopy`, `field`,
+`water`) are older than that and stay, because saved page content uses them, so a slug no
+longer describes its colour; the editor shows the display name in quotes below.
 
 | Token | Hex | Job | Why it exists |
 |---|---|---|---|
 | `paper` | `#FAF9F6` | The page | A warm off-white, the drawing sheet everything sits on. Pure white is kept for cards, so they lift off the page. Also the `theme-color` and the icon tiles. |
-| `sand` | `#E8DFCE` | The second surface: a plate set on the page | Arid ground. Where content is a *set* rather than prose: the Branch Desk, the branch cards and request form on Contact, the category cards, the footer's title block, the ground behind product photos, the Services installation plate. Since the Branch Desk and the footer use it, on this site it also reads as "branches and contact". |
-| `field` | `#7FA045` | The marker | Irrigated green, the "growing" colour. Used as a **marker, never a fill**: the eyebrow dot, the marquee dot, the highlighted word's tint (38% on paper), list markers, ticks, a chosen chip's icon, the stage line's active station. |
-| `canopy` | `#1E4D3A` | The brand's dark | Mature green. The primary pill, links (underlined), the dark card. **The dark canopy card appears once per page, at the close** (AMM-170), so it keeps its weight. |
-| `ink` | `#0E1C16` | Text | A green-black rather than pure black, so text belongs to the palette. Also the solid pill's hover and the hang tags' ground. |
-| `water` | `#2E7D8C` | Water, and what moves toward Demas | See the rule below. |
+| `sand` | `#E8DFCE` | The second surface: a plate set on the page | A warm ground. Where content is a *set* rather than prose: the Branch Desk, the branch cards and request form on Contact, the category cards, the footer's title block, the ground behind product photos, the Services installation plate. Since the Branch Desk and the footer use it, on this site it also reads as "branches and contact". |
+| `field` "Sky" | `#6BB3DE` | The marker | A light tint of the logo blue. Mostly a **marker**: the eyebrow dot, the marquee dot, the highlighted word's tint (38% on paper), list markers, ticks, a chosen chip's icon. On the header band it is also the hover and current-page fill, under ink text, and on indigo it is the focus ring (see the `water` rule). |
+| `canopy` "Indigo" | `#232D8E` | The brand's dark | The logo's indigo. The primary pill, links (underlined), and the dark surfaces: the header band (AMM-198), the closing call to action (AMM-170), the Services folder board, Contact's request section and layout plan. |
+| `ink` | `#0F1433` | Text | An indigo-tinted near-black rather than pure black, so text belongs to the palette. Also link hover, the solid pill's hover and the hang tags' ground. |
+| `water` "Cerulean" | `#1A79AB` | Water, and what moves toward Demas | The logo's blue (about `#1B7EB2`), deepened to pass 4.5:1 on paper and white. See the rule below. |
 | `white` | `#FFFFFF` | Cards | The `dh-card` surface, lifted by the `card` shadow. |
 | `custom.alert` | `#A3361F` | Errors | The request form's errors (5.1:1 on sand). Always paired with words, never colour alone. |
 
-**Contrast, measured** (WCAG ratio; 4.5:1 is the floor for body text, 3:1 for large text,
-icons and focus rings):
+**Contrast** (WCAG ratio, computed from `theme.json` on 2026-10-25; 4.5:1 is the floor for
+body text, 3:1 for large text, icons and focus rings):
 
 | On → | paper | sand | white | canopy | ink |
 |---|---|---|---|---|---|
-| `ink` | 16.67 | 13.27 | 17.55 | — | — |
-| `canopy` | 9.16 | 7.29 | 9.64 | — | 1.82 |
-| `water` | 4.50 | 3.59 | 4.74 | **2.03** | 3.70 |
-| `field` | **2.84** | **2.26** | **2.99** | 3.22 | 5.87 |
+| `ink` | 17.07 | 13.59 | 17.98 | — | — |
+| `canopy` | 10.86 | 8.64 | 11.43 | — | 1.57 |
+| `water` | 4.57 | 3.64 | 4.81 | **2.38** | 3.74 |
+| `field` | **2.19** | **1.74** | **2.30** | 4.97 | 7.81 |
 | `alert` | 6.42 | 5.11 | 6.76 | — | — |
-| `paper` | — | 1.26 | — | 9.16 | 16.67 |
+| `paper` | — | 1.26 | — | 10.86 | 17.07 |
 
 What follows from it:
 
-- **`field` is never text on a light surface** (2.84:1 on paper). As text it appears only on
+- **`field` is never text on a light surface** (2.19:1 on paper). As text it appears only on
   `ink` (the hang tags' "View certificate" link) or as a decorative glyph hidden from screen
   readers (the search title's quote marks). The open numbers band switches its prefix colour
   for this reason.
-- **`water` as text needs paper or white** (4.50 and 4.74:1); on sand it is large text or
+- **`water` as text needs paper or white** (4.57 and 4.81:1); on sand it is large text or
   icons only.
-- **Text on canopy is paper.**
+- **Text on canopy is paper**, and **a focus ring on canopy is `field`** (4.97:1), because
+  `water` there is 2.38:1.
 
 ### The `water` rule
 
@@ -90,23 +97,22 @@ What follows from it:
    (`src/quote-button`), the "Your quote" control and list (`src/quote-drawer`, a modal
    dialog), and the footer's quote link (`.dh-foot__quote`).
 2. **The focus ring**, the outline that shows which control the keyboard is on: 3px `water`,
-   offset 3px, rounded to the small radius (`style.css` section 1, `:focus-visible`). One colour
-   for focus everywhere teaches keyboard users what to look for.
+   offset 3px, rounded to the small radius (`style.css` section 1, `:focus-visible`, through
+   `--dh-ring`). One ring shape everywhere teaches keyboard users what to look for. **On
+   indigo it turns `field`** (AMM-204): the surfaces in the `--dh-ring` list in `style.css`
+   section 3 (the canopy card, the Services folder board, Contact's request copy) set it, and a
+   new dark surface with controls joins that list. The header band's own controls take a paper
+   ring instead (AMM-198), so its dialogs keep `water`.
 3. **Water in drawings**: the pipes of the irrigation layout plan on Contact (`src/branch-finder`)
-   and the hero film, graded so its pipes come out at about `water` (`tools/hero-film.sh`).
+   and the hero film. The film is still graded to the old teal `water` (`#2E7D8C`,
+   `tools/hero-film.sh`); re-grading it to Cerulean needs the source clips and a Media Library
+   upload (open since AMM-203).
 
 It is not used for decoration, headings or generic links (those are `canopy`). A new use must
 fit one of the three.
 
-**Known gaps, AMM-182** (found in source during this rewrite, 2026-10-06; to be measured in
-DevTools before they are fixed):
-
-- The focus ring is **2.03:1 against `canopy`**, below the 3:1 WCAG 1.4.11 asks of a focus
-  indicator, so the paper pills on the closing call to action's canopy card show a weak ring.
-- The 404's buttons override the ring with **`field`, 2.84:1 on paper** (`style.css` section
-  12), also below 3:1.
-- Links turn **`field` on hover** (`theme.json` `styles.elements.link`), 2.84:1 as text on
-  paper. That breaks the `field` rule above.
+The three contrast gaps found during the first rewrite are closed: the 404's `field` ring went
+and link hover turned `ink` (AMM-182), and the ring on indigo became `field` (AMM-204).
 
 ## 3. Type
 
@@ -161,7 +167,8 @@ only other values.)
   the shadow belongs to the palette). The `raised` shadow is for surfaces that sit above
   others: the mega menu's panel, the Service Record, the chosen branch card.
 - `.dh-card--sand`: sand, no shadow. A plate on the page (see `sand` above).
-- `.dh-card--canopy`: canopy with paper text. The closing call to action; once per page.
+- `.dh-card--canopy`: indigo with paper text and the `field` focus ring. The closing call to
+  action, Contact's layout plan.
 - `.dh-card--flush`: a white card without its shadow.
 
 ### Pills
@@ -223,7 +230,6 @@ numbers are two digits (`01`, `02`); counts and line numbers are three (`024`, `
 | The process steps (homepage) | `01`… | CSS counter, `decimal-leading-zero` (`style.css` section 9) |
 | "What happens next" (Contact) | `01`… | CSS counter (`style.css` section 15) |
 | Catalogue toolbar count; the printed sheet's line range | `024`; `lines 001–024` | `str_pad` in `src/catalog-toolbar/render.php` |
-| Stage-line counts (system index) | `017` | `src/system-index/render.php` |
 | Parts sheet line numbers, continued across pages | `025` | `src/product-meta/render.php` |
 | Quote list lines and count, printed sheet, copied text | `001` | `pad()` in `src/quote-drawer/view.ts` |
 | Finder category counts | `012` | `pad()` in `src/finder/view.ts` |
@@ -253,10 +259,8 @@ off screen, so layout never shifts. Everything decelerates; there is no bounce o
 ### The six reveals
 
 Set as `data-reveal="…"`, or on core blocks as a `dh-reveal--…` class that `inc/homepage.php`
-turns into the attribute. Two blocks add a motion of their own on the same trigger: `line` on
-the product nameplate (its stage line draws node to node, then the part's stage lights; the
-labels never hide) and `plot` on the footer's key plan (the branch dots appear outward from
-Riyadh).
+turns into the attribute. One block adds a motion of its own on the same trigger: `plot` on the
+footer's key plan (the branch dots appear outward from Riyadh).
 
 | Reveal | Motion | For | Used on |
 |---|---|---|---|
@@ -264,7 +268,7 @@ Riyadh).
 | `sliver` | a thin bar widens from the start edge | thumbnails, rows | category cards, Services photos |
 | `bar` | a thin bar opens to full height from the middle | bands, dark cards | the closing call to action, Services bands |
 | `seed` | a small square (12%) grows to full size from the top-start corner | hero media | the schematic, the Branch Desk, the Branch Finder, Services hero photo |
-| `rise` | 12px lift and fade | everything else | headings, leads, steps, stage lines, cards |
+| `rise` | 12px lift and fade | everything else | headings, leads, steps, cards |
 | `wipe` | the highlight sweeps in behind a word | `.dh-highlight` | the headline's highlighted word |
 
 **Timing** (`custom.motion`): `fast` 250ms (hovers, content fade), `base` 400ms (a reveal),
@@ -286,13 +290,19 @@ land in 0.3 to 0.6 seconds, as in the reference.
 ### The hero opens; it doesn't scroll in
 
 The hero is on screen at first paint, so it plays as the page opens, on **CSS keyframes
-alone**, with no JavaScript gate (AMM-168): eyebrow, headline, the word's sweep, lead, buttons;
-then, from 56rem up where they share the first screen, the Branch Desk and the schematic. The
-Services and Contact heroes open the same way. The cost is accepted: the headline (the LCP
-element, the largest thing painted first) reaches the screen about 160ms after first paint.
+alone**, with no JavaScript gate (AMM-168). On the homepage (AMM-196) the photo frame opens out
+from its middle while the first photo settles; then the headline, lead and the word's sweep, and
+the buttons in their socket; then, from 56rem up where they share the first screen, the Branch
+Desk and the schematic. The Services and Contact heroes open the same way. Before AMM-196 the
+headline was the LCP element (the largest thing painted first), about 160ms after first paint;
+AMM-196's Linear report has the traces since.
 
 ### Other moving parts
 
+- **The hero carousel** (AMM-196, Ammar's exception beside the two moving strips): the
+  homepage's photo frame changes photo every 7.9s, the next growing up over the last in strips.
+  The tab's segments are the timer, with a pause button; it holds off screen and while the
+  button has keyboard focus.
 - **Counters:** whole numbers in the numbers band count up from zero when scrolled into view.
   The markup already holds the final value.
 - **The marquee** (one per page): the supply list under the hero, looping. A focusable region,
@@ -310,7 +320,7 @@ element, the largest thing painted first) reaches the screen about 160ms after f
 
 - **Reduced motion gets the final state at once.** Every reveal, keyframe and loop has a
   `prefers-reduced-motion: reduce` branch: the marquee becomes a strip you scroll sideways, the
-  belt a still wall, the film its last frame.
+  belt a still wall, the film its last frame, and the carousel starts paused and fades.
 - **No JavaScript means final state.** Every hidden starting state is gated on the `.js` class
   that `main.js` adds; without it nothing is hidden. The hero's keyframes end on the element's
   own styles.
@@ -328,8 +338,8 @@ fits a company that designs and installs irrigation systems, and every drawing i
 | The footer's title block | The corner block of a drawing: ruled cells, mono labels, the company plate (CR and VAT numbers) | `patterns/footer.php` |
 | The key plan (footer) | One dot per branch at its real latitude and longitude on a graticule | `src/branch-plan` |
 | The irrigation layout plan (Contact) | Riyadh as the pump, a mainline, a lateral to each branch's real position; choosing a branch runs water to it | `src/branch-finder` |
-| The system index (stage line) | Each system as stations on a line, linking to the parts at each stage | `src/system-index`, `inc/system-map.php` |
-| The product nameplate | The datasheet's plate: part number, brand, series, stage | `src/product-summary` (`.dh-plate`) |
+| The product nameplate | The datasheet's plate: part number, brand, series | `src/product-summary` (`.dh-plate`) |
+| The spec sheet (product page) | The imported description redrawn as a sheet: a white card per heading under a hatched canopy band, size grids, label and value pairs, model tags, a Documents card | `inc/spec-sheet.php` (the "Plate" style, AMM-202) |
 | The parts sheet | The catalogue as a numbered parts list; also what prints | `src/product-meta`, `inc/sheet-view.php` |
 | The Service Record (Services) | A job card | `patterns/services.php` |
 | The category icons | One per subcategory, drawn by hand, uniform 1.5px stroke | `demas_theme_get_category_icon()` in `inc/navigation.php` |
@@ -339,8 +349,9 @@ here (CLAUDE.md).
 
 ## 8. Photography
 
-There is no stock or placeholder photography. Real photos wait on AMM-149; until then a drawn
-placeholder or the drawing register stands in. Product photos are studio shots on white, so
+Photography is Demas's own or nothing: no stock or placeholder photos. The homepage's hero frame
+(AMM-196) and the Services page show Demas's photos of their work; elsewhere, until more arrive
+(AMM-149), a drawn placeholder or the drawing register stands in. Product photos are studio shots on white, so
 their tiles sit on `sand` to give the cut-out something to read against, with
 `object-fit: contain` so no part of the component is cropped (`style.css` section 10).
 
@@ -369,7 +380,7 @@ The 2026-09-14 direction's pattern decisions, with where each stands:
 | **Trust strip with hover detail** | Built as the certificates belt (AMM-178): each plate's hang tag gives detail, issuer and a link to the certificate, on hover or keyboard focus. |
 | **No testimonials without real ones** | Holds. None exist; none are invented. |
 | **A call to action at each natural section break**, not after every subsection | Holds: the homepage asks in the hero and at the close (Services adds its own call to action). One label per intent. |
-| **Sticky header that condenses on scroll** | **Decided, not built.** The header scrolls away today (`.dh-header` is `position: relative`). AMM-160. |
+| **Sticky header that condenses on scroll** | **Half built.** Sticky from 56.0625rem since AMM-198 (`style.css`, header section), gaining its shadow over the first 8rem of scroll; on phones it scrolls away. Condensing it is not built: AMM-160. |
 | **Photo-overlay captions** (numbered phrases on category photos) | **Open, not built.** Needs real photography (AMM-149); the category cards carry the notched count instead. |
 | **Floating tag clusters** (real taxonomy terms as small pills) | **Open, not built.** Would sit beside a feature blurb as plain styled pills. |
 | **Before/after comparison card** | **Open, not built.** Only with a real number on Demas's side (the quotation turnaround), never an invented competitor figure. |

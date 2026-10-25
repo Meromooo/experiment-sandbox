@@ -50,7 +50,7 @@ apply everywhere) in the same commit.
   server. Everything else here (this file, `.claude/`, `docs/`, `tools/`, `src/`) stays private.
   At cutover (AMM-158) the live theme must come from `deploy`, not `main`.
 - There is no server-side build: the files in this repo are the files WordPress reads, which is
-  why compiled block output is committed (ADR-001, below).
+  why compiled block output is committed (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`).
 
 ## Skills to use in this repo
 
@@ -124,7 +124,7 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
   of stack, hosting or editing model.
 - `woocommerce/` — classic overrides, last resort only.
 - Reference docs in the repo root (`demas-homepage-brief.md`, `demas-mega-menu-content-spec.md`,
-  `demas-design-direction.md` (superseded, rewrite pending), `demas-motion-reference.md`): see
+  `demas-design-direction.md` (the reasons behind the tokens), `demas-motion-reference.md`): see
   `.claude/rules/design.md`. **`theme.json` is the single source of truth for tokens.**
 - **Every contact link goes through `demas_theme_contact_url( $branch, $need )`**
   (`inc/contact.php`); the catalogue link through `demas_theme_catalogue_url()` (`/products/`).
@@ -158,9 +158,11 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
 
 - Keep `functions.php` a pure loader; every new top-level concern gets its own file in `inc/`.
 - Prefer WordPress core / WooCommerce blocks over custom PHP whenever a block can do the job.
-- **Build step (ADR-001):** a block using TypeScript/React must be compiled with
-  `npm run build` before committing, and `build/` committed with it — the deploy has no build
-  step, so a stale `build/` means the change isn't live (CI blocks it).
+- **Build step (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`):** a block using
+  TypeScript/React must be compiled with `npm run build` before committing, and `build/`
+  committed with it — the deploy has no build step, so a stale `build/` means the change isn't
+  live (CI blocks it). Install with `npm ci` so the output matches CI's byte for byte; a merge
+  conflict in `build/` is resolved by rebuilding, never by hand.
 - **CSS class names are global — namespace them per component** (a block's stylesheet and
   `assets/css/style.css` load on the same page, so shared names style each other), and grep for
   a class before naming it (the footer once reused the datasheet's `.dh-plate` and turned unreadable; it is
