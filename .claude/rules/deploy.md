@@ -26,7 +26,7 @@ GitHub emails the owner. Never push to `deploy` by hand. Results are readable wi
 in through the commit's check runs (`/commits/<sha>/check-runs` in GitHub's API); the PHPCS
 result is posted as its own "PHPCS report" check with one annotation per violation. There is no
 server-side build step — the theme's files in this repo are the files WordPress reads, which is
-why compiled block output is committed (see ADR-001 under Working agreement).
+why compiled block output is committed (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`).
 
 **Only the runtime files deploy (AMM-173, 2026-10-03).** Hostinger serves the theme folder
 as-is, so every file in it can be downloaded — until then that was the whole repo (this file,
