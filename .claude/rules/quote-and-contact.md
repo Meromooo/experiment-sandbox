@@ -185,11 +185,18 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     a few hours to be allowed), the management scope "Demas website mailbox" (a recipient
     filter on that one mailbox) and the role "Application Mail.Send" assigned to the app on
     that scope. `Test-ServicePrincipalAuthorization` shows `InScope True` for the website
-    mailbox and `False` for any other. Client secret "sandbox", 24 months (expires 2028-10-22;
-    renew a month before, Linear AMM-140); the live site gets its own "live" secret. The
-    sandbox's `wp-config.php` holds the "sandbox" secret, `DEMAS_REQUEST_TEST_TO` (Ammar's address) and an empty
-    `DEMAS_BRANCH_MAILBOXES`; at cutover the live site gets the "live" secret, the branch
-    list from Demas, and no test address. The first real send arrived in the inbox, not junk:
+    mailbox and `False` for any other. Client secret "sandbox-3", 24 months (expires 2028-10-25;
+    renew a month before, Linear AMM-140); it replaced "sandbox" and "sandbox-2" on 2026-10-25
+    after both values were shown in a chat (AMM-148). The live site gets its own "live" secret
+    (expires 2028-10-22). The sandbox's `wp-config.php` holds the "sandbox-3" secret,
+    `DEMAS_REQUEST_TEST_TO` (Ammar's address) and, since AMM-148 (2026-10-25), the filled
+    `DEMAS_BRANCH_MAILBOXES` (the 15 branch codes plus `default`, head office; one
+    `@demas-group.com` mailbox each, Ammar's list being the source of truth). A read-only
+    `wp eval` over `demas_theme_get_branches()` plus `default` prints each code with `ok` or
+    `MISSING`, never an address. A Sep 17 `wp-config.php.bak` (the clone's own settings) was
+    moved out of `public_html` the same day; no `wp-config` copy belongs in a web folder. At
+    cutover the live site gets the "live" secret, the same branch list, and no test address,
+    then one routed test to head office. The first real send arrived in the inbox, not junk:
     mail from the tenant's own mailbox needs no DNS change. Rejected as more work or less safe
     (2026-10-22): SMTP AUTH (off by default from end of 2026), Direct Send and relay
     connectors (port 25 or a fixed IP, plus DNS), outside mail services (DNS records on the
