@@ -62,7 +62,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-empty' ) );
 			?>
 													"><?php echo esc_html( $demas_prefix ); ?></a>
 		<?php else : ?>
-			<?php esc_html_e( 'Check the spelling, or search by part number — house references look like', 'demas-theme' ); ?>
+			<?php esc_html_e( 'Check the spelling, or search by part number. House references look like', 'demas-theme' ); ?>
 			<span class="dh-mono">DMS-FIL-009</span>.
 		<?php endif; ?>
 	</p>

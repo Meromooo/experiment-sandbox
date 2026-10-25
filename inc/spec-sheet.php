@@ -459,7 +459,7 @@ function demas_theme_spec_render_block( array $block, string $name, string $titl
 		$hint = '<p class="dh-spec__hint"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' . esc_html( sprintf( __( 'Scroll sideways for all %d columns', 'demas-theme' ), $block['cols'] ) ) . '</p>';
 	}
 
-	$label = $name . ', ' . __( 'table, scrolls sideways', 'demas-theme' );
+	$label = $name . ', ' . __( 'table', 'demas-theme' );
 
 	return '<div class="dh-spec__block"><div class="dh-spec__scroll" tabindex="0" role="region" aria-label="' . esc_attr( $label ) . '">' . $block['html'] . '</div>' . $hint . '</div>';
 }

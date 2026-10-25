@@ -54,7 +54,7 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote-add
 // On a card the visible label is the same on every button, so a screen reader
 // needs the part's name to tell 24 "Add to quote" buttons apart.
 $demas_whose = 'compact' === $demas_variant
-	? '<span class="dh-sr"> — ' . esc_html( $demas_name ) . '</span>'
+	? '<span class="dh-sr">, ' . esc_html( $demas_name ) . '</span>'
 	: '';
 ?>
 <div
