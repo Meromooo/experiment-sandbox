@@ -101,8 +101,10 @@ What follows from it:
    `--dh-ring`). One ring shape everywhere teaches keyboard users what to look for. **On
    indigo it turns `field`** (AMM-204): the surfaces in the `--dh-ring` list in `style.css`
    section 3 (the canopy card, the Services folder board, Contact's request copy) set it, and a
-   new dark surface with controls joins that list. The header band's own controls take a paper
-   ring instead (AMM-198), so its dialogs keep `water`.
+   new dark surface with controls joins that list; a paper panel inside one of them (the
+   homepage film, `.dh-film`) sets `water` back. The header band's own controls, and core's
+   skip link, which opens over the band, take a paper ring instead (AMM-198, AMM-204), so its
+   dialogs keep `water`.
 3. **Water in drawings**: the pipes of the irrigation layout plan on Contact (`src/branch-finder`)
    and the hero film. The film is still graded to the old teal `water` (`#2E7D8C`,
    `tools/hero-film.sh`); re-grading it to Cerulean needs the source clips and a Media Library
