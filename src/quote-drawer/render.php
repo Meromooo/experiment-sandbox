@@ -55,7 +55,7 @@ wp_interactivity_state(
 			/* translators: plural noun after a total quantity, e.g. "86 items". */
 			'items'        => __( 'items', 'demas-theme' ),
 			/* translators: 1: number of parts with its noun ("35 parts"), 2: total quantity with its noun ("86 items"). */
-			'sheetTitle'   => __( 'Demas Group · Quote list · %1$s · %2$s', 'demas-theme' ),
+			'sheetTitle'   => __( 'Demas Group · Quote list, %1$s, %2$s', 'demas-theme' ),
 			/* translators: %s: date. */
 			'printed'      => __( 'Printed %s', 'demas-theme' ),
 			'colLine'      => __( 'Line', 'demas-theme' ),
@@ -69,11 +69,11 @@ wp_interactivity_state(
 				__( 'Project', 'demas-theme' ),
 			),
 			/* translators: 1: number of parts with its noun ("35 parts"), 2: total quantity with its noun ("86 items"). */
-			'textTitle'    => __( 'Demas quote list — %1$s, %2$s', 'demas-theme' ),
+			'textTitle'    => __( 'Demas Group · Quote list, %1$s, %2$s', 'demas-theme' ),
 			'copy'         => __( 'Copy list', 'demas-theme' ),
 			'share'        => __( 'Share', 'demas-theme' ),
 			'copied'       => __( 'List copied.', 'demas-theme' ),
-			'copyFallback' => __( 'Copying is blocked here. The list is selected below — copy it with your keyboard.', 'demas-theme' ),
+			'copyFallback' => __( 'Copying is blocked here. The list is selected below. Copy it with your keyboard.', 'demas-theme' ),
 
 			/*
 			 * The sheet's last line: who prices it and how to reach them. The
@@ -83,7 +83,7 @@ wp_interactivity_state(
 				'demas_theme_quote_sheet_contact',
 				sprintf(
 					/* translators: %s: address of the Contact page on this site. */
-					__( 'Prices are quoted by your nearest Demas branch · 011 463 4102 · %s', 'demas-theme' ),
+					__( 'Prices are quoted by your nearest Demas branch: 011 463 4102 · %s', 'demas-theme' ),
 					wp_parse_url( home_url(), PHP_URL_HOST ) . '/contact-us/'
 				)
 			),
@@ -98,7 +98,12 @@ wp_interactivity_state(
 );
 
 $demas_catalogue = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/' );
-$demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) );
+$demas_request   = function_exists( 'demas_theme_contact_url' ) ? demas_theme_contact_url( '', 'parts' ) : home_url( '/' );
+if ( is_page( 'contact-us' ) ) {
+	// Already on the request form's page: jump to it instead of reloading, so what the buyer typed stays.
+	$demas_request = '#request';
+}
+$demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) );
 ?>
 <div
 	<?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?>
@@ -153,7 +158,7 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 							<button type="button" class="dh-qty__step" data-wp-on--click="actions.decrement" data-wp-bind--disabled="context.line.atMin" data-wp-bind--aria-label="context.line.decreaseLabel">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 12h12"/></svg>
 							</button>
-							<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" data-wp-bind--value="context.line.qty" data-wp-bind--aria-label="context.line.quantityLabel" data-wp-on--change="actions.setQuantity">
+							<input class="dh-qty__input dh-mono" type="number" inputmode="numeric" min="1" max="9999" step="1" name="quantity" data-wp-bind--value="context.line.qty" data-wp-bind--aria-label="context.line.quantityLabel" data-wp-on--change="actions.setQuantity">
 							<button type="button" class="dh-qty__step" data-wp-on--click="actions.increment" data-wp-bind--aria-label="context.line.increaseLabel">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12"/></svg>
 							</button>
@@ -173,6 +178,9 @@ $demas_wrapper   = get_block_wrapper_attributes( array( 'class' => 'dh-quote' ) 
 
 			<div class="dh-quote-dialog__foot" hidden data-wp-bind--hidden="!state.hasItems">
 				<p class="dh-quote-dialog__note"><?php esc_html_e( 'Prices come from your nearest Demas branch.', 'demas-theme' ); ?></p>
+
+				<?php // The list's next step: the request form, with Parts & prices chosen (AMM-209). The list closes as the link is followed. ?>
+				<a class="dh-pill dh-pill--solid dh-quote-dialog__request" href="<?php echo esc_url( $demas_request ); ?>" data-wp-on--click="actions.close"><?php esc_html_e( 'Request prices', 'demas-theme' ); ?></a>
 
 				<?php // Take the list out of the site (AMM-163): print it, or copy / share it as text. ?>
 				<div class="dh-quote-dialog__actions">

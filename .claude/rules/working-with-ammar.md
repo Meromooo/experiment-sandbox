@@ -2,7 +2,7 @@
 
 Standing rules for every session on this repo, local or cloud. They were kept in one local
 machine's memory until 2026-10-06; this file carries them to cloud sessions, which read the
-repo's `.claude/rules/`. CLAUDE.md holds the architecture and project rules; this file holds how
+repo's `.claude/rules/`. CLAUDE.md (and the topic files beside this one, AMM-190) holds the architecture and project rules; this file holds how
 Ammar works.
 
 Ammar owns this project and directs it for a real client (Demas Group, a Saudi irrigation and
@@ -26,6 +26,24 @@ landscape supplier). He is learning web development as he goes.
    applies it in the editor himself. When a change touches saved content (a pattern already
    inserted in a page, a link inside a page), end with numbered editor steps (page, block,
    link) and wait for him to say "saved".
+7. **Every plan says who does each step** (`[Opus]`, `[Explore·Haiku]`, `[mechanic·Haiku]`,
+   `[checker·Sonnet]`), following the `model-routing` skill, so he can see the routing.
+
+## Keeping usage down (his session habits, 2026-10-13)
+
+He is on the Pro plan, and the session logs showed the cost was mostly the size of the
+conversation re-read on every call, not the difficulty of the work. These are his choices in
+the app, not files; remind him when a session starts the wrong way.
+
+- **One Linear issue, or one batch, per session.** Start a new session for unrelated work.
+- **Pick the model when the session starts**, not midway (a switch re-sends the whole
+  conversation to the new model, uncached). Opus for planning and debugging; for a batch whose
+  plan he has already approved, Sonnet 5.5 with `/advisor opus`, so Sonnet builds and asks Opus
+  at the hard decisions.
+- **Effort "high" by default**, "xhigh" only for hard debugging (83% of calls ran at xhigh
+  before this).
+- **`/advisor off` in Opus sessions**: an Opus advisor on an Opus session is a second Opus
+  reviewing the first.
 
 ## The live site is untouchable
 
@@ -61,11 +79,13 @@ archive's file count before giving a delete command. Permanent deletes are his t
 
 ## Skills and checks
 
-- **`ponytail`** on every debugging, fixing or performance task, including the planning turn and
-  every later turn of that task. Measure before changing; fix only what the measurement names.
+- **`ponytail`** on every issue (features too, not only debugging, fixing or performance; Ammar,
+  2026-10-16), including the planning turn and every later turn of that task. Think simple: one
+  fix first, rare worst cases named rather than built for, short plans. Measure before changing; fix only what the measurement names.
 - **The taste skill's rules are ones he likes**, not findings to debate. His standing exceptions:
   the homepage may have two moving strips (the supply-list marquee and the certificates logo
-  strip, AMM-178), and the certificate and partner logos may be used.
+  strip, AMM-178) and a hero photo carousel (AMM-196), and the certificate and partner logos
+  may be used.
 - **Browser checks** use Chrome DevTools locally. A cloud session has no browser: check the
   sandbox with `curl` (its domain is allowed in the cloud environment), and say plainly that the
   visual and accessibility checks are still to be done in a local session.

@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "demas-theme/pivot-field",
+	"title": "Pivot field drawing",
+	"category": "design",
+	"icon": "chart-pie",
+	"description": "Centre-pivot fields seen from above, drawn behind the homepage hero's text. The main field's arm turns slowly; with reduced motion it stands still. Decorative: screen readers skip it.",
+	"textdomain": "demas-theme",
+	"editorScript": "file:./index.tsx",
+	"render": "file:./render.php",
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"multiple": false
+	}
+}

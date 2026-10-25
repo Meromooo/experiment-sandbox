@@ -15,8 +15,15 @@
  * The name and description are the editor's (block attributes, edited in the
  * sidebar); the icon and the wide flag are part of the card's layout.
  *
+ * A group with a product drawing (inc/category-drawings.php, AMM-186) shows
+ * it in place of the icon, hidden from screen readers: the card is marked
+ * dh-cat--drawn, and style.css ("The product drawing") sizes and moves it.
+ * The drawing's ids get a unique prefix here.
+ *
  * A group or a subcategory can be listed: the mega menu's columns are read
- * with their children. The "List" block style (is-style-list, AMM-167) draws
+ * with their children, and any other category is found by its slug in the
+ * catalogue's index (the category index's tiles list third-level categories,
+ * such as Hunter's series, AMM-200). The "List" block style (is-style-list, AMM-167) draws
  * compact rows instead of cards — icon, name, live count — for a page that
  * points into the catalogue, such as Services' "What we install".
  *
@@ -51,7 +58,7 @@ foreach ( demas_theme_get_catalogue_columns() as $demas_column ) {
 foreach ( (array) ( $attributes['cards'] ?? array() ) as $demas_card ) {
 	$demas_slug = sanitize_title( (string) ( $demas_card['category'] ?? '' ) );
 	$demas_link = $demas_external[ $demas_slug ][0] ?? null;
-	$demas_term = $demas_terms[ $demas_slug ] ?? null;
+	$demas_term = $demas_terms[ $demas_slug ] ?? ( demas_theme_get_product_cat_index()['by_slug'][ $demas_slug ] ?? null );
 
 	$demas_url = $demas_link ? $demas_link['url'] : ( $demas_term ? get_term_link( $demas_term ) : '' );
 
@@ -59,15 +66,17 @@ foreach ( (array) ( $attributes['cards'] ?? array() ) as $demas_card ) {
 		continue;
 	}
 
-	$demas_name = trim( (string) ( $demas_card['name'] ?? '' ) );
+	$demas_name    = trim( (string) ( $demas_card['name'] ?? '' ) );
+	$demas_drawing = ( ! $demas_is_list && function_exists( 'demas_theme_get_category_drawing' ) ) ? demas_theme_get_category_drawing( $demas_slug ) : '';
 
 	$demas_cards[] = array(
-		'name'  => '' !== $demas_name ? $demas_name : ( $demas_term ? $demas_term->name : '' ),
-		'desc'  => trim( (string) ( $demas_card['description'] ?? '' ) ),
-		'icon'  => $demas_link ? '__external' : (string) ( $demas_card['icon'] ?? $demas_slug ),
-		'wide'  => ! empty( $demas_card['wide'] ),
-		'url'   => $demas_url,
-		'count' => $demas_link ? null : demas_theme_term_product_count( $demas_term ),
+		'name'    => '' !== $demas_name ? $demas_name : ( $demas_term ? $demas_term->name : '' ),
+		'desc'    => trim( (string) ( $demas_card['description'] ?? '' ) ),
+		'icon'    => $demas_link ? '__external' : (string) ( $demas_card['icon'] ?? $demas_slug ),
+		'drawing' => '' === $demas_drawing ? '' : str_replace( 'dh-cd-', wp_unique_id( 'dh-cd-' ) . '-', $demas_drawing ),
+		'wide'    => ! empty( $demas_card['wide'] ),
+		'url'     => $demas_url,
+		'count'   => $demas_link ? null : demas_theme_term_product_count( $demas_term ),
 	);
 }
 
@@ -96,9 +105,13 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-cats__grid'
 		</a>
 	</li>
 		<?php else : ?>
-	<li class="dh-cat dh-notch dh-card dh-card--sand<?php echo $demas_card['wide'] ? ' dh-cat--wide' : ''; ?>" data-reveal="sliver">
+	<li class="dh-cat dh-notch dh-card dh-card--sand<?php echo $demas_card['wide'] ? ' dh-cat--wide' : ''; ?><?php echo '' === $demas_card['drawing'] ? '' : ' dh-cat--drawn'; ?>" data-reveal="sliver">
 		<a class="dh-cat__link" href="<?php echo esc_url( $demas_card['url'] ); ?>"<?php echo $demas_outbound ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
+			<?php if ( '' !== $demas_card['drawing'] ) : ?>
+			<span class="dh-cat__art" aria-hidden="true"><?php echo $demas_card['drawing']; // phpcs:ignore WordPress.Security.EscapeOutput -- static SVG from inc/category-drawings.php. ?></span>
+			<?php else : ?>
 			<span class="dh-cat__icon" aria-hidden="true"><?php echo demas_theme_get_category_icon( $demas_card['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput -- static author-controlled SVG. ?></span>
+			<?php endif; ?>
 			<span class="dh-cat__body">
 				<span class="dh-cat__name"><?php echo esc_html( $demas_card['name'] ); ?></span>
 				<?php if ( '' !== $demas_card['desc'] ) : ?>

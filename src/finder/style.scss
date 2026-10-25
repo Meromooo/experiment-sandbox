@@ -36,9 +36,11 @@
 	display: none;
 }
 
-.dh-finder__trigger:hover {
-	border-color: var(--wp--preset--color--ink);
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__trigger:hover {
+		border-color: var(--wp--preset--color--ink);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-finder__trigger svg {
@@ -139,21 +141,15 @@ html:has(.dh-finder__dialog[open]) {
 	overflow: hidden;
 }
 
+/* Opens and closes instantly (AMM-193): it is opened from the keyboard, often,
+   and an animation there only delays what was asked for. */
 .dh-finder__dialog[open] {
 	display: flex;
 	flex-direction: column;
-	animation: dh-finder-in var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
 }
 
 .dh-finder__dialog::backdrop {
 	background: color-mix(in srgb, var(--wp--preset--color--ink) 34%, transparent);
-}
-
-@keyframes dh-finder-in {
-	from {
-		opacity: 0;
-		transform: translateY(-0.75rem);
-	}
 }
 
 .dh-finder__panel {
@@ -236,8 +232,10 @@ html:has(.dh-finder__dialog[open]) {
 	cursor: pointer;
 }
 
-.dh-finder__close:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__close:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Body ------------------------------------------------------------------ */
@@ -296,10 +294,16 @@ html:has(.dh-finder__dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-finder__group-link:hover,
 .dh-finder__group-link:focus-visible {
 	border-color: var(--wp--preset--color--ink);
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__group-link:hover {
+		border-color: var(--wp--preset--color--ink);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Suggestions ------------------------------------------------------------ */
@@ -330,9 +334,11 @@ html:has(.dh-finder__dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-finder__row:hover {
-	background: color-mix(in srgb, var(--wp--preset--color--sand) 45%, var(--wp--preset--color--paper));
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__row:hover {
+		background: color-mix(in srgb, var(--wp--preset--color--sand) 45%, var(--wp--preset--color--paper));
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /* The chosen row: a sand ground and a canopy bar at its start edge. */
@@ -430,11 +436,18 @@ html:has(.dh-finder__dialog[open]) {
 	content: " ←";
 }
 
-.dh-finder__all:hover,
 .dh-finder__all:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-finder__all:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 .dh-finder__keys {
@@ -501,10 +514,6 @@ html:has(.dh-finder__dialog[open]) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-finder__dialog[open] {
-		animation: none;
-	}
-
 	.dh-finder__trigger,
 	.dh-finder__form,
 	.dh-finder__list[aria-busy="true"] {

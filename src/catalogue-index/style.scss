@@ -33,11 +33,18 @@
 	text-decoration: none;
 }
 
-.dh-cindex__all:hover,
 .dh-cindex__all:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cindex__all:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 .dh-cindex__arrow {
@@ -45,16 +52,20 @@
 	transition: transform var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-cindex__all:hover .dh-cindex__arrow {
-	transform: translateX(3px);
+@media (hover: hover) and (pointer: fine) {
+	.dh-cindex__all:hover .dh-cindex__arrow {
+		transform: translateX(3px);
+	}
 }
 
 [dir="rtl"] .dh-cindex__arrow {
 	transform: scaleX(-1);
 }
 
-[dir="rtl"] .dh-cindex__all:hover .dh-cindex__arrow {
-	transform: scaleX(-1) translateX(3px);
+@media (hover: hover) and (pointer: fine) {
+	[dir="rtl"] .dh-cindex__all:hover .dh-cindex__arrow {
+		transform: scaleX(-1) translateX(3px);
+	}
 }
 
 /* Groups ------------------------------------------------------------- */
@@ -102,13 +113,20 @@
 	text-decoration: none;
 }
 
-.dh-cindex__group-link:hover,
 .dh-cindex__group-link:focus-visible,
-.dh-cindex__link:hover,
 .dh-cindex__link:focus-visible {
 	color: var(--wp--preset--color--canopy);
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-cindex__group-link:hover,
+	.dh-cindex__link:hover {
+		color: var(--wp--preset--color--canopy);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 /* Touch: every link a comfortable target. */

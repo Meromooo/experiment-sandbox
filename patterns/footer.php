@@ -53,6 +53,7 @@ $demas_certificates = content_url( 'uploads/2026/03/DEMAS-Certificates.pdf' );
 		<div class="dh-foot__base">
 			<p class="dh-foot__legal">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Demas Group</p>
 			<ul class="dh-foot__links">
+				<?php echo wp_kses_post( get_the_privacy_policy_link( '<li>', '</li>' ) ); ?>
 				<li><a href="https://www.linkedin.com/company/108843024/" target="_blank" rel="noopener noreferrer">LinkedIn<svg class="dh-foot__out" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M5 11 11 5M6 5h5v5"/></svg><span class="dh-sr">(opens in a new tab)</span></a></li>
 				<li><button type="button" class="dh-foot__quote" data-wp-interactive="demas-theme/quote" data-wp-on--click="actions.open">Your quote</button></li>
 			</ul>

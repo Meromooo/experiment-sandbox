@@ -5,7 +5,7 @@
 	"title": "Number",
 	"category": "design",
 	"icon": "performance",
-	"description": "One number and what it counts. A whole number counts up from zero as it scrolls into view.",
+	"description": "One number and what it counts. A whole number counts up from zero as it scrolls into view; it can carry a short word beside it and a drawing under it (a scale of years, or the branch network).",
 	"textdomain": "demas-theme",
 	"parent": [ "demas-theme/stats" ],
 	"editorScript": "file:./index.tsx",
@@ -24,6 +24,19 @@
 			"default": ""
 		},
 		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"unit": {
+			"type": "string",
+			"default": ""
+		},
+		"drawing": {
+			"type": "string",
+			"enum": [ "", "scale", "network" ],
+			"default": ""
+		},
+		"since": {
 			"type": "string",
 			"default": ""
 		}

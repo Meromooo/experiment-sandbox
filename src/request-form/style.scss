@@ -90,8 +90,10 @@
 	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-input:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-ct-input:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* The site-wide ring, without its small radius: the field keeps its shape. */
@@ -108,7 +110,7 @@ textarea.dh-ct-input {
 
 select.dh-ct-input {
 	padding-inline-end: 2.5rem;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230E1C16' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F1433' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 	background-position: right 0.85rem center;
 	background-repeat: no-repeat;
 	background-size: 1rem;
@@ -203,8 +205,10 @@ select.dh-ct-input {
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-ct-need__option input:hover + span {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-ct-need__option input:hover + span {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-ct-need__option input:checked + span {
@@ -312,6 +316,7 @@ select.dh-ct-input {
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 72%, transparent);
 }
 
+.dh-ct-form__privacy a,
 .dh-ct-form__nojs a {
 	color: var(--wp--preset--color--canopy);
 	font-weight: 600;

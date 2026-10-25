@@ -1,167 +1,23 @@
 <?php
 /**
- * The catalogue read as physical systems.
+ * How the catalogue's categories are read: product counts, which categories
+ * name a manufacturer or a model family, and the whole category tree read
+ * once per request.
  *
- * The product_cat tree is the store's filing system and stays exactly as it
- * is. But the tree mixes two kinds of level on the same rung — "Fittings /
- * Barbed Fittings" is what a part is, "Valves / Irritrol / 2400 Series" is
- * who makes it — and it buries emitters under Fittings, where nobody looking
- * for a dripper thinks to look. So this file describes the same terms a
- * second way: as the stages of the systems Demas actually sells, in the
- * order water moves through them. Nothing here re-parents a term; it only
- * decides where a term is *shown*.
+ * The product_cat tree is the store's filing system and is shown as it is,
+ * under its own names (the live site's). Until 2026-10-08 this file also
+ * drew the catalogue as the stages of physical systems ("Source, Carry,
+ * Join..."); that map is gone, along with the invented names it showed.
  *
- * Both maps are filterable so the store can adjust them without a theme
- * change: `demas_theme_system_map` and `demas_theme_brand_term_slugs`.
+ * The brand lists are filterable so the store can adjust them without a
+ * theme change: `demas_theme_brand_term_slugs` and
+ * `demas_theme_series_brand_slugs`.
  *
  * @package Demas_Theme
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-/**
- * Systems, their top-level categories, and their stages.
- *
- * Each stage lists term slugs. A term whose parent is also in the same stage
- * renders indented beneath it. Terms that do not exist or hold no products
- * are skipped at render time, so a stage can name a term before the store
- * has anything in it.
- *
- * @return array<string, array{label:string, kind:string, tops:string[], stages:array<int, array{label:string, terms:string[]}>}>
- */
-function demas_theme_get_system_map(): array {
-	$map = array(
-		'irrigation' => array(
-			'label'  => __( 'Irrigation system', 'demas-theme' ),
-			'kind'   => 'stage',
-			// Controllers, valves and rotors are filed under Landscape but sit on the same line.
-			'tops'   => array( 'irrigation', 'landscape' ),
-			'stages' => array(
-				array(
-					'label' => __( 'Source', 'demas-theme' ),
-					'terms' => array( 'filtration' ),
-				),
-				array(
-					'label' => __( 'Carry', 'demas-theme' ),
-					'terms' => array( 'pipes', 'hdpe-pipes', 'lldpe-pipes', 'drip-system' ),
-				),
-				array(
-					'label' => __( 'Join', 'demas-theme' ),
-					'terms' => array(
-						'fittings',
-						'barbed-fittings',
-						'compression-fittings',
-						'pp-threaded-fittings',
-						'butt-fusion-fittings',
-						'electro-fusion-fittings',
-						'clamp-saddle-pn6-pn16',
-						'mais-valves-fittings',
-						'valve-boxes-fittings',
-						'cp-accessories',
-					),
-				),
-				array(
-					'label' => __( 'Control', 'demas-theme' ),
-					'terms' => array( 'controllers', 'landscape-valves' ),
-				),
-				array(
-					'label' => __( 'Deliver', 'demas-theme' ),
-					'terms' => array( 'rotors', 'drippers', 'on-line-dripper-fittings', 'bubblers' ),
-				),
-			),
-		),
-		'fog'        => array(
-			'label'  => __( 'Fog system', 'demas-theme' ),
-			'kind'   => 'stage',
-			'tops'   => array( 'fog-systems' ),
-			'stages' => array(
-				array(
-					'label' => __( 'Treat', 'demas-theme' ),
-					'terms' => array( 'water-treatment' ),
-				),
-				array(
-					'label' => __( 'Pump', 'demas-theme' ),
-					'terms' => array( 'high-pressure-pumps' ),
-				),
-				array(
-					'label' => __( 'Control', 'demas-theme' ),
-					'terms' => array( 'controllers-dosingpumps-electromagneticvalves', 'accessories-for-injectors' ),
-				),
-				array(
-					'label' => __( 'Carry', 'demas-theme' ),
-					'terms' => array( 'nylon-and-stainless-steel-pipes', 'tecnocooling-fittings', 'clamps-and-fasteners' ),
-				),
-				array(
-					'label' => __( 'Atomise', 'demas-theme' ),
-					'terms' => array( 'nozzles-and-extensions', 'foggy-rings' ),
-				),
-				array(
-					'label' => __( 'Move air', 'demas-theme' ),
-					'terms' => array( 'mist-fans', 'industrial-fans' ),
-				),
-			),
-		),
-		'tools'      => array(
-			'label'  => __( 'Workshop', 'demas-theme' ),
-			// Not a flow — a set of trades. Same index, different eyebrow.
-			'kind'   => 'trade',
-			'tops'   => array( 'industrial-tools-services' ),
-			'stages' => array(
-				array(
-					'label' => __( 'Cut', 'demas-theme' ),
-					'terms' => array( 'cutting-tools' ),
-				),
-				array(
-					'label' => __( 'Drill', 'demas-theme' ),
-					'terms' => array( 'magnetic-drills' ),
-				),
-				array(
-					'label' => __( 'Saw', 'demas-theme' ),
-					'terms' => array( 'band-saw-blades', 'band-saw-accessories' ),
-				),
-				array(
-					'label' => __( 'Weld', 'demas-theme' ),
-					'terms' => array( 'welding-machines', 'welding-accessories' ),
-				),
-			),
-		),
-		// Swimming Pool has no children and no flow — nothing to index, so no entry.
-	);
-
-	return apply_filters( 'demas_theme_system_map', $map );
-}
-
-/**
- * Which systems to show for a queried term: all of them on the shop root,
- * the one whose top-level category the term belongs to otherwise.
- *
- * @param WP_Term|null $term The queried category, or null on the shop root.
- * @return array<string, array> Subset of the system map, keyed as the map is.
- */
-function demas_theme_get_systems_for_term( ?WP_Term $term ): array {
-	$map = demas_theme_get_system_map();
-
-	if ( ! $term instanceof WP_Term ) {
-		return $map;
-	}
-
-	$ancestors = get_ancestors( $term->term_id, 'product_cat', 'taxonomy' );
-	$top_id    = $ancestors ? end( $ancestors ) : $term->term_id;
-	$top       = get_term( $top_id, 'product_cat' );
-
-	if ( ! $top instanceof WP_Term ) {
-		return array();
-	}
-
-	foreach ( $map as $key => $system ) {
-		if ( in_array( $top->slug, $system['tops'], true ) ) {
-			return array( $key => $system );
-		}
-	}
-
-	return array();
 }
 
 /**
@@ -255,11 +111,12 @@ function demas_theme_get_term_kind( WP_Term $term ): string {
 /**
  * Every product category, read once per request: by slug, and by parent.
  *
- * The Browse by System index looks up each listed category by slug, reads
- * its product count (term meta) and lists its children. Done one term at a
- * time that was ~105 database queries a page (AMM-164); this one get_terms()
- * call also loads every category's term meta, so those lookups cost nothing.
- * Children keep get_terms()' own order, as when they were queried per parent.
+ * The category index above a listing reads every category's children and
+ * product count (term meta). Done one term at a time that was ~105 database
+ * queries a page (AMM-164); this one get_terms() call also loads every
+ * category's term meta, so those lookups cost nothing. Children keep
+ * get_terms()' own order, which WooCommerce sets to the store's category
+ * order (the order the live site lists them in).
  *
  * @return array{by_slug: array<string, WP_Term>, children: array<int, WP_Term[]>}
  */
@@ -291,37 +148,6 @@ function demas_theme_get_product_cat_index(): array {
 	}
 
 	return $index;
-}
-
-/**
- * A short, human label for a term's children — "2 brands", "9 types",
- * "10 series" — so a buyer knows what the next click asks before making it.
- *
- * @param WP_Term $term A product category.
- * @return string Empty when the term has no children with products.
- */
-function demas_theme_describe_children( WP_Term $term ): string {
-	$children = demas_theme_get_product_cat_index()['children'][ $term->term_id ] ?? array();
-	$children = array_values( array_filter( $children, fn( $c ) => demas_theme_term_product_count( $c ) > 0 ) );
-
-	if ( ! $children ) {
-		return '';
-	}
-
-	$count = count( $children );
-	$kind  = demas_theme_get_term_kind( $children[0] );
-
-	switch ( $kind ) {
-		case 'brand':
-			/* translators: %d: number of manufacturer sub-categories. */
-			return sprintf( _n( '%d brand', '%d brands', $count, 'demas-theme' ), $count );
-		case 'series':
-			/* translators: %d: number of model-family sub-categories. */
-			return sprintf( _n( '%d series', '%d series', $count, 'demas-theme' ), $count );
-		default:
-			/* translators: %d: number of part-type sub-categories. */
-			return sprintf( _n( '%d type', '%d types', $count, 'demas-theme' ), $count );
-	}
 }
 
 /**

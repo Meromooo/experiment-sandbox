@@ -4,7 +4,7 @@
  * (AMM-178), and its hang tag.
  *
  * The plate shows the logo twice in one place: as a CSS mask filled with
- * canopy green (at rest, so every logo reads as one family), and as the
+ * canopy indigo (at rest, so every logo reads as one family), and as the
  * image in its own colours (on hover and keyboard focus). The logo files are
  * made by tools/credential-logos.py on one canvas, so every plate shows its
  * logo at the same size. Without a logo the plate shows the name instead.

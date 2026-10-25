@@ -6,8 +6,10 @@
  *
  *  - how many products are here (from the main query, so it agrees with
  *    whatever product-collection is about to render);
- *  - a way to narrow — the current category's children, or, on a leaf, its
- *    siblings with the current one marked and a way back up;
+ *  - on a leaf (a category without sub-categories), a way sideways: its
+ *    siblings as chips, the current one marked, and a way back up. A
+ *    category with sub-categories shows them as tiles instead, in the
+ *    category index above (src/system-index, AMM-200);
  *  - a sort order, as plain links so it works without JavaScript;
  *  - a search field (inc/search.php), which on the search results page is
  *    also the way to refine the query.
@@ -53,28 +55,17 @@ if ( $demas_is_search && '' !== $demas_query ) {
 	// Categories whose names match — the same lookup as the header finder.
 	$demas_rail       = function_exists( 'demas_theme_find_categories' ) ? demas_theme_find_categories( $demas_query ) : array();
 	$demas_rail_label = __( 'Matching categories', 'demas-theme' );
-} elseif ( $demas_term instanceof WP_Term ) {
-	$demas_children = get_terms(
-		array(
-			'taxonomy'   => 'product_cat',
-			'parent'     => $demas_term->term_id,
-			'hide_empty' => true, // Two live terms hold zero products; a dead chip is worse than none.
-		)
-	);
+} elseif ( $demas_term instanceof WP_Term && $demas_term->parent ) {
+	$demas_index = demas_theme_get_product_cat_index();
+	$demas_full  = static fn( WP_Term $t ) => demas_theme_term_product_count( $t ) > 0; // A dead chip is worse than none.
 
-	if ( ! is_wp_error( $demas_children ) && $demas_children ) {
-		$demas_rail = $demas_children;
-	} elseif ( $demas_term->parent ) {
-		// A leaf: offer its siblings, mark the current one, and a way back up.
-		$demas_siblings = get_terms(
-			array(
-				'taxonomy'   => 'product_cat',
-				'parent'     => $demas_term->parent,
-				'hide_empty' => true,
-			)
-		);
+	// A category with sub-categories shows them as tiles (src/system-index,
+	// AMM-200); only a leaf gets chips: its siblings, the current one marked,
+	// and a way back up.
+	if ( ! array_filter( $demas_index['children'][ $demas_term->term_id ] ?? array(), $demas_full ) ) {
+		$demas_siblings = array_values( array_filter( $demas_index['children'][ $demas_term->parent ] ?? array(), $demas_full ) );
 
-		if ( ! is_wp_error( $demas_siblings ) && count( $demas_siblings ) > 1 ) {
+		if ( count( $demas_siblings ) > 1 ) {
 			$demas_rail   = $demas_siblings;
 			$demas_active = $demas_term->term_id;
 			$demas_back   = get_term( $demas_term->parent, 'product_cat' );
@@ -87,12 +78,12 @@ if ( $demas_is_search && '' !== $demas_query ) {
 $demas_sorts = $demas_is_search
 	? array(
 		''      => __( 'Best match', 'demas-theme' ), // Ranked in inc/search.php.
-		'title' => __( 'A–Z', 'demas-theme' ),
+		'title' => __( 'A to Z', 'demas-theme' ),
 		'sku'   => __( 'SKU', 'demas-theme' ),
 	)
 	: array(
 		''      => __( 'Default', 'demas-theme' ),
-		'title' => __( 'A–Z', 'demas-theme' ),
+		'title' => __( 'A to Z', 'demas-theme' ),
 		'date'  => __( 'Newest', 'demas-theme' ),
 		'sku'   => __( 'SKU', 'demas-theme' ), // Handled by inc/catalog-filters.php; not a native WooCommerce order.
 	);
@@ -164,7 +155,7 @@ if ( $demas_total > $demas_per_page ) {
 
 	$demas_print_line = sprintf(
 		/* translators: 1: page title, 2: first line number, 3: last line number, 4: total number of parts. */
-		__( 'Demas Group · %1$s · lines %2$s–%3$s of %4$s parts', 'demas-theme' ),
+		__( 'Demas Group · %1$s, lines %2$s to %3$s of %4$s parts', 'demas-theme' ),
 		$demas_print_title,
 		str_pad( (string) $demas_first_line, 3, '0', STR_PAD_LEFT ),
 		str_pad( (string) $demas_last_line, 3, '0', STR_PAD_LEFT ),
@@ -173,7 +164,7 @@ if ( $demas_total > $demas_per_page ) {
 } else {
 	$demas_print_line = sprintf(
 		/* translators: 1: page title, 2: number of parts. */
-		_n( 'Demas Group · %1$s · %2$s part', 'Demas Group · %1$s · %2$s parts', $demas_total, 'demas-theme' ),
+		_n( 'Demas Group · %1$s, %2$s part', 'Demas Group · %1$s, %2$s parts', $demas_total, 'demas-theme' ),
 		$demas_print_title,
 		number_format_i18n( $demas_total )
 	);
@@ -226,7 +217,6 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 							href="<?php echo esc_url( get_term_link( $demas_chip ) ); ?>"
 							<?php echo $demas_chip->term_id === $demas_active ? 'aria-current="page"' : ''; ?>
 						>
-							<span class="dh-toolbar__chip-icon" aria-hidden="true"><?php echo demas_theme_get_category_icon( $demas_chip->slug ); // phpcs:ignore WordPress.Security.EscapeOutput -- static author-controlled SVG. ?></span>
 							<span><?php echo esc_html( $demas_chip->name ); ?></span>
 							<span class="dh-toolbar__chip-count dh-mono"><?php echo esc_html( (string) demas_theme_term_product_count( $demas_chip ) ); ?></span>
 						</a>
@@ -238,7 +228,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-toolbar' ) 
 
 	<div class="dh-toolbar__bar">
 		<p class="dh-toolbar__count">
-			<span class="dh-toolbar__count-value dh-mono"><?php echo esc_html( str_pad( (string) $demas_total, 3, '0', STR_PAD_LEFT ) ); ?></span>
+			<span class="dh-toolbar__count-value dh-mono"><?php echo esc_html( number_format_i18n( $demas_total ) ); ?></span>
 			<span class="dh-toolbar__count-label"><?php echo esc_html( _n( 'product', 'products', $demas_total, 'demas-theme' ) ); ?></span>
 		</p>
 

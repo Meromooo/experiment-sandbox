@@ -2,18 +2,15 @@
  * Branch Finder — the Contact page's branches (AMM-169).
  *
  * Enhances the markup in render.php, which already works without this
- * module: each city in the list and each head on the plan is a link to its
- * branch's card (#branch-jed), and CSS shows the card a link targets.
+ * module: each city in the list, and each area and dot on the map, is a link
+ * to its branch's card (#branch-jed), and CSS shows the card a link targets.
  *
  * With it:
  *
  *  - choosing a branch changes the card in place instead of jumping to it,
- *    marks the city (aria-current), announces the change, and puts
- *    #branch-jed in the address bar without scrolling — so the link can be
- *    shared;
- *  - water runs from the pump (head office) along the mainline and the
- *    branch's lateral, then the head sprays. CSS draws both; with reduced
- *    motion the route is drawn at once and nothing sprays;
+ *    marks the city (aria-current) and the branch's area and dot on the map
+ *    (.is-current), announces the change, and puts #branch-jed in the
+ *    address bar without scrolling — so the link can be shared;
  *  - every card with opening hours gets its status — "Open now · closes
  *    13:00", "Closed now · opens 16:00" — worked out from the hours in Riyadh
  *    time, whatever the visitor's own clock says, and refreshed each minute.
@@ -43,12 +40,6 @@ interface BranchEvent {
 }
 
 const reduce = window.matchMedia( '(prefers-reduced-motion: reduce)' );
-
-/** How long the water takes to reach a head; style.css times the spray after it. */
-const RUN_MS = 700;
-
-/** Long enough for the plan to draw itself as the page opens. */
-const OPENING_MS = 1500;
 
 function format( template: string, ...values: string[] ): string {
 	let next = 0;
@@ -119,9 +110,6 @@ function openStatus(
 
 function init( root: HTMLElement ): void {
 	const strings = JSON.parse( root.dataset.strings || '{}' ) as Strings;
-	const svg = root.querySelector< SVGSVGElement >( '.dh-ct-plan__svg' );
-	const flow = root.querySelector< SVGPathElement >( '[data-flow]' );
-	const spray = root.querySelector< SVGGElement >( '[data-spray]' );
 	const announcer = root.querySelector< HTMLElement >( '[data-announce]' );
 	const cards = Array.from(
 		root.querySelectorAll< HTMLElement >( '.dh-ct-card' )
@@ -134,55 +122,12 @@ function init( root: HTMLElement ): void {
 	const links = Array.from(
 		root.querySelectorAll< HTMLElement >( '[data-branch-link]' )
 	);
-	const [ hubX, hubY ] = ( svg?.dataset.hub ?? '0 0' )
-		.split( ' ' )
-		.map( Number );
-	const main =
-		root.querySelector< SVGElement >( '.dh-ct-plan__head.is-main' )
-			?.dataset.code ?? '';
-	let timer = 0;
 
 	const cardFor = ( code: string ) =>
 		cards.find( ( card ) => card.dataset.code === code );
 
-	/** Water from the pump to the branch's head, then the spray. */
-	function run( code: string, animate: boolean ): void {
-		const head = root.querySelector< SVGElement >(
-			`.dh-ct-plan__head[data-code="${ code }"]`
-		);
-		if ( ! flow || ! spray || ! head ) {
-			return;
-		}
-
-		const [ x, y ] = ( head.dataset.at ?? '0 0' ).split( ' ' ).map( Number );
-		const still = ! animate || reduce.matches;
-
-		window.clearTimeout( timer );
-		flow.classList.remove( 'is-running' );
-		spray.classList.remove( 'is-spraying' );
-		flow.setAttribute(
-			'd',
-			code === main ? `M${ hubX } ${ hubY }` : `M${ hubX } ${ hubY }H${ x }V${ y }`
-		);
-		spray.setAttribute( 'transform', `translate(${ x } ${ y })` );
-		flow.classList.toggle( 'is-instant', still );
-
-		// Restart: let the browser see the empty pipe before the water runs.
-		flow.getBoundingClientRect();
-		flow.classList.add( 'is-running' );
-
-		if ( ! still ) {
-			timer = window.setTimeout(
-				() => spray.classList.add( 'is-spraying' ),
-				code === main ? 0 : RUN_MS
-			);
-		}
-	}
-
-	function select(
-		code: string,
-		{ animate, told }: { animate: boolean; told: boolean }
-	): void {
+	/** Choose a branch; `told` when the page already knows (it came from the request form, or the page is opening), so it is not announced or passed on. */
+	function select( code: string, told: boolean ): void {
 		const card = cardFor( code );
 		if ( ! card ) {
 			return;
@@ -205,10 +150,6 @@ function init( root: HTMLElement ): void {
 				link.removeAttribute( 'aria-current' );
 			}
 		} );
-
-		if ( animate ) {
-			run( code, true );
-		}
 
 		if ( ! told ) {
 			if ( announcer ) {
@@ -248,7 +189,7 @@ function init( root: HTMLElement ): void {
 			const code = pick.dataset.branchLink ?? pick.dataset.code ?? '';
 			if ( cardFor( code ) ) {
 				event.preventDefault();
-				select( code, { animate: true, told: false } );
+				select( code, false );
 				window.history.replaceState( null, '', `#branch-${ code }` );
 			}
 			return;
@@ -272,39 +213,30 @@ function init( root: HTMLElement ): void {
 	document.addEventListener( 'demas-theme:branch', ( event ) => {
 		const { code, source } = ( event as CustomEvent< BranchEvent > ).detail;
 		if ( 'finder' !== source && root.dataset.current !== code ) {
-			select( code, { animate: true, told: true } );
+			select( code, true );
 		}
 	} );
 
 	window.addEventListener( 'hashchange', () => {
 		const asked = /^#branch-([a-z]+)$/.exec( window.location.hash );
 		if ( asked && cardFor( asked[ 1 ] ) ) {
-			select( asked[ 1 ], { animate: true, told: false } );
+			select( asked[ 1 ], false );
 		}
 	} );
 
 	// The branch to start on: a #branch-xxx link's, or the server's default
-	// (the main branch, or ?branch=). Its water runs once the plan has drawn.
+	// (the main branch, or ?branch=).
 	const asked = /^#branch-([a-z]+)$/.exec( window.location.hash );
 	const first =
-		asked && cardFor( asked[ 1 ] )
-			? asked[ 1 ]
-			: root.dataset.default ?? main;
+		asked && cardFor( asked[ 1 ] ) ? asked[ 1 ] : root.dataset.default ?? '';
 
-	select( first, { animate: false, told: true } );
+	select( first, true );
 	// Tell the request form, without announcing: nobody chose anything yet.
 	document.dispatchEvent(
 		new CustomEvent< BranchEvent >( 'demas-theme:branch', {
 			detail: { code: first, source: 'finder' },
 		} )
 	);
-	if ( first !== main ) {
-		timer = window.setTimeout(
-			() => run( first, true ),
-			reduce.matches ? 0 : OPENING_MS
-		);
-	}
-
 	refresh();
 	window.setInterval( refresh, 60 * 1000 );
 }

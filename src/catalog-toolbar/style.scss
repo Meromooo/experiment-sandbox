@@ -1,7 +1,9 @@
 /*
  * Catalogue toolbar — the count set large in the data face, a horizontal rail
- * of child-category chips, and a segmented sort control. Sticks below the
- * viewport top on long archives (Fog Systems runs to 267 products).
+ * of sibling-category chips on a leaf, and a segmented sort control. Sticks
+ * on long archives (Fog Systems runs to 267 products): under the sticky
+ * header on wide screens, not at all on phones, where it took a quarter of
+ * the screen (AMM-200).
  *
  * Every value resolves from theme.json. Logical properties so it mirrors
  * under dir="rtl".
@@ -15,6 +17,20 @@
 	margin-block-end: var(--wp--preset--spacing--50);
 	background: var(--wp--preset--color--paper);
 	border-block-end: var(--wp--custom--rule);
+}
+
+/*
+ * From the header's sticky breakpoint up (style.css, "Sticky from the mega
+ * menu's breakpoint up"), stop just below the header instead of sliding
+ * under it.
+ * ponytail: 5rem is the header band's measured height (80px at 16px text,
+ * AMM-200 baseline); there is no header-height property. If the header's
+ * height changes, change this with it.
+ */
+@media (min-width: 56.0625rem) {
+	.dh-toolbar {
+		inset-block-start: calc(var(--wp-admin--admin-bar--height, 0px) + 5rem);
+	}
 }
 
 /* Rail ---------------------------------------------------------------- */
@@ -86,9 +102,14 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-toolbar__chip:hover,
 .dh-toolbar__chip:focus-visible {
 	border-color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-toolbar__chip:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-toolbar__chip[aria-current="page"] {
@@ -100,15 +121,6 @@
 .dh-toolbar__chip--back {
 	border-style: dashed;
 	color: color-mix(in srgb, var(--wp--preset--color--ink) 70%, transparent);
-}
-
-.dh-toolbar__chip-icon {
-	display: inline-flex;
-	color: color-mix(in srgb, var(--wp--preset--color--ink) 55%, transparent);
-}
-
-.dh-toolbar__chip[aria-current="page"] .dh-toolbar__chip-icon {
-	color: var(--wp--preset--color--field);
 }
 
 .dh-toolbar__chip-count {
@@ -140,7 +152,7 @@
 }
 
 /*
- * The count is zero-padded and set in the mono face at display size — the
+ * The count is set in the mono face at display size — the
  * same device as the branch codes and the SKUs, so it reads as catalogue
  * data rather than as marketing copy.
  */
@@ -185,6 +197,7 @@
 
 .dh-toolbar__segments {
 	display: inline-flex;
+	flex-wrap: wrap; /* At 200% text the sort ran 164px off a phone (AMM-200). */
 	margin: 0;
 	padding: 0.2rem;
 	list-style: none;
@@ -207,9 +220,14 @@
 		color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-toolbar__segment:hover,
 .dh-toolbar__segment:focus-visible {
 	color: var(--wp--preset--color--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-toolbar__segment:hover {
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-toolbar__segment[aria-current="true"] {
@@ -239,10 +257,20 @@
 /* Small screens -------------------------------------------------------- */
 
 @media (max-width: 40em) {
-	/* Its own full-width row between the count and the sort. */
+	.dh-toolbar {
+		position: static;
+	}
+
+	/* The count and Gallery | Sheet share the first row; the search takes
+	   its own full-width row, then the sort. */
 	.dh-toolbar__search {
+		order: 1;
 		flex-basis: 100%;
 		max-inline-size: none;
+	}
+
+	.dh-toolbar__sort:not(.dh-toolbar__view) {
+		order: 2;
 	}
 
 	.dh-toolbar__count-value {

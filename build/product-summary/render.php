@@ -7,14 +7,14 @@
  *  - the part's own category as an eyebrow, and its name;
  *  - a lede from the short description, when it says something the full
  *    description does not (124 products store the same text in both);
- *  - the nameplate: SKU, brand and series when the category tree knows them,
- *    and the stage this part sits at on its system line;
+ *  - the nameplate: SKU, brand and series when the category tree knows them;
  *  - the quote action;
  *  - the specification — the description, cleaned by
- *    demas_theme_clean_description() — or a direction when there is none
+ *    demas_theme_clean_description() and drawn as a spec sheet by
+ *    demas_theme_shape_spec() — or a direction when there is none
  *    (122 products have no description at all).
  *
- * Helpers live in inc/product-page.php and inc/system-map.php.
+ * Helpers live in inc/product-page.php, inc/spec-sheet.php and inc/system-map.php.
  *
  * @param array    $attributes Block attributes (none).
  * @param string   $content    Inner content (unused — fully dynamic).
@@ -41,9 +41,7 @@ if ( ! $demas_product ) {
 $demas_title = get_the_title( $demas_id );
 $demas_chain = demas_theme_get_product_term_chain( $demas_id );
 $demas_leaf  = $demas_chain[0] ?? null;
-$demas_top   = $demas_chain ? end( $demas_chain ) : null;
 $demas_make  = demas_theme_get_product_make( $demas_chain );
-$demas_stage = demas_theme_get_product_stage( $demas_chain );
 $demas_sku   = trim( (string) $demas_product->get_sku() );
 
 /* Description and lede ---------------------------------------------------- */
@@ -63,8 +61,12 @@ if (
 ) {
 	$demas_lede = '';
 } else {
-	$demas_lede = wp_trim_words( $demas_lede, 60, '…' );
+	$demas_lede = demas_theme_spec_tidy( wp_trim_words( $demas_lede, 60, '…' ) );
 }
+
+// The lede test above reads the cleaned description; the page shows it
+// reshaped into the spec sheet (inc/spec-sheet.php).
+$demas_spec_html = demas_theme_shape_spec( $demas_spec, $demas_title );
 
 /* Nameplate rows ---------------------------------------------------------- */
 
@@ -113,7 +115,7 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 		<?php endif; ?>
 	</header>
 
-	<?php if ( $demas_rows || $demas_stage ) : ?>
+	<?php if ( $demas_rows ) : ?>
 		<section class="dh-plate" aria-label="<?php esc_attr_e( 'Part identification', 'demas-theme' ); ?>">
 			<?php if ( $demas_rows ) : ?>
 				<dl class="dh-plate__rows">
@@ -126,32 +128,6 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 				</dl>
 			<?php endif; ?>
 
-			<?php if ( $demas_stage ) : ?>
-				<?php
-				$demas_stages  = $demas_stage['system']['stages'];
-				$demas_current = $demas_stage['index'];
-				?>
-				<div class="dh-plate__line" style="--_n: <?php echo (int) count( $demas_stages ); ?>" data-reveal="line">
-					<p class="dh-plate__system">
-						<span class="dh-plate__label"><?php echo esc_html( $demas_stage['system']['label'] ); ?></span>
-						<?php if ( $demas_top instanceof WP_Term ) : ?>
-							<a class="dh-plate__more" href="<?php echo esc_url( get_term_link( $demas_top ) ); ?>"><?php esc_html_e( 'See the whole line', 'demas-theme' ); ?></a>
-						<?php endif; ?>
-					</p>
-					<ol class="dh-plate__stages">
-						<?php foreach ( $demas_stages as $demas_i => $demas_s ) : ?>
-							<li
-								class="dh-plate__stage<?php echo $demas_i === $demas_current ? ' is-current' : ''; ?>"
-								style="--i: <?php echo (int) $demas_i; ?>"
-								<?php echo $demas_i === $demas_current ? 'aria-current="step"' : ''; ?>
-							>
-								<span class="dh-plate__node" aria-hidden="true"></span>
-								<span class="dh-plate__stage-name"><?php echo esc_html( $demas_s['label'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ol>
-				</div>
-			<?php endif; ?>
 		</section>
 	<?php endif; ?>
 
@@ -176,11 +152,11 @@ $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-summary' ) 
 	</div>
 
 	<section class="dh-spec" aria-labelledby="dh-spec-title-<?php echo esc_attr( (string) $demas_id ); ?>">
-		<h2 class="dh-spec__title dh-eyebrow" id="dh-spec-title-<?php echo esc_attr( (string) $demas_id ); ?>"><?php esc_html_e( 'Specification', 'demas-theme' ); ?></h2>
+		<h2 class="dh-spec__title" id="dh-spec-title-<?php echo esc_attr( (string) $demas_id ); ?>"><?php esc_html_e( 'Specification', 'demas-theme' ); ?></h2>
 
-		<?php if ( '' !== $demas_spec ) : ?>
+		<?php if ( '' !== $demas_spec_html ) : ?>
 			<div class="dh-spec__body">
-				<?php echo $demas_spec; // phpcs:ignore WordPress.Security.EscapeOutput -- post content passed through the_content, then cleaned. ?>
+				<?php echo $demas_spec_html; // phpcs:ignore WordPress.Security.EscapeOutput -- the_content, cleaned, filtered with wp_kses_post() and reshaped; every text node is escaped in demas_theme_shape_spec(). ?>
 			</div>
 		<?php else : ?>
 			<p class="dh-spec__empty"><?php esc_html_e( 'No published specification for this part yet. Ask for the datasheet with your quote.', 'demas-theme' ); ?></p>

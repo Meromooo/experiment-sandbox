@@ -20,8 +20,8 @@
  * links the live Contact Us page carries — read on 2026-10-01, for Demas to
  * confirm. The listings' phone numbers are deliberately not copied. Gaps as
  * listed: Taif's link is a bare map pin (no address, no hours); Tabarjal and
- * Skaka list no hours. Two listings were rounded: Alkharj's Sunday close
- * (20:01) and Zulfi's midday close (12:02); Alkharj lists Tuesday as one
+ * Sakaka list no hours. Two listings were rounded: Al Kharj's Sunday close
+ * (20:01) and Zulfi's midday close (12:02); Al Kharj lists Tuesday as one
  * unbroken 8–20 shift. Addresses use the site's spelling of each city.
  *
  * Hours are written the way a person reads them, one group of days per
@@ -46,7 +46,7 @@ function demas_theme_get_branches(): array {
 		array(
 			'riy' => array(
 				'city'    => __( 'Riyadh', 'demas-theme' ),
-				'person'  => 'Odai Assolie',
+				'person'  => 'Odai Assoli',
 				'lat'     => 24.71,
 				'lon'     => 46.68,
 				'main'    => true,
@@ -66,7 +66,7 @@ function demas_theme_get_branches(): array {
 			),
 			'dam' => array(
 				'city'    => __( 'Dammam', 'demas-theme' ),
-				'person'  => 'Mohammed Hamaideh',
+				'person'  => 'Faris',
 				'lat'     => 26.43,
 				'lon'     => 50.10,
 				'main'    => false,
@@ -105,13 +105,13 @@ function demas_theme_get_branches(): array {
 				'hours'   => 'Sat-Thu 08:00-12:00 16:00-20:00; Fri closed',
 			),
 			'alk' => array(
-				'city'    => __( 'Alkharj', 'demas-theme' ),
-				'person'  => 'Osama Fayad',
+				'city'    => __( 'Al Kharj', 'demas-theme' ),
+				'person'  => 'Osama Fayyad',
 				'lat'     => 24.15,
 				'lon'     => 47.31,
 				'main'    => false,
 				'map'     => 'https://maps.app.goo.gl/SbFw2ZudLy9Pqzaf7',
-				'address' => 'Al Safa, Alkharj 16259',
+				'address' => 'Al Safa, Al Kharj 16259',
 				'hours'   => 'Sat-Mon 08:00-12:00 16:00-20:00; Tue 08:00-20:00; Wed-Thu 08:00-12:00 16:00-20:00; Fri closed',
 			),
 			'bur' => array(
@@ -156,7 +156,7 @@ function demas_theme_get_branches(): array {
 			),
 			'tab' => array(
 				'city'    => __( 'Tabarjal', 'demas-theme' ),
-				'person'  => 'Mohannad Dwaghra',
+				'person'  => 'Muhannad Dwaghra',
 				'lat'     => 30.50,
 				'lon'     => 38.22,
 				'main'    => false,
@@ -176,7 +176,7 @@ function demas_theme_get_branches(): array {
 			),
 			'kha' => array(
 				'city'    => __( 'Khamis Mushait', 'demas-theme' ),
-				'person'  => 'Fakhir Alostwani',
+				'person'  => 'Fakhr Alostwani',
 				'lat'     => 18.31,
 				'lon'     => 42.73,
 				'main'    => false,
@@ -185,13 +185,13 @@ function demas_theme_get_branches(): array {
 				'hours'   => 'Sat-Thu 08:00-12:00 16:00-20:00; Fri closed',
 			),
 			'ska' => array(
-				'city'    => __( 'Skaka', 'demas-theme' ),
+				'city'    => __( 'Sakaka', 'demas-theme' ),
 				'person'  => 'Mustafa Fshehs',
 				'lat'     => 29.97,
 				'lon'     => 40.21,
 				'main'    => false,
 				'map'     => 'https://maps.app.goo.gl/m3yrRnQ8oYjp85FU7',
-				'address' => 'King Fahd Bin Abdulaziz Rd, Al Sina\'iyah, Skaka 72341',
+				'address' => 'King Fahd Bin Abdulaziz Rd, Al Sina\'iyah, Sakaka 72341',
 				'hours'   => '',
 			),
 		)
@@ -200,7 +200,7 @@ function demas_theme_get_branches(): array {
 
 /**
  * Where a branch link goes: the Contact page with that branch chosen
- * (AMM-169) — its card, its pipe on the layout plan and the request form all
+ * (AMM-169) — its card, its area on the map and the request form all
  * follow the #branch-xxx hash. Without JavaScript the hash shows that card.
  *
  * @param string $code A branch code from demas_theme_get_branches(), e.g. "jed".
@@ -284,7 +284,7 @@ function demas_theme_branch_hours( string $spec ): array {
 
 /**
  * Where a branch sits on the theme's plans of the Kingdom: the footer's key
- * plan and the Contact page's layout plan draw from the same projection, so
+ * plan and the Contact page's map draw from the same projection, so
  * the two never disagree.
  *
  * Equirectangular, longitude scaled by cos(24°) so the Kingdom keeps its

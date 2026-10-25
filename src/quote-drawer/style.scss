@@ -36,8 +36,10 @@
 	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-quote-toggle:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-toggle:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-quote-toggle:focus-visible {
@@ -84,39 +86,64 @@
 	color: var(--wp--preset--color--ink);
 	box-shadow: var(--wp--preset--shadow--raised);
 	overflow: hidden;
+
+	/*
+	 * Opening and closing are one transition (AMM-193), so a close mid-open
+	 * reverses from where it is instead of restarting. Closed, the list sits a
+	 * little above and smaller, grown from its top corner under the header's
+	 * "Your quote"; it opens over the fast token and closes faster (press),
+	 * both on the strong ease-out. `display` and `overlay` are discrete, so
+	 * the list stays drawn, and in the top layer, until its exit has played;
+	 * a browser without `overlay` simply closes it at once. The RTL stylesheet
+	 * (rtlcss) flips the origin to the top-left corner by itself.
+	 */
+	opacity: 0;
+	translate: 0 -0.5rem;
+	scale: 0.98;
+	transform-origin: 100% 0;
+	transition:
+		opacity var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		translate var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		scale var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		display var(--wp--custom--motion--press) allow-discrete,
+		overlay var(--wp--custom--motion--press) allow-discrete;
 }
 
 /* Author `display` would override the browser's hiding of a closed dialog. */
 .dh-quote-dialog[open] {
 	display: flex;
 	flex-direction: column;
-	animation: dh-quote-drop var(--wp--custom--motion--base) var(--wp--custom--motion--ease);
+	opacity: 1;
+	translate: 0 0;
+	scale: 1;
+	transition-duration: var(--wp--custom--motion--fast);
+}
+
+/* Where it starts from on the frame it opens. */
+@starting-style {
+	.dh-quote-dialog[open] {
+		opacity: 0;
+		translate: 0 -0.5rem;
+		scale: 0.98;
+	}
 }
 
 .dh-quote-dialog::backdrop {
-	background: color-mix(in srgb, var(--wp--preset--color--ink) 38%, transparent);
+	background: transparent;
+	transition:
+		background-color var(--wp--custom--motion--press) var(--wp--custom--motion--ease-out),
+		display var(--wp--custom--motion--press) allow-discrete,
+		overlay var(--wp--custom--motion--press) allow-discrete;
 }
 
 .dh-quote-dialog[open]::backdrop {
-	animation: dh-quote-fade var(--wp--custom--motion--fast) ease-out;
+	background: color-mix(in srgb, var(--wp--preset--color--ink) 38%, transparent);
+	transition-duration: var(--wp--custom--motion--fast);
 }
 
-@keyframes dh-quote-drop {
-	from {
-		opacity: 0;
-		transform: translateY(-0.5rem) scale(0.98);
-	}
-}
-
-@keyframes dh-quote-rise {
-	from {
-		transform: translateY(100%);
-	}
-}
-
-@keyframes dh-quote-fade {
-	from {
-		opacity: 0;
+@starting-style {
+	.dh-quote-dialog[open]::backdrop {
+		background: transparent;
 	}
 }
 
@@ -248,10 +275,16 @@ html:has(.dh-quote-dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-quote-line__name:hover,
 .dh-quote-line__name:focus-visible {
 	text-decoration: underline;
 	text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-line__name:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 .dh-quote-line__sku {
@@ -320,9 +353,11 @@ html:has(.dh-quote-dialog[open]) {
 	cursor: pointer;
 }
 
-:is(.dh-quote-dialog__close, .dh-qty__step:not(:disabled), .dh-quote-line__remove):hover {
-	background: color-mix(in srgb, var(--wp--preset--color--sand) 70%, transparent);
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	:is(.dh-quote-dialog__close, .dh-qty__step:not(:disabled), .dh-quote-line__remove):hover {
+		background: color-mix(in srgb, var(--wp--preset--color--sand) 70%, transparent);
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 :is(.dh-quote-dialog__close, .dh-qty__step, .dh-qty__input, .dh-quote-line__remove, .dh-quote-dialog__clear, .dh-quote-empty__link):focus-visible {
@@ -363,20 +398,31 @@ html:has(.dh-quote-dialog[open]) {
 	text-decoration: none;
 }
 
-.dh-quote-empty__link:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-empty__link:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Footer ----------------------------------------------------------------- */
 
+/* Row 1: the note and Request prices (AMM-209). Row 2: the actions. */
 .dh-quote-dialog__foot {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
-	justify-content: space-between;
 	gap: var(--wp--preset--spacing--30);
 	padding: var(--wp--preset--spacing--40) var(--_pad);
 	border-block-start: var(--wp--custom--rule);
+}
+
+.dh-quote-dialog__request {
+	justify-content: center;
+}
+
+.dh-quote-dialog__actions,
+.dh-quote-dialog__copy {
+	grid-column: 1 / -1;
 }
 
 .dh-quote-dialog__note {
@@ -386,6 +432,7 @@ html:has(.dh-quote-dialog[open]) {
 }
 
 .dh-quote-dialog__clear {
+	margin-inline-start: auto;
 	min-block-size: 2.75rem;
 	padding: 0 0.5rem;
 	border: 0;
@@ -398,8 +445,10 @@ html:has(.dh-quote-dialog[open]) {
 	cursor: pointer;
 }
 
-.dh-quote-dialog__clear:hover {
-	color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-dialog__clear:hover {
+		color: var(--wp--preset--color--ink);
+	}
 }
 
 /* Print · Copy list / Share · Clear all (AMM-163). */
@@ -414,7 +463,7 @@ html:has(.dh-quote-dialog[open]) {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.4rem;
-	min-block-size: 2.5rem;
+	min-block-size: 2.75rem;
 	padding: 0 0.9rem;
 	border: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 20%, transparent);
 	border-radius: var(--wp--custom--radius--pill);
@@ -427,8 +476,10 @@ html:has(.dh-quote-dialog[open]) {
 	transition: border-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-quote-dialog__action:hover {
-	border-color: var(--wp--preset--color--ink);
+@media (hover: hover) and (pointer: fine) {
+	.dh-quote-dialog__action:hover {
+		border-color: var(--wp--preset--color--ink);
+	}
 }
 
 .dh-quote-dialog__action svg {
@@ -608,10 +659,6 @@ html:has(.dh-quote-dialog[open]) {
 		inline-size: 2.75rem;
 		block-size: 2.75rem;
 	}
-
-	.dh-quote-dialog__action {
-		min-block-size: 2.75rem;
-	}
 }
 
 /* Phones: icon-and-count control, sheet from the bottom ------------------ */
@@ -643,8 +690,35 @@ html:has(.dh-quote-dialog[open]) {
 		border-end-end-radius: 0;
 	}
 
+	/* A sheet: it slides up from the bottom edge, at full size. */
+	.dh-quote-dialog {
+		translate: 0 100%;
+		scale: 1;
+	}
+
 	.dh-quote-dialog[open] {
-		animation-name: dh-quote-rise;
+		translate: 0 0;
+	}
+
+	@starting-style {
+		.dh-quote-dialog[open] {
+			translate: 0 100%;
+			scale: 1;
+		}
+	}
+
+	/* The sheet sits on the bottom edge: its foot keeps clear of the phone's
+	   home bar (viewport-fit=cover, inc/viewport.php; AMM-193). */
+	.dh-quote-dialog__foot {
+		grid-template-columns: minmax(0, 1fr);
+		padding-block-end: calc(var(--wp--preset--spacing--40) + env(safe-area-inset-bottom, 0px));
+	}
+
+	/* A short phone (about 640px or less) gives the list more room: the button says the rest (AMM-209). */
+	@media (max-height: 40em) {
+		.dh-quote-dialog__note {
+			display: none;
+		}
 	}
 
 	/* Quantity drops under the name; remove stays at the end of the row. */
@@ -666,10 +740,20 @@ html:has(.dh-quote-dialog[open]) {
 	}
 }
 
+/* Reduced motion: the list fades in and out, without moving (Ammar,
+   2026-10-13: "gentler, not zero"). */
 @media (prefers-reduced-motion: reduce) {
-	.dh-quote-dialog[open],
-	.dh-quote-dialog[open]::backdrop {
-		animation: none;
+	.dh-quote-dialog,
+	.dh-quote-dialog[open] {
+		translate: none;
+		scale: none;
+	}
+
+	@starting-style {
+		.dh-quote-dialog[open] {
+			translate: none;
+			scale: none;
+		}
 	}
 
 	.dh-quote-toggle {

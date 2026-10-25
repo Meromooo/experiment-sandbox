@@ -27,23 +27,23 @@
 				},
 				{
 					"slug": "field",
-					"name": "Field",
-					"color": "#7FA045"
+					"name": "Sky",
+					"color": "#6BB3DE"
 				},
 				{
 					"slug": "canopy",
-					"name": "Canopy",
-					"color": "#1E4D3A"
+					"name": "Indigo",
+					"color": "#232D8E"
 				},
 				{
 					"slug": "ink",
 					"name": "Ink",
-					"color": "#0E1C16"
+					"color": "#0F1433"
 				},
 				{
 					"slug": "water",
-					"name": "Water",
-					"color": "#2E7D8C"
+					"name": "Cerulean",
+					"color": "#1A79AB"
 				},
 				{
 					"slug": "white",
@@ -110,7 +110,14 @@
 								"file:./assets/fonts/ibm-plex-sans/ibm-plex-sans-latin-400-600.woff2"
 							],
 							"unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
-						},
+						}
+					]
+				},
+				{
+					"slug": "arabic",
+					"name": "IBM Plex Sans Arabic (Arabic text)",
+					"fontFamily": "\"IBM Plex Sans Arabic\", system-ui, sans-serif",
+					"fontFace": [
 						{
 							"fontFamily": "IBM Plex Sans Arabic",
 							"fontStyle": "normal",
@@ -146,7 +153,7 @@
 				{
 					"slug": "mono",
 					"name": "IBM Plex Mono (data)",
-					"fontFamily": "\"IBM Plex Mono\", ui-monospace, \"Cascadia Mono\", Consolas, monospace",
+					"fontFamily": "\"IBM Plex Mono\", \"IBM Plex Sans Arabic\", ui-monospace, \"Cascadia Mono\", Consolas, monospace",
 					"fontFace": [
 						{
 							"fontFamily": "IBM Plex Mono",
@@ -319,12 +326,12 @@
 				{
 					"slug": "card",
 					"name": "Card",
-					"shadow": "0 1px 2px rgba(14, 28, 22, 0.06), 0 12px 32px -16px rgba(14, 28, 22, 0.18)"
+					"shadow": "0 1px 2px rgba(15, 20, 51, 0.06), 0 12px 32px -16px rgba(15, 20, 51, 0.18)"
 				},
 				{
 					"slug": "raised",
 					"name": "Raised",
-					"shadow": "0 2px 4px rgba(14, 28, 22, 0.08), 0 24px 48px -20px rgba(14, 28, 22, 0.28)"
+					"shadow": "0 2px 4px rgba(15, 20, 51, 0.08), 0 24px 48px -20px rgba(15, 20, 51, 0.28)"
 				}
 			]
 		},
@@ -343,6 +350,9 @@
 				"base": "400ms",
 				"slow": "550ms",
 				"ease": "cubic-bezier(0.2, 0.7, 0.2, 1)",
+				"press": "160ms",
+				"easeOut": "cubic-bezier(0.23, 1, 0.32, 1)",
+				"easeInOut": "cubic-bezier(0.77, 0, 0.175, 1)",
 				"stagger": "70ms"
 			},
 			"display": {
@@ -422,7 +432,7 @@
 				},
 				":hover": {
 					"color": {
-						"text": "var(--wp--preset--color--field)"
+						"text": "var(--wp--preset--color--ink)"
 					}
 				}
 			},

@@ -26,6 +26,7 @@ if ( empty( $demas_columns ) ) {
 	return;
 }
 
+$demas_catalogue  = function_exists( 'demas_theme_catalogue_url' ) ? demas_theme_catalogue_url() : home_url( '/products/' );
 $demas_panel_id   = wp_unique_id( 'dh-mega-menu-panel-' );
 $demas_wrapper    = get_block_wrapper_attributes( array( 'class' => 'dh-mega-menu' ) );
 $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</span>';
@@ -49,16 +50,23 @@ $demas_icon_alert = '<span class="dh-mega-menu__icon" aria-hidden="true">%s</spa
 	data-wp-on--mouseleave="actions.closeOnHover"
 	aria-label="<?php esc_attr_e( 'Product categories', 'demas-theme' ); ?>"
 >
+	<?php
+	// A disclosure navigation menu with a top-level link (AMM-198): "Products"
+	// goes to the catalogue, the chevron beside it shows and hides the panel
+	// for touch and keyboard, and a mouse opens it by hovering either.
+	?>
+	<a class="dh-mega-menu__trigger" href="<?php echo esc_url( $demas_catalogue ); ?>">
+		<?php esc_html_e( 'Products', 'demas-theme' ); ?>
+	</a>
 	<button
 		type="button"
-		class="dh-mega-menu__trigger"
-		aria-haspopup="true"
+		class="dh-mega-menu__toggle"
+		aria-label="<?php esc_attr_e( 'Product categories', 'demas-theme' ); ?>"
 		aria-expanded="false"
 		aria-controls="<?php echo esc_attr( $demas_panel_id ); ?>"
 		data-wp-on--click="actions.toggle"
 		data-wp-bind--aria-expanded="context.isOpen"
 	>
-		<span><?php esc_html_e( 'Products', 'demas-theme' ); ?></span>
 		<svg class="dh-mega-menu__chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>
 	</button>
 

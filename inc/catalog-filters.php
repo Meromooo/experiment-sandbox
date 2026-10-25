@@ -18,8 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'init',
 	function () {
-		// The toolbar (count, rail, sort) and the system index (stages of the
-		// irrigation / fog / workshop line). Both server-rendered from build/.
+		// The toolbar (count, rail, sort) and the category index (the store's
+		// category tree). Both server-rendered from build/.
 		foreach ( array( 'catalog-toolbar', 'system-index' ) as $block ) {
 			$build_path = DEMAS_THEME_DIR . '/build/' . $block;
 
