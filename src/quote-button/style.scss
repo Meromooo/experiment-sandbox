@@ -146,8 +146,3 @@
 	font-size: var(--wp--preset--font-size--sm);
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.dh-quote-btn {
-		transition: none;
-	}
-}
