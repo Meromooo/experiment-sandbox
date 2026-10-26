@@ -10,9 +10,10 @@
  *     children once so the CSS translate(-50%) loop is seamless; then drive
  *     the certificates belt (stamp-in, ease to a stop, stop on focus).
  *  3. Counters: [data-count] numbers count up from zero when they scroll
- *     into view, and mark their stat .is-counted so its drawing runs with
- *     them. The markup already holds the final value, so without this
- *     script — or with reduced motion — the number is simply there.
+ *     into view (reduced motion too: changing digits is not movement), and
+ *     mark their stat .is-counted so its drawing runs or fades in with them.
+ *     The markup already holds the final value, so without this script the
+ *     number is simply there.
  *  4. Branch Desk: [data-branch-desk] pairs city buttons with detail panels.
  *     Without this script the first branch (Riyadh) stays visible. A
  *     #branch-xxx hash (the footer's branch links) selects that city.
@@ -332,7 +333,7 @@
 
 	var counters = document.querySelectorAll('[data-count]');
 
-	if (counters.length && hasObserver && !reduce.matches) {
+	if (counters.length && hasObserver) {
 		var countObserver = new IntersectionObserver(
 			function (entries) {
 				entries.forEach(function (entry) {
@@ -467,14 +468,15 @@
 			}
 			window.history.replaceState(window.history.state, '', url.toString());
 
-			if (typeof document.startViewTransition !== 'function' || reduce.matches) {
+			if (typeof document.startViewTransition !== 'function') {
 				applyView(view);
 				return;
 			}
 
 			// Name each card for the transition so it morphs into its row;
 			// names are cleared afterwards to keep them out of later transitions.
-			var cards = document.querySelectorAll('.dh-grid--catalogue .dh-pcard');
+			// With reduced motion no card is named: the page crossfades instead.
+			var cards = reduce.matches ? [] : document.querySelectorAll('.dh-grid--catalogue .dh-pcard');
 			each(cards, function (card, i) {
 				card.style.viewTransitionName = 'dh-card-' + i;
 			});
