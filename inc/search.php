@@ -522,20 +522,26 @@ function demas_theme_rest_find( WP_REST_Request $request ): WP_REST_Response {
 		);
 	}
 
-	$ids   = mb_strlen( $raw ) >= 2 ? demas_theme_find_product_ids( $raw ) : array();
+	$ids = mb_strlen( $raw ) >= 2 ? demas_theme_find_product_ids( $raw ) : array();
+
+	// Products hidden from search stay hidden here too, in the parts and the total.
+	$ids = array_values(
+		array_filter(
+			$ids,
+			static function ( $id ) {
+				$product = wc_get_product( $id );
+				return $product && in_array( $product->get_catalog_visibility(), array( 'visible', 'search' ), true );
+			}
+		)
+	);
+
 	$parts = array();
 	$skus  = array_map( 'mb_strtolower', $terms['skus'] );
 
 	foreach ( $ids as $id ) {
 		$product = wc_get_product( $id );
-
-		// Products hidden from search stay hidden here too.
-		if ( ! $product || ! in_array( $product->get_catalog_visibility(), array( 'visible', 'search' ), true ) ) {
-			continue;
-		}
-
-		$chain = function_exists( 'demas_theme_get_product_term_chain' ) ? demas_theme_get_product_term_chain( $id ) : array();
-		$sku   = (string) $product->get_sku();
+		$chain   = function_exists( 'demas_theme_get_product_term_chain' ) ? demas_theme_get_product_term_chain( $id ) : array();
+		$sku     = (string) $product->get_sku();
 
 		$parts[] = array(
 			'name'  => html_entity_decode( $product->get_name(), ENT_QUOTES, 'UTF-8' ),
