@@ -1412,8 +1412,22 @@ ul.dh-toolbar__chips {
  * shows. The template part is the element that sticks: .dh-header fills it,
  * so it would have nowhere to slide. Over the first 8rem of scroll the band
  * lifts off the page with the raised shadow; scrolling back rewinds it.
+ *
+ * AMM-231: --dh-header-h is how much of the screen the header covers. The
+ * scroll padding keeps focus, anchor jumps and scrollIntoView clear of it, and
+ * every other sticky element stops below it (product photo, Contact list and
+ * request copy, catalogue toolbar). AMM-233: on catalogue pages the scroll
+ * padding also clears the stuck toolbar; main.js sets --dh-toolbar-h to its
+ * height, which wraps (71 to 129px measured). Without JS, the header only.
+ * ponytail: 5rem is the band's measured height (80px at 16px text). If the
+ * header's height changes, change this with it.
  */
 @media (min-width: 56.0625rem) {
+	html {
+		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + 5rem);
+		scroll-padding-top: calc(var(--dh-header-h) + var(--dh-toolbar-h, 0px) + var(--wp--preset--spacing--20));
+	}
+
 	.wp-site-blocks > header.wp-block-template-part {
 		position: sticky;
 		top: var(--wp-admin--admin-bar--height, 0px);
@@ -4934,7 +4948,7 @@ ul.dh-toolbar__chips {
 
 	.dh-product .dh-product__media {
 		position: sticky;
-		inset-block-start: var(--wp--preset--spacing--50);
+		inset-block-start: calc(var(--dh-header-h) + var(--wp--preset--spacing--50));
 	}
 }
 
@@ -5387,6 +5401,12 @@ footer.wp-block-template-part {
  * screen before the footer covers it — also when it is taller than the
  * viewport, where the offset goes negative. svh, not dvh: the pin must not
  * jump when a phone's address bar slides away.
+ *
+ * AMM-229: a pinned CTA always counts as on screen, so the browser never
+ * scrolls to a button in it that takes focus, and the footer (z-index 1) can
+ * sit over that button. While one of its buttons has keyboard focus, the CTA
+ * paints above the footer (still below the sticky header's 30). Mouse and
+ * touch focus don't match :focus-visible, so their slide-over is unchanged.
  */
 @media (prefers-reduced-motion: no-preference) {
 	.dh-finale.is-pinnable > .dh-closing {
@@ -5394,6 +5414,10 @@ footer.wp-block-template-part {
 		z-index: 0;
 		top: calc(100vh - var(--dh-pin-h));
 		top: calc(100svh - var(--dh-pin-h));
+	}
+
+	.dh-finale.is-pinnable > .dh-closing:has(:focus-visible) {
+		z-index: 2;
 	}
 }
 
@@ -6666,7 +6690,7 @@ footer.wp-block-template-part {
 @media (min-width: 56.0625rem) {
 	.dh-ct-hero__grid .dh-ct-pick {
 		position: sticky;
-		inset-block-start: var(--wp--preset--spacing--50);
+		inset-block-start: calc(var(--dh-header-h) + var(--wp--preset--spacing--50));
 	}
 }
 
@@ -6753,7 +6777,7 @@ footer.wp-block-template-part {
 @media (min-width: 56.0625rem) {
 	.dh-ct-request__copy {
 		position: sticky;
-		inset-block-start: var(--wp--preset--spacing--50);
+		inset-block-start: calc(var(--dh-header-h) + var(--wp--preset--spacing--50));
 	}
 }
 

@@ -238,4 +238,11 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   live (AMM-158). Its closing
   CTA sits **outside `<main>`**, in a `.dh-finale` wrapper with the footer part, so the CTA can
   stay pinned while the footer slides over it (CSS sticky; `main.js` supplies the CTA's
-  height); the CTA is its own labelled region instead.
+  height); the CTA is its own labelled region instead. **While one of the CTA's buttons has
+  keyboard focus** (`:has(:focus-visible)`) the pinned CTA paints above the footer
+  (`z-index: 2`, under the sticky header's 30), AMM-229: a sticky element always counts as on
+  screen, so the browser never scrolls to its focused button and the footer covered it (WCAG
+  2.4.11) at 320, 768 and on a Shift+Tab walk up from the page's end at every width. Mouse and
+  touch focus don't match `:focus-visible`, so their slide-over is unchanged. Dropping the pin
+  on focus was measured too and rejected: at 1440 the browser then scrolled "Call our Riyadh
+  office" under the sticky header.

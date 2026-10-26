@@ -22,14 +22,11 @@
 /*
  * From the header's sticky breakpoint up (style.css, "Sticky from the mega
  * menu's breakpoint up"), stop just below the header instead of sliding
- * under it.
- * ponytail: 5rem is the header band's measured height (80px at 16px text,
- * AMM-200 baseline); there is no header-height property. If the header's
- * height changes, change this with it.
+ * under it. --dh-header-h is set there (AMM-231).
  */
 @media (min-width: 56.0625rem) {
 	.dh-toolbar {
-		inset-block-start: calc(var(--wp-admin--admin-bar--height, 0px) + 5rem);
+		inset-block-start: var(--dh-header-h);
 	}
 }
 

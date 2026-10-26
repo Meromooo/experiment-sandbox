@@ -801,6 +801,20 @@
 		});
 	}
 
+	/* 9. Catalogue toolbar height (AMM-233) ---------------------------- */
+
+	// The toolbar sticks under the header and wraps, so its height changes
+	// with the width and the page. html's scroll padding adds it (style.css,
+	// "Sticky from the mega menu's breakpoint up"), so focus never stops under
+	// it. Without this, the padding clears the header only.
+	var toolbar = document.querySelector('.dh-toolbar');
+
+	if (toolbar && 'ResizeObserver' in window) {
+		new ResizeObserver(function () {
+			document.documentElement.style.setProperty('--dh-toolbar-h', toolbar.offsetHeight + 'px');
+		}).observe(toolbar);
+	}
+
 	/* Reduced-motion change at runtime --------------------------------- */
 
 	if (typeof reduce.addEventListener === 'function') {
