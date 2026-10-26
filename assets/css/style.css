@@ -6149,7 +6149,12 @@ footer.wp-block-template-part {
 .dh-svc-board {
 	display: grid;
 	grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+	/* Clip, not hide: `hidden` makes the board a scroll container, which the
+	   route's view timeline then tracks instead of the page, and the board never
+	   scrolls, so the steps' line froze part drawn (AMM-194). `hidden` stays as
+	   the fallback for browsers without `clip`, which lack view timelines too. */
 	overflow: hidden;
+	overflow: clip;
 	border-radius: 0 var(--wp--custom--radius--lg) var(--wp--custom--radius--lg);
 	background: var(--wp--preset--color--canopy);
 	color: var(--wp--preset--color--paper);
