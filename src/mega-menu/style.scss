@@ -346,9 +346,20 @@
 /* Reduced motion ------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+	/* Gentler, not zero (AMM-194): the panel fades, no clip and no growing
+	   height; the columns are simply there. */
 	.dh-mega-menu__panel,
 	.is-open > .dh-mega-menu__panel {
-		transition: none;
+		clip-path: none;
+		transition:
+			opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			visibility 0s linear var(--wp--custom--motion--fast);
+	}
+
+	.is-open > .dh-mega-menu__panel {
+		transition:
+			opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease),
+			visibility 0s;
 	}
 
 	.dh-mega-menu__column,
