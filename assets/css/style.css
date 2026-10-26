@@ -933,14 +933,29 @@ ul.dh-toolbar__chips {
 }
 
 @media (prefers-reduced-motion: reduce) {
+	/* Gentler, not zero (AMM-194): a reveal fades in and moves nowhere, no
+	   lift, scale, clip sweep or wipe. Same specificity as the rules above,
+	   later in the file. Content inside a revealing container rides on its
+	   container's fade. */
 	.js [data-reveal]:not(.is-in),
 	.js [data-reveal].is-in,
 	.js [data-reveal] [data-reveal-content] {
-		transition: none;
 		transform: none;
 		opacity: 1;
 		clip-path: none;
 		background-size: 100% 100%;
+	}
+
+	.js [data-reveal]:not(.is-in) {
+		opacity: 0;
+	}
+
+	.js [data-reveal]:not(.is-settled) {
+		transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+	}
+
+	.js [data-reveal] [data-reveal-content] {
+		transition: none;
 	}
 
 	/* Standing still, the line scrolls sideways instead (by keyboard too:
@@ -958,11 +973,6 @@ ul.dh-toolbar__chips {
 
 	.dh-marquee__item[aria-hidden="true"] {
 		display: none;
-	}
-
-	.dh-pill,
-	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link {
-		transition: none;
 	}
 }
 
@@ -2530,10 +2540,6 @@ ul.dh-toolbar__chips {
 @media (prefers-reduced-motion: reduce) {
 	.dh-film:not(.is-started) .dh-film__still {
 		display: block;
-	}
-
-	.dh-film__toggle {
-		transition: none;
 	}
 }
 
@@ -4657,8 +4663,7 @@ ul.dh-toolbar__chips {
 	}
 
 	.dh-cat,
-	.dh-cat__arrow,
-	.dh-desk__city {
+	.dh-cat__arrow {
 		transition: none;
 	}
 }
@@ -4878,8 +4883,7 @@ ul.dh-toolbar__chips {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-pcard__media img,
-	.dh-pagination a {
+	.dh-pcard__media img {
 		transition: none;
 	}
 
@@ -7125,7 +7129,6 @@ footer.wp-block-template-part {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-cat-row__link,
 	.dh-cat-row__arrow {
 		transition: none;
 	}
