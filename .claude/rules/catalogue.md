@@ -54,8 +54,8 @@ The product category tree is locked: make it easier to navigate, never re-parent
     later show neither (`is_paged()`). The toolbar's chips and the tiles use the same test
     (sub-categories with products, from `demas_theme_get_product_cat_index()`), so a page never
     shows both. Names and order are the store's. Empty categories are left out. On desktop
-    the toolbar sticks under the sticky header (`5rem`, the header's height, a `ponytail:`
-    note in its stylesheet); on phones it doesn't stick. It
+    the toolbar sticks under the sticky header (`var(--dh-header-h)`, AMM-231; see
+    `pages-and-footer.md`); on phones it doesn't stick. It
     also adds SKU ordering via a `posts_clauses` join. The toolbar also carries the search field;
     on a search its rail lists categories whose names match and its default sort is "Best
     match". There are no product attributes in the
