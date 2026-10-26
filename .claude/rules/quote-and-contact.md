@@ -226,7 +226,7 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   next" (`.dh-ct-next`) is drawn as a route: CSS-counter numbers in paper tabs one text line
   tall, one track joining them, and sky blue drawn down it as the list scrolls up (the
   list's own `view-timeline`; ranges end by 40% so the sticky copy can't freeze it half
-  drawn); finished with reduced motion. CSS only on the saved markup, apart from the
+  drawn); with reduced motion the line fades in finished on the same timeline (AMM-194). CSS only on the saved markup, apart from the
   highlight span (in the pattern, and added in the editor on the sandbox). **Since AMM-192
   the route's rules are shared** with the Services visit (`:is(.dh-ct-next, .dh-svc-route) >
   li`, timeline `--dh-route`, keyframes `dh-route-light` / `dh-route-draw`): only the list's

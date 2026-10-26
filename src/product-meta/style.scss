@@ -279,10 +279,10 @@ $sheet: ":is(.dh-view-sheet .dh-grid--catalogue, .dh-grid--catalogue.is-sheet)";
 	animation-timing-function: var(--wp--custom--motion--ease);
 }
 
+/* Reduced motion (AMM-194): main.js names no cards, so the page crossfades
+   (the browser's default fade) and nothing moves. */
 @media (prefers-reduced-motion: reduce) {
-	::view-transition-group(*),
-	::view-transition-old(*),
-	::view-transition-new(*) {
+	::view-transition-group(*) {
 		animation: none;
 	}
 }

@@ -19,8 +19,8 @@
  *    ("network": head office as the pump, a sprinkler head on a lateral for
  *    each other branch). main.js marks the number's stat .is-counted as its
  *    count starts, and CSS runs the drawing in step with the count; each head
- *    carries the moment the count reaches it as --d. Without JavaScript, or
- *    with reduced motion, it is drawn finished.
+ *    carries the moment the count reaches it as --d. Without JavaScript it is
+ *    drawn finished; with reduced motion it fades in finished (AMM-194).
  *
  * @param array    $attributes Block attributes: value, prefix, label, unit, drawing, since.
  * @param string   $content    Inner content (none).

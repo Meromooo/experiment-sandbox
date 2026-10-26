@@ -562,21 +562,20 @@
 
 /* First view, as a scroll reveal: the areas and their dots come on outward
    from the main branch (--i), then the names. The Contact page's hero
-   plays the same as the page opens instead (style.css, section 7). */
-@media (prefers-reduced-motion: no-preference) {
-	.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__zone, .dh-ct-plan__site) {
-		transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
-			calc(var(--wp--custom--motion--base) + var(--i, 0) * 60ms);
-	}
+   plays the same as the page opens instead (style.css, section 7). Opacity
+   only, so reduced motion keeps it as it is (AMM-194). */
+.js .dh-ct-plan[data-reveal] :is(.dh-ct-plan__zone, .dh-ct-plan__site) {
+	transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+		calc(var(--wp--custom--motion--base) + var(--i, 0) * 60ms);
+}
 
-	.js .dh-ct-plan[data-reveal] .dh-ct-plan__labels {
-		transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
-			calc(var(--wp--custom--motion--base) + 900ms);
-	}
+.js .dh-ct-plan[data-reveal] .dh-ct-plan__labels {
+	transition: opacity var(--wp--custom--motion--base) var(--wp--custom--motion--ease)
+		calc(var(--wp--custom--motion--base) + 900ms);
+}
 
-	.js .dh-ct-plan[data-reveal]:not(.is-in) :is(.dh-ct-plan__zone, .dh-ct-plan__site, .dh-ct-plan__labels) {
-		opacity: 0;
-	}
+.js .dh-ct-plan[data-reveal]:not(.is-in) :is(.dh-ct-plan__zone, .dh-ct-plan__site, .dh-ct-plan__labels) {
+	opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

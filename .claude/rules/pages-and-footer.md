@@ -121,7 +121,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   list: at 320px with 200% text it wraps under the link, where a stretched tap area would
   cover "Products". There is no close delay; add one only if closing feels twitchy. The
   panel opens and closes in 250ms (`motion.fast`, AMM-199), then its columns fade in 70ms
-  apart; opened or closed from the keyboard it appears at once: while the chevron is
+  apart; with reduced motion the panel only fades (no clip, no columns' lift, AMM-194); opened or closed from the keyboard it appears at once: while the chevron is
   `:focus-visible` (which the browser sets only after keyboard use) a `:has()` rule turns the
   panel's and columns' transitions off.
 

@@ -41,13 +41,12 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     today) or `network` (the branch network: head office from `demas_theme_get_branches()` as the
     pump, a sprinkler head per other branch). `main.js`'s count-up marks the stat `.is-counted`
     and CSS runs the drawing in step with it (900ms, ease-out; each head's moment is `--d`,
-    computed in `render.php`); finished without JavaScript or with reduced motion) and `/steps` + `/step` (the process: an
+    computed in `render.php`); finished without JavaScript. With reduced motion (AMM-194) the number still counts, since changing digits is not movement, and the drawing fades in finished as the count starts) and `/steps` + `/step` (the process: an
     `<ol>` whose numerals are a CSS counter in a canopy tab, each step a locked heading only, its
     name, under a canopy rule with an arrowhead that `step/render.php` adds; since AMM-187 the row
     plays left to right as it comes up the screen, rule, tab and the field highlight behind each
     name in turn, as a CSS scroll-driven animation on the list's own `view-timeline`, no pinning,
-    no script, rewinding on scroll back; with reduced motion or no scroll-timeline support it is
-    finished from the start; the section is its title and the steps, no lead, copy or closing
+    no script, rewinding on scroll back; with no scroll-timeline support it is finished from the start; with reduced motion (AMM-194) the same pieces fade in on the same timeline and ranges, nothing moves; the section is its title and the steps, no lead, copy or closing
     line) and
     `/category-cards` (the catalogue gateway: one server-rendered block whose `cards`
     attribute lists product_cat slugs with the editor's name and description, edited in the
@@ -122,7 +121,7 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     above (`main.js` builds the tab later and sets `--_since`, how long the frame has been
     opening, so it keeps its place); then, above 56rem only, where they share the first screen,
     the Branch Desk and the schematic drawing itself; on narrower screens those two stay scroll
-    reveals. `main.js` leaves alone any reveal whose computed `animation-name` is not `none`,
+    reveals. With reduced motion (AMM-194) the hero opens as a fade in turn on the same CSS rule for the homepage, Services and Contact (`dh-hero-fade`, `motion.fast`, 60ms a step by `--_step`: eyebrow, headline, lead, buttons); the photo carousel keeps its own reduced-motion behaviour. `main.js` leaves alone any reveal whose computed `animation-name` is not `none`,
     marking it `.is-in .is-settled` *before* it adds `.js`, so the breakpoint lives in CSS only.
     Before AMM-196 the headline was the LCP element, reaching the screen ~160ms after first
     paint; AMM-196's Linear report has the traces since.
@@ -177,7 +176,7 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   notch's edge as gradient lines (the outline is an inset shadow, so it isn't snapped to device
   pixels and matches them). On first view the outline draws round from the notch (a conic mask
   turned by a registered `@property` angle) and the tab presses in; static without JavaScript
-  or with reduced motion. **AMM-177 (2026-10-06):** the hero lost its eyebrow ("Since 1979 ·
+  (with reduced motion the outline and the tab fade in a beat after the band instead, AMM-194). **AMM-177 (2026-10-06):** the hero lost its eyebrow ("Since 1979 ·
   15 branches"), so the homepage has one (Product categories); its head is a card over the
   pivot field drawing (`demas-theme/pivot-field`, last in the head). **AMM-184 (2026-10-07):** the
   numbers band is in the film card's frame (canopy card, a `spacing-50` frame round a sand

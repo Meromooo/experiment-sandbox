@@ -115,7 +115,7 @@ The product category tree is locked: make it easier to navigate, never re-parent
     in `style.css` instead — the column headings' base `display: none` does (they showed as raw
     text on a search with no results). 24 parts a page
     (`loop_shop_per_page`). The toolbar carries the Gallery | Sheet links and a print-only
-    heading; `main.js` switches in place with View Transitions. Printing any catalogue page
+    heading; `main.js` switches in place with View Transitions (cards morph into rows; with reduced motion no card is named, so the page crossfades, AMM-194). Printing any catalogue page
     gives the sheet. Sheet rows carry a quantity field (in the compact quote button) that adds
     that quantity, and edits the quote once the part is in it.
 

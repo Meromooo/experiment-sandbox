@@ -1086,6 +1086,51 @@ ul.dh-toolbar__chips {
 	}
 }
 
+.page-template-designed-page .dh-svc-hero__title,
+.page-template-designed-page .dh-ct-hero__title {
+	--_step: 1;
+}
+
+.page-template-designed-page .dh-svc-hero .dh-svc-lead,
+.page-template-designed-page .dh-ct-hero .dh-ct-lead {
+	--_step: 2;
+}
+
+/* The word sweeps two beats after its headline; the buttons follow the lead. */
+.page-template-designed-page .dh-svc-hero .dh-svc-proof,
+.page-template-designed-page .dh-svc-hero .dh-highlight,
+.page-template-designed-page .dh-svc-hero .dh-svc-actions > *,
+.page-template-designed-page .dh-ct-hero .dh-highlight,
+.page-template-designed-page .dh-ct-hero .dh-ct-actions > * {
+	--_step: 3;
+}
+
+.page-template-designed-page .dh-svc-hero .dh-svc-actions > * + *,
+.page-template-designed-page .dh-ct-hero .dh-ct-actions > * + * {
+	--_step: 4;
+}
+
+/* Gentler, not zero (AMM-194): with reduced motion the hero opens as a fade
+   in turn, a beat (--_step, 60ms) between the eyebrow, headline, lead and
+   buttons: opacity only, no lift, scale, clip or sweep. A reveal CSS
+   animates is left alone by main.js, so this needs no script. */
+@media (prefers-reduced-motion: reduce) {
+	.home .dh-hero__lead {
+		--_step: 1;
+	}
+
+	.home .dh-hero__actions {
+		--_step: 2;
+	}
+
+	:is(.home .dh-hero [data-reveal], .home .dh-hero__actions),
+	.page-template-designed-page .dh-svc-hero [data-reveal],
+	.page-template-designed-page .dh-ct-hero__intro [data-reveal] {
+		animation: dh-hero-fade var(--wp--custom--motion--fast) var(--wp--custom--motion--ease)
+			calc(var(--_step, 0) * 60ms) backwards;
+	}
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	.home .dh-hero [data-reveal],
 	.page-template-designed-page .dh-svc-hero [data-reveal],
@@ -1117,30 +1162,6 @@ ul.dh-toolbar__chips {
 	.page-template-designed-page .dh-svc-hero [data-reveal="wipe"],
 	.page-template-designed-page .dh-ct-hero__intro [data-reveal="wipe"] {
 		animation-name: dh-hero-wipe;
-	}
-
-	.page-template-designed-page .dh-svc-hero__title,
-	.page-template-designed-page .dh-ct-hero__title {
-		--_step: 1;
-	}
-
-	.page-template-designed-page .dh-svc-hero .dh-svc-lead,
-	.page-template-designed-page .dh-ct-hero .dh-ct-lead {
-		--_step: 2;
-	}
-
-	/* The word sweeps two beats after its headline; the buttons follow the lead. */
-	.page-template-designed-page .dh-svc-hero .dh-svc-proof,
-	.page-template-designed-page .dh-svc-hero .dh-highlight,
-	.page-template-designed-page .dh-svc-hero .dh-svc-actions > *,
-	.page-template-designed-page .dh-ct-hero .dh-highlight,
-	.page-template-designed-page .dh-ct-hero .dh-ct-actions > * {
-		--_step: 3;
-	}
-
-	.page-template-designed-page .dh-svc-hero .dh-svc-actions > * + *,
-	.page-template-designed-page .dh-ct-hero .dh-ct-actions > * + * {
-		--_step: 4;
 	}
 
 	/* The fields come up behind the copy as the buttons arrive (AMM-177). */
@@ -3414,6 +3435,18 @@ ul.dh-toolbar__chips {
 	}
 }
 
+@media (prefers-reduced-motion: reduce) {
+	/* Gentler, not zero (AMM-194): the drawing is finished underneath and
+	   fades in as the count starts; nothing draws or scales. */
+	.js .dh-stat:not(.is-counted) .dh-stat__draw {
+		opacity: 0;
+	}
+
+	.js .dh-stat.is-counted .dh-stat__draw {
+		transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
+	}
+}
+
 @keyframes dh-net-spray {
 	from {
 		opacity: 0;
@@ -3450,6 +3483,21 @@ ul.dh-toolbar__chips {
 	.js .dh-band--notched.is-in > .dh-band__tab > p {
 		transform-origin: 100% 0;
 		animation: dh-tab-press var(--wp--custom--motion--base) cubic-bezier(0.3, 1.45, 0.55, 1) 1s both;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	/* The outline and the tab are finished underneath: they fade in a beat
+	   after the band, no sweep round the notch, no press. */
+	.js .dh-band--notched:not(.is-in)::before,
+	.js .dh-band--notched:not(.is-in) > .dh-band__tab {
+		opacity: 0;
+	}
+
+	.js .dh-band--notched.is-in::before,
+	.js .dh-band--notched.is-in > .dh-band__tab {
+		transition: opacity var(--wp--custom--motion--fast) var(--wp--custom--motion--ease)
+			var(--wp--custom--motion--fast);
 	}
 }
 
@@ -4401,7 +4449,9 @@ ul.dh-toolbar__chips {
 }
 
 @supports (animation-timeline: view()) {
-	@media (prefers-reduced-motion: no-preference) {
+	/* Gentler, not zero (AMM-194): with reduced motion the same pieces fade in
+	   on the same timeline and ranges (the override below), without moving. */
+	@media (prefers-reduced-motion: no-preference), (prefers-reduced-motion: reduce) {
 		/* Each step starts a little after the one before it. */
 		.dh-process__step:nth-child(2) {
 			--_i: 1;
@@ -4447,6 +4497,15 @@ ul.dh-toolbar__chips {
 		.dh-process__title {
 			animation-name: dh-process-wipe;
 			animation-range: cover calc(17% + var(--_i, 0) * 7%) cover calc(23% + var(--_i, 0) * 7%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.dh-process__rule,
+		.dh-process__arrow,
+		.dh-process__step::before,
+		.dh-process__title {
+			animation-name: dh-hero-fade;
 		}
 	}
 }
@@ -6877,7 +6936,9 @@ footer.wp-block-template-part {
 }
 
 @supports (animation-timeline: view()) {
-	@media (prefers-reduced-motion: no-preference) {
+	/* The line fades in under reduced motion (AMM-194) instead of drawing
+	   down; the tab's colour change stays. */
+	@media (prefers-reduced-motion: no-preference), (prefers-reduced-motion: reduce) {
 		:is(.dh-ct-next, .dh-svc-route) > li:nth-child(2) {
 			--_i: 1;
 		}
@@ -6906,6 +6967,12 @@ footer.wp-block-template-part {
 		:is(.dh-ct-next, .dh-svc-route) > li::after {
 			animation-name: dh-route-draw;
 			animation-range: cover calc(9% + var(--_i, 0) * 11%) cover calc(18% + var(--_i, 0) * 11%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:is(.dh-ct-next, .dh-svc-route) > li::after {
+			animation-name: dh-hero-fade;
 		}
 	}
 }
