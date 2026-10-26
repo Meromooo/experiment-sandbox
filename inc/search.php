@@ -284,6 +284,12 @@ add_filter(
 			return $vars;
 		}
 
+		// The same 80-character cap as the form's maxlength and /find, here so
+		// every reader of the query (results, heading, toolbar) gets it.
+		if ( isset( $vars['s'] ) && is_string( $vars['s'] ) ) {
+			$vars['s'] = mb_substr( $vars['s'], 0, 80 );
+		}
+
 		if ( isset( $vars['s'] ) && '' !== trim( (string) $vars['s'] ) && empty( $vars['post_type'] ) ) {
 			$vars['post_type'] = 'product';
 		}
@@ -397,9 +403,11 @@ add_filter(
 
 		$query = esc_html( demas_theme_search_terms()['raw'] );
 
-		return (string) preg_replace(
+		// A callback, so the query goes in as text: in a replacement string,
+		// "$1" or "$0" typed by the buyer would paste parts of the heading.
+		return (string) preg_replace_callback(
 			'#(<h[1-6][^>]*>).*?(</h[1-6]>)#s',
-			'$1<span class="dh-search__quote" aria-hidden="true">“</span>' . $query . '<span class="dh-search__quote" aria-hidden="true">”</span>$2',
+			static fn( $m ) => $m[1] . '<span class="dh-search__quote" aria-hidden="true">“</span>' . $query . '<span class="dh-search__quote" aria-hidden="true">”</span>' . $m[2],
 			$content,
 			1
 		);
