@@ -324,6 +324,7 @@ html:has(.dh-quote-dialog[open]) {
 
 .dh-qty__input {
 	inline-size: 3.25em;
+	align-self: stretch; /* As tall as the − and + beside it, not one text line. */
 	padding: 0;
 	border: 0;
 	background: transparent;
@@ -659,6 +660,10 @@ html:has(.dh-quote-dialog[open]) {
 	.dh-quote-line__remove {
 		inline-size: 2.75rem;
 		block-size: 2.75rem;
+	}
+
+	.dh-qty__input {
+		font-size: 1rem; /* Not smaller: iOS zooms the page into any field under 16px. */
 	}
 }
 
