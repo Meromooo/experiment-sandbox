@@ -96,7 +96,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   at the same width: the admin bar plus 5rem, the band's measured 80px; a `ponytail:` note)
   is how much of the screen it covers. `html` takes it as `scroll-padding-top` (plus
   spacing-20), so keyboard focus, anchor jumps and `scrollIntoView` land below the band
-  instead of under it (WCAG 2.4.11). Every other sticky element offsets from it: the
+  instead of under it (WCAG 2.4.11). On catalogue pages it also adds **`--dh-toolbar-h`**
+  (AMM-233), the stuck toolbar's height, which wraps (71 to 129px), so `main.js` section 9
+  sets it on `html` from one `ResizeObserver`; without JS the padding clears the header
+  only. Every other sticky element offsets from it: the
   catalogue toolbar at `var(--dh-header-h)`, and the product photo, Contact's branch list
   and request copy at `calc(var(--dh-header-h) + spacing-50)`. A new sticky element does
   the same, and a change to the header's height changes the 5rem. Then the band gains its shadow over the
