@@ -141,7 +141,7 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     message, items: [ { id, qty } ], hp }`, public. In order: a filled honeypot (`hp`) gets a
     fake 200; every field is checked on the server (400 `{ code: "invalid", fields: [...] }`,
     the field names as the form uses them); without the Microsoft 365 settings, 503
-    `{ code: "not_connected" }`; over 5 requests an hour from one visitor or 30 an hour
+    `{ code: "not_connected" }`; over 5 requests an hour from one visitor or 200 an hour
     site-wide, 429 `{ code: "busy" }` (only valid requests count); then the next ref, the
     email from `inc/request-email.php`, and Microsoft Graph `sendMail`: 200 `{ ref, branch }`
     (`ref` zero padded, as in the email), or 502 `{ code: "not_sent" }`.
@@ -163,8 +163,12 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     `X-Real-IP`, `CF-Connecting-IP`, `True-Client-IP` and `X-Client-IP` don't change it: from
     one fixed address, each request claiming a different one, the fifth counted request got
     429. Someone with many real addresses still gets 5 each (a cloud session's outgoing
-    address changes on every request, so it can't run this check); the site-wide 30 an hour
-    is the backstop for that.
+    address changes on every request, so it can't run this check); the site-wide 200 an hour
+    is the spend backstop for that (30 until AMM-236, 2026-10-26: six addresses could fill
+    30 and turn every buyer away). When it first fills in a window, one line goes to the
+    PHP error log (`Demas request: site-wide limit of 200 an hour reached`), naming no
+    address or form content. Check and increase are still separate (not atomic), and there
+    is no per-network counter or bot check: add them only if abuse is seen.
   - **Stage 5 end to end (2026-10-22):** a bad field gets 400 and sends nothing; a filled
     honeypot gets a fake 200 and sends nothing; four needs, 40 parts, Arabic and English text,
     no buyer email (the email says to call), a missing part id (dropped), and a phone send

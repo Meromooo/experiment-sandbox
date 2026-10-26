@@ -7,8 +7,9 @@
  * In order: a filled honeypot gets a quiet fake success; every field is
  * checked here, never trusted from the browser (400 { code: invalid,
  * fields }); without the Microsoft 365 settings it answers 503
- * { code: not_connected }; 5 requests an hour per visitor and 30 an hour
- * site-wide (429 { code: busy }); then the next ref, the email from
+ * { code: not_connected }; 5 requests an hour per visitor and 200 an hour
+ * site-wide (429 { code: busy }; the site-wide cap is a spend backstop that
+ * logs one line when reached, AMM-236); then the next ref, the email from
  * inc/request-email.php, and Microsoft Graph's sendMail (200 { ref, branch },
  * or 502 { code: not_sent }).
  *
@@ -148,12 +149,14 @@ function demas_theme_request_handle( WP_REST_Request $request ): WP_REST_Respons
 	 * CDN (measured on the sandbox, 2026-10-21), so no forwarded header is
 	 * read. ponytail: each count lasts an hour from its last request, and
 	 * buyers behind one shared phone-network address share their 5; raise the
-	 * numbers if that ever turns a buyer away.
+	 * numbers if that ever turns a buyer away. The site-wide 200 is set far
+	 * above a real busy hour so a few addresses can't fill it for everyone
+	 * (AMM-236); it logs once when it first fills in a window.
 	 */
 	$address = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 	$limits  = array(
 		'demas_theme_rq_' . wp_hash( $address ) => 5,
-		'demas_theme_rq_site'                   => 30,
+		'demas_theme_rq_site'                   => 200,
 	);
 	foreach ( $limits as $key => $max ) {
 		if ( (int) get_transient( $key ) >= $max ) {
@@ -161,7 +164,12 @@ function demas_theme_request_handle( WP_REST_Request $request ): WP_REST_Respons
 		}
 	}
 	foreach ( $limits as $key => $max ) {
-		set_transient( $key, (int) get_transient( $key ) + 1, HOUR_IN_SECONDS );
+		$count = (int) get_transient( $key ) + 1;
+		set_transient( $key, $count, HOUR_IN_SECONDS );
+		if ( 'demas_theme_rq_site' === $key && $max === $count ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- the only trace that the site-wide cap filled; the limit only.
+			error_log( 'Demas request: site-wide limit of ' . $max . ' an hour reached; further requests get 429 until it resets' );
+		}
 	}
 
 	// ponytail: two requests in the same instant can share a ref; harmless, the email says which branch.
