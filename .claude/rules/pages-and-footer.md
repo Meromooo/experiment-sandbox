@@ -204,7 +204,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   gone). The tabs rise in turn
   through the site's reveal classes (`dh-reveal-group`, `dh-reveal--rise` on the list items).
   The board needs `.dh-svc-folder > .dh-svc-board { margin-block: 0 }`: the folder is a flow
-  layout, whose `* + *` gap otherwise opens a strip between the tabs and the board. Under
+  layout, whose `* + *` gap otherwise opens a strip between the tabs and the board. The board
+  trims its photo with `overflow: clip`, not `hidden` (AMM-194): `hidden` makes it a scroll
+  container, which the route's view timeline tracks instead of the page, so the steps' line
+  froze part drawn. Any box around a scroll-driven animation clips the same way. Under
   56rem the tabs stack, the open one last, on the board. Known for the next sections: the
   hero, this board and Installation are three image-and-text splits in a row (the taste skill
   allows two), and the page has two dark blocks (this board and the closing call to action).
