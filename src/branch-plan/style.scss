@@ -339,11 +339,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-plan__site,
 	.dh-plan__dot,
-	.dh-plan__ring,
-	.dh-plan__code,
-	.dh-branch__code {
-		transition: none;
+	.dh-plan__ring {
+		transition-property: opacity;
 	}
 }

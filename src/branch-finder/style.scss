@@ -580,12 +580,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.dh-ct-city,
-	.dh-ct-plan__zone path,
-	.dh-ct-plan__dot,
-	.dh-ct-plan__ring,
-	.dh-ct-plan__site text,
-	.dh-ct-plan__label {
+	.dh-ct-plan__dot {
 		transition: none;
 	}
 }

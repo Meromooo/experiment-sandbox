@@ -390,9 +390,3 @@ select.dh-ct-input {
 	}
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.dh-ct-input,
-	.dh-ct-need__option span {
-		transition: none;
-	}
-}

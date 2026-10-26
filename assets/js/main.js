@@ -4,7 +4,7 @@
  * Eight jobs, no dependencies, no build step:
  *  1. Scroll reveals: add .is-in to [data-reveal] elements as they enter the
  *     viewport, and number the reveals of each [data-reveal-group] (--i) so
- *     CSS can stagger them. Reduced-motion users get the final state at once.
+ *     CSS can stagger them. With reduced motion they fade in, no movement.
  *     The homepage hero is not one: CSS plays it as the page opens.
  *  2. Marquee and belt: clone each .dh-marquee__track's and .dh-belt__track's
  *     children once so the CSS translate(-50%) loop is seamless; then drive
@@ -100,7 +100,7 @@
 
 	var revealObserver = null;
 
-	if (reduce.matches || !hasObserver) {
+	if (!hasObserver) {
 		showAll();
 	} else {
 		revealObserver = new IntersectionObserver(

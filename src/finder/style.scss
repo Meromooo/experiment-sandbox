@@ -514,10 +514,3 @@ html:has(.dh-finder__dialog[open]) {
 	}
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.dh-finder__trigger,
-	.dh-finder__form,
-	.dh-finder__list[aria-busy="true"] {
-		transition: none;
-	}
-}

@@ -109,7 +109,7 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     own; once the element's own transitions have finished (`getAnimations()` — at once if none
     ran, e.g. a reveal already in its final state when it comes into view) `main.js` adds
     `.is-settled`, which ends the reveal's transition and drops the clip of `dot`, `sliver` and
-    `bar` (with reduced motion there is no clip at all). The clip left in place cut off focus
+    `bar` (with reduced motion there is no clip at all: since AMM-194 a reveal only fades, `opacity` over `--fast`, and `main.js` still observes it). The clip left in place cut off focus
     rings, the credentials' tooltips, the category cards' hover shadow and the first digit of
     their counts; the reveal's `transform: none` and transition, left in place, outranked the
     cards' own hover lift (it never showed) — so a component styles its own revealed element as
