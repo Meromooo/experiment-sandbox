@@ -56,8 +56,8 @@
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"dh-svc-hero__media dh-reveal--seed","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-hero__media dh-reveal--seed"><!-- wp:image {"id":1164,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-photo"} -->
-<figure class="wp-block-image size-large dh-svc-photo"><img src="/wp-content/uploads/2026/03/1000750832-1-768x1024.jpg" alt="A Demas crew laying irrigation lines across a desert site, mountains behind" class="wp-image-1164"/></figure>
+<div class="wp-block-group dh-svc-hero__media dh-reveal--seed"><!-- wp:image {"id":2897,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-photo"} -->
+<figure class="wp-block-image size-large dh-svc-photo"><img src="/wp-content/uploads/2026/10/demas-services-crew-768x1024.jpg" alt="A Demas crew laying irrigation lines across a desert site, mountains behind" class="wp-image-2897"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:group {"className":"dh-svc-offer","layout":{"type":"default"}} -->
@@ -140,8 +140,8 @@
 <!-- /wp:list --></div>
 <!-- /wp:group -->
 
-<!-- wp:image {"id":1161,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-board__photo"} -->
-<figure class="wp-block-image size-large dh-svc-board__photo"><img src="/wp-content/uploads/2026/03/1000239887-1024x576.jpg" alt="Technicians in hard hats kneeling to fit drip lines in the sand" class="wp-image-1161"/></figure>
+<!-- wp:image {"id":2898,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-board__photo"} -->
+<figure class="wp-block-image size-large dh-svc-board__photo"><img src="/wp-content/uploads/2026/10/demas-services-site-survey-1024x768.jpg" alt="Engineers and the client reading site drawings on a car bonnet" class="wp-image-2898"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group --></section>
@@ -150,8 +150,8 @@
 <!-- wp:group {"tagName":"section","anchor":"install","className":"dh-section dh-svc dh-svc--plate","layout":{"type":"constrained"}} -->
 <section id="install" class="wp-block-group dh-section dh-svc dh-svc--plate"><!-- wp:group {"className":"dh-svc-plate","layout":{"type":"default"}} -->
 <div class="wp-block-group dh-svc-plate"><!-- wp:group {"className":"dh-svc__grid dh-svc__grid--flip","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc__grid dh-svc__grid--flip"><!-- wp:image {"id":840,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-media dh-reveal--sliver"} -->
-<figure class="wp-block-image size-large dh-svc-media dh-reveal--sliver"><img src="/wp-content/uploads/2026/02/metal-equipment-aids-growth-rural-farm-generated-by-ai-1024x585.jpg" alt="Drip lines and emitters running along rows of young seedlings in a greenhouse" class="wp-image-840"/></figure>
+<div class="wp-block-group dh-svc__grid dh-svc__grid--flip"><!-- wp:image {"id":2899,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-media dh-reveal--sliver"} -->
+<figure class="wp-block-image size-large dh-svc-media dh-reveal--sliver"><img src="/wp-content/uploads/2026/10/demas-services-gate-valve-1024x758.jpg" alt="A blue gate valve set between bricks in an open pipe trench" class="wp-image-2899"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:group {"className":"dh-svc__copy","layout":{"type":"default"}} -->
@@ -215,8 +215,8 @@
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"dh-svc-record-stage","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-record-stage"><!-- wp:image {"id":841,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-record__photo dh-reveal--sliver"} -->
-<figure class="wp-block-image size-large dh-svc-record__photo dh-reveal--sliver"><img src="/wp-content/uploads/2026/02/pexels-connorscottmcmanus-14823389-683x1024.jpg" alt="A pop-up sprinkler spraying over a hedge and planted bed" class="wp-image-841"/></figure>
+<div class="wp-block-group dh-svc-record-stage"><!-- wp:image {"id":2900,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-record__photo dh-reveal--sliver"} -->
+<figure class="wp-block-image size-large dh-svc-record__photo dh-reveal--sliver"><img src="/wp-content/uploads/2026/10/demas-services-valve-box-1024x683.jpg" alt="An open valve box with a filter, a solenoid valve and its wiring" class="wp-image-2900"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:group {"tagName":"article","className":"dh-svc-record dh-reveal--rise","layout":{"type":"default"}} -->
@@ -318,12 +318,12 @@
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"dh-svc-collage dh-reveal-content","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-svc-collage dh-reveal-content"><!-- wp:image {"id":825,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-collage__a"} -->
-<figure class="wp-block-image size-large dh-svc-collage__a"><img src="/wp-content/uploads/2026/02/pexels-sam-mccool-1923523643-34031016-1024x576.jpg" alt="Aerial view of irrigated fields and centre-pivot circles beside a river" class="wp-image-825"/></figure>
+<div class="wp-block-group dh-svc-collage dh-reveal-content"><!-- wp:image {"id":2901,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-collage__a"} -->
+<figure class="wp-block-image size-large dh-svc-collage__a"><img src="/wp-content/uploads/2026/10/demas-services-trenching-1024x705.jpg" alt="An excavator cutting a long pipe trench across open desert" class="wp-image-2901"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":1161,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-collage__b"} -->
-<figure class="wp-block-image size-large dh-svc-collage__b"><img src="/wp-content/uploads/2026/03/1000239887-1024x576.jpg" alt="Technicians in hard hats kneeling to fit drip lines in the sand" class="wp-image-1161"/></figure>
+<!-- wp:image {"id":2902,"sizeSlug":"large","linkDestination":"none","className":"dh-svc-collage__b"} -->
+<figure class="wp-block-image size-large dh-svc-collage__b"><img src="/wp-content/uploads/2026/10/demas-services-drip-lines-1024x576.jpg" alt="Technicians in hard hats kneeling to fit drip lines in the sand" class="wp-image-2902"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group --></section>

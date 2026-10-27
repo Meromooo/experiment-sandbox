@@ -194,7 +194,9 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   `dh-hero-slides`: one core Image block per photo, `sizeSlug` full, alt text and a caption
   edited in the editor. A `dh-focus--left`, `--right`, `--up` or `--down` class on an Image
   block moves its crop (`object-position` 40% or 60% on that axis). The image ids and URLs are
-  the sandbox's Media Library, so the cutover paste (AMM-158) takes live's ids and URLs. CSS
+  the sandbox's Media Library, so the cutover paste (AMM-158) takes live's ids and URLs. The
+  photos (and the Services page's) are graded and cropped by `tools/grade-photos.py` (AMM-239),
+  whose table records each one's crop; a new or replaced photo goes through it first. CSS
   (`style.css` section 9): the frame is a gutter in from the screen's sides, up to 100rem, at
   least most of the screen's height; a canopy shade from the copy's corner (from the bottom only
   on phones) keeps the paper text readable. `main.js` (job 7) builds the **tab** in the frame's

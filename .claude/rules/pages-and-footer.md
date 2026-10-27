@@ -196,7 +196,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   The **board** (`.dh-svc-board`, canopy, top-left corner square under the open tab) holds the
   heading ("visit" in the Highlight format, swept in sky blue as on Contact's request
   frame), the opening text, the paper "Request a site visit" button and the route on the left,
-  and the crew photo (media 1161) full height on the right, its left edge fading into the
+  and the site-survey photo (media 2898, AMM-239) full height on the right, its left edge fading into the
   board. The route is the shared one with paper tabs; each step is its name in the Bold format
   and one line, so on Services a step is a block with the tab in its margin rather than the
   shared two-column grid. The steps' copy is Ammar's as saved on page 822 (2026-10-14: "&"

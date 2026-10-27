@@ -33,6 +33,13 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   `inc/category-drawings.php`, the homepage category cards' product drawings: change a drawing
   in the script and re-run it, never the PHP by hand. Its scattered parts (fog droplets, turf,
   soil, fibres) come from seeded random numbers, so a re-run gives the same drawings.
+  `grade-photos.py` (AMM-239, 2026-10-27; Python 3 with Pillow and NumPy; run locally as
+  `python tools/grade-photos.py SRC_DIR OUT_DIR`, originals named by media ID) gives the
+  homepage hero and Services photos one grade (sand toned toward the `sand` token, soft curve,
+  highlights rolled off, shadows cooled toward `canopy`), crops each to its slot or past a
+  camera stamp, strips camera data, and writes `demas-<name>.jpg` files that are uploaded to
+  the Media Library; its `PHOTOS` table records every placed photo's crop, so add a row for a
+  new one and re-run.
   `make-key-plan.py` (AMM-188, 2026-10-08; Python 3 standard library) writes
   `inc/key-plan-land.php` from Natural Earth's public-domain 1:50m countries file, which is not
   in the repo: download `ne_50m_admin_0_countries.geojson` (3.1 MB, from
