@@ -42,24 +42,24 @@
 <!-- /wp:buttons -->
 
 <!-- wp:group {"className":"dh-hero-slides","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-hero-slides"><!-- wp:image {"id":1196,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left"} -->
-<figure class="wp-block-image size-full dh-focus--left"><img src="/wp-content/uploads/2026/03/8125a67e-ebb0-4227-b44a-baf5041fe338-1_all_2228-scaled.jpg" alt="Young trees on drip lines and a new lawn in front of a glass building, palms and a mountain behind" class="wp-image-1196"/><figcaption class="wp-element-caption">Finished site</figcaption></figure>
+<div class="wp-block-group dh-hero-slides"><!-- wp:image {"id":2892,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left"} -->
+<figure class="wp-block-image size-full dh-focus--left"><img src="/wp-content/uploads/2026/10/demas-hero-finished-site.jpg" alt="Young trees on drip lines and a new lawn in front of a glass building, palms and a mountain behind" class="wp-image-2892"/><figcaption class="wp-element-caption">Finished site</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":1209,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--down"} -->
-<figure class="wp-block-image size-full dh-focus--down"><img src="/wp-content/uploads/2026/03/1000134394.jpg" alt="A worker walking a freshly dug pipe trench across the desert" class="wp-image-1209"/><figcaption class="wp-element-caption">Pipework</figcaption></figure>
+<!-- wp:image {"id":2894,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--down"} -->
+<figure class="wp-block-image size-full dh-focus--down"><img src="/wp-content/uploads/2026/10/demas-hero-pipework.jpg" alt="A worker walking a freshly dug pipe trench across the desert" class="wp-image-2894"/><figcaption class="wp-element-caption">Pipework</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":1207,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--down"} -->
-<figure class="wp-block-image size-full dh-focus--down"><img src="/wp-content/uploads/2026/03/1000131649.jpg" alt="A blue filter station and valve manifold on a planted site" class="wp-image-1207"/><figcaption class="wp-element-caption">Filter station</figcaption></figure>
+<!-- wp:image {"id":2895,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--up"} -->
+<figure class="wp-block-image size-full dh-focus--up"><img src="/wp-content/uploads/2026/10/demas-hero-filter-station.jpg" alt="A technician beside a blue disc filter station and valve manifold on a planted site" class="wp-image-2895"/><figcaption class="wp-element-caption">Filter station</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":1225,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--up"} -->
-<figure class="wp-block-image size-full dh-focus--up"><img src="/wp-content/uploads/2026/03/1000421378.jpg" alt="A Demas crew in hard hats and vests lined up on a desert site" class="wp-image-1225"/><figcaption class="wp-element-caption">Installation crew</figcaption></figure>
+<!-- wp:image {"id":2893,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--up"} -->
+<figure class="wp-block-image size-full dh-focus--up"><img src="/wp-content/uploads/2026/10/demas-hero-installation-crew.jpg" alt="A Demas crew digging irrigation lines along a new kerb, jagged mountains behind" class="wp-image-2893"/><figcaption class="wp-element-caption">Installation crew</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":1226,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left dh-focus--up"} -->
-<figure class="wp-block-image size-full dh-focus--left dh-focus--up"><img src="/wp-content/uploads/2026/03/1000523927.jpg" alt="Mist drifting between young trees on a paved plaza beside glass buildings" class="wp-image-1226"/><figcaption class="wp-element-caption">Misting system</figcaption></figure>
+<!-- wp:image {"id":2896,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left dh-focus--up"} -->
+<figure class="wp-block-image size-full dh-focus--left dh-focus--up"><img src="/wp-content/uploads/2026/10/demas-hero-misting-system.jpg" alt="Mist drifting between young trees on a paved plaza beside glass buildings" class="wp-image-2896"/><figcaption class="wp-element-caption">Misting system</figcaption></figure>
 <!-- /wp:image --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
