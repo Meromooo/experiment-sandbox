@@ -148,8 +148,11 @@ add_filter( 'render_block', 'demas_theme_reveal_attributes', 10, 2 );
  * dh-hero-slides. The first is the page's largest paint, so it gets
  * fetchpriority="high" and no lazy loading; the rest are hidden until their
  * turn and get loading="lazy", so the browser leaves them alone until
- * main.js asks for them once the page has loaded. WordPress's own image
- * pass (wp_filter_content_tags) runs after this and keeps both attributes.
+ * main.js asks for them once the page has loaded. Every photo gets the
+ * frame's own sizes (AMM-239): WordPress's default is the 46rem content
+ * width, which gave the first photo its 768px file at 1440. WordPress's own
+ * image pass (wp_filter_content_tags) runs after this and keeps all three
+ * attributes, adding srcset and putting "auto" before the lazy ones' sizes.
  *
  * @param string $html  Rendered group markup, its images included.
  * @param array  $block Parsed block.
@@ -166,6 +169,9 @@ function demas_theme_hero_slides_loading( $html, $block ) {
 	$first = true;
 
 	while ( $tags->next_tag( 'img' ) ) {
+		// The frame's width, not the content width WordPress would write.
+		$tags->set_attribute( 'sizes', '(min-width: 100rem) 100rem, 100vw' );
+
 		if ( $first ) {
 			$tags->set_attribute( 'fetchpriority', 'high' );
 			$tags->remove_attribute( 'loading' );

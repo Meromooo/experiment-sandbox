@@ -130,8 +130,11 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     the group with the class `dh-hero-slides` gives its first image `fetchpriority="high"` and
     no lazy loading, and the rest `loading="lazy"`. They stay unrendered until their turn, so the
     browser leaves them alone; `main.js` switches them to eager 1.5 s after the page's `load`.
-    WordPress's own image pass runs after the filter and keeps both attributes, adding `srcset`
-    and `sizes` from each image's `wp-image-ID` class.
+    The same filter gives every photo `sizes="(min-width: 100rem) 100rem, 100vw"`, the frame's
+    width (AMM-239): WordPress's default is the 46rem content width, which gave the first photo
+    its 768px file at 1440 (and every photo in Safari, which ignores `sizes="auto"`).
+    WordPress's own image pass runs after the filter and keeps all three attributes, adding
+    `srcset` from each image's `wp-image-ID` class and `auto` before the lazy photos' `sizes`.
     Core blocks inside a group get the block
     layout's margins (the first block's are zeroed), so a rule the old HTML got from browser
     defaults has to be written down — see the section eyebrows in `style.css` section 9.
