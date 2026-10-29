@@ -1,1 +1,2 @@
 Source: https://github.com/leonxlnx/taste-skill (skills/taste-skill), commit ce26fc2, MIT. Installed 2026-10-02.
+Pinned at ce26fc2 on purpose (Ammar, 2026-10-29): upstream v2 (v2.1.5, checked that day) is a rewrite whose rules conflict with this site's locked design. Do not update; see .claude/rules/design.md.

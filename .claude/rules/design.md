@@ -138,7 +138,10 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   strip"; the homepage's second moving strip (the certificates belt, AMM-178) is Ammar's
   standing call, as is the use of the certification bodies' and partners' logos on it (they
   are on the live site), and so is the hero's photo carousel (AMM-196). Installed as a project skill in the main checkout's `.claude/skills/` (from
-  github.com/leonxlnx/taste-skill, commit ce26fc2, MIT). **Committed since 2026-10-06** (with
+  github.com/leonxlnx/taste-skill, commit ce26fc2, MIT). **Pinned at that commit on purpose
+  (Ammar, 2026-10-29):** upstream v2 (v2.1.5) is a different skill that designs pages itself,
+  downloads pictures and bans indigo, monospace, numbering, eyebrows, accent words and hairlines,
+  which are this site's locked design; don't update it. **Committed since 2026-10-06** (with
   ponytail, both with their LICENSE and SOURCE.txt) so cloud sessions get them; neither reaches
   the server, because only the `RUNTIME` files deploy (AMM-173). All five project skills are now
   committed (the three below since 2026-10-05). `.git/info/exclude` still lists `.claude/skills/`,
