@@ -50,10 +50,12 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   fix: read and trace the real flow first, fix the root cause where every caller routes through
   rather than the one symptom reported, reuse what the codebase already has, smallest correct
   diff, never cutting security, accessibility or error handling. Two adjustments for this repo:
-  its "code first, three short lines" output rule does not apply to reports, Linear comments or
-  explanations for Ammar (he is learning — those are requested); and its "leave one runnable
-  check" means the CI checks plus a verification on the sandbox, not new test files in the
-  theme (they would deploy to the site). Installed 2026-09-29 as the skill file only
+  its short-reply rule (end with one or two lines on what was skipped) does not cut reports,
+  Linear comments or explanations for Ammar (he is learning — those are requested); and its
+  "one small test or self-check" means the CI checks plus a verification on the sandbox, not
+  new test files in the theme (they would deploy to the site). A known shortcut is marked in
+  code with a `shortcut:` comment naming its limit (renamed from `ponytail:` with v5.3, 2026-10-29).
+  Updated to upstream v5.3.3 on 2026-10-29. Installed 2026-09-29 as the skill file only
   (`~/.claude/skills/ponytail/SKILL.md`, from github.com/DietrichGebert/ponytail, MIT) — not the
   plugin, whose hooks would switch it on for every session. Since 2026-10-06 the same file is
   also committed at `.claude/skills/ponytail/` (with its LICENSE and SOURCE.txt) so cloud

@@ -145,7 +145,7 @@
  * keyboard action shouldn't wait on motion (AMM-199). The browser marks the
  * button :focus-visible only after keyboard use, so hover, a mouse click and
  * a tap keep the reveal.
- * ponytail: closing by tabbing past the last link still fades (focus has left
+ * shortcut: closing by tabbing past the last link still fades (focus has left
  * the button), and a screen reader's synthetic click may animate; a flag set
  * from `event.detail === 0` in view.ts would cover both if either matters.
  */

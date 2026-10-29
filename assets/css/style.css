@@ -1440,7 +1440,7 @@ ul.dh-toolbar__chips {
  * request copy, catalogue toolbar). AMM-233: on catalogue pages the scroll
  * padding also clears the stuck toolbar; main.js sets --dh-toolbar-h to its
  * height, which wraps (71 to 129px measured). Without JS, the header only.
- * ponytail: 5rem is the band's measured height (80px at 16px text). If the
+ * shortcut: 5rem is the band's measured height (80px at 16px text). If the
  * header's height changes, change this with it.
  */
 @media (min-width: 56.0625rem) {

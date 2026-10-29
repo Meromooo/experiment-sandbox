@@ -87,7 +87,7 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     the last two keep everything typed and offer head office's number and the branch's
     directions. Replies are shown with `textContent` only. The `maxlength` on name, phone,
     email, company and message match the handler's limits. No honeypot input and no timeout
-    (ponytail: add them if spam or a hung request is ever seen). Without JavaScript Send stays disabled with a note.
+    (shortcut: add them if spam or a hung request is ever seen). Without JavaScript Send stays disabled with a note.
     **The short privacy notice (AMM-162, 2026-10-22)** sits under Send (`.dh-ct-form__privacy`):
     who gets the details and what for, that the site is hosted in the United States and the
     request goes by email through Microsoft 365 in Saudi Arabia, then "Read our privacy

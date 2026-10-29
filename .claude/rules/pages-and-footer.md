@@ -94,7 +94,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   default ring. Core's skip link sits outside the header but opens over the band, so it is a
   second selector on that rule (AMM-204). From 56.0625rem the header part is **sticky** under the admin bar
   (`top: var(--wp-admin--admin-bar--height, 0px)`). **`--dh-header-h`** (AMM-231, on `html`
-  at the same width: the admin bar plus 5rem, the band's measured 80px; a `ponytail:` note)
+  at the same width: the admin bar plus 5rem, the band's measured 80px; a `shortcut:` note)
   is how much of the screen it covers. `html` takes it as `scroll-padding-top` (plus
   spacing-20), so keyboard focus, anchor jumps and `scrollIntoView` land below the band
   instead of under it (WCAG 2.4.11). On catalogue pages it also adds **`--dh-toolbar-h`**
