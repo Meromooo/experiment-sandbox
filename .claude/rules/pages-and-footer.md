@@ -22,7 +22,8 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
     render nothing. Kadence's front-end **assets** are dropped too (AMM-154): its stylesheets,
     per-block CSS, slider/form scripts and its Google Fonts `<link>` to the old site's
     typeface (Trykker) — the plugin parsed page 17's content even on the homepage (since
-    AMM-153 that page holds the homepage's own blocks, no Kadence). Page photos get a `sizes` for the 46rem reading column and all but the
+    AMM-153 that page holds the homepage's own blocks, no Kadence). Page photos get a `sizes` for the 46rem reading column (not on the
+    homepage or a Designed page, which have none; AMM-239) and all but the
     first load lazily. Also holds `demas_theme_retired_pages()`: Contact Us (publishes 15 staff
     emails) redirects to the homepage Branch Desk, and the empty "All Products" page (`/shop/`)
     to the catalogue at `/products/` (AMM-147) — both 302 until cutover. A retired page comes

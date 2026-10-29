@@ -174,8 +174,9 @@ add_filter( 'kadence_blocks_print_google_fonts', '__return_false' );
  *    phone downloads a ~768px file, not a 1536px one; and every photo after
  *    the first loads lazily (AMM-154). WordPress leaves the first three
  *    images eager, which on Services was 865 KB up front. A page on the
- *    "Designed page" template (AMM-167) has no reading column, so its photos
- *    keep WordPress's own sizes; the lazy loading still applies.
+ *    "Designed page" template (AMM-167) has no reading column, and neither
+ *    has the homepage (its hero photos set their own sizes, AMM-239), so
+ *    their photos keep the sizes they have; the lazy loading still applies.
  */
 add_filter(
 	'render_block_core/post-content',
@@ -188,7 +189,7 @@ add_filter(
 		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
 		$seen      = array();
 		$images    = 0;
-		$column    = 'designed-page' !== get_page_template_slug();
+		$column    = 'designed-page' !== get_page_template_slug() && ! is_front_page();
 		$processor = new WP_HTML_Tag_Processor( (string) $content );
 
 		while ( $processor->next_tag() ) {
