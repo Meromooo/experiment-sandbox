@@ -28,6 +28,12 @@ result is posted as its own "PHPCS report" check with one annotation per violati
 server-side build step — the theme's files in this repo are the files WordPress reads, which is
 why compiled block output is committed (ADR-001, `docs/adr/0001-commit-compiled-block-output.md`).
 
+**Line endings (AMM-230, 2026-10-29).** The root `.gitattributes` (`* text=auto eol=lf`) makes
+every checkout use LF whatever the machine's `core.autocrlf`. Without it, Git for Windows checked
+files out as CRLF and `npm run build` left about 80 `build/` files showing as changed with no real
+difference. A checkout made before the file existed needs a one-time refresh
+(`git rm -r --cached -q .` then `git reset --hard`, on a clean tree).
+
 **Only the runtime files deploy (AMM-173, 2026-10-03).** Hostinger serves the theme folder
 as-is, so every file in it can be downloaded — until then that was the whole repo (this file,
 the briefs, `docs/`, `tools/`, `src/`, the package files, `.github/`). The deploy job no longer
