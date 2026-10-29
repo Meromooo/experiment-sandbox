@@ -46,6 +46,14 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   github.com/nvkelso/natural-earth-vector) and run
   `python tools/make-key-plan.py path/to/that/file`. It projects, clips to the frame and
   simplifies; change the frame or the detail there.
+  `rename-products.php` (AMM-150, 2026-10-29; run with `wp eval-file`, dry-run by default,
+  sandbox only by a guard like `assign-house-skus.php`'s) gives products the names Demas chose
+  in "AMM-150 product names.xlsx", so products that shared one name can be told apart. Its
+  input, `product-names.csv` (`product_id, sku, current_name, new_name`), is made from that
+  sheet's "Name that will be used" column once Demas returns it, and committed beside it. It
+  renames a product only while its current name still matches the sheet (an edit made in the
+  admin since is never overwritten), refuses a name with an em or en dash, and changes nothing
+  but the name: slugs, so URLs, stay.
   `hermes/checks.py` (AMM-183, 2026-10-07; Python 3 standard
   library only) is the scheduled checkups Hermes Agent runs from Ammar's machine: `smoke` (key
   pages, their block markers, every theme stylesheet/script/icon, the finder route, the no-cart
