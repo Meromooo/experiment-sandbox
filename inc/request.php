@@ -147,7 +147,7 @@ function demas_theme_request_handle( WP_REST_Request $request ): WP_REST_Respons
 	/*
 	 * REMOTE_ADDR is the visitor's own address on this host, even behind the
 	 * CDN (measured on the sandbox, 2026-10-21), so no forwarded header is
-	 * read. ponytail: each count lasts an hour from its last request, and
+	 * read. shortcut: each count lasts an hour from its last request, and
 	 * buyers behind one shared phone-network address share their 5; raise the
 	 * numbers if that ever turns a buyer away. The site-wide 200 is set far
 	 * above a real busy hour so a few addresses can't fill it for everyone
@@ -172,7 +172,7 @@ function demas_theme_request_handle( WP_REST_Request $request ): WP_REST_Respons
 		}
 	}
 
-	// ponytail: two requests in the same instant can share a ref; harmless, the email says which branch.
+	// shortcut: two requests in the same instant can share a ref; harmless, the email says which branch.
 	$ref = (int) get_option( 'demas_theme_request_ref', 1000 ) + 1;
 	update_option( 'demas_theme_request_ref', $ref, false );
 
