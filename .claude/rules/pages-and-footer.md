@@ -81,7 +81,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   skill's limit. The stacked logo (2:1, its top-left two-thirds empty) was tried first at
   3.5rem (too small), 6rem (a 120px band, too big) and 4rem (still small); side by side it
   fills the slot Ammar marked. 2.5rem below 75rem keeps the band on one row down to 1024px,
-  where 175px is free beside the menu (measured 2026-10-31). A theme
+  where 175px is free beside the menu (measured 2026-10-31). Below 56rem (the two-row phone
+  header) the logo takes only the room the icon controls leave, up to 2.5rem tall, so the
+  band stays two rows (116px) at every phone width, with or without a quote count; at a
+  fixed 163px the quote control wrapped to a third row (a 172px band). A theme
   file, not the Site Logo setting, which is saved content and still holds the old site's
   logo. It replaced the Site Title block), the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
