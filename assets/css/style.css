@@ -60,7 +60,7 @@ summary,
 
 /*
  * A page must never scroll sideways. Root causes are fixed in section 8
- * (site-title wrapping, the legacy product grid); this is the safety net
+ * (the legacy product grid); this is the safety net
  * for third-party markup we don't control.
  */
 html,
@@ -373,7 +373,7 @@ svg {
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
-	.dh-header .wp-block-site-title a,
+	.dh-header .dh-brand,
 	.dh-toolbar__chip,
 	.dh-pagination a,
 	.wp-block-query-pagination-next,
@@ -393,7 +393,7 @@ svg {
 	.dh-finder__trigger,
 	.dh-quote-toggle,
 	.dh-header .wp-block-navigation-item__content,
-	.dh-header .wp-block-site-title a,
+	.dh-header .dh-brand,
 	.dh-toolbar__chip,
 	.dh-pagination a,
 	.wp-block-query-pagination-next,
@@ -1308,11 +1308,6 @@ ul.dh-toolbar__chips {
 	display: none;
 }
 
-/* The site title is the only string on the page allowed to be unbreakable. */
-.wp-block-site-title {
-	overflow-wrap: anywhere;
-}
-
 /*
  * The page gutter: how far the hero frame sits in from the screen's sides.
  * The header's band shares it so the two line up, and on the homepage it is
@@ -1353,10 +1348,24 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--paper);
 }
 
-/* It wraps at its space, never inside "Demas" (at 320px with 200% text it
-   broke into six lines, both words split). */
-.dh-header .wp-block-site-title {
-	overflow-wrap: normal;
+/* The logo (patterns/header-brand.php): the band's own height on desktop,
+   so the band stays 5rem (--dh-header-h); 44px on phones, its tap target.
+   Width follows from the img's width and height, so nothing shifts. */
+.dh-brand {
+	display: block;
+	flex: none;
+}
+
+.dh-brand img {
+	display: block;
+	height: 2.75rem;
+	width: auto;
+}
+
+@media (min-width: 48rem) {
+	.dh-brand img {
+		height: 3.5rem;
+	}
 }
 
 .dh-header__nav {
@@ -1370,7 +1379,6 @@ ul.dh-toolbar__chips {
 	transition: background-color var(--wp--custom--motion--fast) var(--wp--custom--motion--ease);
 }
 
-.dh-header .wp-block-site-title a,
 .dh-header .dh-mega-menu__trigger,
 .dh-header .dh-mega-menu__toggle,
 .dh-header .wp-block-navigation__responsive-container-open,
@@ -1416,7 +1424,7 @@ ul.dh-toolbar__chips {
    controls turn paper. The open panel and the dialogs keep water. Core's
    skip link sits outside the header but opens over the band (AMM-204). */
 .dh-header :is(
-	.wp-block-site-title a,
+	.dh-brand,
 	.dh-mega-menu__trigger,
 	.dh-mega-menu__toggle,
 	.dh-finder__trigger--open,
@@ -1566,9 +1574,8 @@ ul.dh-toolbar__chips {
 		display: contents;
 	}
 
-	.dh-header__bar > .wp-block-site-title {
-		flex: 1 1 auto;
-		margin-inline-end: var(--wp--preset--spacing--20);
+	.dh-header__bar > .dh-brand {
+		margin-inline-end: auto;
 	}
 
 	.dh-header .dh-mega-menu {

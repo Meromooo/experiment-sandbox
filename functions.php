@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'DEMAS_THEME_VERSION', '0.5.0' );
+define( 'DEMAS_THEME_VERSION', '0.6.0' );
 define( 'DEMAS_THEME_DIR', get_template_directory() );
 
 $demas_theme_includes = array(
