@@ -1348,8 +1348,8 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--paper);
 }
 
-/* The logo (patterns/header-brand.php): the band's own height on desktop,
-   so the band stays 5rem (--dh-header-h); 44px on phones, its tap target.
+/* The logo (patterns/header-brand.php): 6rem from 48rem, so its two text
+   lines read (Ammar, option B); the band is then 7.5rem (--dh-header-h).
    Width follows from the img's width and height, so nothing shifts. */
 .dh-brand {
 	display: block;
@@ -1358,13 +1358,13 @@ ul.dh-toolbar__chips {
 
 .dh-brand img {
 	display: block;
-	height: 2.75rem;
+	height: 4rem;
 	width: auto;
 }
 
 @media (min-width: 48rem) {
 	.dh-brand img {
-		height: 3.5rem;
+		height: 6rem;
 	}
 }
 
@@ -1448,12 +1448,12 @@ ul.dh-toolbar__chips {
  * request copy, catalogue toolbar). AMM-233: on catalogue pages the scroll
  * padding also clears the stuck toolbar; main.js sets --dh-toolbar-h to its
  * height, which wraps (71 to 129px measured). Without JS, the header only.
- * shortcut: 5rem is the band's measured height (80px at 16px text). If the
- * header's height changes, change this with it.
+ * shortcut: 7.5rem is the band's height (the 6rem logo plus its padding,
+ * 120px). If the logo or the band's padding changes, change this with it.
  */
 @media (min-width: 56.0625rem) {
 	html {
-		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + 5rem);
+		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + 7.5rem);
 		scroll-padding-top: calc(var(--dh-header-h) + var(--dh-toolbar-h, 0px) + var(--wp--preset--spacing--20));
 	}
 
