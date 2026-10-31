@@ -1353,7 +1353,8 @@ ul.dh-toolbar__chips {
    so the band stays 5rem (80px, the taste skill's limit). Below 75rem it is
    2.5rem (163px), which keeps the band on one row down to 1024px (175px free
    beside the menu there). Width follows from the img's width and height, so
-   nothing shifts. */
+   nothing shifts. Below 56rem it shrinks to fit beside the controls (see
+   the two-row header further down). */
 .dh-brand {
 	display: block;
 	flex: none;
@@ -1579,8 +1580,19 @@ ul.dh-toolbar__chips {
 		display: contents;
 	}
 
+	/* The logo takes what the controls leave, up to 2.5rem tall: at a fixed
+	   163px it pushed the quote control onto a third row (172px band) at
+	   320px, and at 360-390px once the control shows its count. */
 	.dh-header__bar > .dh-brand {
-		margin-inline-end: auto;
+		flex: 1 1 0;
+		min-inline-size: 0;
+	}
+
+	.dh-header__bar > .dh-brand img {
+		width: auto;
+		height: auto;
+		max-width: 100%;
+		max-height: 2.5rem;
 	}
 
 	.dh-header .dh-mega-menu {
