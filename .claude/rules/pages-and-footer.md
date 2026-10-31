@@ -73,8 +73,13 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
 
 ## `parts/`
 
-- `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the site
-  title, the mega-menu block, the navigation block, the finder block (the header search) and
+- `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the
+  **logo** (the `header-brand` pattern, 2026-10-31: `assets/images/demas-logo-white.svg`, the
+  whole logo in paper, linking home with the alt text "Demas, home"; 3.5rem tall from 48rem,
+  the band's own content height, so the band stays 80px, and 2.75rem below, its 44px tap
+  target; its two text lines are too small to read at that size, Ammar's option A. A theme
+  file, not the Site Logo setting, which is saved content and still holds the old site's
+  logo. It replaced the Site Title block), the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
   renders the `<footer>` landmark itself). The navigation block carries
   its own two links (Services, Contact → `/contact-us/`, the rebuilt Contact page since AMM-169)
@@ -107,7 +112,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   first 8rem of scroll (a scroll-driven animation, only where supported). The shadow is on a
   `::after` layer of the band and only its `opacity` animates, so the band isn't repainted on
   every scroll frame (AMM-199); with reduced motion the shadow switches on without a fade
-  (`step-end`) once 8rem have scrolled, Ammar's call. Below 56rem the bar is a wrapping flex row: the title, the links, finder, quote and
+  (`step-end`) once 8rem have scrolled, Ammar's call. Below 56rem the bar is a wrapping flex row: the logo (its end margin `auto`), the links, finder, quote and
   hamburger at the end, and the product menu on its own full-width line beneath (`order: 1`;
   the nav wrapper is `display: contents`). The mega menu's closed panel must collapse to zero
   height there (AMM-159) or the header grows ~530px.

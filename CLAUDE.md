@@ -185,7 +185,8 @@ WordPress 6.5+; WooCommerce current stable, block-compatible (declared via
 - **A new file in `patterns/` needs a version bump:** WordPress caches the pattern list keyed on
   `Version:` in the root `style.css`, so a new pattern file is invisible (a `wp:pattern` pointing
   at it renders nothing) until it changes; bump it and `DEMAS_THEME_VERSION` in `functions.php`
-  together (0.2.0 `not-found`, 0.3.0 `footer`, 0.4.0 `services`, 0.5.0 `contact`, 2026-10-01).
+  together (0.2.0 `not-found`, 0.3.0 `footer`, 0.4.0 `services`, 0.5.0 `contact`, 2026-10-01;
+  0.6.0 `header-brand`, 2026-10-31).
 - **`three`, `@react-three/fiber`, `@react-three/drei`** in `package.json` are reserved for a
   planned phase-2 scroll-driven pipe scene (the system design doc's "Future ideas"): don't remove
   them, don't start that work unscheduled.
