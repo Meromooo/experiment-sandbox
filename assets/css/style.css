@@ -1341,16 +1341,17 @@ ul.dh-toolbar__chips {
 .dh-header > .dh-header__bar {
 	max-width: 100rem;
 	gap: var(--wp--preset--spacing--40);
-	padding-block: var(--wp--preset--spacing--30);
+	padding-block: var(--wp--preset--spacing--20); /* the logo fills the band */
 	padding-inline: clamp(1.25rem, 5vw, 4.5rem); /* the hero frame's --_pad */
 	border-radius: var(--wp--custom--radius--lg);
 	background: var(--wp--preset--color--canopy);
 	color: var(--wp--preset--color--paper);
 }
 
-/* The logo (patterns/header-brand.php): 6rem from 48rem, so its two text
-   lines read (Ammar, option B); the band is then 7.5rem (--dh-header-h).
-   Width follows from the img's width and height, so nothing shifts. */
+/* The logo (patterns/header-brand.php): 4rem from 48rem in a band with
+   spacing-20 padding, so the band stays 5rem (80px, the taste skill's
+   limit); 3rem on phones. Width follows from the img's width and height,
+   so nothing shifts. */
 .dh-brand {
 	display: block;
 	flex: none;
@@ -1358,13 +1359,13 @@ ul.dh-toolbar__chips {
 
 .dh-brand img {
 	display: block;
-	height: 4rem;
+	height: 3rem;
 	width: auto;
 }
 
 @media (min-width: 48rem) {
 	.dh-brand img {
-		height: 6rem;
+		height: 4rem;
 	}
 }
 
@@ -1448,12 +1449,13 @@ ul.dh-toolbar__chips {
  * request copy, catalogue toolbar). AMM-233: on catalogue pages the scroll
  * padding also clears the stuck toolbar; main.js sets --dh-toolbar-h to its
  * height, which wraps (71 to 129px measured). Without JS, the header only.
- * shortcut: 7.5rem is the band's height (the 6rem logo plus its padding,
- * 120px). If the logo or the band's padding changes, change this with it.
+ * 5rem is the band's one-row height (the 4rem logo plus its padding, 80px);
+ * main.js section 9 replaces it with the measured height, which is taller
+ * where the band wraps (897 to about 975px). This value is the no-JS fallback.
  */
 @media (min-width: 56.0625rem) {
 	html {
-		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + 7.5rem);
+		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + 5rem);
 		scroll-padding-top: calc(var(--dh-header-h) + var(--dh-toolbar-h, 0px) + var(--wp--preset--spacing--20));
 	}
 

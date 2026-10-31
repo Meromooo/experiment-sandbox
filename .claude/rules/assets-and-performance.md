@@ -24,7 +24,8 @@ No jQuery and no classic WooCommerce assets on any page (AMM-154): after any enq
   footer slide-over, the catalogue's Gallery / Sheet switch and the homepage hero's photo
   carousel (AMM-196: its tab, timer and holds, and the late loading of photos 2 onward), and
   the spec sheet's "Scroll sideways" hint, shown only while its table overflows (AMM-206),
-  and the catalogue toolbar's height for html's scroll padding (`--dh-toolbar-h`, AMM-233).
+  and the catalogue toolbar's height for html's scroll padding (`--dh-toolbar-h`, AMM-233),
+  and the header band's measured height (`--dh-header-h`, 2026-10-31).
 - `assets/fonts/` — self-hosted woff2 subsets (Archivo variable; IBM Plex Sans, Plex Sans
   Arabic, Plex Mono), SIL OFL. Registered through `theme.json` `fontFace` — never via a
   third-party font CDN. Fetched from the Google Fonts API on 2026-09-14; the fetch script

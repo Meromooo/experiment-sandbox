@@ -75,9 +75,9 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
 
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the
   **logo** (the `header-brand` pattern, 2026-10-31: `assets/images/demas-logo-white.svg`, the
-  whole logo in paper, linking home with the alt text "Demas, home"; 6rem tall from 48rem, so
-  its English and Arabic lines read (about 10 and 14px), which makes the band 120px, and 4rem
-  below. Ammar first took 3.5rem, the old band's height, then found it too small. A theme
+  whole logo in paper, linking home with the alt text "Demas, home"; 4rem tall from 48rem and
+  3rem below, with the band's padding cut to spacing-20 so the band stays 80px, the taste
+  skill's limit. Ammar tried 3.5rem (too small) and 6rem (a 120px band, too big) first. A theme
   file, not the Site Logo setting, which is saved content and still holds the old site's
   logo. It replaced the Site Title block), the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part
@@ -99,9 +99,9 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   default ring. Core's skip link sits outside the header but opens over the band, so it is a
   second selector on that rule (AMM-204). From 56.0625rem the header part is **sticky** under the admin bar
   (`top: var(--wp-admin--admin-bar--height, 0px)`). **`--dh-header-h`** (AMM-231, on `html`
-  at the same width: the admin bar plus 7.5rem, the band's 120px since the logo, 2026-10-31;
-  80px before; a `shortcut:` note)
-  is how much of the screen it covers. `html` takes it as `scroll-padding-top` (plus
+  at the same width: the admin bar plus 5rem, the band's one-row 80px, as the no-JS
+  fallback; since 2026-10-31 `main.js` section 9 sets it from the band's measured height, as
+  the band wraps to two rows from 897 to about 975px wide) is how much of the screen it covers. `html` takes it as `scroll-padding-top` (plus
   spacing-20), so keyboard focus, anchor jumps and `scrollIntoView` land below the band
   instead of under it (WCAG 2.4.11). On catalogue pages it also adds **`--dh-toolbar-h`**
   (AMM-233), the stuck toolbar's height, which wraps (71 to 129px), so `main.js` section 9
@@ -109,7 +109,7 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   only. Every other sticky element offsets from it: the
   catalogue toolbar at `var(--dh-header-h)`, and the product photo, Contact's branch list
   and request copy at `calc(var(--dh-header-h) + spacing-50)`. A new sticky element does
-  the same, and a change to the header's height changes the 7.5rem. The 120px band is over the taste skill's 80px nav limit by Ammar's choice (option B, 2026-10-31); an audit doesn't flag it. Then the band gains its shadow over the
+  the same; a change to the band's one-row height changes the 5rem fallback. Then the band gains its shadow over the
   first 8rem of scroll (a scroll-driven animation, only where supported). The shadow is on a
   `::after` layer of the band and only its `opacity` animates, so the band isn't repainted on
   every scroll frame (AMM-199); with reduced motion the shadow switches on without a fade
