@@ -74,10 +74,14 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
 ## `parts/`
 
 - `parts/` — template parts referenced by `templates/*.html`. `header.html` carries the
-  **logo** (the `header-brand` pattern, 2026-10-31: `assets/images/demas-logo-white.svg`, the
-  whole logo in paper, linking home with the alt text "Demas, home"; 4rem tall from 48rem and
-  3rem below, with the band's padding cut to spacing-20 so the band stays 80px, the taste
-  skill's limit. Ammar tried 3.5rem (too small) and 6rem (a 120px band, too big) first. A theme
+  **logo** (the `header-brand` pattern, 2026-10-31: `assets/images/demas-logo-white-wide.svg`,
+  the whole logo in paper and **side by side** (the mark left of the two lines, about 4:1),
+  linking home with the alt text "Demas, home"; 4rem tall (260px wide) from 75rem and 2.5rem
+  (163px) below, with the band's padding cut to spacing-20 so the band stays 80px, the taste
+  skill's limit. The stacked logo (2:1, its top-left two-thirds empty) was tried first at
+  3.5rem (too small), 6rem (a 120px band, too big) and 4rem (still small); side by side it
+  fills the slot Ammar marked. 2.5rem below 75rem keeps the band on one row down to 1024px,
+  where 175px is free beside the menu (measured 2026-10-31). A theme
   file, not the Site Logo setting, which is saved content and still holds the old site's
   logo. It replaced the Site Title block), the mega-menu block, the navigation block, the finder block (the header search) and
   the quote-drawer block (which hosts the quote store — don't remove it); `footer.html` only places the `footer` pattern (the part

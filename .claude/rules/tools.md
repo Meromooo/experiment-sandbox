@@ -30,8 +30,9 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   `python tools/make-icons.py assets/images`) writes the whole icon set from its two rectangle
   masters (see `assets/images/`). `make-logo-white.py` (2026-10-31, Python 3 standard library;
   run locally as `python tools/make-logo-white.py path/to/demas-logo.svg assets/images`)
-  writes `demas-logo-white.svg`, the one-colour logo for the header band; it asserts that one
-  bowl ground was dropped and only paper fills are left. `make-category-drawings.py` (AMM-186, 2026-10-07; Python 3
+  writes `demas-logo-white-wide.svg`, the one-colour logo for the header band, rearranged side
+  by side (same shapes, moved and scaled); it asserts that one bowl ground was dropped, that the
+  trace's layout is the one it measured, and that only paper fills are left. `make-category-drawings.py` (AMM-186, 2026-10-07; Python 3
   standard library; run locally as `python tools/make-category-drawings.py`) writes
   `inc/category-drawings.php`, the homepage category cards' product drawings: change a drawing
   in the script and re-run it, never the PHP by hand. Its scattered parts (fog droplets, turf,
