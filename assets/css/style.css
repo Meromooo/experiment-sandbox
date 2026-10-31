@@ -1348,10 +1348,12 @@ ul.dh-toolbar__chips {
 	color: var(--wp--preset--color--paper);
 }
 
-/* The logo (patterns/header-brand.php): 4rem from 48rem in a band with
-   spacing-20 padding, so the band stays 5rem (80px, the taste skill's
-   limit); 3rem on phones. Width follows from the img's width and height,
-   so nothing shifts. */
+/* The logo (patterns/header-brand.php), side by side, about 4 times as wide
+   as it is tall: 4rem (260px) from 75rem in a band with spacing-20 padding,
+   so the band stays 5rem (80px, the taste skill's limit). Below 75rem it is
+   2.5rem (163px), which keeps the band on one row down to 1024px (175px free
+   beside the menu there). Width follows from the img's width and height, so
+   nothing shifts. */
 .dh-brand {
 	display: block;
 	flex: none;
@@ -1359,11 +1361,11 @@ ul.dh-toolbar__chips {
 
 .dh-brand img {
 	display: block;
-	height: 3rem;
+	height: 2.5rem;
 	width: auto;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 75rem) {
 	.dh-brand img {
 		height: 4rem;
 	}
@@ -1450,9 +1452,9 @@ ul.dh-toolbar__chips {
  * padding also clears the stuck toolbar; main.js sets --dh-toolbar-h to its
  * height, which wraps (71 to 129px measured). Without JS, the header only.
  * The header is the gutter above the band plus the band's one-row 5rem (the
- * 4rem logo and its padding): 96px. main.js section 9 replaces it with the
- * measured height, which is taller where the band wraps (897 to about 975px).
- * This value is the no-JS fallback.
+ * 4rem logo and its padding, from 75rem): 96px. main.js section 9 replaces it
+ * with the measured height, which is shorter below 75rem (a 2.5rem logo) and
+ * taller where the band wraps. This value is the no-JS fallback.
  */
 @media (min-width: 56.0625rem) {
 	html {
