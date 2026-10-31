@@ -1449,13 +1449,14 @@ ul.dh-toolbar__chips {
  * request copy, catalogue toolbar). AMM-233: on catalogue pages the scroll
  * padding also clears the stuck toolbar; main.js sets --dh-toolbar-h to its
  * height, which wraps (71 to 129px measured). Without JS, the header only.
- * 5rem is the band's one-row height (the 4rem logo plus its padding, 80px);
- * main.js section 9 replaces it with the measured height, which is taller
- * where the band wraps (897 to about 975px). This value is the no-JS fallback.
+ * The header is the gutter above the band plus the band's one-row 5rem (the
+ * 4rem logo and its padding): 96px. main.js section 9 replaces it with the
+ * measured height, which is taller where the band wraps (897 to about 975px).
+ * This value is the no-JS fallback.
  */
 @media (min-width: 56.0625rem) {
 	html {
-		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + 5rem);
+		--dh-header-h: calc(var(--wp-admin--admin-bar--height, 0px) + var(--dh-gutter) + 5rem);
 		scroll-padding-top: calc(var(--dh-header-h) + var(--dh-toolbar-h, 0px) + var(--wp--preset--spacing--20));
 	}
 

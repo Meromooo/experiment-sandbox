@@ -806,15 +806,15 @@
 	/* 9. Header and catalogue toolbar heights (AMM-231, AMM-233) ------- */
 
 	// The header's band wraps to two rows on narrow desktops (897 to about
-	// 975px wide), so it isn't always the 5rem style.css assumes for
-	// --dh-header-h. Measured here, the sticky elements and the scroll padding
-	// clear it at any height; without JS the 5rem stays.
-	var band = document.querySelector('.dh-header__bar');
+	// 975px wide), so the header isn't always the height style.css assumes for
+	// --dh-header-h. Measured here (the gutter above the band included), the
+	// sticky elements and the scroll padding clear it at any height.
+	var header = document.querySelector('.dh-header');
 
-	if (band && 'ResizeObserver' in window) {
+	if (header && 'ResizeObserver' in window) {
 		new ResizeObserver(function () {
-			document.documentElement.style.setProperty('--dh-header-h', 'calc(var(--wp-admin--admin-bar--height, 0px) + ' + band.offsetHeight + 'px)');
-		}).observe(band);
+			document.documentElement.style.setProperty('--dh-header-h', 'calc(var(--wp-admin--admin-bar--height, 0px) + ' + header.offsetHeight + 'px)');
+		}).observe(header);
 	}
 
 	// The toolbar sticks under the header and wraps, so its height changes
