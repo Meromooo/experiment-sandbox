@@ -441,6 +441,7 @@ ul.dh-toolbar__chips {
 :is(
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+	.dh-brand,
 	.dh-mega-menu__trigger,
 	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
@@ -491,6 +492,7 @@ ul.dh-toolbar__chips {
 :is(
 	.dh-pill,
 	.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+	.dh-brand,
 	.dh-mega-menu__trigger,
 	.dh-mega-menu__toggle,
 	.dh-finder__trigger,
@@ -526,6 +528,7 @@ ul.dh-toolbar__chips {
 	:is(
 		.dh-pill,
 		.wp-block-button[class*="is-style-dh-pill-"] > .wp-block-button__link,
+		.dh-brand,
 		.dh-mega-menu__trigger,
 		.dh-mega-menu__toggle,
 		.dh-finder__trigger,
