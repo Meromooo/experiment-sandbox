@@ -133,7 +133,9 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   band, and a **hover bridge** (`.dh-mega-menu.is-open::after`, in `style.css`'s 56.0625rem
   block) covers that gap so the pointer can travel down into the panel without leaving the
   nav. The bridge hangs on the nav, not the panel, because the panel's `clip-path` would clip
-  it. Below 56rem the chevron button is 44px tall itself rather than through the tap-area
+  it. It runs from the middle of the bar (where "Products" is centred) to the panel, so a
+  taller bar can't open a gap under the pill again (AMM-240); the logo, "Products" and the
+  chevron sit above it with `z-index: 1`, so it never covers a link. Below 56rem the chevron button is 44px tall itself rather than through the tap-area
   list: at 320px with 200% text it wraps under the link, where a stretched tap area would
   cover "Products". There is no close delay; add one only if closing feels twitchy. The
   panel opens and closes in 250ms (`motion.fast`, AMM-199), then its columns fade in 70ms

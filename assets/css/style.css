@@ -1533,19 +1533,27 @@ ul.dh-toolbar__chips {
 
 	/*
 	 * Hover bridge (AMM-198). The panel floats below the bar, so the pointer
-	 * crosses the bar's bottom padding and the gap above the panel on its way
+	 * crosses the bar below "Products" and the gap above the panel on its way
 	 * down; both lie outside the menu's box, and the mouseleave there closed
 	 * it. This strip belongs to the menu and fills that path while it is open.
-	 * The other header controls come later in the page, so their tap areas
-	 * still sit on top of it. Not on the panel itself: its clip-path would
-	 * clip the strip away.
+	 * Not on the panel itself: its clip-path would clip the strip away.
+	 *
+	 * It starts at the middle of the bar, where "Products" is centred, so it
+	 * meets the menu whatever the bar's height (AMM-240: it started 12px above
+	 * the bar's bottom, and once the 4rem logo made the bar taller the pointer
+	 * crossed an 11.6px strip of nothing at 1280px and the menu closed). The
+	 * logo and the menu's own pill sit above it (z-index below); the other
+	 * header controls come later in the page, so their tap areas already do.
 	 */
 	.dh-header .dh-mega-menu.is-open::after {
 		content: "";
 		position: absolute;
 		inset-inline: 0;
-		inset-block-start: calc(100% - var(--wp--preset--spacing--30));
-		block-size: calc(var(--wp--preset--spacing--30) + 0.6rem);
+		inset-block: 50% -0.6rem;
+	}
+
+	.dh-header :is(.dh-brand, .dh-mega-menu__trigger, .dh-mega-menu__toggle) {
+		z-index: 1;
 	}
 }
 
