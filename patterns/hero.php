@@ -3,16 +3,18 @@
  * Title: Hero — Water, engineered
  * Slug: demas-theme/hero
  * Categories: demas
- * Description: Headline and buttons in a frame of Demas photos that change on their own, the Branch Desk, the irrigation schematic card, and the supply marquee.
+ * Description: Headline and buttons in a frame of irrigation photos that change on their own, the Branch Desk, the irrigation schematic card, and the supply marquee.
  *
  * @package Demas_Theme
  */
 
-// The frame (AMM-196) is a carousel of Demas's own photos: one Image block
-// each, its alt text and caption edited here, in the editor (the caption is read
-// out to screen readers, not shown). main.js adds the tab with a segment
-// per photo and the pause button; without it the first
-// photo stays. The image ids are the sandbox's Media Library; a paste on
+// The frame (AMM-196) is a carousel of photos: one Image block each, its alt
+// text and caption edited here, in the editor (the caption is read out to
+// screen readers, not shown). The first five are free stock (Pexels and
+// Unsplash licences; Ammar's exception for the hero, 2026-11-02; sources in
+// tools/grade-photos.py), the misting system is Demas's own. main.js adds
+// the tab with a segment per photo and the pause button; without it the
+// first photo stays. The image ids are the sandbox's Media Library; a paste on
 // another site takes that site's ids. A dh-focus--left/right/up/down class
 // on an image moves its crop. The Branch Desk's cities and people come from
 // inc/branches.php; the headline's green word is the Highlight format. One
@@ -42,20 +44,24 @@
 <!-- /wp:buttons -->
 
 <!-- wp:group {"className":"dh-hero-slides","layout":{"type":"default"}} -->
-<div class="wp-block-group dh-hero-slides"><!-- wp:image {"id":2892,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left"} -->
-<figure class="wp-block-image size-full dh-focus--left"><img src="/wp-content/uploads/2026/10/demas-hero-finished-site.jpg" alt="Young trees on drip lines and a new lawn in front of a glass building, palms and a mountain behind" class="wp-image-2892"/><figcaption class="wp-element-caption">Finished site</figcaption></figure>
+<div class="wp-block-group dh-hero-slides"><!-- wp:image {"id":2914,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="/wp-content/uploads/2026/11/demas-hero-pivot-field-1.jpg" alt="A centre-pivot irrigator watering a field of young crops under a clear sky" class="wp-image-2914"/><figcaption class="wp-element-caption">Pivot irrigation</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":2894,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--down"} -->
-<figure class="wp-block-image size-full dh-focus--down"><img src="/wp-content/uploads/2026/10/demas-hero-pipework.jpg" alt="A worker walking a freshly dug pipe trench across the desert" class="wp-image-2894"/><figcaption class="wp-element-caption">Pipework</figcaption></figure>
+<!-- wp:image {"id":2915,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left"} -->
+<figure class="wp-block-image size-full dh-focus--left"><img src="/wp-content/uploads/2026/11/demas-hero-pivot-rainbow-1.jpg" alt="A pivot irrigator spraying a green field, a small rainbow in the spray" class="wp-image-2915"/><figcaption class="wp-element-caption">Pivot in action</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":2895,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--up"} -->
-<figure class="wp-block-image size-full dh-focus--up"><img src="/wp-content/uploads/2026/10/demas-hero-filter-station.jpg" alt="A technician beside a blue disc filter station and valve manifold on a planted site" class="wp-image-2895"/><figcaption class="wp-element-caption">Filter station</figcaption></figure>
+<!-- wp:image {"id":2913,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="/wp-content/uploads/2026/11/demas-hero-pivot-aerial-1.jpg" alt="Circular fields watered by centre pivots, seen from the air beside a river" class="wp-image-2913"/><figcaption class="wp-element-caption">Fields from above</figcaption></figure>
 <!-- /wp:image -->
 
-<!-- wp:image {"id":2893,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--up"} -->
-<figure class="wp-block-image size-full dh-focus--up"><img src="/wp-content/uploads/2026/10/demas-hero-installation-crew.jpg" alt="A Demas crew digging irrigation lines along a new kerb, jagged mountains behind" class="wp-image-2893"/><figcaption class="wp-element-caption">Installation crew</figcaption></figure>
+<!-- wp:image {"id":2911,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="/wp-content/uploads/2026/11/demas-hero-field-sprinklers-1.jpg" alt="Sprinklers watering long rows of green crops" class="wp-image-2911"/><figcaption class="wp-element-caption">Field sprinklers</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":2916,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="/wp-content/uploads/2026/11/demas-hero-impact-sprinkler.jpg" alt="A single impact sprinkler spraying over a grass field in evening light" class="wp-image-2916"/><figcaption class="wp-element-caption">Impact sprinkler</figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:image {"id":2896,"sizeSlug":"full","linkDestination":"none","className":"dh-focus--left dh-focus--up"} -->
