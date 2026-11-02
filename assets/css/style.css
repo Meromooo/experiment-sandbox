@@ -2159,7 +2159,9 @@ ul.dh-toolbar__chips {
 }
 
 /* Phones: a shorter frame, the shade from the bottom only (the copy runs the
-   full width), the buttons stacked, a tighter tab. */
+   full width), the buttons stacked, a tighter tab. The shade fades out at the
+   frame's top edge, not before: a four-line headline reaches over a photo's
+   bright sky, and the paper text needs 3:1 there (measured, 2026-11-02). */
 @media (max-width: 47.99rem) {
 	.dh-hero > .dh-hero__frame.alignfull {
 		min-block-size: clamp(22rem, 100svh - var(--_above), 44rem);
@@ -2167,7 +2169,7 @@ ul.dh-toolbar__chips {
 	}
 
 	.dh-hero-slides::after {
-		background: linear-gradient(to top, color-mix(in srgb, var(--wp--preset--color--canopy) 92%, transparent) 0, color-mix(in srgb, var(--wp--preset--color--canopy) 70%, transparent) 55%, transparent 85%);
+		background: linear-gradient(to top, color-mix(in srgb, var(--wp--preset--color--canopy) 92%, transparent) 0, color-mix(in srgb, var(--wp--preset--color--canopy) 80%, transparent) 65%, transparent);
 	}
 
 	.dh-hero__frame > .dh-hero__actions {
