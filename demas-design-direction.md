@@ -351,8 +351,10 @@ here (CLAUDE.md).
 
 ## 8. Photography
 
-Photography is Demas's own or nothing: no stock or placeholder photos. The homepage's hero frame
-(AMM-196) and the Services page show Demas's photos of their work; elsewhere, until more arrive
+Photography is Demas's own or nothing: no stock or placeholder photos. One exception (Ammar,
+2026-11-02): the homepage's hero frame (AMM-196) may hold free stock photos of irrigation at
+work, licences recorded in `tools/grade-photos.py`. The Services page shows Demas's photos of
+their work; elsewhere, until more arrive
 (AMM-149), a drawn placeholder or the drawing register stands in. Product photos are studio shots on white, so
 their tiles sit on `sand` to give the cut-out something to read against, with
 `object-fit: contain` so no part of the component is cropped (`style.css` section 10).

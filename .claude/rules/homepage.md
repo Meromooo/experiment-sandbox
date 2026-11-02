@@ -190,7 +190,11 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
   rotor, pipe with tee and valve, drill in a plate, fabric roll with a loupe); the cards are
   ~57px taller at desktop. Nothing in Page 17 changed: the drawings follow the cards' slugs.
   **AMM-196 (2026-10-15):** the hero head is a **photo frame**, a carousel of Demas's own photos
-  (Ammar's exception to the taste rules, beside the two moving strips). Markup (`patterns/hero.php`
+  (Ammar's exception to the taste rules, beside the two moving strips). **Since 2026-11-02** it
+  holds six: five free stock photos of pivots and sprinklers (Pexels and Unsplash licences,
+  Ammar's exception to the no-stock rule, for the hero only; each one's source in
+  `tools/grade-photos.py`) and Demas's misting system. The earlier Demas site photos looked too
+  rough to show management. Markup (`patterns/hero.php`
   and Page 17): a full-width group `dh-hero__frame` holding the copy group `dh-hero__copy` (the
   headline and lead, still `dh-reveal--rise`), the Buttons block `dh-hero__actions` (the
   **socket**, paper cut into the frame's bottom corner with the notch's fillets) and the group

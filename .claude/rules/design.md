@@ -134,7 +134,8 @@ and low-contrast text that frontend-ui-engineering's checklist exists to catch.)
   design-system packages it names); the hand-drawn schematic icon set stays (its "never
   hand-roll SVG icons" rule is overridden); the theme is light-only until Ammar decides
   otherwise (its mandatory dark mode is not applied); no stock or picsum photography on the
-  site (real photos wait on AMM-149); the branch-city marquee is real content, not a "locale
+  site (real photos wait on AMM-149), except the homepage hero's carousel, which may hold free
+  stock photos (Ammar, 2026-11-02; source and licence of each in `tools/grade-photos.py`); the branch-city marquee is real content, not a "locale
   strip"; the homepage's second moving strip (the certificates belt, AMM-178) is Ammar's
   standing call, as is the use of the certification bodies' and partners' logos on it (they
   are on the live site), and so is the hero's photo carousel (AMM-196). Installed as a project skill in the main checkout's `.claude/skills/` (from

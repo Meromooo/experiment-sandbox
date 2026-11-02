@@ -42,6 +42,12 @@ PHOTOS = {
     1209: ('hero-pipework', None),
     1206: ('hero-filter-station', (0, 0, 1, .85)),       # less ground: the worker keeps his head at desktop width
     1226: ('hero-misting-system', (0, .02, 1, .80)),     # drops the camera's date stamp
+    # Free stock, Ammar's exception for the hero (2026-11-02); licence by file name in the library.
+    66: ('hero-pivot-field', None),                      # Unsplash licence, lumin-osity-6DMht7wYt6g
+    854: ('hero-pivot-rainbow', None),                   # Pexels licence, french-sweetie 27624218
+    825: ('hero-pivot-aerial', None),                    # Pexels licence, sam-mccool 34031016
+    844: ('hero-field-sprinklers', None),                # Pexels licence, vladimirsrajber 32743214
+    974: ('hero-impact-sprinkler', None),                # Pexels licence, rodrigo-armendariz 33881124
     1164: ('services-crew', None),
     1227: ('services-site-survey', None),
     1233: ('services-gate-valve', (0, .145, 1, .70)),    # 4:3
