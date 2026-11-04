@@ -18,7 +18,9 @@
  *    reference, and the typed fields cleared), not connected (until the
  *    Microsoft 365 settings exist), or not sent for anything else. Those
  *    two offer head office's number and the branch's directions, and keep
- *    everything typed. The panel takes focus.
+ *    everything typed. The panel takes focus. When the server refuses one
+ *    of the fields below (a 400 naming it, AMM-241), that field is marked
+ *    as if the form had caught it, until the buyer changes it.
  *
  * A wrong or missing field is marked on the field (aria-invalid, with its
  * message tied to it by aria-describedby) and listed in a summary at the top
@@ -67,6 +69,8 @@ type Control = HTMLInputElement | HTMLTextAreaElement;
 interface Reply {
 	ref?: string;
 	code?: string;
+	/** With code "invalid": the fields the server refused. */
+	fields?: string[];
 }
 
 /** The quote list's key, as src/quote-drawer/view.ts writes it. */
@@ -289,9 +293,16 @@ function init( form: HTMLFormElement ): void {
 
 	/* Checking ---------------------------------------------------------- */
 
+	/** Values the server refused, by field (AMM-241). */
+	const refused = new Map< string, string >();
+
 	const problem = ( field: string ): string => {
 		const control = controls.get( field );
 		const value = control?.value.trim() ?? '';
+
+		if ( refused.get( field ) === value ) {
+			return strings.errors[ 'phone' === field ? 'phoneBad' : field ];
+		}
 
 		switch ( field ) {
 			case 'name':
@@ -308,8 +319,11 @@ function init( form: HTMLFormElement ): void {
 					: strings.errors.phoneBad;
 			}
 			case 'email':
+				// The browser's rule allows no dot after the @; is_email() on
+				// the server needs one (AMM-241).
 				return ! value ||
-					( control as HTMLInputElement ).validity.valid
+					( ( control as HTMLInputElement ).validity.valid &&
+						/@.+\./.test( value ) )
 					? ''
 					: strings.errors.email;
 		}
@@ -482,11 +496,21 @@ function init( form: HTMLFormElement ): void {
 				}
 			);
 			tried = false;
+			refused.clear();
 			show(
 				format( strings.sentTitle, option()?.dataset.city ?? '' ),
 				format( strings.sent, reply.ref ?? '' ),
 				false
 			);
+		} else if (
+			'invalid' === reply.code &&
+			reply.fields?.some( ( field ) => ORDER.includes( field ) )
+		) {
+			reply.fields.forEach( ( field ) =>
+				refused.set( field, controls.get( field )?.value.trim() ?? '' )
+			);
+			check();
+			summary.focus();
 		} else if ( 'not_connected' === reply.code ) {
 			show( strings.notSentTitle, strings.notSent, true );
 		} else {

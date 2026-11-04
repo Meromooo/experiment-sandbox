@@ -85,7 +85,14 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
     **not connected** (`code: "not_connected"`, matched on the code, not on 503, which a
     server error page could also give), or **wasn't sent** (anything else, offline included);
     the last two keep everything typed and offer head office's number and the branch's
-    directions. Replies are shown with `textContent` only. The `maxlength` on name, phone,
+    directions. Replies are shown with `textContent` only. **The form and the server agree on
+    the email (AMM-241, 2026-11-04):** the browser's own email rule allows no dot after the @
+    and `is_email()` needs one, so `problem( 'email' )` also asks for a dot after the @. And
+    when the server answers 400 `invalid` naming name, phone, email or message, those fields
+    are marked with their usual messages and the summary takes focus, instead of the "wasn't
+    sent" panel; the mark stays while the field holds the refused value. Other fields in a
+    400 still get "wasn't sent". `is_email()` also refuses an address under 6 characters and
+    non-ASCII domains, which the form leaves to that path. The `maxlength` on name, phone,
     email, company and message match the handler's limits. No honeypot input and no timeout
     (shortcut: add them if spam or a hung request is ever seen). Without JavaScript Send stays disabled with a note.
     **The short privacy notice (AMM-162, 2026-10-22)** sits under Send (`.dh-ct-form__privacy`):
