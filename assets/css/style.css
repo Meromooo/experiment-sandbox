@@ -1621,9 +1621,9 @@ ul.dh-toolbar__chips {
 	}
 }
 
-/* The finder is a bare icon button up to 975px (src/finder/style.scss):
+/* The finder is a bare icon button up to 1023px (src/finder/style.scss):
    paper on the band. */
-@media (max-width: 60.9375rem) {
+@media (max-width: 63.9375rem) {
 	.dh-header .dh-finder__trigger--open {
 		color: var(--wp--preset--color--paper);
 	}
