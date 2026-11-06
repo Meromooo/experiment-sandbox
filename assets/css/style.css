@@ -1619,8 +1619,11 @@ ul.dh-toolbar__chips {
 		justify-content: flex-end;
 		flex-wrap: wrap;
 	}
+}
 
-	/* The finder is a bare icon button here: paper on the band. */
+/* The finder is a bare icon button up to 975px (src/finder/style.scss):
+   paper on the band. */
+@media (max-width: 60.9375rem) {
 	.dh-header .dh-finder__trigger--open {
 		color: var(--wp--preset--color--paper);
 	}
@@ -5298,14 +5301,16 @@ footer.wp-block-template-part {
 
 /* Company plate ------------------------------------------------------ */
 
+/* The heading is the colour logo (tools/make-logos.py); its alt names the company. */
 .dh-foot__name {
 	margin: 0;
-	font-family: var(--wp--preset--font-family--display);
-	font-size: var(--wp--preset--font-size--xl);
-	font-weight: 700;
-	line-height: var(--wp--custom--display--leading);
-	letter-spacing: var(--wp--custom--display--tracking);
-	text-transform: uppercase;
+	line-height: 0;
+}
+
+.dh-foot__name img {
+	display: block;
+	inline-size: min(18rem, 100%);
+	block-size: auto;
 }
 
 .dh-foot__trade {

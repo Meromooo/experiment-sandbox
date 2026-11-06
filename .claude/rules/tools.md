@@ -28,11 +28,14 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   canvas, so every plate shows its logo at one size; the files are uploaded and picked per
   credential. `make-icons.py` (2026-10-05, Python 3 with Pillow; run locally as
   `python tools/make-icons.py assets/images`) writes the whole icon set from its two rectangle
-  masters (see `assets/images/`). `make-logo-white.py` (2026-10-31, Python 3 standard library;
-  run locally as `python tools/make-logo-white.py path/to/demas-logo.svg assets/images`)
-  writes `demas-logo-white-wide.svg`, the one-colour logo for the header band, rearranged side
-  by side (same shapes, moved and scaled); it asserts that one bowl ground was dropped, that the
-  trace's layout is the one it measured, and that only paper fills are left. `make-category-drawings.py` (AMM-186, 2026-10-07; Python 3
+  masters (see `assets/images/`). `make-logos.py` (2026-10-31 as `make-logo-white.py`,
+  renamed 2026-11-06; Python 3 standard library; run locally as
+  `python tools/make-logos.py path/to/demas-logo.svg assets/images`) writes both logo files:
+  `demas-logo-colour.svg`, the trace as drawn in its own colours for light surfaces (the
+  footer), and `demas-logo-white-wide.svg`, the one-colour logo for the header band, rearranged
+  side by side (same shapes, moved and scaled). Both drop the bowl's white ground; it asserts
+  that exactly one was dropped, that the trace's layout is the one it measured, and that only
+  paper fills are left in the white one. `make-category-drawings.py` (AMM-186, 2026-10-07; Python 3
   standard library; run locally as `python tools/make-category-drawings.py`) writes
   `inc/category-drawings.php`, the homepage category cards' product drawings: change a drawing
   in the script and re-run it, never the PHP by hand. Its scattered parts (fog droplets, turf,

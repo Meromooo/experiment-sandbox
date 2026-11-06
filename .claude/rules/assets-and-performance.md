@@ -54,11 +54,14 @@ No jQuery and no classic WooCommerce assets on any page (AMM-154): after any enq
   `icon-maskable-512.png` (all on a `paper` tile) and `site.webmanifest`. Change an icon by
   editing the masters in the script and re-running it, never by hand-editing a PNG.
   `demas-logo-white-wide.svg` (2026-10-31) is the whole logo in `paper` for the header's
-  canopy band, written by `tools/make-logo-white.py` from the traced `demas-logo.svg` (not in
+  canopy band, written by `tools/make-logos.py` from the traced `demas-logo.svg` (not in
   the repo; no designer's file yet): every fill paper, the bowl's white ground dropped so the
   band shows through, and laid out side by side (the mark on the left at full height, the two
-  lines beside it at half that, 3133 x 770) instead of the trace's stacked layout. Re-run the
-  script on a new source, never edit the file by hand. The header's
+  lines beside it at half that, 3133 x 770) instead of the trace's stacked layout. The same
+  script writes `demas-logo-colour.svg` (2026-11-06), the logo for surfaces that are not blue
+  (Ammar's rule): the trace as drawn, stacked, in its own two blues (1536 x 772), with only
+  the bowl's white ground dropped; the footer's company plate uses it. Re-run the script on a
+  new source, never edit either file by hand. The header's
   `<img>` carries `fetchpriority="auto"` so WordPress doesn't give it the page's one `high`.
 
 ## `inc/setup.php`, `inc/enqueue.php`, `inc/performance.php`

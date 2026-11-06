@@ -63,7 +63,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   `credentials`, `numbers`, `categories`, `process`, `closing-cta`; plus `not-found` (the 404
   head, core blocks, not inserter-visible) and `footer` (AMM-144 — the site footer drawn as an
   engineering drawing's **title block**: catalogue index, branches + key plan, the company
-  plate, the closing line; not inserter-visible). The plate's registered name (English, plus
+  plate, the closing line; not inserter-visible). The plate's heading is the colour logo
+  (`assets/images/demas-logo-colour.svg`, 2026-11-06: Ammar's rule is the full-colour logo
+  wherever the background is not blue), 18rem wide, its alt text "Demas Group" naming the
+  heading and its `section`. The plate's registered name (English, plus
   the Arabic of the CR certificate as a `lang="ar"` line), CR number (1010028038) and VAT
   number (300054069400003) come from the certificates PDF (AMM-162); "Our certificates" links the
   `DEMAS-Certificates.pdf` already in the media library; LinkedIn is the company page. The
@@ -81,7 +84,10 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   skill's limit. The stacked logo (2:1, its top-left two-thirds empty) was tried first at
   3.5rem (too small), 6rem (a 120px band, too big) and 4rem (still small); side by side it
   fills the slot Ammar marked. 2.5rem below 75rem keeps the band on one row down to 1024px,
-  where 175px is free beside the menu (measured 2026-10-31). Below 56rem (the two-row phone
+  where 175px is free beside the menu (measured 2026-10-31). From 56.0625rem to 60.9375rem
+  (897 to 975px) the finder stays the round icon button of the phone header
+  (`src/finder/style.scss`, 2026-11-06): its wide field (12rem at least) left the logo, menu
+  and controls 62px short at 897px, so the band wrapped to two rows up to about 966px. Below 56rem (the two-row phone
   header) the logo takes only the room the icon controls leave, up to 2.5rem tall, so the
   band stays two rows (116px) at every phone width, with or without a quote count; at a
   fixed 163px the quote control wrapped to a third row (a 172px band). A theme
@@ -109,7 +115,8 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   at the same width: the admin bar plus the gutter above the band plus the band's one-row
   5rem, 96px, as the no-JS fallback; until 2026-10-31 it left out the gutter, so stuck
   elements sat 16px under the band. Since then `main.js` section 9 sets it from `.dh-header`'s
-  measured height, as the band wraps to two rows from 897 to about 975px wide) is how much of
+  measured height, in case the band ever wraps to two rows; it did from 897 to about 966px
+  wide until the finder became an icon there, 2026-11-06) is how much of
   the screen it covers. `html` takes it as `scroll-padding-top` (plus
   spacing-20), so keyboard focus, anchor jumps and `scrollIntoView` land below the band
   instead of under it (WCAG 2.4.11). On catalogue pages it also adds **`--dh-toolbar-h`**

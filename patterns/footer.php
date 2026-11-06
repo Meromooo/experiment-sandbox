@@ -33,7 +33,7 @@ $demas_certificates = content_url( 'uploads/2026/03/DEMAS-Certificates.pdf' );
 
 			<!-- wp:html -->
 			<section class="dh-foot__id" aria-labelledby="dh-foot-company">
-				<h2 class="dh-foot__name" id="dh-foot-company">Demas Group</h2>
+				<h2 class="dh-foot__name" id="dh-foot-company"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/demas-logo-colour.svg' ) ); ?>" width="1536" height="772" alt="Demas Group" loading="lazy" decoding="async"></h2>
 				<p class="dh-foot__trade">Irrigation and landscape infrastructure, supplied and supported across the Kingdom.</p>
 				<dl class="dh-foot-plate">
 					<div class="dh-foot-plate__row"><dt>Est.</dt><dd class="dh-mono">1979</dd></div>

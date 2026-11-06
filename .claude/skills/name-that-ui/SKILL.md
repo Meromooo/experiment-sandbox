@@ -57,6 +57,7 @@ Source: [namethatui.com](https://namethatui.com) (free): 49 web entries at `/web
 | Empty search / empty listing | **Empty state** | `/web/empty-state`, `/vs/empty-state-vs-skeleton` | |
 | Header canopy band (`.dh-header__bar`) | **Sticky header** (a navbar) | `/web/sticky-fixed`, `/web/header-navbar` | AMM-198. Sticky from 56.0625rem only, under the admin bar; gains its shadow as the page scrolls. On phones it scrolls away. |
 | Header logo (`.dh-brand`, `patterns/header-brand.php`) | **Logo** (the navbar's brand link) | `/web/header-navbar` | 2026-10-31. A link home holding the logo image; its name is the alt text "Demas, home". |
+| Footer logo (`.dh-foot__name img`, `patterns/footer.php`) | **Logo** | `/web/header-navbar` | 2026-11-06. The colour logo as the company plate's heading, not a link; its alt text "Demas Group" is the heading's name. |
 | Product menu (`demas-theme/mega-menu`) | **Mega menu**, built as a **disclosure navigation menu with a top-level link** | none on the site | AMM-198. "Products" is a link to `/products/`; the chevron is a separate button (`aria-expanded`, `aria-controls`) that shows and hides the panel; a mouse opens it by hovering, and a hover bridge spans the gap down to the panel. Not `role="menu"`: it is site navigation. |
 | Keyboard focus outline | **Focus ring** | `/web/focus-ring-web` | |
 | Reveal timing | **Easing** | `/web/easing`, `/vs/easing-vs-spring` | |
