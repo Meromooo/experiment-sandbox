@@ -20,7 +20,7 @@
  * JavaScript, so the video is never fetched then. Without an MP4 or AV1
  * file the card draws the schematic as before.
  *
- * @param array    $attributes Block attributes: tabTitle, tabCopy, film, filmLabel.
+ * @param array    $attributes Block attributes: tabTitle, tabCopy, film, filmLabel, filmFade.
  * @param string   $content    Inner content (none).
  * @param WP_Block $block      Block instance.
  *
@@ -47,11 +47,14 @@ if ( '' === $demas_film_label ) {
 	$demas_film_label = __( 'Animation: an irrigation system is drawn onto a site plan, its pump station is fitted, the sprinklers run, and the garden grows green.', 'demas-theme' );
 }
 
+// The white fade at the film's top and bottom, a share of its height (0 to 30, set in the sidebar).
+$demas_film_fade = max( 0, min( 30, (int) ( $attributes['filmFade'] ?? 0 ) ) );
+
 $demas_wrapper = get_block_wrapper_attributes( array( 'class' => 'dh-schem dh-notch dh-card dh-card--canopy' . ( $demas_has_film ? ' dh-schem--film' : '' ) ) );
 ?>
 <div <?php echo $demas_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped by core. ?> data-reveal="seed">
 	<?php if ( $demas_has_film ) : ?>
-		<div class="dh-film" data-film>
+		<div class="dh-film" data-film<?php echo $demas_film_fade ? ' style="--dh-film-fade: ' . esc_attr( (string) $demas_film_fade ) . '%"' : ''; ?>>
 			<?php if ( '' !== $demas_film['poster'] ) : ?>
 				<?php // Lazy: below 56rem the card is below the fold, and fetched early the frame cost the phone's LCP (the hero's lead) ~200 ms. On desktop it is in view and loads at first layout. ?>
 				<img class="dh-film__poster" src="<?php echo esc_url( $demas_film['poster'] ); ?>" alt="" width="1200" height="950" loading="lazy" decoding="async">

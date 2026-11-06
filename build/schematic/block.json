@@ -29,6 +29,10 @@
     "filmLabel": {
       "type": "string",
       "default": ""
+    },
+    "filmFade": {
+      "type": "number",
+      "default": 0
     }
   }
 }
