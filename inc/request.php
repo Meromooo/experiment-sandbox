@@ -147,16 +147,23 @@ function demas_theme_request_handle( WP_REST_Request $request ): WP_REST_Respons
 	/*
 	 * REMOTE_ADDR is the visitor's own address on this host, even behind the
 	 * CDN (measured on the sandbox, 2026-10-21), so no forwarded header is
-	 * read. shortcut: each count lasts an hour from its last request, and
-	 * buyers behind one shared phone-network address share their 5; raise the
-	 * numbers if that ever turns a buyer away. The site-wide 200 is set far
-	 * above a real busy hour so a few addresses can't fill it for everyone
-	 * (AMM-236); it logs once when it first fills in a window.
+	 * read. shortcut: a visitor's count lasts an hour from its last request,
+	 * and buyers behind one shared phone-network address share their 5; raise
+	 * the numbers if that ever turns a buyer away. An IPv6 visitor counts by
+	 * its /64, the block one connection is given (AMM-258). The site-wide 200
+	 * is set far above a real busy hour (AMM-236) and counts per UTC clock
+	 * hour, so it always resets on the hour; it logs once when it fills.
 	 */
 	$address = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-	$limits  = array(
+	$packed  = filter_var( $address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 ) ? inet_pton( $address ) : false;
+	// An IPv4-mapped address (::ffff:a.b.c.d) is one IPv4 visitor, so it keeps its full address.
+	if ( $packed && ! str_starts_with( $packed, str_repeat( "\0", 10 ) . "\xff\xff" ) ) {
+		$address = bin2hex( substr( $packed, 0, 8 ) );
+	}
+	$site_key = 'demas_theme_rq_site_' . gmdate( 'YmdH' );
+	$limits   = array(
 		'demas_theme_rq_' . wp_hash( $address ) => 5,
-		'demas_theme_rq_site'                   => 200,
+		$site_key                               => 200,
 	);
 	foreach ( $limits as $key => $max ) {
 		if ( (int) get_transient( $key ) >= $max ) {
@@ -166,7 +173,7 @@ function demas_theme_request_handle( WP_REST_Request $request ): WP_REST_Respons
 	foreach ( $limits as $key => $max ) {
 		$count = (int) get_transient( $key ) + 1;
 		set_transient( $key, $count, HOUR_IN_SECONDS );
-		if ( 'demas_theme_rq_site' === $key && $max === $count ) {
+		if ( $site_key === $key && $max === $count ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- the only trace that the site-wide cap filled; the limit only.
 			error_log( 'Demas request: site-wide limit of ' . $max . ' an hour reached; further requests get 429 until it resets' );
 		}
