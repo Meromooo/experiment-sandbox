@@ -8,6 +8,7 @@ import {
 import {
 	Button,
 	PanelBody,
+	RangeControl,
 	TextareaControl,
 	TextControl,
 } from '@wordpress/components';
@@ -26,6 +27,7 @@ type Attributes = {
 	tabCopy: string;
 	film: Film;
 	filmLabel: string;
+	filmFade: number;
 };
 
 type EditProps = {
@@ -181,6 +183,22 @@ registerBlockType( metadata.name, {
 								}
 							/>
 						) ) }
+						<RangeControl
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
+							label={ __( 'Fade strength, top and bottom', 'demas-theme' ) }
+							help={ __(
+								'How far the white fade reaches into the film from its top and bottom edges, as a share of its height. 0 is no fade.',
+								'demas-theme'
+							) }
+							min={ 0 }
+							max={ 30 }
+							step={ 1 }
+							value={ attributes.filmFade ?? 0 }
+							onChange={ ( filmFade?: number ) =>
+								setAttributes( { filmFade: filmFade ?? 0 } )
+							}
+						/>
 						<TextareaControl
 							__nextHasNoMarginBottom
 							label={ __( 'Description for screen readers', 'demas-theme' ) }

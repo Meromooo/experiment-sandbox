@@ -73,7 +73,10 @@ The homepage's sections are the content of Pages → Homepage (page 17); the pat
     `<noscript>`). `src/schematic/view.ts` plays it once when the card is half in view and its
     reveal has landed (`.is-settled`, 3 s fallback), leaves it on the finished garden, and runs
     the Pause / Play / Replay button (WCAG 2.2.2), placed top-left, clear of the picture's
-    corners. The video has `preload="none"`, so it is only fetched when it plays. The sheet
+    corners. The Film panel's "Fade strength, top and bottom" slider (`filmFade`, 0 to 30,
+    default 0, Ammar's to set, 2026-11-06) fades the sheet's top and bottom edges to white,
+    that share of its height deep: `render.php` sets `--dh-film-fade` on `.dh-film`, and its
+    `::after` draws the gradient under the button. The video has `preload="none"`, so it is only fetched when it plays. The sheet
     takes the film's exact shape (1200 / 950): a browser renders video colour a shade off the
     page's, and a band of CSS paper round the picture showed the join. With no film file it
     draws the schematic as before, which is what live shows until the cutover (AMM-158)

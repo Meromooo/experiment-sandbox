@@ -2523,6 +2523,23 @@ ul.dh-toolbar__chips {
 	object-fit: contain;
 }
 
+/* A white fade over the film's top and bottom edges, as deep as the
+   sidebar's "Fade strength" (render.php sets --dh-film-fade; none at 0).
+   It sits over the frames and the video, under the toggle (z-index 1). */
+.dh-film[style*="--dh-film-fade"]::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: linear-gradient(
+		to bottom,
+		var(--wp--preset--color--white),
+		transparent var(--dh-film-fade),
+		transparent calc(100% - var(--dh-film-fade)),
+		var(--wp--preset--color--white)
+	);
+}
+
 /* The first frame (an image) shows until the video is actually playing. */
 .dh-film__video {
 	opacity: 0;
