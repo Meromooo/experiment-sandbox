@@ -163,8 +163,11 @@ Staff email addresses never appear in the repo, markup or JavaScript; the reques
   - **No nonce** (Ammar, 2026-10-21): pages are cached and shared, so a nonce in the HTML
     would be stale, and the form needs no login, so a forged post can only do what any
     visitor can, within the rate limit.
-  - **Rate limit:** transients for an hour from the last counted request, keyed by
-    `wp_hash()` of `REMOTE_ADDR` (never the address itself). `REMOTE_ADDR` is the visitor's
+  - **Rate limit:** per visitor, a transient for an hour from the last counted request, keyed
+    by `wp_hash()` of `REMOTE_ADDR` (never the address itself); an IPv6 address counts by its
+    /64 (the first 8 bytes of `inet_pton()`), an IPv4-mapped one by its full address
+    (AMM-258). Site-wide, one transient per UTC clock hour (`demas_theme_rq_site_YYYYMMDDHH`),
+    so it resets on the hour. `REMOTE_ADDR` is the visitor's
     real address on this host, behind the CDN too (measured 2026-10-21), so no forwarded
     header is read. Stage 5 (2026-10-22) checked that forged `X-Forwarded-For`,
     `X-Real-IP`, `CF-Connecting-IP`, `True-Client-IP` and `X-Client-IP` don't change it: from
