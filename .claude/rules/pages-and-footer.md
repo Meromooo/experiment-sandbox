@@ -84,10 +84,12 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
   skill's limit. The stacked logo (2:1, its top-left two-thirds empty) was tried first at
   3.5rem (too small), 6rem (a 120px band, too big) and 4rem (still small); side by side it
   fills the slot Ammar marked. 2.5rem below 75rem keeps the band on one row down to 1024px,
-  where 175px is free beside the menu (measured 2026-10-31). From 56.0625rem to 60.9375rem
-  (897 to 975px) the finder stays the round icon button of the phone header
+  where 175px is free beside the menu (measured 2026-10-31). From 56.0625rem to 63.9375rem
+  (897 to 1023px) the finder stays the round icon button of the phone header
   (`src/finder/style.scss`, 2026-11-06): its wide field (12rem at least) left the logo, menu
-  and controls 62px short at 897px, so the band wrapped to two rows up to about 966px. Below 56rem (the two-row phone
+  and controls 62px short at 897px, so the band wrapped to two rows up to about 966px of
+  layout width. A first cut at 975px still wrapped in a real window at 975 to 976px: the
+  media query counts the scrollbar (about 15px), the layout doesn't. Below 56rem (the two-row phone
   header) the logo takes only the room the icon controls leave, up to 2.5rem tall, so the
   band stays two rows (116px) at every phone width, with or without a quote count; at a
   fixed 163px the quote control wrapped to a third row (a 172px band). A theme

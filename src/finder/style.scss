@@ -93,13 +93,14 @@
 }
 
 /*
- * Up to 60.9375rem (975px) the control is a round icon button beside "Your
+ * Up to 63.9375rem (1023px) the control is a round icon button beside "Your
  * quote": below 56rem in the compact phone header (assets/css/style.css), and
- * from 56.0625rem to 975px in the one-row band, which the wide field pushed
- * onto two rows (it was 62px short at 897px). The label stays in the
- * accessibility tree — it is the control's name.
+ * from 56.0625rem to 1023px in the one-row band, which the wide field pushed
+ * onto two rows (62px short at 897px, and still at a 976px window, whose
+ * scrollbar the media query counts). The label stays in the accessibility
+ * tree — it is the control's name.
  */
-@media (max-width: 60.9375rem) {
+@media (max-width: 63.9375rem) {
 	.dh-finder__trigger {
 		inline-size: 2.75rem;
 		min-block-size: 2.75rem;
