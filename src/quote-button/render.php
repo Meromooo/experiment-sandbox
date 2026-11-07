@@ -26,7 +26,13 @@ if ( ! defined( 'ABSPATH' ) || ! function_exists( 'wc_get_product' ) ) {
 	return;
 }
 
-$demas_id      = (int) ( $attributes['productId'] ?? 0 );
+$demas_id = (int) ( $attributes['productId'] ?? 0 );
+
+// A product named in the markup shows only if a visitor could open it anyway (AMM-264).
+if ( $demas_id && ( 'publish' !== get_post_status( $demas_id ) || post_password_required( $demas_id ) ) ) {
+	return;
+}
+
 $demas_id      = $demas_id ? $demas_id : (int) ( $block->context['postId'] ?? get_the_ID() );
 $demas_product = wc_get_product( $demas_id );
 
