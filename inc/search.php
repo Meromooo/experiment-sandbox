@@ -161,6 +161,31 @@ function demas_theme_find_product_ids( string $raw, bool $rank = true ): array {
 
 	$ids = array_values( array_unique( array_map( 'intval', $ids ) ) );
 
+	// Only what search may show: not hidden from search, no password (AMM-260). One ID-only query, so no product is loaded here (AMM-261).
+	if ( $ids ) {
+		$ids = get_posts(
+			array(
+				'post_type'        => 'product',
+				'post_status'      => 'publish',
+				'post__in'         => $ids,
+				'has_password'     => false,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- bounded by post__in, the IDs already matched.
+				'tax_query'        => array(
+					array(
+						'taxonomy' => 'product_visibility',
+						'field'    => 'slug',
+						'terms'    => array( 'exclude-from-search' ),
+						'operator' => 'NOT IN',
+					),
+				),
+				'fields'           => 'ids',
+				'posts_per_page'   => -1,
+				'no_found_rows'    => true,
+				'suppress_filters' => true,
+			)
+		);
+	}
+
 	if ( ! $rank || ! $ids ) {
 		return $ids;
 	}
@@ -530,18 +555,8 @@ function demas_theme_rest_find( WP_REST_Request $request ): WP_REST_Response {
 		);
 	}
 
+	// Already only what search may show, so the total and the parts agree.
 	$ids = mb_strlen( $raw ) >= 2 ? demas_theme_find_product_ids( $raw ) : array();
-
-	// Products hidden from search stay hidden here too, in the parts and the total.
-	$ids = array_values(
-		array_filter(
-			$ids,
-			static function ( $id ) {
-				$product = wc_get_product( $id );
-				return $product && in_array( $product->get_catalog_visibility(), array( 'visible', 'search' ), true );
-			}
-		)
-	);
 
 	$parts = array();
 	$skus  = array_map( 'mb_strtolower', $terms['skus'] );
