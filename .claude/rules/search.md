@@ -26,7 +26,9 @@ Moved from CLAUDE.md (AMM-190); kept as it was written. Read this before plannin
     so the query goes in as plain text). Registers `demas-theme/search-empty`
     (the no-results state). `demas_theme_search_form()` is the one search field — toolbar and
     404 use it. The matching lives in `demas_theme_find_product_ids()` /
-    `demas_theme_find_categories()`, shared by the results page and the **header finder**
+    `demas_theme_find_categories()`; the product IDs keep only what search may show (no
+    `exclude-from-search` visibility, no password) in one ID-only query (AMM-260, AMM-261), so
+    `/find` loads products only for the rows it returns. Both are shared by the results page and the **header finder**
     (AMM-142, `demas-theme/finder`, registered here): a REST route `demas-theme/v1/find?q=`
     returns up to 5 categories and 8 parts with paths, part numbers and an exact flag, so the
     finder and the results page always agree. The finder is a native modal `<dialog>` with an
